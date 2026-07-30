@@ -1,0 +1,24 @@
+{
+  "name": "PK Perwira TNI — Platform Belajar",
+  "short_name": "PK Perwira",
+  "description": "Platform belajar seleksi PK Perwira TNI — 126 soal, tryout, drill, tips trik",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

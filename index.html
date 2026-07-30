@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1628">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PK Perwira">
+  <meta name="description" content="Platform belajar seleksi PK Perwira TNI - 126 soal, tryout, drill, tips trik">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="static/icons/icon-192.png">
+  <title>PK Perwira TNI — Platform Belajar</title>
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="badge">TNI</div>
+      <h1>Platform Belajar PK Perwira</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="stat-pill"><strong id="hStatSoal">-</strong> Soal</div>
+      <div class="stat-pill"><strong id="hStatKat">-</strong> Kategori</div>
+      <div class="stat-pill"><strong id="hStatTO">0</strong> Tryout</div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <button class="nav-btn active" data-page="home" onclick="navTo('home')">🏠<span>Beranda</span></button>
+    <button class="nav-btn" data-page="cat" onclick="goPage('cat','tryout')">⏱<span>Tryout</span></button>
+    <button class="nav-btn" data-page="cat2" onclick="goPage('cat','learn')">📖<span>Belajar</span></button>
+    <button class="nav-btn" data-page="bank" onclick="navTo('bank')">📚<span>Bank</span></button>
+    <button class="nav-btn" data-page="tips" onclick="navTo('tips')">💡<span>Tips</span></button>
+    <button class="nav-btn" data-page="prog" onclick="navTo('prog')">📈<span>Progress</span></button>
+  </nav>
+
+  <div class="main" id="main">
+    <div class="empty"><div class="empty-icon">⏳</div><p>Memuat...</p></div>
+  </div>
+
+  <div class="kb-hint" id="kbHint">
+    Tekan <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> untuk jawab &nbsp;·&nbsp;
+    <kbd>←</kbd><kbd>→</kbd> untuk navigasi
+  </div>
+
+  <script src="data/soal.js"></script>
+  <script src="static/js/app.js"></script>
+
+  <script>
+    // Update header stats setelah semua script dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+      var all = getAllSoal();
+      var el1 = document.getElementById('hStatSoal');
+      var el2 = document.getElementById('hStatKat');
+      var el3 = document.getElementById('hStatTO');
+      if (el1) el1.textContent = all.length;
+      if (el2) el2.textContent = Object.keys(SOAL_DATABASE).length;
+      if (el3) el3.textContent = (JSON.parse(localStorage.getItem('tni_scores') || '[]')).length;
+    });
+
+    // Register Service Worker untuk PWA offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('./sw.js')
+          .then(function(reg) { console.log('SW registered:', reg.scope); })
+          .catch(function(err) { console.log('SW error:', err); });
+      });
+    }
+  </script>
+
+</body>
+</html>
