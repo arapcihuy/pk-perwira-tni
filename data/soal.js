@@ -184,8 +184,7 @@ const SOAL_DATABASE = {
       { id:"tg9", pertanyaan:"Dalam gambar, berapa banyak kubus yang tersusun? (tampak dari depan)", gambar:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='180' style='background:%230c1829'><rect width='220' height='180' fill='%230c1829'/><rect x='30' y='100' width='40' height='40' fill='%23162540' stroke='%234a90d9' stroke-width='1'/><rect x='70' y='100' width='40' height='40' fill='%23162540' stroke='%234a90d9' stroke-width='1'/><rect x='110' y='100' width='40' height='40' fill='%23162540' stroke='%234a90d9' stroke-width='1'/><rect x='30' y='60' width='40' height='40' fill='%23162540' stroke='%234a90d9' stroke-width='1'/><rect x='70' y='60' width='40' height='40' fill='%23162540' stroke='%234a90d9' stroke-width='1'/><rect x='70' y='20' width='40' height='40' fill='%23162540' stroke='%234a90d9' stroke-width='1'/><text x='110' y='165' fill='%237a96b8' font-size='11' text-anchor='middle'>Tampak depan susunan kubus</text></svg>", pilihan:["5","6","7","8"], jawaban:1, pembahasan:"TRIK CEPAT: Hitung kubus tampak depan baris per baris. Baris bawah: 3 kubus. Baris tengah: 2 kubus. Baris atas: 1 kubus. Total: 6. CARA: scan dari bawah ke atas, hitung per baris, jumlahkan." },
       { id:"tg10", pertanyaan:"Pola matriks 2x2: sudut kiri atas=bintang besar, kanan atas=bintang kecil, kiri bawah=lingkaran besar. Kanan bawah=?", gambar:"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220' style='background:%230c1829'><rect width='220' height='220' fill='%230c1829'/><rect x='10' y='10' width='200' height='200' fill='none' stroke='%234a90d9' stroke-width='2'/><line x1='110' y1='10' x2='110' y2='210' stroke='%234a90d9' stroke-width='1'/><line x1='10' y1='110' x2='210' y2='110' stroke='%234a90d9' stroke-width='1'/><polygon points='60,25 65,45 85,45 68,57 75,77 60,65 45,77 52,57 35,45 55,45' fill='%23d4a93a'/><polygon points='160,35 163,45 173,45 165,51 168,61 160,55 152,61 155,51 147,45 157,45' fill='%23d4a93a'/><circle cx='60' cy='160' r='35' fill='none' stroke='%234a90d9' stroke-width='3'/><text x='160' y='168' fill='%23ffd700' font-size='32' text-anchor='middle'>?</text></svg>", pilihan:["Lingkaran kecil","Bintang kecil","Persegi kecil","Segitiga kecil"], jawaban:0, pembahasan:"TRIK CEPAT: Pola matriks: baris 1 = bintang besar→kecil (ukuran turun). Baris 2 = lingkaran besar→?. Pola kolom: kolom 1 = besar, kolom 2 = kecil. Jadi kanan bawah = lingkaran KECIL. CARA: cari pola baris DAN kolom, ambil yang konsisten." }
     ]
-  }
-,
+  },
   kepribadian: {
     nama: "Tes Kepribadian Situasional",
     soal: [
@@ -201,7 +200,6 @@ const SOAL_DATABASE = {
       { id:"kp10", pertanyaan:"Dalam situasi darurat di lapangan, kamu harus membuat keputusan cepat tanpa bisa menghubungi atasan. Sikapmu?", pilihan:["Tunggu sampai bisa hubungi atasan meski situasi makin buruk","Buat keputusan terbaik berdasarkan situasi pelatihan dan nilai-nilai yang sudah diajarkan","Minta anggota lain yang memutuskan","Tidak melakukan apa-apa karena takut salah"], jawaban:1, pembahasan:"INISIATIF dan KEBERANIAN MENGAMBIL KEPUTUSAN adalah inti kepemimpinan perwira. TRIK: soal tidak bisa hubungi atasan = HARUS ambil keputusan sendiri berdasarkan pelatihan. Menunggu (A) atau tidak bertindak (D) adalah jawaban terburuk." }
     ]
   }
-
 };
 function getAllSoal() {
   var all = [];
@@ -212,7 +210,6 @@ function getAllSoal() {
   });
   return all;
 }
-
 // Tips dan Trik per kategori
 const TIPS_DATA = {
   umum: {
