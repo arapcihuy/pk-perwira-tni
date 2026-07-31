@@ -33,7 +33,8 @@ function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
 function katIcon(k) {
   var m = { tkw:'🏛️', matematika:'🔢', bahasa_inggris:'🌐',
-            penalaran_logika:'🧠', numerik:'📊', verbal:'📝' };
+            penalaran_logika:'🧠', numerik:'📊', verbal:'📝',
+            kraepelin:'⚡', tes_gambar:'🎯', kepribadian:'🧩' };
   return m[k] || '📋';
 }
 
@@ -601,8 +602,8 @@ window.renderTips = function(katKey) {
   if (!data) return '<div class="empty"><p>Data tips tidak ditemukan.</p></div>';
   var tabKeys = Object.keys(data);
   var tabs = tabKeys.map(function(k) {
-    var icons = {umum:'🎯',tkw:'🏛️',matematika:'🔢',bahasa_inggris:'🌐',penalaran_logika:'🧠',numerik:'📊',verbal:'📝'};
-    var label = (icons[k]||'📋') + ' ' + (k==='umum'?'Umum':k==='tkw'?'TWK':k==='matematika'?'MTK':k==='bahasa_inggris'?'Inggris':k==='penalaran_logika'?'Logika':k==='numerik'?'Numerik':k==='verbal'?'Verbal':k);
+    var icons = {umum:'🎯',tkw:'🏛️',matematika:'🔢',bahasa_inggris:'🌐',penalaran_logika:'🧠',numerik:'📊',verbal:'📝',kraepelin:'⚡',tes_gambar:'🎯',kepribadian:'🧩'};
+    var label = (icons[k]||'📋') + ' ' + (k==='umum'?'Umum':k==='tkw'?'TWK':k==='matematika'?'MTK':k==='bahasa_inggris'?'Inggris':k==='penalaran_logika'?'Logika':k==='numerik'?'Numerik':k==='verbal'?'Verbal':k==='kraepelin'?'Kraepelin':k==='tes_gambar'?'Tes Gambar':k==='kepribadian'?'Kepribadian':k);
     return '<button class="btn '+(k===katKey?'btn-primary':'btn-secondary')+' btn-sm" onclick="window.showTips(\''+k+'\')">'+label+'</button>';
   }).join('');
   var d = data[katKey];
