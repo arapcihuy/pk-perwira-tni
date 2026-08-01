@@ -132,6 +132,7 @@ const SOAL_DATABASE = {
     ]
   },
   bahasa_inggris: {
+    nama: "Bahasa Inggris",
     soal: [
       { id:"e1", pertanyaan:"The military commander _____ his troops before the mission.", pilihan:["briefed","brief","briefs","was brief"], jawaban:0, pembahasan:"Past tense digunakan karena 'before the mission' menunjukkan kejadian lampau." },
       { id:"e2", pertanyaan:"Word closest in meaning to 'valiant':", pilihan:["cowardly","brave","weak","careless"], jawaban:1, pembahasan:"Valiant = gagah berani. Sinonim: brave (berani)." },
