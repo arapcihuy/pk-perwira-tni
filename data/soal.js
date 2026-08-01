@@ -406,7 +406,27 @@ const SOAL_DATABASE = {
       { id:"k7", pertanyaan:"Berapa hasil: 6+6 (tulis satuan jika ≥10)?", pilihan:["12","2","6","8"], jawaban:1, pembahasan:"6+6=12, tulis satuan = 2. TRIK: angka kembar yang hasilnya ≥10: 6+6=2, 7+7=4, 8+8=6, 9+9=8. Hapal 4 pasang ini!" },
       { id:"k8", pertanyaan:"Apa yang PALING mempengaruhi nilai Kraepelin yang bagus?", pilihan:["Kecepatan tertinggi di awal","Konsistensi kecepatan sepanjang tes","Akurasi 100% tanpa kesalahan","Mengerjakan lebih banyak kolom"], jawaban:1, pembahasan:"Kraepelin mengukur KETAHANAN KERJA dan KONSENTRASI. Yang dinilai adalah konsistensi grafik kinerja — bukan puncak kecepatan. Psikolog melihat apakah kamu bisa kerja stabil di bawah tekanan." },
       { id:"k9", pertanyaan:"Berapa hasil: 7+4?", pilihan:["11","1","7","4"], jawaban:1, pembahasan:"7+4=11, tulis satuan = 1. TRIK CEPAT: untuk x+4, hasilnya adalah (x-6) jika x≥6. Contoh: 7+4=1, 8+4=2, 9+4=3. Atau hapal saja tabel penjumlahan 1-9." },
-      { id:"k10", pertanyaan:"Berapa hasil: 8+5?", pilihan:["13","3","8","5"], jawaban:1, pembahasan:"8+5=13, tulis satuan = 3. TRIK LATIHAN: setiap hari latihan 5 menit dengan baris angka acak. Tulis hasilnya di kertas. Target: 50 penjumlahan per menit untuk lulus." }
+      { id:"k10", pertanyaan:"Berapa hasil: 8+5?", pilihan:["13","3","8","5"], jawaban:1, pembahasan:"8+5=13, tulis satuan = 3. TRIK LATIHAN: setiap hari latihan 5 menit dengan baris angka acak. Tulis hasilnya di kertas. Target: 50 penjumlahan per menit untuk lulus." },
+      { id:"k11", pertanyaan:"Berapa hasil: 4+9 (tulis satuan jika ≥10)?", pilihan:["13","3","4","9"], jawaban:1, pembahasan:"4+9=13, tulis satuan = 3. TRIK: 4+9 = 4+10-1 = 13, satuan 3." },
+      { id:"k12", pertanyaan:"Berapa hasil: 6+7 (tulis satuan jika ≥10)?", pilihan:["13","3","6","7"], jawaban:1, pembahasan:"6+7=13, tulis satuan = 3. TRIK: 6+7 = 6+6+1 = 13, satuan 3." },
+      { id:"k13", pertanyaan:"Berapa hasil: 2+8 (tulis satuan jika ≥10)?", pilihan:["10","0","2","8"], jawaban:1, pembahasan:"2+8=10, tulis satuan = 0. TRIK: hasil pas 10 = tulis 0." },
+      { id:"k14", pertanyaan:"Berapa hasil: 9+9 (tulis satuan jika ≥10)?", pilihan:["18","8","9","10"], jawaban:1, pembahasan:"9+9=18, tulis satuan = 8. TRIK: kembar 9 = 18, satuan 8." },
+      { id:"k15", pertanyaan:"Berapa hasil: 5+6 (tulis satuan jika ≥10)?", pilihan:["11","1","5","6"], jawaban:1, pembahasan:"5+6=11, tulis satuan = 1. TRIK: 5+6 = 5+5+1 = 11, satuan 1." },
+      { id:"k16", pertanyaan:"Berapa hasil: 7+8 (tulis satuan jika ≥10)?", pilihan:["15","5","7","8"], jawaban:1, pembahasan:"7+8=15, tulis satuan = 5. TRIK: 7+8 = 7+7+1 = 15, satuan 5." },
+      { id:"k17", pertanyaan:"Berapa hasil: 3+7 (tulis satuan jika ≥10)?", pilihan:["10","0","3","7"], jawaban:1, pembahasan:"3+7=10, tulis satuan = 0. TRIK: hasil pas 10 = tulis 0." },
+      { id:"k18", pertanyaan:"Berapa hasil: 8+8 (tulis satuan jika ≥10)?", pilihan:["16","6","8","10"], jawaban:1, pembahasan:"8+8=16, tulis satuan = 6. TRIK: kembar 8 = 16, satuan 6." },
+      { id:"k19", pertanyaan:"Berapa hasil: 1+9 (tulis satuan jika ≥10)?", pilihan:["10","0","1","9"], jawaban:1, pembahasan:"1+9=10, tulis satuan = 0. TRIK: hasil pas 10 = tulis 0." },
+      { id:"k20", pertanyaan:"Berapa hasil: 6+9 (tulis satuan jika ≥10)?", pilihan:["15","5","6","9"], jawaban:1, pembahasan:"6+9=15, tulis satuan = 5. TRIK: 6+9 = 6+10-1 = 15, satuan 5." },
+      { id:"k21", pertanyaan:"Berapa hasil: 4+8 (tulis satuan jika ≥10)?", pilihan:["12","2","4","8"], jawaban:1, pembahasan:"4+8=12, tulis satuan = 2. TRIK: 4+8 = 4+4+4 = 12, satuan 2." },
+      { id:"k22", pertanyaan:"Berapa hasil: 7+7 (tulis satuan jika ≥10)?", pilihan:["14","4","7","10"], jawaban:1, pembahasan:"7+7=14, tulis satuan = 4. TRIK: kembar 7 = 14, satuan 4." },
+      { id:"k23", pertanyaan:"Berapa hasil: 5+9 (tulis satuan jika ≥10)?", pilihan:["14","4","5","9"], jawaban:1, pembahasan:"5+9=14, tulis satuan = 4. TRIK: 5+9 = 5+10-1 = 14, satuan 4." },
+      { id:"k24", pertanyaan:"Berapa hasil: 2+9 (tulis satuan jika ≥10)?", pilihan:["11","1","2","9"], jawaban:1, pembahasan:"2+9=11, tulis satuan = 1. TRIK: 2+9 = 2+10-1 = 11, satuan 1." },
+      { id:"k25", pertanyaan:"Berapa hasil: 8+6 (tulis satuan jika ≥10)?", pilihan:["14","4","6","8"], jawaban:1, pembahasan:"8+6=14, tulis satuan = 4. TRIK: 8+6 = 8+2+4 = 14, satuan 4." },
+      { id:"k26", pertanyaan:"Berapa hasil: 3+8 (tulis satuan jika ≥10)?", pilihan:["11","1","3","8"], jawaban:1, pembahasan:"3+8=11, tulis satuan = 1. TRIK: 3+8 = 3+7+1 = 11, satuan 1." },
+      { id:"k27", pertanyaan:"Berapa hasil: 6+6 (tulis satuan jika ≥10)?", pilihan:["12","2","6","10"], jawaban:1, pembahasan:"6+6=12, tulis satuan = 2. TRIK: kembar 6 = 12, satuan 2." },
+      { id:"k28", pertanyaan:"Berapa hasil: 9+4 (tulis satuan jika ≥10)?", pilihan:["13","3","4","9"], jawaban:1, pembahasan:"9+4=13, tulis satuan = 3. TRIK: 9+4 = 9+1+3 = 13, satuan 3." },
+      { id:"k29", pertanyaan:"Berapa hasil: 5+5 (tulis satuan jika ≥10)?", pilihan:["10","0","5","10"], jawaban:1, pembahasan:"5+5=10, tulis satuan = 0. TRIK: hasil pas 10 = tulis 0." },
+      { id:"k30", pertanyaan:"Berapa hasil: 7+3 (tulis satuan jika ≥10)?", pilihan:["10","0","3","7"], jawaban:1, pembahasan:"7+3=10, tulis satuan = 0. TRIK: hasil pas 10 = tulis 0." }
     ]
   },
   tes_gambar: {
