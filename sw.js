@@ -1,4 +1,4 @@
-const CACHE = 'tni-perwira-v5';
+const CACHE = 'tni-perwira-v6';
 const FILES = [
   './',
   './index.html',
