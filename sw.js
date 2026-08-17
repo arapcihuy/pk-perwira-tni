@@ -1,11 +1,13 @@
-const CACHE = 'tni-perwira-v6';
+const CACHE = 'tni-perwira-v7';
 const FILES = [
   './',
   './index.html',
   './manifest.json',
   './data/soal.js',
+  './data/soal-psikologi.js',
   './static/css/style.css',
   './static/js/app.js',
+  './static/js/psikologi.js',
   './static/icons/icon-192.png',
   './static/icons/icon-512.png'
 ];
