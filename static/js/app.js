@@ -12,11 +12,25 @@ var S = {
   questions: [],
   idx: 0,
   answers: {},       // idx -> pilihan index user
+  flagged: {},       // idx -> boolean (ragu-ragu)
   timer: null,
   timeLeft: 0,
   totalTime: 0,
   bankCat: 'all',
   wrongIds: [],      // ids soal yang salah untuk drill
+};
+
+// ---- FULLSCREEN UTILITY ----
+window.toggleFullscreen = function() {
+  if (!document.fullscreenElement) {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch(function(){});
+    }
+  }
 };
 
 // ---- UTILS ----
@@ -197,6 +211,7 @@ function startCat(cat, mode) {
   S.isSimulasi = false;
   S.idx = 0;
   S.answers = {};
+  S.flagged = {};
 
   if (cat === 'all') {
     S.questions = shuffle(getAllSoal());
@@ -221,10 +236,11 @@ function renderSoal() {
 
   var q = S.questions[S.idx];
   var n = S.questions.length;
-  var pct = Math.round((S.idx / n) * 100);
+  var pct = Math.round(((S.idx + 1) / n) * 100);
   var letters = ['A','B','C','D'];
   var ans = S.answers[S.idx];
   var answered = ans !== undefined;
+  var isFlagged = !!S.flagged[S.idx];
 
   var timerHtml = '';
   if (S.mode === 'tryout') {
@@ -257,6 +273,8 @@ function renderSoal() {
   }
 
   var prevBtn = '<button class="btn btn-ghost btn-sm" onclick="prevQ()"' + (S.idx === 0 ? ' disabled' : '') + '>← Sebelumnya</button>';
+  var flagBtn = '<button class="btn btn-flag btn-sm ' + (isFlagged ? 'active' : '') + '" onclick="toggleFlag(' + S.idx + ')" title="Tandai Ragu-Ragu">🚩 ' + (isFlagged ? 'Ragu (Aktif)' : 'Ragu-ragu') + '</button>';
+
   var nextBtn = '';
   if (S.idx < n - 1) {
     nextBtn = '<button class="btn btn-primary btn-sm" onclick="nextQ()">Berikutnya →</button>';
@@ -268,15 +286,22 @@ function renderSoal() {
 
   return '<div class="soal-wrap">' +
     '<div class="soal-head">' +
-      '<div>' +
-        '<div class="label">Soal</div>' +
-        '<div class="value">' + (S.idx + 1) + ' / ' + n + '</div>' +
+      '<div style="display:flex;align-items:center;gap:8px">' +
+        '<div>' +
+          '<div class="label">Soal</div>' +
+          '<div class="value">' + (S.idx + 1) + ' / ' + n + '</div>' +
+        '</div>' +
+        '<button class="btn btn-secondary btn-sm" onclick="openPalette()" style="margin-left:4px">📋 Palet Soal</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="toggleFullscreen()" title="Layar Penuh" style="padding:6px 9px">⛶</button>' +
       '</div>' +
       timerHtml +
     '</div>' +
     '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
     '<div class="soal-body">' +
-      '<div class="soal-cat-tag">' + (q.kategori || 'Umum') + '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+        '<div class="soal-cat-tag">' + (q.kategori || 'Umum') + '</div>' +
+        (isFlagged ? '<span style="font-size:11px;color:var(--gold3);font-weight:700">🚩 Ditandai Ragu-ragu</span>' : '') +
+      '</div>' +
       '<div class="soal-text">' + q.pertanyaan + '</div>' +
       (q.gambar ? '<div class="soal-img"><img src="' + q.gambar + '" alt="Gambar soal" style="max-width:100%;max-height:320px;border-radius:8px;margin:10px 0;display:block;border:1px solid var(--border)"></div>' : '') +
       '<div class="options">' + opts + '</div>' +
@@ -284,10 +309,60 @@ function renderSoal() {
     expHtml +
     '<div class="soal-foot">' +
       prevBtn +
-      '<div style="display:flex;gap:6px">' + skipBtn + nextBtn + '</div>' +
+      '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">' +
+        flagBtn +
+        skipBtn +
+        nextBtn +
+      '</div>' +
     '</div>' +
   '</div>';
 }
+
+// ---- PALETTE (CAT MODAL) ----
+function openPalette() {
+  var grid = document.getElementById('paletteGrid');
+  var modal = document.getElementById('paletteModal');
+  if (!grid || !modal) return;
+
+  var html = '';
+  for (var i = 0; i < S.questions.length; i++) {
+    var answered = S.answers[i] !== undefined;
+    var flagged = !!S.flagged[i];
+    var current = (i === S.idx);
+
+    var cls = 'palette-num';
+    if (answered) cls += ' answered';
+    if (flagged) cls += ' flagged';
+    if (current) cls += ' current';
+
+    html += '<div class="' + cls + '" onclick="jumpToQ(' + i + ')">' + (i + 1) + '</div>';
+  }
+  grid.innerHTML = html;
+  modal.classList.add('open');
+}
+window.openPalette = openPalette;
+
+function closePaletteModal() {
+  var m = document.getElementById('paletteModal');
+  if (m) m.classList.remove('open');
+}
+window.closePaletteModal = closePaletteModal;
+
+function jumpToQ(idx) {
+  closePaletteModal();
+  if (idx >= 0 && idx < S.questions.length) {
+    S.idx = idx;
+    render();
+    if (S.mode === 'tryout') startTimerIfNeeded();
+  }
+}
+window.jumpToQ = jumpToQ;
+
+function toggleFlag(idx) {
+  S.flagged[idx] = !S.flagged[idx];
+  render();
+}
+window.toggleFlag = toggleFlag;
 
 // ---- TIMER ----
 function startTimerIfNeeded() {
@@ -456,6 +531,7 @@ window.drillWrong = function() {
   S.questions = shuffle(wrongQ);
   S.idx = 0;
   S.answers = {};
+  S.flagged = {};
   S.totalTime = 0;
   S.timeLeft = 0;
   S.page = 'soal';
@@ -471,6 +547,7 @@ window.startSimulasi60 = function() {
   S.questions = shuffle(all).slice(0, 60);
   S.idx = 0;
   S.answers = {};
+  S.flagged = {};
   S.totalTime = 5400; // 90 menit = 5400 detik
   S.timeLeft = 5400;
   if (S.timer) { clearInterval(S.timer); S.timer = null; }
@@ -518,8 +595,7 @@ function renderBank() {
     '<span class="bank-count">' + list.length + ' soal</span>' +
     '</div>' +
     '<p style="font-size:12px;color:var(--text3);margin-bottom:14px">Klik soal untuk lihat kunci jawaban dan pembahasan.</p>' +
-    items +
-    renderModal();
+    items;
 }
 
 window.setBankCat = function(v) { S.bankCat = v; S.page = 'bank'; render(); };
@@ -594,8 +670,67 @@ function renderProg() {
     '<div style="margin-bottom:24px">' + rows + '</div>' +
     '<div class="section-title">Riwayat Tryout</div>' +
     '<div style="margin-bottom:20px">' + hist + '</div>' +
-    '<button class="btn btn-danger btn-sm" onclick="resetAll()">🗑️ Reset Semua Data</button>';
+    '<div class="backup-box">' +
+      '<div>' +
+        '<div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">💾 Backup & Restore Data</div>' +
+        '<div style="font-size:12px;color:var(--text2)">Simpan atau pindahkan riwayat belajar antar perangkat.</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
+        '<button class="btn btn-secondary btn-sm" onclick="exportData()">📥 Export Backup</button>' +
+        '<label class="btn btn-secondary btn-sm" style="margin:0;cursor:pointer">' +
+          '📤 Import Backup' +
+          '<input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importData(event)">' +
+        '</label>' +
+      '</div>' +
+    '</div>' +
+    '<div style="margin-top:20px">' +
+      '<button class="btn btn-danger btn-sm" onclick="resetAll()">🗑️ Reset Semua Data</button>' +
+    '</div>';
 }
+
+window.exportData = function() {
+  var data = {
+    version: 1,
+    exportDate: new Date().toISOString(),
+    tni_prog: loadProgress(),
+    tni_scores: loadScores(),
+    tni_psi_progress: (function(){ try { return JSON.parse(localStorage.getItem('tni_psi_progress')||'{}'); } catch(e){ return {}; } })()
+  };
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  var d = new Date();
+  var dateStr = d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  a.download = 'backup-pk-perwira-' + dateStr + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+window.importData = function(event) {
+  var file = event.target.files && event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var json = JSON.parse(e.target.result);
+      if (!json || typeof json !== 'object') throw new Error('Format file tidak valid');
+
+      if (json.tni_prog) localStorage.setItem('tni_prog', JSON.stringify(json.tni_prog));
+      if (json.tni_scores) localStorage.setItem('tni_scores', JSON.stringify(json.tni_scores));
+      if (json.tni_psi_progress) localStorage.setItem('tni_psi_progress', JSON.stringify(json.tni_psi_progress));
+
+      updateHeaderStats();
+      alert('✅ Data backup berhasil dipulihkan!');
+      render();
+    } catch(err) {
+      alert('❌ Gagal memulihkan backup: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+};
 
 window.resetAll = function() {
   if (confirm('Hapus semua progress dan riwayat tryout?')) {
@@ -640,8 +775,10 @@ document.addEventListener('keydown', function(e) {
 
 // Close modal on backdrop click
 document.addEventListener('click', function(e) {
-  var modal = document.getElementById('soalModal');
-  if (modal && e.target === modal) closeModal();
+  var modal1 = document.getElementById('soalModal');
+  if (modal1 && e.target === modal1) closeModal();
+  var modal2 = document.getElementById('paletteModal');
+  if (modal2 && e.target === modal2) closePaletteModal();
 });
 
 // ---- INIT ----

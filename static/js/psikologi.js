@@ -326,9 +326,12 @@ function renderKraepelin() {
         '<div style="font-size:12px;color:var(--text3)">Jumlahkan 2 angka berurutan, tulis digit terakhir</div>' +
       '</div>' +
     '</div>' +
-    '<div style="text-align:right">' +
-      '<div style="font-size:24px;font-weight:700;color:var(--primary)" id="kraepelinTimer">03:00</div>' +
-      '<button class="btn btn-danger btn-sm" style="margin-top:4px" onclick="finishKraepelin()">Selesai Sekarang</button>' +
+    '<div style="display:flex;gap:8px;align-items:center">' +
+      '<button class="btn btn-ghost btn-sm" onclick="toggleFullscreen()" title="Layar Penuh" style="padding:6px 10px">⛶ Layar Penuh</button>' +
+      '<div style="text-align:right">' +
+        '<div style="font-size:22px;font-weight:700;color:var(--primary)" id="kraepelinTimer">03:00</div>' +
+        '<button class="btn btn-danger btn-sm" style="margin-top:2px" onclick="finishKraepelin()">Selesai Sekarang</button>' +
+      '</div>' +
     '</div>' +
   '</div>';
 
@@ -431,23 +434,45 @@ function handleKraepelinInput(e, col, row) {
 function finishKraepelin() {
   psiTimerStop();
 
-  // Calculate score
+  // Calculate score & column statistics
   var correctAnswers = PSI.currentTest.hitungJawaban(PSI.kraepelinData);
   var totalCorrect = 0;
   var totalAnswered = 0;
+  var colStats = [];
 
   for (var col = 0; col < PSI.kraepelinAnswers.length; col++) {
+    var cAns = 0;
+    var cCor = 0;
     for (var row = 0; row < PSI.kraepelinAnswers[col].length; row++) {
       if (PSI.kraepelinAnswers[col][row] !== '') {
+        cAns++;
         totalAnswered++;
         if (PSI.kraepelinAnswers[col][row] == correctAnswers[col][row]) {
+          cCor++;
           totalCorrect++;
         }
       }
     }
+    colStats.push({ col: col + 1, answered: cAns, correct: cCor, wrong: cAns - cCor });
   }
 
   var score = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+
+  // Analisa ritme grafik
+  var rhythm = 'Stabil';
+  if (colStats.length >= 3) {
+    var firstHalf = 0;
+    var secondHalf = 0;
+    var half = Math.floor(colStats.length / 2);
+    for (var i = 0; i < half; i++) firstHalf += colStats[i].answered;
+    for (var j = half; j < colStats.length; j++) secondHalf += colStats[j].answered;
+    var avgFirst = firstHalf / half;
+    var avgSecond = secondHalf / (colStats.length - half);
+
+    if (avgSecond > avgFirst + 1.5) rhythm = 'Meningkat (Ketahanan Baik 📈)';
+    else if (avgFirst > avgSecond + 2) rhythm = 'Menurun (Indikasi Kelelahan 📉)';
+    else rhythm = 'Stabil & Konsisten (⚖️)';
+  }
 
   PSI.history.push({
     testName: 'Tes Kraepelin',
@@ -463,7 +488,9 @@ function finishKraepelin() {
   PSI.scores = {
     correct: totalCorrect,
     total: totalAnswered,
-    score: score
+    score: score,
+    colStats: colStats,
+    rhythm: rhythm
   };
 
   render();
@@ -783,18 +810,91 @@ function finishPsiTest() {
   render();
 }
 
+function renderKraepelinChart(stats, rhythm) {
+  if (!stats || !stats.length) return '';
+  var w = 480, h = 160, padL = 36, padR = 20, padT = 20, padB = 28;
+  var maxVal = 0;
+  for (var i = 0; i < stats.length; i++) {
+    if (stats[i].answered > maxVal) maxVal = stats[i].answered;
+  }
+  if (maxVal < 10) maxVal = 10;
+  maxVal = Math.ceil(maxVal * 1.2);
+
+  var n = stats.length;
+  var stepX = (w - padL - padR) / (n - 1 || 1);
+  var scaleY = (h - padT - padB) / maxVal;
+
+  var ptsAnswered = [];
+  var ptsCorrect = [];
+  var dotsAnswered = [];
+  var dotsCorrect = [];
+  var xLabels = [];
+
+  for (var i = 0; i < n; i++) {
+    var x = Math.round(padL + i * stepX);
+    var yAns = Math.round(h - padB - stats[i].answered * scaleY);
+    var yCor = Math.round(h - padB - stats[i].correct * scaleY);
+
+    ptsAnswered.push(x + ',' + yAns);
+    ptsCorrect.push(x + ',' + yCor);
+
+    dotsAnswered.push('<circle cx="' + x + '" cy="' + yAns + '" r="3.5" fill="#f0c84a" />');
+    dotsCorrect.push('<circle cx="' + x + '" cy="' + yCor + '" r="3" fill="#22cc4a" />');
+    xLabels.push('<text x="' + x + '" y="' + (h - 8) + '" fill="#7a8c9e" font-size="10" text-anchor="middle">K' + (i+1) + '</text>');
+  }
+
+  // Grid lines
+  var gridLines = '';
+  for (var g = 0; g <= maxVal; g += Math.max(5, Math.floor(maxVal / 4))) {
+    var gy = Math.round(h - padB - g * scaleY);
+    gridLines += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (w - padR) + '" y2="' + gy + '" stroke="rgba(255,255,255,0.08)" stroke-width="1" />';
+    gridLines += '<text x="' + (padL - 6) + '" y="' + (gy + 3) + '" fill="#7a8c9e" font-size="9" text-anchor="end">' + g + '</text>';
+  }
+
+  var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" class="kraepelin-svg-chart">' +
+    gridLines +
+    '<polyline points="' + ptsAnswered.join(' ') + '" fill="none" stroke="#f0c84a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />' +
+    '<polyline points="' + ptsCorrect.join(' ') + '" fill="none" stroke="#22cc4a" stroke-width="2" stroke-dasharray="3,3" />' +
+    dotsAnswered.join('') +
+    dotsCorrect.join('') +
+    xLabels.join('') +
+    '</svg>';
+
+  var avgSpd = stats.reduce(function(a,b){return a + b.answered;}, 0) / (n || 1);
+
+  return '<div class="kraepelin-chart-card">' +
+    '<div class="kraepelin-chart-title">' +
+      '<span>📈 Kurva Ritme Kerja (Performance Curve)</span>' +
+      '<span style="font-size:12px;color:var(--gold3);font-weight:600">' + (rhythm || 'Stabil') + '</span>' +
+    '</div>' +
+    '<div class="kraepelin-chart-sub">Grafik tempo penjumlahan per kolom selama 3 menit. Kuning: Kecepatan, Hijau: Ketelitian.</div>' +
+    '<div class="kraepelin-chart-wrap">' + svg + '</div>' +
+    '<div style="display:flex;justify-content:space-around;gap:10px;margin-top:14px;border-top:1px solid var(--border);padding-top:12px;text-align:center">' +
+      '<div><div style="font-size:11px;color:var(--text3)">RATA-RATA / KOLOM</div><div style="font-size:16px;font-weight:700;color:var(--gold3)">' + avgSpd.toFixed(1) + ' hitungan</div></div>' +
+      '<div><div style="font-size:11px;color:var(--text3)">PROFIL RITME</div><div style="font-size:14px;font-weight:700;color:var(--white)">' + (rhythm || 'Stabil') + '</div></div>' +
+    '</div>' +
+  '</div>';
+}
+
 function renderPsiResult() {
-  var html = '<div style="padding:16px;min-height:calc(100vh - 140px);display:flex;flex-direction:column;align-items:center;justify-content:center">';
+  var html = '<div style="padding:16px;max-width:680px;margin:0 auto;text-align:center">';
 
   var emoji = PSI.scores.score >= 80 ? '🎉' : PSI.scores.score >= 60 ? '👍' : '💪';
 
-  html += '<div style="font-size:64px;margin-bottom:16px">'+emoji+'</div>' +
-    '<div style="font-size:24px;font-weight:700;color:var(--white);margin-bottom:8px">Tes Selesai!</div>' +
-    '<div style="font-size:48px;font-weight:700;color:var(--primary);margin-bottom:24px">'+PSI.scores.score+'%</div>' +
-    '<div style="font-size:14px;color:var(--text2);margin-bottom:32px">' +
-      'Benar: '+PSI.scores.correct+' dari '+PSI.scores.total+' soal' +
-    '</div>' +
-    '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">Kembali ke Menu</button>';
+  html += '<div style="font-size:56px;margin-bottom:12px">'+emoji+'</div>' +
+    '<div style="font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px">Tes Selesai!</div>' +
+    '<div style="font-size:42px;font-weight:900;color:var(--gold3);margin-bottom:12px">'+PSI.scores.score+'%</div>' +
+    '<div style="font-size:14px;color:var(--text2);margin-bottom:20px">' +
+      'Akurasi: <b>'+PSI.scores.correct+'</b> benar dari <b>'+PSI.scores.total+'</b> total hitungan' +
+    '</div>';
+
+  if (PSI.scores.colStats) {
+    html += renderKraepelinChart(PSI.scores.colStats, PSI.scores.rhythm);
+  }
+
+  html += '<div style="margin-top:24px">' +
+    '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">🏠 Kembali ke Menu Psikologi</button>' +
+    '</div>';
 
   html += '</div>';
 
