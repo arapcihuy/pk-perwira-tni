@@ -7,6 +7,8 @@
   --surface3: #162540;
   --border: #1a2d47;
   --border2: #243d5e;
+  --bg: #070e1a;
+  --bg-elevated: #101f33;
   --gold: #b8952a;
   --gold2: #d4a93a;
   --gold3: #f0c84a;
@@ -14,9 +16,11 @@
   --green: #0f7a2e;
   --green2: #18a83d;
   --green3: #22cc4a;
+  --success: #22cc4a;
   --red: #9e2318;
   --red2: #c73020;
   --red3: #e84030;
+  --danger: #e84030;
   --blue: #1255a0;
   --blue2: #1a70cc;
   --text: #dde4ee;

@@ -48,13 +48,33 @@ function loadScores() {
 }
 function saveScores(arr) { localStorage.setItem('tni_scores', JSON.stringify(arr)); }
 
+// ---- HEADER STATS ----
+function updateHeaderStats() {
+  var allSoal = getAllSoal();
+  var el1 = document.getElementById('hStatSoal');
+  var el2 = document.getElementById('hStatKat');
+  var el3 = document.getElementById('hStatTO');
+  if (el1) el1.textContent = allSoal.length;
+  if (el2) el2.textContent = Object.keys(SOAL_DATABASE).length;
+  if (el3) el3.textContent = loadScores().length;
+}
+
 // ---- RENDER ROUTER ----
 function render() {
   var m = document.getElementById('main');
   if (!m) return;
 
   document.querySelectorAll('.nav-btn').forEach(function(b) {
-    b.classList.toggle('active', b.dataset.page === S.page);
+    var p = b.dataset.page;
+    var isActive = false;
+    if (p === 'cat') {
+      isActive = (S.page === 'cat' && S.mode === 'tryout') || (S.page === 'soal' && S.mode === 'tryout');
+    } else if (p === 'cat2') {
+      isActive = (S.page === 'cat' && S.mode === 'learn') || (S.page === 'soal' && S.mode === 'learn');
+    } else {
+      isActive = (p === S.page);
+    }
+    b.classList.toggle('active', isActive);
   });
 
   // Keyboard hint hanya saat soal
@@ -67,9 +87,11 @@ function render() {
     case 'soal':  m.innerHTML = renderSoal();  startTimerIfNeeded(); break;
     case 'hasil': m.innerHTML = renderHasil(); break;
     case 'bank':  m.innerHTML = renderBank();  break;
+    case 'tips':  m.innerHTML = renderTips(S.tipsCat || 'umum'); break;
     case 'prog':  m.innerHTML = renderProg();  break;
   }
 }
+window.render = render;
 
 // ---- HOME ----
 function renderHome() {
@@ -124,7 +146,6 @@ function renderHome() {
     '<div style="margin-bottom:24px">' +
       '<button class="btn btn-danger btn-lg" style="width:100%" onclick="startSimulasi60()">🎯 Simulasi PK Perwira — 60 Soal · 90 Menit</button>' +
     '</div>' +
-    '</div>' +
 
     '<div class="tips-box">' +
       '<div class="tips-title">💡 Tips Persiapan PK Perwira TNI</div>' +
@@ -173,6 +194,7 @@ function renderCat() {
 function startCat(cat, mode) {
   S.cat = cat;
   S.mode = mode;
+  S.isSimulasi = false;
   S.idx = 0;
   S.answers = {};
 
@@ -333,12 +355,6 @@ window.skipQ = function() {
 
 window.finishSession = function() {
   clearInterval(S.timer); S.timer = null;
-  S.page = 'hasil';
-  render();
-};
-
-// ---- HASIL ----
-function renderHasil() {
   var n = S.questions.length;
   var benar = 0, salah = 0, skip = 0;
   for (var i = 0; i < n; i++) {
@@ -349,41 +365,82 @@ function renderHasil() {
   }
   var nilai = Math.round((benar / n) * 100);
   var lulus = nilai >= 70;
-
-  var scores = loadScores();
-  scores.push({ nilai: nilai, benar: benar, salah: salah, skip: skip,
-                tgl: new Date().toLocaleDateString('id-ID') });
-  if (scores.length > 10) scores.shift();
-  saveScores(scores);
-
   var tUsed = S.totalTime - S.timeLeft;
   var tStr = S.mode === 'tryout'
     ? Math.floor(tUsed / 60) + ' mnt ' + (tUsed % 60) + ' dtk' : '-';
 
+  S.lastResult = {
+    nilai: nilai,
+    lulus: lulus,
+    benar: benar,
+    salah: salah,
+    skip: skip,
+    tStr: tStr,
+    isSimulasi: !!S.isSimulasi
+  };
+
+  var scores = loadScores();
+  scores.push({
+    nilai: nilai,
+    benar: benar,
+    salah: salah,
+    skip: skip,
+    tgl: new Date().toLocaleDateString('id-ID')
+  });
+  if (scores.length > 10) scores.shift();
+  saveScores(scores);
+  updateHeaderStats();
+
+  S.page = 'hasil';
+  render();
+};
+
+// ---- HASIL ----
+function renderHasil() {
+  var res = S.lastResult;
+  if (!res) {
+    var n = S.questions.length || 1;
+    var b = 0, s = 0, sk = 0;
+    for (var i = 0; i < n; i++) {
+      var a = S.answers[i];
+      if (a === undefined) sk++;
+      else if (a === (S.questions[i] ? S.questions[i].jawaban : -1)) b++;
+      else s++;
+    }
+    var nil = Math.round((b / n) * 100);
+    res = { nilai: nil, lulus: nil >= 70, benar: b, salah: s, skip: sk, tStr: '-' };
+  }
+
   return '<div class="result-wrap">' +
-    '<div class="result-circle ' + (lulus ? 'pass' : 'fail') + '">' +
-      '<div class="score">' + nilai + '</div>' +
+    '<div class="result-circle ' + (res.lulus ? 'pass' : 'fail') + '">' +
+      '<div class="score">' + res.nilai + '</div>' +
       '<div class="score-label">/ 100</div>' +
     '</div>' +
-    '<div class="result-status ' + (lulus ? 'pass' : 'fail') + '">' +
-      (lulus ? '✅ LULUS — Nilai ≥ 70' : '❌ Belum Lulus — Nilai < 70') +
+    '<div class="result-status ' + (res.lulus ? 'pass' : 'fail') + '">' +
+      (res.lulus ? '✅ LULUS — Nilai ≥ 70' : '❌ Belum Lulus — Nilai < 70') +
     '</div>' +
     '<div class="result-stats">' +
-      '<div class="result-stat"><div class="rs-num rs-correct">' + benar + '</div><div class="rs-lbl">Benar</div></div>' +
-      '<div class="result-stat"><div class="rs-num rs-wrong">' + salah + '</div><div class="rs-lbl">Salah</div></div>' +
-      '<div class="result-stat"><div class="rs-num">' + skip + '</div><div class="rs-lbl">Dilewati</div></div>' +
-      (S.mode === 'tryout' ? '<div class="result-stat"><div class="rs-num" style="font-size:16px">' + tStr + '</div><div class="rs-lbl">Waktu</div></div>' : '') +
+      '<div class="result-stat"><div class="rs-num rs-correct">' + res.benar + '</div><div class="rs-lbl">Benar</div></div>' +
+      '<div class="result-stat"><div class="rs-num rs-wrong">' + res.salah + '</div><div class="rs-lbl">Salah</div></div>' +
+      '<div class="result-stat"><div class="rs-num">' + res.skip + '</div><div class="rs-lbl">Dilewati</div></div>' +
+      (S.mode === 'tryout' ? '<div class="result-stat"><div class="rs-num" style="font-size:16px">' + res.tStr + '</div><div class="rs-lbl">Waktu</div></div>' : '') +
     '</div>' +
     '<div class="result-actions">' +
       '<button class="btn btn-primary" onclick="retrySession()">🔄 Ulangi</button>' +
       '<button class="btn btn-secondary" onclick="reviewSession()">📋 Review</button>' +
-      (salah > 0 ? '<button class="btn btn-danger btn-sm" onclick="drillWrong()">🎯 Drill ' + salah + ' Soal Salah</button>' : '') +
+      (res.salah > 0 ? '<button class="btn btn-danger btn-sm" onclick="drillWrong()">🎯 Drill ' + res.salah + ' Soal Salah</button>' : '') +
       '<button class="btn btn-ghost" onclick="goHome()">🏠 Beranda</button>' +
     '</div>' +
     '</div>';
 }
 
-window.retrySession = function() { startCat(S.cat, S.mode); };
+window.retrySession = function() {
+  if (S.isSimulasi) {
+    startSimulasi60();
+  } else {
+    startCat(S.cat, S.mode);
+  }
+};
 
 window.drillWrong = function() {
   // Kumpulkan soal yang dijawab salah
@@ -410,6 +467,7 @@ window.startSimulasi60 = function() {
   var all = getAllSoal();
   S.cat = 'all';
   S.mode = 'tryout';
+  S.isSimulasi = true;
   S.questions = shuffle(all).slice(0, 60);
   S.idx = 0;
   S.answers = {};
@@ -543,6 +601,8 @@ window.resetAll = function() {
   if (confirm('Hapus semua progress dan riwayat tryout?')) {
     localStorage.removeItem('tni_prog');
     localStorage.removeItem('tni_scores');
+    localStorage.removeItem('tni_psi_progress');
+    updateHeaderStats();
     render();
   }
 };
@@ -560,6 +620,7 @@ window.goHome = function() { goPage('home'); };
 window.navTo = function(page) {
   clearInterval(S.timer); S.timer = null;
   if (page === 'bank') S.bankCat = 'all';
+  if (page === 'tips') S.tipsCat = 'umum';
   S.page = page;
   render();
 };
@@ -585,19 +646,13 @@ document.addEventListener('click', function(e) {
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', function() {
-  // Update header stats
-  var allSoal = getAllSoal();
-  var el1 = document.getElementById('hStatSoal');
-  var el2 = document.getElementById('hStatKat');
-  var el3 = document.getElementById('hStatTO');
-  if (el1) el1.textContent = allSoal.length;
-  if (el2) el2.textContent = Object.keys(SOAL_DATABASE).length;
-  if (el3) el3.textContent = loadScores().length;
+  updateHeaderStats();
   render();
 });
 
-window.renderTips = function(katKey) {
+function renderTips(katKey) {
   if (!katKey) katKey = 'umum';
+  S.tipsCat = katKey;
   var data = (typeof TIPS_DATA !== 'undefined') ? TIPS_DATA : null;
   if (!data) return '<div class="empty"><p>Data tips tidak ditemukan.</p></div>';
   var tabKeys = Object.keys(data);
@@ -618,20 +673,11 @@ window.renderTips = function(katKey) {
     '<div style="font-size:13px;color:var(--text2);margin-bottom:16px">Cara cepat dapat nilai tinggi PK Perwira TNI.</div>'+
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">'+tabs+'</div>'+
     '<div style="font-size:16px;font-weight:700;color:var(--gold2);margin-bottom:16px">'+d.judul+'</div>'+cards;
-};
+}
+window.renderTips = renderTips;
 
 window.showTips = function(k) {
-  var m = document.getElementById('main');
-  if (m) m.innerHTML = window.renderTips(k);
-};
-
-var _baseNavTo = window.navTo;
-window.navTo = function(page) {
-  if (page === 'tips') {
-    document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.page==='tips'); });
-    var m = document.getElementById('main');
-    if (m) m.innerHTML = window.renderTips('umum');
-    return;
-  }
-  _baseNavTo(page);
+  S.tipsCat = k;
+  S.page = 'tips';
+  render();
 };

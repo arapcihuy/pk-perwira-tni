@@ -62,6 +62,32 @@ function psiTimerStop() {
   }
 }
 
+function normalizeAnswer(str) {
+  if (str === null || str === undefined) return '';
+  var s = String(str).trim().toLowerCase();
+  // Hapus prefix "Rp" atau "Rp."
+  s = s.replace(/^rp\.?\s*/i, '');
+  // Ganti pemisah waktu jika ada format jam (15.15 -> 15:15)
+  if (/^\d{1,2}\.\d{2}$/.test(s)) s = s.replace('.', ':');
+  // Hapus titik ribuan (misal: 2.500 -> 2500, 40.000 -> 40000, 450.000 -> 450000)
+  s = s.replace(/(\d+)\.(\d{3})\b/g, '$1$2');
+  // Normalisasi koma desimal ke titik (misal: 3,5 -> 3.5)
+  s = s.replace(',', '.');
+  // Hapus satuan di akhir (misal: jam, menit, km, dtk, buah)
+  s = s.replace(/\s*(jam|menit|mnt|dtk|detik|km|cm|m|orang|hari|buah|pensil|apel)$/i, '');
+  return s.trim();
+}
+
+function isAnswerMatch(userAns, correctAns) {
+  if (userAns === null || userAns === undefined) return false;
+  var u = normalizeAnswer(userAns);
+  var c = normalizeAnswer(correctAns);
+  if (u === c) return true;
+  // Khusus durasi jam/menit (3.5 jam vs 3 jam 30 menit vs 210)
+  if ((c === '3.5' || c === '3 jam 30 menit') && (u === '3.5' || u === '3 jam 30 menit' || u === '210' || u === '3:30')) return true;
+  return false;
+}
+
 // ============================================================
 // RENDER FUNCTIONS
 // ============================================================
@@ -203,10 +229,10 @@ function renderPsiTest() {
   if (!answered) {
     html += '<input type="text" id="writtenAnswer" inputmode="numeric" style="width:100%;padding:16px;background:var(--bg-elevated);' +
       'border:2px solid var(--border);border-radius:8px;color:var(--white);font-size:24px;text-align:center" ' +
-      'placeholder="Tulis jawaban..." />' +
+      'placeholder="Tulis jawaban..." onkeydown="if(event.key===\'Enter\') submitWrittenAnswer()" />' +
       '<button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="submitWrittenAnswer()">Jawab</button>';
   } else {
-    var isCorrect = String(saved).trim().toLowerCase() === String(q.jawaban).trim().toLowerCase();
+    var isCorrect = isAnswerMatch(saved, q.jawaban);
     var cara = isAr ? q.cara : q.pola;
     html += '<div style="padding:14px;border-radius:8px;margin-bottom:12px;font-size:14px;font-weight:600;' +
       'background:' + (isCorrect ? 'rgba(34,204,74,0.12)' : 'rgba(232,64,48,0.12)') + ';' +
@@ -225,7 +251,7 @@ function renderPsiTest() {
 
 window.submitWrittenAnswer = function() {
   var el = document.getElementById('writtenAnswer');
-  if (!el || !el.value.trim()) return;
+  if (!el || typeof el.value !== 'string' || !el.value.trim()) return;
   PSI.answers[PSI.testIdx] = el.value.trim();
   render();
 };
@@ -555,13 +581,13 @@ function renderMemorySpan() {
 
 function submitMemoryAnswer() {
   var answerEl = document.getElementById('memoryAnswer');
-  if (!answerEl) return;
+  if (!answerEl || typeof answerEl.value !== 'string') return;
 
-  var correctWords = PSI.testData.kata.map(function(w) { return w.toLowerCase(); });
+  var correctWords = PSI.testData.kata.map(function(w) { return w.toLowerCase().trim(); });
   var seen = {};
   var correct = 0;
 
-  answerEl.value.split(/[,;]/).forEach(function(raw) {
+  answerEl.value.split(/[,;\n\r]+/).forEach(function(raw) {
     var w = raw.trim().toLowerCase();
     if (!w || seen[w]) return; // abaikan kosong & duplikat
     seen[w] = true;
@@ -674,7 +700,7 @@ function renderDigitSpan() {
       '<div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:12px">'+instruction+'</div>' +
       '<input type="text" id="digitAnswer" inputmode="numeric" style="width:100%;padding:16px;background:var(--bg-elevated);' +
         'border:2px solid var(--border);border-radius:8px;color:var(--white);font-size:24px;text-align:center;' +
-        'letter-spacing:8px" placeholder="Tulis angka..." />' +
+        'letter-spacing:8px" placeholder="Tulis angka..." onkeydown="if(event.key===\'Enter\') submitDigitAnswer()" />' +
       '<button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="submitDigitAnswer()">Jawab</button>' +
     '</div>';
   } else {
@@ -694,7 +720,7 @@ function renderDigitSpan() {
 
 window.submitDigitAnswer = function() {
   var answerEl = document.getElementById('digitAnswer');
-  if (!answerEl) return;
+  if (!answerEl || typeof answerEl.value !== 'string') return;
 
   var userAnswer = answerEl.value.replace(/[^0-9]/g, '');
   if (!userAnswer) return;
@@ -724,7 +750,7 @@ function finishPsiTest() {
   var correct = 0;
   for (var i = 0; i < total; i++) {
     var a = PSI.answers[i];
-    if (a !== null && String(a).trim().toLowerCase() === String(PSI.testList[i].jawaban).trim().toLowerCase()) {
+    if (a !== null && isAnswerMatch(a, PSI.testList[i].jawaban)) {
       correct++;
     }
   }
@@ -783,13 +809,25 @@ function renderPsiResult() {
 // CATATAN: nama variabel cadangan dibuat unik (_psi*) karena app.js juga
 // memakai _baseNavTo/_baseRender sebagai global — tabrakan nama menyebabkan
 // rekursi tak berujung (Maximum call stack size exceeded) di semua navigasi.
-var _psiBaseRender = window.render;
+var _psiBaseRender = (typeof window !== 'undefined' && typeof window.render === 'function')
+  ? window.render
+  : (typeof render === 'function' ? render : function(){});
+
 window.render = function() {
   var m = document.getElementById('main');
   if (!m) return;
 
   document.querySelectorAll('.nav-btn').forEach(function(b) {
-    b.classList.toggle('active', b.dataset.page === S.page);
+    var p = b.dataset.page;
+    var isActive = false;
+    if (p === 'cat') {
+      isActive = (S.page === 'cat' && S.mode === 'tryout') || (S.page === 'soal' && S.mode === 'tryout');
+    } else if (p === 'cat2') {
+      isActive = (S.page === 'cat' && S.mode === 'learn') || (S.page === 'soal' && S.mode === 'learn');
+    } else {
+      isActive = (p === S.page);
+    }
+    b.classList.toggle('active', isActive);
   });
 
   if (S.page === 'psikologi') {
@@ -805,16 +843,17 @@ window.render = function() {
   _psiBaseRender();
 };
 
-// Navigation: halaman psikologi ditangani di sini, sisanya diteruskan
-// ke navTo bawaan app.js (yang sudah menangani Tips)
-var _psiBaseNavTo = window.navTo;
+var _psiBaseNavTo = (typeof window !== 'undefined' && typeof window.navTo === 'function')
+  ? window.navTo
+  : (typeof navTo === 'function' ? navTo : function(){});
+
 window.navTo = function(page) {
   if (page === 'psikologi') {
     psiTimerStop();
     S.page = 'psikologi';
     PSI.page = 'psi-home';
     loadPsiProgress();
-    render();
+    window.render();
     return;
   }
   psiTimerStop();

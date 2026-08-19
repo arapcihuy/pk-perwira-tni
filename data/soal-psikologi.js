@@ -89,7 +89,7 @@ const SOAL_PSIKOLOGI = {
       { id: "ar3", level: "mudah", soal: "Jam sekarang 14:30. 45 menit lagi jam berapa?", jawaban: "15:15", cara: "14:30 + 0:45 = 15:15", skor: 1 },
       { id: "ar4", level: "mudah", soal: "Saya punya 3 uang Rp10.000. Saya beli makanan Rp25.000. Berapa sisa?", jawaban: "5000", cara: "30.000 - 25.000 = 5.000", skor: 1 },
       
-      { id: "ar5", level: "sedang", soal: "Bus berangkat pukul 08:00 dan sampai pukul 11:30. Berapa lama perjalanan?", jawaban: "3 jam 30 menit", cara: "11:30 - 08:00 = 3:30", skor: 2 },
+      { id: "ar5", level: "sedang", soal: "Bus berangkat pukul 08:00 dan sampai pukul 11:30. Berapa jam lama perjalanan?", jawaban: "3.5", cara: "11:30 - 08:00 = 3 jam 30 menit = 3,5 jam", skor: 2 },
       { id: "ar6", level: "sedang", soal: "Kecepatan mobil 60 km/jam. Berapa km dalam 30 menit?", jawaban: "30", cara: "60×0.5=30", skor: 2 },
       { id: "ar7", level: "sedang", soal: "Harga buku turun 20% dari Rp50.000. Berapa harga sekarang?", jawaban: "40000", cara: "50.000 - (20%×50.000) = 40.000", skor: 2 },
       { id: "ar8", level: "sedang", soal: "Jika 3 orang selesai dalam 6 jam, berapa jam jika 6 orang?", jawaban: "3", cara: "3×6=18, 18÷6=3", skor: 2 },
