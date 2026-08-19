@@ -114,12 +114,13 @@ function renderPsiHome() {
     { key: 'digit_span', icon: '🔢', nama: 'Digit Span', desc: '18 soal, angka maju-mundur' },
     { key: 'aritmatika', icon: '➕', nama: 'Aritmatika Lisan', desc: '12 soal cerita' },
     { key: 'deret_angka', icon: '📊', nama: 'Deret Angka', desc: '12 pola deret' },
-    { key: 'kraepelin', icon: '⚡', nama: 'Tes Kraepelin', desc: '3 menit, penjumlahan cepat' }
+    { key: 'kraepelin', icon: '⚡', nama: 'Tes Kraepelin', desc: '3 menit, penjumlahan cepat' },
+    { key: 'epps', icon: '🧩', nama: 'Tes Kepribadian (EPPS)', desc: '30 pasang pernyataan karakter perwira' }
   ];
 
   var html = '<div style="margin-bottom:20px">' +
-    '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">Tes Psikologi TNI AU 🧠</div>' +
-    '<div style="font-size:13px;color:var(--text2)">Format: Soal dibacakan → Jawab tertulis</div>' +
+    '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">Tes Psikologi TNI 🧠</div>' +
+    '<div style="font-size:13px;color:var(--text2)">Simulasi seleksi psikologi militer resmi & kepribadian perwira</div>' +
     '</div>';
 
   html += '<div style="display:grid;gap:12px">';
@@ -156,7 +157,7 @@ function renderPsiHome() {
       html += '<div class="card" style="padding:12px;margin-bottom:8px">' +
         '<div style="display:flex;justify-content:space-between;align-items:center">' +
           '<div>' +
-            '<div style="font-size:13px;font-weight:600;color:var(--white)">'+h.testName+'</div>' +
+            '<div style="font-size:13px;font-weight:600;color:var(--white)">'+escapeHtml(h.testName)+'</div>' +
             '<div style="font-size:11px;color:var(--text3)">'+date.toLocaleString('id-ID')+'</div>' +
           '</div>' +
           '<div style="font-size:14px;font-weight:700;color:var(--primary)">'+h.score+'%</div>' +
@@ -185,6 +186,8 @@ function startPsiTest(testKey) {
     startMemorySpan();
   } else if (testKey === 'digit_span') {
     startDigitSpan();
+  } else if (testKey === 'epps') {
+    startEppsTest();
   } else {
     startWrittenTest(); // aritmatika & deret_angka
   }
@@ -886,7 +889,202 @@ function renderKraepelinChart(stats, rhythm) {
   '</div>';
 }
 
+function startEppsTest() {
+  PSI.testList = PSI.currentTest.soal.slice();
+  PSI.testIdx = 0;
+  PSI.answers = [];
+  for (var i = 0; i < PSI.testList.length; i++) PSI.answers.push(null);
+  PSI.page = 'psi-epps';
+  render();
+}
+
+function renderEppsTest() {
+  var q = PSI.testList[PSI.testIdx];
+  var n = PSI.testList.length;
+  var sel = PSI.answers[PSI.testIdx];
+  var pct = Math.round(((PSI.testIdx + 1) / n) * 100);
+
+  var html = '<div class="epps-container">';
+
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
+    '<div>' +
+      '<div style="font-size:18px;font-weight:700;color:var(--white)">🧩 Tes Kepribadian (EPPS Militer)</div>' +
+      '<div style="font-size:12px;color:var(--text3)">Pilihlah 1 pernyataan yang paling menggambarkan diri Anda</div>' +
+    '</div>' +
+    '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">← Menu</button>' +
+  '</div>';
+
+  html += '<div class="progress-track" style="margin-bottom:12px"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+  html += '<div style="font-size:12px;color:var(--text3);margin-bottom:18px">Pernyataan ' + (PSI.testIdx + 1) + ' dari ' + n + '</div>';
+
+  html += '<div class="epps-choice-card ' + (sel === 'A' ? 'selected' : '') + '" onclick="pickEppsChoice(\'A\')">' +
+    '<div class="epps-choice-letter">A</div>' +
+    '<div class="epps-choice-text">' + escapeHtml(q.pilihanA.teks) + '</div>' +
+  '</div>';
+
+  html += '<div class="epps-choice-card ' + (sel === 'B' ? 'selected' : '') + '" onclick="pickEppsChoice(\'B\')">' +
+    '<div class="epps-choice-letter">B</div>' +
+    '<div class="epps-choice-text">' + escapeHtml(q.pilihanB.teks) + '</div>' +
+  '</div>';
+
+  var prevBtn = '<button class="btn btn-ghost btn-sm" onclick="prevEppsQuestion()"' + (PSI.testIdx === 0 ? ' disabled' : '') + '>← Sebelumnya</button>';
+  var nextBtn = '';
+  if (PSI.testIdx < n - 1) {
+    nextBtn = '<button class="btn btn-primary btn-sm" onclick="nextEppsQuestion()"' + (sel === null ? ' disabled' : '') + '>Berikutnya →</button>';
+  } else {
+    nextBtn = '<button class="btn btn-primary btn-sm" onclick="finishEppsTest()"' + (sel === null ? ' disabled' : '') + '>✅ Selesai</button>';
+  }
+
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px">' +
+    prevBtn +
+    nextBtn +
+  '</div>';
+
+  html += '</div>';
+  return html;
+}
+
+window.pickEppsChoice = function(choice) {
+  PSI.answers[PSI.testIdx] = choice;
+  if (PSI.testIdx < PSI.testList.length - 1) {
+    PSI.testIdx++;
+    render();
+  } else {
+    render();
+  }
+};
+
+window.prevEppsQuestion = function() {
+  if (PSI.testIdx > 0) {
+    PSI.testIdx--;
+    render();
+  }
+};
+
+window.nextEppsQuestion = function() {
+  if (PSI.testIdx < PSI.testList.length - 1) {
+    PSI.testIdx++;
+    render();
+  }
+};
+
+function finishEppsTest() {
+  var traitCounts = {
+    leadership: 0,
+    discipline: 0,
+    endurance: 0,
+    solidarity: 0,
+    adaptability: 0
+  };
+
+  var total = PSI.testList.length;
+  for (var i = 0; i < total; i++) {
+    var ans = PSI.answers[i];
+    var q = PSI.testList[i];
+    if (ans === 'A' && q.pilihanA && q.pilihanA.trait) {
+      traitCounts[q.pilihanA.trait] = (traitCounts[q.pilihanA.trait] || 0) + 1;
+    } else if (ans === 'B' && q.pilihanB && q.pilihanB.trait) {
+      traitCounts[q.pilihanB.trait] = (traitCounts[q.pilihanB.trait] || 0) + 1;
+    }
+  }
+
+  var maxPerTrait = 12;
+  var traitPcts = {
+    leadership: Math.min(100, Math.round((traitCounts.leadership / maxPerTrait) * 100)),
+    discipline: Math.min(100, Math.round((traitCounts.discipline / maxPerTrait) * 100)),
+    endurance: Math.min(100, Math.round((traitCounts.endurance / maxPerTrait) * 100)),
+    solidarity: Math.min(100, Math.round((traitCounts.solidarity / maxPerTrait) * 100)),
+    adaptability: Math.min(100, Math.round((traitCounts.adaptability / maxPerTrait) * 100))
+  };
+
+  var primaryArchetype = 'Perwira Komando Lapangan ⚔️';
+  var archetypeDesc = 'Memiliki karakter kepemimpinan yang tegas, inisiatif tinggi, dan daya tahan prima di bawah tekanan.';
+  if (traitPcts.discipline >= traitPcts.leadership && traitPcts.discipline >= traitPcts.solidarity) {
+    primaryArchetype = 'Perwira Staf, Operasi & Perencana 📋';
+    archetypeDesc = 'Sangat taat SOP militer, teliti dalam perencanaan taktis, dan memiliki loyalitas hierarki yang unggul.';
+  } else if (traitPcts.solidarity >= traitPcts.leadership && traitPcts.solidarity >= traitPcts.discipline) {
+    primaryArchetype = 'Perwira Pembina Pasukan & Jiwa Korsa 🤝';
+    archetypeDesc = 'Memiliki ikatan batin kuat dengan bawahan, mengutamakan keselamatan regu, dan disegani prajurit.';
+  } else if (traitPcts.adaptability >= traitPcts.leadership && traitPcts.adaptability >= traitPcts.endurance) {
+    primaryArchetype = 'Perwira Taktis & Intelijen / Lapangan 🧭';
+    archetypeDesc = 'Cepat beradaptasi terhadap perubahan situasi medan, tenang dalam kondisi darurat, dan fleksibel mencari solusi.';
+  }
+
+  var score = Math.round((traitPcts.leadership + traitPcts.discipline + traitPcts.endurance + traitPcts.solidarity + traitPcts.adaptability) / 5);
+
+  PSI.history.push({
+    testName: 'Tes Kepribadian (EPPS Militer)',
+    score: score,
+    correct: score,
+    total: 100,
+    timestamp: Date.now()
+  });
+
+  savePsiProgress();
+
+  PSI.page = 'psi-result';
+  PSI.scores = {
+    isEpps: true,
+    score: score,
+    correct: score,
+    total: 100,
+    traitCounts: traitCounts,
+    traitPcts: traitPcts,
+    archetype: primaryArchetype,
+    archetypeDesc: archetypeDesc
+  };
+
+  render();
+}
+
+function renderEppsResult(res) {
+  var pcts = res.traitPcts || {};
+  var traits = [
+    { name: '⚔️ Kepemimpinan & Inisiatif Komando', key: 'leadership', desc: 'Ketegasan mengambil keputusan & memimpin pasukan' },
+    { name: '📜 Kedisiplinan & Kepatuhan SOP', key: 'discipline', desc: 'Ketaatan hierarki, regulasi, dan prosedur dinas' },
+    { name: '🛡️ Daya Tahan Mental & Keuletan', key: 'endurance', desc: 'Stabilitas emosi & ketahanan di bawah tekanan berat' },
+    { name: '🤝 Jiwa Korsa & Solidaritas Pasukan', key: 'solidarity', desc: 'Kerjasama tim, empati, dan loyalitas prajurit' },
+    { name: '🧭 Daya Adaptasi & Fleksibilitas', key: 'adaptability', desc: 'Kecepatan menyesuaikan diri dengan dinamika medan' }
+  ];
+
+  var bars = traits.map(function(t) {
+    var val = pcts[t.key] || 0;
+    return '<div class="epps-trait-bar">' +
+      '<div class="epps-trait-head">' +
+        '<span class="epps-trait-name">' + t.name + '</span>' +
+        '<span class="epps-trait-pct">' + val + '%</span>' +
+      '</div>' +
+      '<div class="epps-trait-track"><div class="epps-trait-fill" style="width:' + val + '%"></div></div>' +
+      '<div class="epps-trait-desc">' + t.desc + '</div>' +
+    '</div>';
+  }).join('');
+
+  return '<div style="padding:16px;max-width:680px;margin:0 auto;text-align:center">' +
+    '<div style="font-size:56px;margin-bottom:12px">🎖️</div>' +
+    '<div style="font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px">Profil Kepribadian Perwira</div>' +
+    '<div style="font-size:18px;font-weight:800;color:var(--gold3);margin-bottom:8px">' + escapeHtml(res.archetype) + '</div>' +
+    '<div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6">' + escapeHtml(res.archetypeDesc) + '</div>' +
+    '<div class="section-title" style="text-align:left;margin-bottom:12px">5 Dimensi Karakter Militer</div>' +
+    bars +
+    '<div class="tips-box" style="margin-top:20px;text-align:left">' +
+      '<div class="tips-title">💡 Panduan Wawancara Psikologi TNI</div>' +
+      '<ul style="font-size:12px;color:var(--text2);line-height:1.6">' +
+        '<li>Pertahankan konsistensi jawaban saat wawancara tatap muka dengan psikolog militer.</li>' +
+        '<li>Tunjukkan rasa percaya diri, postur tegap, dan nada bicara yang mantap & tegas.</li>' +
+        '<li>Ceritakan pengalaman nyata di mana Anda berhasil memimpin dan menyelesaikan masalah sulit.</li>' +
+      '</ul>' +
+    '</div>' +
+    '<div style="margin-top:24px">' +
+      '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">🏠 Kembali ke Menu Psikologi</button>' +
+    '</div>' +
+  '</div>';
+}
+
 function renderPsiResult() {
+  if (PSI.scores && PSI.scores.isEpps) {
+    return renderEppsResult(PSI.scores);
+  }
+
   var html = '<div style="padding:16px;max-width:680px;margin:0 auto;text-align:center">';
 
   var emoji = PSI.scores.score >= 80 ? '🎉' : PSI.scores.score >= 60 ? '👍' : '💪';
@@ -916,9 +1114,6 @@ function renderPsiResult() {
 // ============================================================
 
 // Render hanya halaman psikologi; semua halaman lain diserahkan ke app.js
-// CATATAN: nama variabel cadangan dibuat unik (_psi*) karena app.js juga
-// memakai _baseNavTo/_baseRender sebagai global — tabrakan nama menyebabkan
-// rekursi tak berujung (Maximum call stack size exceeded) di semua navigasi.
 var _psiBaseRender = (typeof window !== 'undefined' && typeof window.render === 'function')
   ? window.render
   : (typeof render === 'function' ? render : function(){});
@@ -946,6 +1141,7 @@ window.render = function() {
     else if (PSI.page === 'psi-memory') m.innerHTML = renderMemorySpan();
     else if (PSI.page === 'psi-digit') m.innerHTML = renderDigitSpan();
     else if (PSI.page === 'psi-kraepelin') m.innerHTML = renderKraepelin();
+    else if (PSI.page === 'psi-epps') m.innerHTML = renderEppsTest();
     else if (PSI.page === 'psi-result') m.innerHTML = renderPsiResult();
     return;
   }

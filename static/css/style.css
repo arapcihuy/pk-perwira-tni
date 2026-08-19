@@ -844,6 +844,85 @@ kbd {
   .option { min-height: 56px; cursor: default; }
   select { min-height: 44px; font-size: 16px; }
 }
+/* EPPS PERSONALITY TEST */
+.epps-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 140px);
+}
+.epps-choice-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.epps-choice-card:hover {
+  border-color: var(--gold2);
+  background: var(--surface2);
+  transform: translateY(-2px);
+}
+.epps-choice-card.selected {
+  border-color: var(--gold3);
+  background: rgba(240,200,74,0.12);
+  box-shadow: 0 0 16px rgba(240,200,74,0.15);
+}
+.epps-choice-letter {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.epps-choice-card.selected .epps-choice-letter {
+  background: var(--gold3);
+  border-color: var(--gold3);
+  color: var(--primary);
+}
+.epps-choice-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white);
+  line-height: 1.5;
+  flex: 1;
+}
+.epps-trait-bar {
+  margin-bottom: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  text-align: left;
+}
+.epps-trait-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.epps-trait-name { font-size: 13px; font-weight: 700; color: var(--white); }
+.epps-trait-pct { font-size: 13px; font-weight: 800; color: var(--gold3); }
+.epps-trait-track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.epps-trait-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--gold2), var(--green3)); transition: width 0.6s ease; }
+.epps-trait-desc { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
 @media (min-width: 641px) {
   .modal-bg { align-items: center; padding: 20px; }
   .modal-box { border-radius: var(--radius2); max-height: 80vh; }

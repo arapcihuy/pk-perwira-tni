@@ -161,6 +161,54 @@ const SOAL_PSIKOLOGI = {
       }
       return jawaban;
     }
+  },
+
+  // ============================================================
+  // TES KEPRIBADIAN EPPS (Edwards Personal Preference Schedule) MILITER
+  // Format: Forced-Choice Pernyataan A vs Pernyataan B
+  // Mengukur 5 Dimensi Kepribadian Utama Calon Perwira TNI:
+  // 1. leadership (Kepemimpinan & Inisiatif Komando)
+  // 2. discipline (Kedisiplinan & Ketaatan SOP)
+  // 3. endurance (Daya Tahan Mental & Keuletan)
+  // 4. solidarity (Jiwa Korsa & Solidaritas Pasukan)
+  // 5. adaptability (Daya Adaptasi Taktis & Fleksibilitas)
+  // ============================================================
+  epps: {
+    nama: "Tes Kepribadian (EPPS Militer)",
+    icon: "🧩",
+    instruksi: "Pilihlah salah satu dari dua pernyataan (A atau B) yang PALING MENGGAMBARKAN diri Anda secara jujur. Tidak ada jawaban benar atau salah.",
+    soal: [
+      { id: "ep1", pilihanA: { teks: "Saya terdorong untuk memimpin dan mengambil tanggung jawab atas keberhasilan tim.", trait: "leadership" }, pilihanB: { teks: "Saya selalu mengutamakan kepatuhan terhadap aturan dan instruksi kedinasan.", trait: "discipline" } },
+      { id: "ep2", pilihanA: { teks: "Saya tetap tenang dan fokus bekerja meski berada di bawah tekanan waktu yang berat.", trait: "endurance" }, pilihanB: { teks: "Saya senang membantu rekan sejawat agar seluruh tim berhasil bersama.", trait: "solidarity" } },
+      { id: "ep3", pilihanA: { teks: "Saya mudah menyesuaikan diri dengan situasi baru dan perubahan rencana yang mendadak.", trait: "adaptability" }, pilihanB: { teks: "Saya berani mengambil keputusan sulit saat terjadi kebuntuan di lapangan.", trait: "leadership" } },
+      { id: "ep4", pilihanA: { teks: "Saya memastikan setiap pekerjaan diselesaikan dengan rapi, teliti, dan sesuai SOP.", trait: "discipline" }, pilihanB: { teks: "Saya pantang menyerah sebelum target misi yang diberikan tercapai 100%.", trait: "endurance" } },
+      { id: "ep5", pilihanA: { teks: "Saya menempatkan kepentingan bersama dan persaudaraan regu di atas kepentingan pribadi.", trait: "solidarity" }, pilihanB: { teks: "Saya cepat mencari jalan alternatif ketika strategi awal menghadapi kendala.", trait: "adaptability" } },
+      { id: "ep6", pilihanA: { teks: "Saya terbiasa berbicara tegas dan memberi arahan yang jelas kepada orang lain.", trait: "leadership" }, pilihanB: { teks: "Saya selalu hadir tepat waktu dan memegang teguh komitmen dinas.", trait: "discipline" } },
+      { id: "ep7", pilihanA: { teks: "Saya tahan bekerja dalam kondisi fisik dan lingkungan yang melelahkan.", trait: "endurance" }, pilihanB: { teks: "Saya menjaga kekompakan dan semangat juang sesama rekan prajurit.", trait: "solidarity" } },
+      { id: "ep8", pilihanA: { teks: "Saya siap ditempatkan dan bertugas di berbagai medan tanpa banyak mengeluh.", trait: "adaptability" }, pilihanB: { teks: "Saya termotivasi untuk menjadi yang terbaik dan memelopori tindakan.", trait: "leadership" } },
+      { id: "ep9", pilihanA: { teks: "Saya menaati hierarki komando dan loyal kepada pimpinan.", trait: "discipline" }, pilihanB: { teks: "Saya gigih menyelesaikan masalah rumit meski membutuhkan waktu lama.", trait: "endurance" } },
+      { id: "ep10", pilihanA: { teks: "Saya peka terhadap kesulitan rekan dan siap memberikan bantuan tanpa pamrih.", trait: "solidarity" }, pilihanB: { teks: "Saya fleksibel menerima metode kerja baru demi efektivitas misi.", trait: "adaptability" } },
+      { id: "ep11", pilihanA: { teks: "Saya berani menerima risiko atas setiap keputusan yang saya buat.", trait: "leadership" }, pilihanB: { teks: "Saya konsisten menjaga standar kerja tinggi tanpa perlu diawasi ketat.", trait: "discipline" } },
+      { id: "ep12", pilihanA: { teks: "Kritik atau teguran keras membuat saya semakin bersemangat memperbaiki diri.", trait: "endurance" }, pilihanB: { teks: "Saya selalu mengedepankan musyawarah dan kekeluargaan dalam kelompok.", trait: "solidarity" } },
+      { id: "ep13", pilihanA: { teks: "Saya tidak canggung berinteraksi dengan orang dari berbagai latar belakang budaya.", trait: "adaptability" }, pilihanB: { teks: "Saya memiliki visi yang jelas mengenai apa yang harus dicapai oleh tim.", trait: "leadership" } },
+      { id: "ep14", pilihanA: { teks: "Saya menjaga kerahasiaan informasi dan etika dinas dengan ketat.", trait: "discipline" }, pilihanB: { teks: "Saya memiliki stamina mental yang kuat saat menghadapi kegagalan sementara.", trait: "endurance" } },
+      { id: "ep15", pilihanA: { teks: "Keberhasilan rekan kerja adalah kebanggaan dan motivasi bagi diri saya.", trait: "solidarity" }, pilihanB: { teks: "Saya mampu mengendalikan emosi dengan baik saat rencana berubah drastis.", trait: "adaptability" } },
+      { id: "ep16", pilihanA: { teks: "Saya senang mendelegasikan tugas sesuai keahlian masing-masing anggota tim.", trait: "leadership" }, pilihanB: { teks: "Saya terbiasa memeriksa ulang detail pekerjaan sebelum dilaporkan ke atasan.", trait: "discipline" } },
+      { id: "ep17", pilihanA: { teks: "Saya sanggup bekerja lembur berhari-hari demi menuntaskan tugas mendesak.", trait: "endurance" }, pilihanB: { teks: "Saya rela berkorban waktu dan tenaga demi keselamatan rekan satu tim.", trait: "solidarity" } },
+      { id: "ep18", pilihanA: { teks: "Saya cepat mempelajari keahlian atau peralatan teknis baru di lapangan.", trait: "adaptability" }, pilihanB: { teks: "Saya berani tampil di depan untuk membela kebenaran dan anak buah.", trait: "leadership" } },
+      { id: "ep19", pilihanA: { teks: "Saya menghormati tradisi, norma kesatuan, dan tata krama militer.", trait: "discipline" }, pilihanB: { teks: "Rasa lelah tidak menyurutkan konsentrasi saya dalam menjalankan kewajiban.", trait: "endurance" } },
+      { id: "ep20", pilihanA: { teks: "Saya aktif membangun suasana kerja yang harmonis dan penuh rasa percaya.", trait: "solidarity" }, pilihanB: { teks: "Saya mudah beralih ke tugas lain yang lebih mendesak tanpa rasa panik.", trait: "adaptability" } },
+      { id: "ep21", pilihanA: { teks: "Saya terbiasa mengorganisir kegiatan dan menetapkan target bagi orang lain.", trait: "leadership" }, pilihanB: { teks: "Saya disiplin mengatur waktu dan jadwal kegiatan sehari-hari.", trait: "discipline" } },
+      { id: "ep22", pilihanA: { teks: "Saya tetap optimis dan teguh pendirian saat situasi serba tidak pasti.", trait: "endurance" }, pilihanB: { teks: "Saya setia kawan dan menjaga nama baik korps di manapun berada.", trait: "solidarity" } },
+      { id: "ep23", pilihanA: { teks: "Saya mampu bertahan hidup dan berfungsi baik di daerah terpencil / darurat.", trait: "adaptability" }, pilihanB: { teks: "Saya memotivasi orang lain agar tidak ragu-ragu dalam bertindak.", trait: "leadership" } },
+      { id: "ep24", pilihanA: { teks: "Saya mematuhi rantai komando secara mutlak tanpa membantah perintah sah.", trait: "discipline" }, pilihanB: { teks: "Saya memiliki daya juang tinggi untuk membalikkan situasi sulit menjadi kemenangan.", trait: "endurance" } },
+      { id: "ep25", pilihanA: { teks: "Saya mendahulukan kepentingan prajurit sebelum memikirkan kenyamanan pribadi.", trait: "solidarity" }, pilihanB: { teks: "Saya cepat menangkap maksud tersirat dan situasi taktis di sekitar saya.", trait: "adaptability" } },
+      { id: "ep26", pilihanA: { teks: "Saya mampu mengoordinasikan berbagai elemen agar bersinergi secara maksimal.", trait: "leadership" }, pilihanB: { teks: "Saya menjaga kelengkapan dan kebersihan perlengkapan dinas secara teratur.", trait: "discipline" } },
+      { id: "ep27", pilihanA: { teks: "Tekanan mental berat justru memicu daya konsentrasi terbaik saya.", trait: "endurance" }, pilihanB: { teks: "Saya selalu siap menjadi pendengar yang baik bagi keluh kesah anggota tim.", trait: "solidarity" } },
+      { id: "ep28", pilihanA: { teks: "Saya mudah menyesuaikan gaya komunikasi dengan berbagai tingkatan pangkat.", trait: "adaptability" }, pilihanB: { teks: "Saya siap bertanggung jawab penuh jika tim yang saya pimpin melakukan kesalahan.", trait: "leadership" } },
+      { id: "ep29", pilihanA: { teks: "Saya menjalankan setiap tugas dengan integritas tinggi dan kejujuran.", trait: "discipline" }, pilihanB: { teks: "Saya memiliki keteguhan hati untuk tidak mudah putus asa oleh rintangan.", trait: "endurance" } },
+      { id: "ep30", pilihanA: { teks: "Saya menjunjung tinggi kehormatan persatuan dan ikatan batin militer.", trait: "solidarity" }, pilihanB: { teks: "Saya bersikap fleksibel menghadapi keterbatasan fasilitas di medan tugas.", trait: "adaptability" } }
+    ]
   }
 };
 
