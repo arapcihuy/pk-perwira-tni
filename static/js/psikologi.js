@@ -62,6 +62,16 @@ function psiTimerStop() {
   }
 }
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function normalizeAnswer(str) {
   if (str === null || str === undefined) return '';
   var s = String(str).trim().toLowerCase();
@@ -204,7 +214,7 @@ function renderPsiTest() {
   var q = PSI.testList[PSI.testIdx];
   var n = PSI.testList.length;
   var isAr = PSI.testType === 'aritmatika';
-  var qText = isAr ? q.soal : q.deret.join(', ') + ', <b>... ?</b>';
+  var qText = isAr ? escapeHtml(q.soal) : (q.deret || []).map(escapeHtml).join(', ') + ', <b>... ?</b>';
   var saved = PSI.answers[PSI.testIdx];
   var answered = saved !== null;
 
@@ -238,8 +248,8 @@ function renderPsiTest() {
       'background:' + (isCorrect ? 'rgba(34,204,74,0.12)' : 'rgba(232,64,48,0.12)') + ';' +
       'color:' + (isCorrect ? 'var(--success, #22cc4a)' : 'var(--danger, #e84030)') + '">' +
       (isCorrect ? '✅ Benar! ' : '❌ Kurang tepat. ') +
-      'Jawaban: <b>' + q.jawaban + '</b>' +
-      (cara ? '<div style="font-size:12px;font-weight:400;color:var(--text2);margin-top:6px">📖 ' + cara + '</div>' : '') +
+      'Jawaban: <b>' + escapeHtml(q.jawaban) + '</b>' +
+      (cara ? '<div style="font-size:12px;font-weight:400;color:var(--text2);margin-top:6px">📖 ' + escapeHtml(cara) + '</div>' : '') +
     '</div>';
     html += '<button class="btn btn-primary" style="width:100%" onclick="nextWrittenQuestion()">' +
       (PSI.testIdx < n - 1 ? 'Soal Berikutnya →' : '✅ Selesai') + '</button>';

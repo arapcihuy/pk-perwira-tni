@@ -33,6 +33,28 @@ window.toggleFullscreen = function() {
   }
 };
 
+// ---- SECURITY & SANITIZATION ----
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+window.escapeHtml = escapeHtml;
+
+function sanitizeImgSrc(url) {
+  if (!url || typeof url !== 'string') return '';
+  var trimmed = url.trim();
+  if (/^(data:image\/[a-zA-Z0-9+]+;base64,|https:\/\/|static\/|\.\/)/i.test(trimmed)) {
+    return encodeURI(trimmed);
+  }
+  return '';
+}
+window.sanitizeImgSrc = sanitizeImgSrc;
+
 // ---- UTILS ----
 function shuffle(arr) {
   var a = arr.slice();
@@ -263,13 +285,13 @@ function renderSoal() {
     var onclick = answered ? '' : 'onclick="pickAnswer(' + i + ')"';
     return '<div class="' + cls + '" ' + onclick + '>' +
       '<div class="option-letter">' + letters[i] + '</div>' +
-      '<span>' + p + '</span>' +
+      '<span>' + escapeHtml(p) + '</span>' +
       '</div>';
   }).join('');
 
   var expHtml = '';
   if (answered && S.mode === 'learn') {
-    expHtml = '<div class="explanation show"><strong>📖 Pembahasan</strong>' + q.pembahasan + '</div>';
+    expHtml = '<div class="explanation show"><strong>📖 Pembahasan</strong>' + escapeHtml(q.pembahasan) + '</div>';
   }
 
   var prevBtn = '<button class="btn btn-ghost btn-sm" onclick="prevQ()"' + (S.idx === 0 ? ' disabled' : '') + '>← Sebelumnya</button>';
@@ -283,6 +305,9 @@ function renderSoal() {
   }
   var skipBtn = (!answered && S.mode === 'tryout')
     ? '<button class="btn btn-ghost btn-sm" onclick="skipQ()">Lewati</button>' : '';
+
+  var safeImg = sanitizeImgSrc(q.gambar);
+  var imgHtml = safeImg ? '<div class="soal-img"><img src="' + safeImg + '" alt="Gambar soal" style="max-width:100%;max-height:320px;border-radius:8px;margin:10px 0;display:block;border:1px solid var(--border)"></div>' : '';
 
   return '<div class="soal-wrap">' +
     '<div class="soal-head">' +
@@ -299,11 +324,11 @@ function renderSoal() {
     '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
     '<div class="soal-body">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-        '<div class="soal-cat-tag">' + (q.kategori || 'Umum') + '</div>' +
+        '<div class="soal-cat-tag">' + escapeHtml(q.kategori || 'Umum') + '</div>' +
         (isFlagged ? '<span style="font-size:11px;color:var(--gold3);font-weight:700">🚩 Ditandai Ragu-ragu</span>' : '') +
       '</div>' +
-      '<div class="soal-text">' + q.pertanyaan + '</div>' +
-      (q.gambar ? '<div class="soal-img"><img src="' + q.gambar + '" alt="Gambar soal" style="max-width:100%;max-height:320px;border-radius:8px;margin:10px 0;display:block;border:1px solid var(--border)"></div>' : '') +
+      '<div class="soal-text">' + escapeHtml(q.pertanyaan) + '</div>' +
+      imgHtml +
       '<div class="options">' + opts + '</div>' +
     '</div>' +
     expHtml +
@@ -617,18 +642,19 @@ window.showModal = function(encoded) {
   try { s = JSON.parse(decodeURIComponent(atob(encoded))); } catch(e) { return; }
   var letters = ['A','B','C','D'];
   document.getElementById('mCat').textContent = s.katNama || '';
-  document.getElementById('mQ').textContent = s.pertanyaan;
-  // Tampilkan gambar jika ada
-  var imgHtml = s.gambar ? '<div style="text-align:center;margin:10px 0"><img src="' + s.gambar + '" alt="Gambar soal" style="max-width:100%;max-height:280px;border-radius:8px;border:1px solid #333"></div>' : '';
-  document.getElementById('mQ').innerHTML = s.pertanyaan + imgHtml;
-  document.getElementById('mOpts').innerHTML = s.pilihan.map(function(p, i) {
+  
+  var safeImg = sanitizeImgSrc(s.gambar);
+  var imgHtml = safeImg ? '<div style="text-align:center;margin:10px 0"><img src="' + safeImg + '" alt="Gambar soal" style="max-width:100%;max-height:280px;border-radius:8px;border:1px solid var(--border)"></div>' : '';
+  
+  document.getElementById('mQ').innerHTML = '<div>' + escapeHtml(s.pertanyaan) + '</div>' + imgHtml;
+  document.getElementById('mOpts').innerHTML = (s.pilihan || []).map(function(p, i) {
     var isKey = i === s.jawaban;
     return '<div class="modal-opt' + (isKey ? ' key' : '') + '">' +
-      letters[i] + '. ' + p +
+      letters[i] + '. ' + escapeHtml(p) +
       (isKey ? '<span class="modal-key-label">✅ Kunci</span>' : '') +
       '</div>';
   }).join('');
-  document.getElementById('mExp').innerHTML = '<strong>📖 Pembahasan</strong><br>' + s.pembahasan;
+  document.getElementById('mExp').innerHTML = '<strong>📖 Pembahasan</strong><br>' + escapeHtml(s.pembahasan);
   document.getElementById('soalModal').classList.add('open');
 };
 
@@ -648,7 +674,7 @@ function renderProg() {
     var p = prog[nama] || { total: 0, benar: 0 };
     var pct = p.total > 0 ? Math.round((p.benar / p.total) * 100) : 0;
     return '<div class="prog-row">' +
-      '<div class="prog-label">' + katIcon(k) + ' ' + nama + '</div>' +
+      '<div class="prog-label">' + katIcon(k) + ' ' + escapeHtml(nama) + '</div>' +
       '<div class="prog-track"><div class="prog-bar" style="width:' + pct + '%"></div></div>' +
       '<div class="prog-pct">' + pct + '%</div>' +
       '</div>' +
@@ -660,7 +686,7 @@ function renderProg() {
     : '<div class="history-grid">' + scores.map(function(s, i) {
         return '<div class="history-item">' +
           '<div class="h-score ' + (s.nilai>=70?'h-pass':'h-fail') + '">' + s.nilai + '</div>' +
-          '<div class="h-date">' + (s.tgl||'') + '</div>' +
+          '<div class="h-date">' + (escapeHtml(s.tgl)||'') + '</div>' +
           '<div class="h-detail">✅' + s.benar + ' ❌' + s.salah + ' ⏭' + s.skip + '</div>' +
         '</div>';
       }).join('') + '</div>';
@@ -673,7 +699,7 @@ function renderProg() {
     '<div class="backup-box">' +
       '<div>' +
         '<div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">💾 Backup & Restore Data</div>' +
-        '<div style="font-size:12px;color:var(--text2)">Simpan atau pindahkan riwayat belajar antar perangkat.</div>' +
+        '<div style="font-size:12px;color:var(--text2)">Simpan atau pindahkan riwayat belajar antar perangkat secara aman.</div>' +
       '</div>' +
       '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
         '<button class="btn btn-secondary btn-sm" onclick="exportData()">📥 Export Backup</button>' +
@@ -712,18 +738,73 @@ window.exportData = function() {
 window.importData = function(event) {
   var file = event.target.files && event.target.files[0];
   if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert('❌ Ukuran file melebihi batas keamanan (5MB).');
+    return;
+  }
   var reader = new FileReader();
   reader.onload = function(e) {
     try {
       var json = JSON.parse(e.target.result);
-      if (!json || typeof json !== 'object') throw new Error('Format file tidak valid');
+      if (!json || typeof json !== 'object' || Array.isArray(json)) {
+        throw new Error('Struktur file JSON tidak valid.');
+      }
 
-      if (json.tni_prog) localStorage.setItem('tni_prog', JSON.stringify(json.tni_prog));
-      if (json.tni_scores) localStorage.setItem('tni_scores', JSON.stringify(json.tni_scores));
-      if (json.tni_psi_progress) localStorage.setItem('tni_psi_progress', JSON.stringify(json.tni_psi_progress));
+      // Validasi tni_prog
+      var cleanProg = {};
+      if (json.tni_prog && typeof json.tni_prog === 'object' && !Array.isArray(json.tni_prog)) {
+        Object.keys(json.tni_prog).forEach(function(k) {
+          var item = json.tni_prog[k];
+          if (item && typeof item === 'object') {
+            var tot = Number(item.total) || 0;
+            var ben = Number(item.benar) || 0;
+            if (tot >= 0 && ben >= 0) {
+              cleanProg[escapeHtml(k)] = { total: tot, benar: ben };
+            }
+          }
+        });
+      }
+
+      // Validasi tni_scores
+      var cleanScores = [];
+      if (Array.isArray(json.tni_scores)) {
+        json.tni_scores.slice(0, 50).forEach(function(sc) {
+          if (sc && typeof sc === 'object') {
+            cleanScores.push({
+              nilai: Number(sc.nilai) || 0,
+              benar: Number(sc.benar) || 0,
+              salah: Number(sc.salah) || 0,
+              skip: Number(sc.skip) || 0,
+              tgl: typeof sc.tgl === 'string' ? escapeHtml(sc.tgl).slice(0, 30) : ''
+            });
+          }
+        });
+      }
+
+      // Validasi tni_psi_progress
+      var cleanPsi = { history: [] };
+      if (json.tni_psi_progress && typeof json.tni_psi_progress === 'object') {
+        if (Array.isArray(json.tni_psi_progress.history)) {
+          json.tni_psi_progress.history.slice(0, 50).forEach(function(h) {
+            if (h && typeof h === 'object') {
+              cleanPsi.history.push({
+                testName: typeof h.testName === 'string' ? escapeHtml(h.testName).slice(0, 50) : '',
+                score: Number(h.score) || 0,
+                correct: Number(h.correct) || 0,
+                total: Number(h.total) || 0,
+                timestamp: Number(h.timestamp) || Date.now()
+              });
+            }
+          });
+        }
+      }
+
+      localStorage.setItem('tni_prog', JSON.stringify(cleanProg));
+      localStorage.setItem('tni_scores', JSON.stringify(cleanScores));
+      localStorage.setItem('tni_psi_progress', JSON.stringify(cleanPsi));
 
       updateHeaderStats();
-      alert('✅ Data backup berhasil dipulihkan!');
+      alert('✅ Data backup terverifikasi aman & berhasil dipulihkan!');
       render();
     } catch(err) {
       alert('❌ Gagal memulihkan backup: ' + err.message);
