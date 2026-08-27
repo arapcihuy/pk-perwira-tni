@@ -147,8 +147,8 @@ function renderHome() {
       '<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">' + v.nama + '</div>' +
       '<div style="font-size:11px;color:var(--text3);margin-bottom:12px">' + v.soal.length + ' soal</div>' +
       '<div style="display:flex;gap:6px">' +
-        '<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();startCat(\'' + k + '\',\'tryout\')">' + ic('clock', 15) + ' Tryout</button>' +
-        '<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();startCat(\'' + k + '\',\'learn\')">' + ic('book', 15) + ' Belajar</button>' +
+        '<button class="btn btn-primary btn-sm" style="flex:1" onclick="event.stopPropagation();startCat(\'' + k + '\',\'tryout\')">' + ic('clock', 15) + ' Tryout</button>' +
+        '<button class="btn btn-secondary btn-sm" style="flex:1" onclick="event.stopPropagation();startCat(\'' + k + '\',\'learn\')">' + ic('book', 15) + ' Belajar</button>' +
       '</div></div>';
   }).join('');
 

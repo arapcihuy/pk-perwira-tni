@@ -265,7 +265,7 @@ body {
 
 /* ===================== GRID ===================== */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
-.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
 
 /* ===================== KAT CARD ===================== */
 .kat-card {
@@ -908,6 +908,13 @@ kbd {
   .modal-box { border-radius: var(--radius2); max-height: 80vh; }
 }
 
+/* Tablet (iPad) — 2-3 kolom, tombol cukup lega */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-auto { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .main { max-width: 760px; }
+}
+
 @media (max-width: 640px) {
   .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .topbar-right { display: none; }
@@ -954,7 +961,8 @@ kbd {
   .score { font-size: 40px; }
   .result-actions { flex-direction: column; gap: 8px; }
   .result-actions .btn { width: 100%; }
-  .grid-auto { grid-template-columns: 1fr 1fr; }
+  /* Kategori: 1 kolom penuh supaya tombol Tryout/Belajar lega & sejajar */
+  .grid-auto { grid-template-columns: 1fr; }
   .bank-filters { gap: 7px; }
 }
 
