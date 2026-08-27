@@ -160,7 +160,7 @@ function renderPsiHome() {
             '<div style="font-size:13px;font-weight:600;color:var(--white)">'+escapeHtml(h.testName)+'</div>' +
             '<div style="font-size:11px;color:var(--text3)">'+date.toLocaleString('id-ID')+'</div>' +
           '</div>' +
-          '<div style="font-size:14px;font-weight:700;color:var(--primary)">'+h.score+'%</div>' +
+          '<div style="font-size:14px;font-weight:700;color:var(--blue2)">'+h.score+'%</div>' +
         '</div>' +
       '</div>';
     });
@@ -316,7 +316,7 @@ function startKraepelinTimer() {
     var timerEl = document.getElementById('kraepelinTimer');
     if (timerEl) {
       timerEl.textContent = pad(minutes) + ':' + pad(seconds);
-      timerEl.style.color = timeLeft <= 30 ? 'var(--danger, #e84030)' : 'var(--primary)';
+      timerEl.style.color = timeLeft <= 30 ? 'var(--danger, #e84030)' : 'var(--gold3)';
     }
 
     if (timeLeft <= 0) {
@@ -342,7 +342,7 @@ function renderKraepelin() {
     '<div style="display:flex;gap:8px;align-items:center">' +
       '<button class="btn btn-ghost btn-sm" onclick="toggleFullscreen()" title="Layar Penuh" style="padding:6px 10px">' + ic('maximize', 14) + ' Layar Penuh</button>' +
       '<div style="text-align:right">' +
-        '<div style="font-size:22px;font-weight:700;color:var(--primary)" id="kraepelinTimer">03:00</div>' +
+        '<div style="font-size:22px;font-weight:700;color:var(--gold3)" id="kraepelinTimer">03:00</div>' +
         '<button class="btn btn-danger btn-sm" style="margin-top:2px" onclick="finishKraepelin()">Selesai Sekarang</button>' +
       '</div>' +
     '</div>' +
@@ -371,8 +371,8 @@ function renderKraepelin() {
           cell +
           '<input type="text" maxlength="1" inputmode="numeric" ' +
             'style="width:32px;height:32px;text-align:center;font-size:16px;font-weight:600;' +
-            'background:'+(isActive?'var(--primary)':'var(--bg)')+';' +
-            'border:2px solid '+(isActive?'var(--primary)':'var(--border)')+';' +
+            'background:'+(isActive?'rgba(10,132,255,0.25)':'var(--bg)')+';' +
+            'border:2px solid '+(isActive?'var(--blue2)':'var(--border)')+';' +
             'color:var(--white);border-radius:4px" ' +
             'value="'+answerVal+'" ' +
             'onkeyup="handleKraepelinInput(event, '+col+', '+row+')" ' +
@@ -593,7 +593,7 @@ function renderMemorySpan() {
       '<div style="font-size:13px;color:var(--text3)">Kategori: <b style="color:var(--white)">' + PSI.testData.kategori + '</b></div>' +
     '</div>';
     html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
-      '<div style="font-size:48px;font-weight:700;color:var(--primary);margin-bottom:16px" id="memoryWord">...</div>' +
+      '<div style="font-size:48px;font-weight:800;color:var(--white);margin-bottom:16px;text-shadow:0 4px 20px rgba(10,132,255,0.4)" id="memoryWord">...</div>' +
       '<div style="font-size:13px;color:var(--text2)">Perhatikan dan ingat kata-kata berikut</div>' +
     '</div>';
   } else if (PSI.memoryPhase === 'remember') {
@@ -728,7 +728,7 @@ function renderDigitSpan() {
 
   if (PSI.digitPhase === 'listen') {
     html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
-      '<div style="font-size:72px;font-weight:700;color:var(--primary);margin-bottom:16px" id="digitNumber">?</div>' +
+      '<div style="font-size:72px;font-weight:800;color:var(--white);margin-bottom:16px;text-shadow:0 4px 24px rgba(10,132,255,0.4)" id="digitNumber">?</div>' +
       '<div style="font-size:13px;color:var(--text2)">Perhatikan angka berikut</div>' +
     '</div>';
   } else if (!answered) {

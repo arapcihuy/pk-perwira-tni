@@ -890,7 +890,7 @@ function renderTips(katKey) {
   if (!d) return '<div class="empty"><p>Tips tidak ditemukan.</p></div>';
   var cards = d.tips.map(function(t,i) {
     return '<div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:flex-start;gap:12px">'+
-      '<div style="background:var(--gold);color:var(--primary);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">'+(i+1)+'</div>'+
+      '<div style="background:var(--blue);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">'+(i+1)+'</div>'+
       '<div><div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px">'+t.judul+'</div>'+
       '<div style="font-size:13px;color:var(--text2);line-height:1.6">'+t.isi+'</div></div></div></div>';
   }).join('');
