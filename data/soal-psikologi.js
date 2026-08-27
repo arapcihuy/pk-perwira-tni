@@ -11,7 +11,7 @@ const SOAL_PSIKOLOGI = {
   // ============================================================
   memory_span: {
     nama: "Tes Daya Ingat",
-    icon: "🧠",
+    icon: "brain",
     waktu_per_soal: 60, // detik (30 detik ingat + 30 detik tulis)
     instruksi: "Dengarkan daftar kata berikut. Setelah selesai, Anda punya 30 detik untuk mengingat, lalu tulis sebanyak mungkin yang diingat.",
     soal: [
@@ -40,7 +40,7 @@ const SOAL_PSIKOLOGI = {
   // ============================================================
   digit_span: {
     nama: "Tes Digit Span",
-    icon: "🔢",
+    icon: "hash",
     waktu_per_soal: 30, // detik
     instruksi: "Dengarkan deret angka berikut. Tulis angka sesuai instruksi (maju atau mundur).",
     soal: [
@@ -80,7 +80,7 @@ const SOAL_PSIKOLOGI = {
   // ============================================================
   aritmatika: {
     nama: "Aritmatika Lisan",
-    icon: "➕",
+    icon: "calculator",
     waktu_per_soal: 45, // detik
     instruksi: "Dengarkan soal cerita berikut. Hitung di kepala (boleh coret-coret) dan tulis jawaban akhir.",
     soal: [
@@ -107,7 +107,7 @@ const SOAL_PSIKOLOGI = {
   // ============================================================
   deret_angka: {
     nama: "Deret Angka",
-    icon: "📊",
+    icon: "chart",
     waktu_per_soal: 30, // detik
     instruksi: "Dengarkan deret angka berikut. Tentukan angka berikutnya dalam deret tersebut.",
     soal: [
@@ -132,7 +132,7 @@ const SOAL_PSIKOLOGI = {
   // ============================================================
   kraepelin: {
     nama: "Tes Kraepelin",
-    icon: "⚡",
+    icon: "zap",
     waktu_total: 180, // detik (3 menit)
     instruksi: "Jumlahkan dua angka berurutan dari atas ke bawah secepat mungkin. Tulis hasil penjumlahan di sebelah kanan.",
     kolom: 10,
@@ -175,7 +175,7 @@ const SOAL_PSIKOLOGI = {
   // ============================================================
   epps: {
     nama: "Tes Kepribadian (EPPS Militer)",
-    icon: "🧩",
+    icon: "user",
     instruksi: "Pilihlah salah satu dari dua pernyataan (A atau B) yang PALING MENGGAMBARKAN diri Anda secara jujur. Tidak ada jawaban benar atau salah.",
     soal: [
       { id: "ep1", pilihanA: { teks: "Saya terdorong untuk memimpin dan mengambil tanggung jawab atas keberhasilan tim.", trait: "leadership" }, pilihanB: { teks: "Saya selalu mengutamakan kepatuhan terhadap aturan dan instruksi kedinasan.", trait: "discipline" } },

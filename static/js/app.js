@@ -68,10 +68,10 @@ function shuffle(arr) {
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
 function katIcon(k) {
-  var m = { tkw:'🏛️', matematika:'🔢', bahasa_inggris:'🌐',
-            penalaran_logika:'🧠', numerik:'📊', verbal:'📝',
-            kraepelin:'⚡', tes_gambar:'🎯', kepribadian:'🧩' };
-  return m[k] || '📋';
+  var m = { tkw:'landmark', matematika:'calculator', bahasa_inggris:'globe',
+            penalaran_logika:'brain', numerik:'hash', verbal:'pencil',
+            kraepelin:'zap', tes_gambar:'layers', kepribadian:'user' };
+  return m[k] || 'file';
 }
 
 function loadProgress() {
@@ -142,18 +142,18 @@ function renderHome() {
 
   var catCards = catKeys.map(function(k) {
     var v = SOAL_DATABASE[k];
-    return '<div class="card" style="cursor:pointer;padding:16px" onclick="startCat(\'' + k + '\',\'tryout\')">' +
-      '<div style="font-size:24px;margin-bottom:8px">' + katIcon(k) + '</div>' +
+    return '<div class="card" style="cursor:pointer;padding:18px" onclick="startCat(\'' + k + '\',\'tryout\')">' +
+      '<div class="kat-icon" style="margin-bottom:10px">' + icon(katIcon(k), 22) + '</div>' +
       '<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">' + v.nama + '</div>' +
       '<div style="font-size:11px;color:var(--text3);margin-bottom:12px">' + v.soal.length + ' soal</div>' +
       '<div style="display:flex;gap:6px">' +
-        '<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();startCat(\'' + k + '\',\'tryout\')">⏱ Tryout</button>' +
-        '<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();startCat(\'' + k + '\',\'learn\')">📖 Belajar</button>' +
+        '<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();startCat(\'' + k + '\',\'tryout\')">' + ic('clock', 15) + ' Tryout</button>' +
+        '<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();startCat(\'' + k + '\',\'learn\')">' + ic('book', 15) + ' Belajar</button>' +
       '</div></div>';
   }).join('');
 
   return '<div style="margin-bottom:20px">' +
-    '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">Selamat datang 👋</div>' +
+    '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-0.4px">Selamat Datang</div>' +
     '<div style="font-size:13px;color:var(--text2)">Platform belajar PK Perwira TNI — gratis, offline, tanpa akun.</div>' +
     '</div>' +
 
@@ -176,15 +176,15 @@ function renderHome() {
     '</div>' +
 
     '<div style="display:flex;gap:10px;margin-bottom:12px">' +
-      '<button class="btn btn-primary btn-lg" style="flex:1" onclick="goPage(\'cat\',\'tryout\')">⏱ Mulai Tryout</button>' +
-      '<button class="btn btn-secondary btn-lg" style="flex:1" onclick="goPage(\'cat\',\'learn\')">📖 Mode Belajar</button>' +
+      '<button class="btn btn-primary btn-lg" style="flex:1" onclick="goPage(\'cat\',\'tryout\')">' + ic('clock', 17) + ' Mulai Tryout</button>' +
+      '<button class="btn btn-secondary btn-lg" style="flex:1" onclick="goPage(\'cat\',\'learn\')">' + ic('book', 17) + ' Mode Belajar</button>' +
     '</div>' +
     '<div style="margin-bottom:24px">' +
-      '<button class="btn btn-danger btn-lg" style="width:100%" onclick="startSimulasi60()">🎯 Simulasi PK Perwira — 60 Soal · 90 Menit</button>' +
+      '<button class="btn btn-danger btn-lg" style="width:100%" onclick="startSimulasi60()">' + ic('target', 17) + ' Simulasi PK Perwira — 60 Soal · 90 Menit</button>' +
     '</div>' +
 
     '<div class="tips-box">' +
-      '<div class="tips-title">💡 Tips Persiapan PK Perwira TNI</div>' +
+      '<div class="tips-title">' + ic('bulb', 16) + ' Tips Persiapan PK Perwira TNI</div>' +
       '<ul>' +
         '<li>Kerjakan minimal 1 tryout per hari, review semua yang salah</li>' +
         '<li>Fokus TWK (Wawasan Kebangsaan) — bobotnya besar di seleksi</li>' +
@@ -205,7 +205,7 @@ function renderCat() {
   var catKeys = Object.keys(SOAL_DATABASE);
 
   var items = '<div class="kat-card" onclick="startCat(\'all\',\'' + S.mode + '\')">' +
-    '<div class="kat-icon">🎯</div>' +
+    '<div class="kat-icon">' + icon('layers', 22) + '</div>' +
     '<div class="kat-name">Semua Kategori</div>' +
     '<div class="kat-sub">' + all.length + ' soal · acak</div>' +
     '</div>';
@@ -213,13 +213,13 @@ function renderCat() {
   catKeys.forEach(function(k) {
     var v = SOAL_DATABASE[k];
     items += '<div class="kat-card" onclick="startCat(\'' + k + '\',\'' + S.mode + '\')">' +
-      '<div class="kat-icon">' + katIcon(k) + '</div>' +
+      '<div class="kat-icon">' + icon(katIcon(k), 22) + '</div>' +
       '<div class="kat-name">' + v.nama + '</div>' +
       '<div class="kat-sub">' + v.soal.length + ' soal</div>' +
       '</div>';
   });
 
-  return '<div class="mode-badge">' + (isTO ? '⏱ Mode Tryout dengan Timer' : '📖 Mode Belajar tanpa Timer') + '</div>' +
+  return '<div class="mode-badge">' + (isTO ? ic('clock', 14) + ' Mode Tryout dengan Timer' : ic('book', 14) + ' Mode Belajar tanpa Timer') + '</div>' +
     '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">' +
     (isTO ? 'Tryout' : 'Mode Belajar') + '</div>' +
     '<div style="font-size:13px;color:var(--text2);margin-bottom:20px">Pilih kategori soal:</div>' +
@@ -254,7 +254,7 @@ function startCat(cat, mode) {
 
 // ---- SOAL ----
 function renderSoal() {
-  if (!S.questions.length) return '<div class="empty"><div class="empty-icon">⚠️</div><p>Tidak ada soal.</p></div>';
+  if (!S.questions.length) return '<div class="empty"><div class="empty-icon">' + icon('alert', 44) + '</div><p>Tidak ada soal.</p></div>';
 
   var q = S.questions[S.idx];
   var n = S.questions.length;
@@ -290,21 +290,28 @@ function renderSoal() {
   }).join('');
 
   var expHtml = '';
-  if (answered && S.mode === 'learn') {
-    expHtml = '<div class="explanation show"><strong>📖 Pembahasan</strong>' + escapeHtml(q.pembahasan) + '</div>';
+  if (answered) {
+    var benar = (ans === q.jawaban);
+    var expTitle = benar
+      ? '<span class="exp-verdict correct">' + ic('check', 13) + ' BENAR</span>'
+      : '<span class="exp-verdict wrong">' + ic('x', 13) + ' SALAH</span>';
+    expHtml = '<div class="explanation show">' +
+      '<div class="explanation-head"><strong>' + ic('book', 15) + ' Pembahasan</strong>' + expTitle + '</div>' +
+      '<div class="explanation-body">' + escapeHtml(q.pembahasan) + '</div>' +
+      '</div>';
   }
 
-  var prevBtn = '<button class="btn btn-ghost btn-sm" onclick="prevQ()"' + (S.idx === 0 ? ' disabled' : '') + '>← Sebelumnya</button>';
-  var flagBtn = '<button class="btn btn-flag btn-sm ' + (isFlagged ? 'active' : '') + '" onclick="toggleFlag(' + S.idx + ')" title="Tandai Ragu-Ragu">🚩 ' + (isFlagged ? 'Ragu (Aktif)' : 'Ragu-ragu') + '</button>';
+  var prevBtn = '<button class="btn btn-ghost btn-sm" onclick="prevQ()"' + (S.idx === 0 ? ' disabled' : '') + '>' + ic('arrow-left', 15) + ' Sebelumnya</button>';
+  var flagBtn = '<button class="btn btn-flag btn-sm ' + (isFlagged ? 'active' : '') + '" onclick="toggleFlag(' + S.idx + ')" title="Tandai Ragu-Ragu">' + ic('flag', 15) + ' ' + (isFlagged ? 'Ragu (Aktif)' : 'Ragu-ragu') + '</button>';
 
   var nextBtn = '';
   if (S.idx < n - 1) {
-    nextBtn = '<button class="btn btn-primary btn-sm" onclick="nextQ()">Berikutnya →</button>';
+    nextBtn = '<button class="btn btn-primary btn-sm" onclick="nextQ()">Berikutnya ' + ic('arrow-right', 15) + '</button>';
   } else {
-    nextBtn = '<button class="btn btn-primary btn-sm" onclick="finishSession()">✅ Selesai</button>';
+    nextBtn = '<button class="btn btn-primary btn-sm" onclick="finishSession()">' + ic('check', 15) + ' Selesai</button>';
   }
   var skipBtn = (!answered && S.mode === 'tryout')
-    ? '<button class="btn btn-ghost btn-sm" onclick="skipQ()">Lewati</button>' : '';
+    ? '<button class="btn btn-ghost btn-sm" onclick="skipQ()">' + ic('chevron-right', 15) + ' Lewati</button>' : '';
 
   var safeImg = sanitizeImgSrc(q.gambar);
   var imgHtml = safeImg ? '<div class="soal-img"><img src="' + safeImg + '" alt="Gambar soal" style="max-width:100%;max-height:320px;border-radius:8px;margin:10px 0;display:block;border:1px solid var(--border)"></div>' : '';
@@ -316,8 +323,8 @@ function renderSoal() {
           '<div class="label">Soal</div>' +
           '<div class="value">' + (S.idx + 1) + ' / ' + n + '</div>' +
         '</div>' +
-        '<button class="btn btn-secondary btn-sm" onclick="openPalette()" style="margin-left:4px">📋 Palet Soal</button>' +
-        '<button class="btn btn-ghost btn-sm" onclick="toggleFullscreen()" title="Layar Penuh" style="padding:6px 9px">⛶</button>' +
+        '<button class="btn btn-secondary btn-sm" onclick="openPalette()" style="margin-left:4px">' + ic('list', 15) + ' Palet Soal</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="toggleFullscreen()" title="Layar Penuh" style="padding:6px 9px">' + ic('maximize', 16) + '</button>' +
       '</div>' +
       timerHtml +
     '</div>' +
@@ -325,7 +332,7 @@ function renderSoal() {
     '<div class="soal-body">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
         '<div class="soal-cat-tag">' + escapeHtml(q.kategori || 'Umum') + '</div>' +
-        (isFlagged ? '<span style="font-size:11px;color:var(--gold3);font-weight:700">🚩 Ditandai Ragu-ragu</span>' : '') +
+        (isFlagged ? '<span style="font-size:11px;color:var(--gold3);font-weight:700;display:inline-flex;align-items:center;gap:4px">' + ic('flag', 12) + ' Ditandai Ragu-ragu</span>' : '') +
       '</div>' +
       '<div class="soal-text">' + escapeHtml(q.pertanyaan) + '</div>' +
       imgHtml +
@@ -517,7 +524,7 @@ function renderHasil() {
       '<div class="score-label">/ 100</div>' +
     '</div>' +
     '<div class="result-status ' + (res.lulus ? 'pass' : 'fail') + '">' +
-      (res.lulus ? '✅ LULUS — Nilai ≥ 70' : '❌ Belum Lulus — Nilai < 70') +
+      (res.lulus ? ic('check-circle', 16) + ' LULUS — Nilai ≥ 70' : ic('x-circle', 16) + ' Belum Lulus — Nilai < 70') +
     '</div>' +
     '<div class="result-stats">' +
       '<div class="result-stat"><div class="rs-num rs-correct">' + res.benar + '</div><div class="rs-lbl">Benar</div></div>' +
@@ -526,10 +533,10 @@ function renderHasil() {
       (S.mode === 'tryout' ? '<div class="result-stat"><div class="rs-num" style="font-size:16px">' + res.tStr + '</div><div class="rs-lbl">Waktu</div></div>' : '') +
     '</div>' +
     '<div class="result-actions">' +
-      '<button class="btn btn-primary" onclick="retrySession()">🔄 Ulangi</button>' +
-      '<button class="btn btn-secondary" onclick="reviewSession()">📋 Review</button>' +
-      (res.salah > 0 ? '<button class="btn btn-danger btn-sm" onclick="drillWrong()">🎯 Drill ' + res.salah + ' Soal Salah</button>' : '') +
-      '<button class="btn btn-ghost" onclick="goHome()">🏠 Beranda</button>' +
+      '<button class="btn btn-primary" onclick="retrySession()">' + ic('refresh', 16) + ' Ulangi</button>' +
+      '<button class="btn btn-secondary" onclick="reviewSession()">' + ic('list', 16) + ' Review</button>' +
+      (res.salah > 0 ? '<button class="btn btn-danger btn-sm" onclick="drillWrong()">' + ic('target', 15) + ' Drill ' + res.salah + ' Soal Salah</button>' : '') +
+      '<button class="btn btn-ghost" onclick="goHome()">' + ic('home', 16) + ' Beranda</button>' +
     '</div>' +
     '</div>';
 }
@@ -628,7 +635,7 @@ window.setBankCat = function(v) { S.bankCat = v; S.page = 'bank'; render(); };
 function renderModal() {
   return '<div class="modal-bg" id="soalModal">' +
     '<div class="modal-box">' +
-      '<button class="modal-close-btn" onclick="closeModal()">✕ Tutup</button>' +
+      '<button class="modal-close-btn" onclick="closeModal()">' + ic('x', 14) + ' Tutup</button>' +
       '<div class="modal-cat" id="mCat"></div>' +
       '<div class="modal-q" id="mQ"></div>' +
       '<div id="mOpts"></div>' +
@@ -651,10 +658,10 @@ window.showModal = function(encoded) {
     var isKey = i === s.jawaban;
     return '<div class="modal-opt' + (isKey ? ' key' : '') + '">' +
       letters[i] + '. ' + escapeHtml(p) +
-      (isKey ? '<span class="modal-key-label">✅ Kunci</span>' : '') +
+      (isKey ? '<span class="modal-key-label">' + ic('check', 12) + ' Kunci</span>' : '') +
       '</div>';
   }).join('');
-  document.getElementById('mExp').innerHTML = '<strong>📖 Pembahasan</strong><br>' + escapeHtml(s.pembahasan);
+  document.getElementById('mExp').innerHTML = '<strong>' + ic('book', 14) + ' Pembahasan</strong><br>' + escapeHtml(s.pembahasan);
   document.getElementById('soalModal').classList.add('open');
 };
 
@@ -674,7 +681,7 @@ function renderProg() {
     var p = prog[nama] || { total: 0, benar: 0 };
     var pct = p.total > 0 ? Math.round((p.benar / p.total) * 100) : 0;
     return '<div class="prog-row">' +
-      '<div class="prog-label">' + katIcon(k) + ' ' + escapeHtml(nama) + '</div>' +
+      '<div class="prog-label">' + icon(katIcon(k), 16) + ' ' + escapeHtml(nama) + '</div>' +
       '<div class="prog-track"><div class="prog-bar" style="width:' + pct + '%"></div></div>' +
       '<div class="prog-pct">' + pct + '%</div>' +
       '</div>' +
@@ -682,35 +689,35 @@ function renderProg() {
   }).join('');
 
   var hist = scores.length === 0
-    ? '<div class="empty"><div class="empty-icon">📋</div><p>Belum ada tryout selesai.</p></div>'
+    ? '<div class="empty"><div class="empty-icon">' + icon('list', 44) + '</div><p>Belum ada tryout selesai.</p></div>'
     : '<div class="history-grid">' + scores.map(function(s, i) {
         return '<div class="history-item">' +
           '<div class="h-score ' + (s.nilai>=70?'h-pass':'h-fail') + '">' + s.nilai + '</div>' +
           '<div class="h-date">' + (escapeHtml(s.tgl)||'') + '</div>' +
-          '<div class="h-detail">✅' + s.benar + ' ❌' + s.salah + ' ⏭' + s.skip + '</div>' +
+          '<div class="h-detail" style="display:flex;align-items:center;justify-content:center;gap:5px">' + ic('check', 12) + s.benar + ' ' + ic('x', 12) + s.salah + ' ' + ic('chevron-right', 12) + s.skip + '</div>' +
         '</div>';
       }).join('') + '</div>';
 
-  return '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:20px">📈 Progress Belajar</div>' +
+  return '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:22px;letter-spacing:-0.4px">' + ic('trend', 20) + ' Progress Belajar</div>' +
     '<div class="section-title">Akurasi per Kategori</div>' +
     '<div style="margin-bottom:24px">' + rows + '</div>' +
     '<div class="section-title">Riwayat Tryout</div>' +
     '<div style="margin-bottom:20px">' + hist + '</div>' +
     '<div class="backup-box">' +
       '<div>' +
-        '<div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">💾 Backup & Restore Data</div>' +
+        '<div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;display:flex;align-items:center;gap:7px">' + ic('download', 16) + ' Backup & Restore Data</div>' +
         '<div style="font-size:12px;color:var(--text2)">Simpan atau pindahkan riwayat belajar antar perangkat secara aman.</div>' +
       '</div>' +
       '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
-        '<button class="btn btn-secondary btn-sm" onclick="exportData()">📥 Export Backup</button>' +
+        '<button class="btn btn-secondary btn-sm" onclick="exportData()">' + ic('download', 15) + ' Export Backup</button>' +
         '<label class="btn btn-secondary btn-sm" style="margin:0;cursor:pointer">' +
-          '📤 Import Backup' +
+          ic('upload', 15) + ' Import Backup' +
           '<input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importData(event)">' +
         '</label>' +
       '</div>' +
     '</div>' +
     '<div style="margin-top:20px">' +
-      '<button class="btn btn-danger btn-sm" onclick="resetAll()">🗑️ Reset Semua Data</button>' +
+      '<button class="btn btn-danger btn-sm" onclick="resetAll()">' + ic('trash', 15) + ' Reset Semua Data</button>' +
     '</div>';
 }
 
@@ -739,7 +746,7 @@ window.importData = function(event) {
   var file = event.target.files && event.target.files[0];
   if (!file) return;
   if (file.size > 5 * 1024 * 1024) {
-    alert('❌ Ukuran file melebihi batas keamanan (5MB).');
+    alert('Ukuran file melebihi batas keamanan (5MB).');
     return;
   }
   var reader = new FileReader();
@@ -804,10 +811,10 @@ window.importData = function(event) {
       localStorage.setItem('tni_psi_progress', JSON.stringify(cleanPsi));
 
       updateHeaderStats();
-      alert('✅ Data backup terverifikasi aman & berhasil dipulihkan!');
+      alert('Data backup terverifikasi aman & berhasil dipulihkan!');
       render();
     } catch(err) {
-      alert('❌ Gagal memulihkan backup: ' + err.message);
+      alert('Gagal memulihkan backup: ' + err.message);
     }
   };
   reader.readAsText(file);
@@ -875,8 +882,8 @@ function renderTips(katKey) {
   if (!data) return '<div class="empty"><p>Data tips tidak ditemukan.</p></div>';
   var tabKeys = Object.keys(data);
   var tabs = tabKeys.map(function(k) {
-    var icons = {umum:'🎯',tkw:'🏛️',matematika:'🔢',bahasa_inggris:'🌐',penalaran_logika:'🧠',numerik:'📊',verbal:'📝',kraepelin:'⚡',tes_gambar:'🎯',kepribadian:'🧩'};
-    var label = (icons[k]||'📋') + ' ' + (k==='umum'?'Umum':k==='tkw'?'TWK':k==='matematika'?'MTK':k==='bahasa_inggris'?'Inggris':k==='penalaran_logika'?'Logika':k==='numerik'?'Numerik':k==='verbal'?'Verbal':k==='kraepelin'?'Kraepelin':k==='tes_gambar'?'Tes Gambar':k==='kepribadian'?'Kepribadian':k);
+    var icons = {umum:'target',tkw:'landmark',matematika:'calculator',bahasa_inggris:'globe',penalaran_logika:'brain',numerik:'hash',verbal:'pencil',kraepelin:'zap',tes_gambar:'layers',kepribadian:'user'};
+    var label = ic(icons[k]||'file', 15) + ' ' + (k==='umum'?'Umum':k==='tkw'?'TWK':k==='matematika'?'MTK':k==='bahasa_inggris'?'Inggris':k==='penalaran_logika'?'Logika':k==='numerik'?'Numerik':k==='verbal'?'Verbal':k==='kraepelin'?'Kraepelin':k==='tes_gambar'?'Tes Gambar':k==='kepribadian'?'Kepribadian':k);
     return '<button class="btn '+(k===katKey?'btn-primary':'btn-secondary')+' btn-sm" onclick="window.showTips(\''+k+'\')">'+label+'</button>';
   }).join('');
   var d = data[katKey];

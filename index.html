@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0a1628">
+  <meta name="theme-color" content="#05050a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PK Perwira">
-  <meta name="description" content="Platform belajar seleksi PK Perwira TNI - 456 soal, tryout, drill, tes psikologi, tips trik">
+  <meta name="description" content="Platform belajar seleksi PK Perwira TNI AU - 1000 soal, tryout, drill, tes psikologi, tips trik">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="static/icons/icon-192.png">
   <title>PK Perwira TNI — Platform Belajar</title>
@@ -28,13 +28,13 @@
   </header>
 
   <nav class="nav">
-    <button class="nav-btn active" data-page="home" onclick="navTo('home')">🏠<span>Beranda</span></button>
-    <button class="nav-btn" data-page="cat" onclick="goPage('cat','tryout')">⏱<span>Tryout</span></button>
-    <button class="nav-btn" data-page="cat2" onclick="goPage('cat','learn')">📖<span>Belajar</span></button>
-    <button class="nav-btn" data-page="psikologi" onclick="navTo('psikologi')">🧠<span>Psikologi</span></button>
-    <button class="nav-btn" data-page="bank" onclick="navTo('bank')">📚<span>Bank</span></button>
-    <button class="nav-btn" data-page="tips" onclick="navTo('tips')">💡<span>Tips</span></button>
-    <button class="nav-btn" data-page="prog" onclick="navTo('prog')">📈<span>Progress</span></button>
+    <button class="nav-btn active" data-page="home" onclick="navTo('home')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Beranda</span></button>
+    <button class="nav-btn" data-page="cat" onclick="goPage('cat','tryout')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span>Tryout</span></button>
+    <button class="nav-btn" data-page="cat2" onclick="goPage('cat','learn')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Belajar</span></button>
+    <button class="nav-btn" data-page="psikologi" onclick="navTo('psikologi')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg></span><span>Psikologi</span></button>
+    <button class="nav-btn" data-page="bank" onclick="navTo('bank')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span>Bank</span></button>
+    <button class="nav-btn" data-page="tips" onclick="navTo('tips')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></span><span>Tips</span></button>
+    <button class="nav-btn" data-page="prog" onclick="navTo('prog')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span><span>Progress</span></button>
   </nav>
 
   <div class="main" id="main">
@@ -49,7 +49,7 @@
   <!-- Modal Detail Bank Soal -->
   <div class="modal-bg" id="soalModal">
     <div class="modal-box">
-      <button class="modal-close-btn" onclick="closeModal()">✕ Tutup</button>
+      <button class="modal-close-btn" onclick="closeModal()"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Tutup</button>
       <div class="modal-cat" id="mCat"></div>
       <div class="modal-q" id="mQ"></div>
       <div id="mOpts"></div>
@@ -61,14 +61,14 @@
   <div class="modal-bg" id="paletteModal">
     <div class="modal-box">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div style="font-size:16px;font-weight:700;color:var(--white)">📋 Lembar Palet Nomor Soal</div>
-        <button class="modal-close-btn" onclick="closePaletteModal()">✕ Tutup</button>
+        <div style="font-size:16px;font-weight:700;color:var(--white);display:flex;align-items:center;gap:8px"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span> Lembar Palet Nomor Soal</div>
+        <button class="modal-close-btn" onclick="closePaletteModal()"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Tutup</button>
       </div>
       <div style="font-size:12px;color:var(--text2)">Klik nomor soal untuk berpindah langsung:</div>
       <div class="palette-grid" id="paletteGrid"></div>
       <div class="palette-legend">
         <div class="palette-legend-item"><div class="palette-legend-dot dot-answered"></div> Sudah Dijawab</div>
-        <div class="palette-legend-item"><div class="palette-legend-dot dot-flagged"></div> Ragu-ragu (🚩)</div>
+        <div class="palette-legend-item"><div class="palette-legend-dot dot-flagged"></div> Ragu-ragu</div>
         <div class="palette-legend-item"><div class="palette-legend-dot dot-unanswered"></div> Belum Dijawab</div>
       </div>
     </div>
@@ -76,6 +76,7 @@
 
   <script src="data/soal.js"></script>
   <script src="data/soal-psikologi.js"></script>
+  <script src="static/js/icons.js"></script>
   <script src="static/js/app.js"></script>
   <script src="static/js/psikologi.js"></script>
 

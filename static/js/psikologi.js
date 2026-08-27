@@ -104,22 +104,22 @@ function isAnswerMatch(userAns, correctAns) {
 
 function renderPsiHome() {
   if (typeof SOAL_PSIKOLOGI === 'undefined') {
-    return '<div class="empty"><div class="empty-icon">⚠️</div>' +
+    return '<div class="empty"><div class="empty-icon">' + icon('alert', 44) + '</div>' +
       '<p>Database soal psikologi belum dimuat.</p>' +
       '<button class="btn btn-primary" onclick="location.reload()">Muat Ulang</button></div>';
   }
 
   var tests = [
-    { key: 'memory_span', icon: '🧠', nama: 'Tes Daya Ingat', desc: '16 kategori, 30 detik per kategori' },
-    { key: 'digit_span', icon: '🔢', nama: 'Digit Span', desc: '18 soal, angka maju-mundur' },
-    { key: 'aritmatika', icon: '➕', nama: 'Aritmatika Lisan', desc: '12 soal cerita' },
-    { key: 'deret_angka', icon: '📊', nama: 'Deret Angka', desc: '12 pola deret' },
-    { key: 'kraepelin', icon: '⚡', nama: 'Tes Kraepelin', desc: '3 menit, penjumlahan cepat' },
-    { key: 'epps', icon: '🧩', nama: 'Tes Kepribadian (EPPS)', desc: '30 pasang pernyataan karakter perwira' }
+    { key: 'memory_span', icon: 'brain', nama: 'Tes Daya Ingat', desc: '16 kategori, 30 detik per kategori' },
+    { key: 'digit_span', icon: 'hash', nama: 'Digit Span', desc: '18 soal, angka maju-mundur' },
+    { key: 'aritmatika', icon: 'calculator', nama: 'Aritmatika Lisan', desc: '12 soal cerita' },
+    { key: 'deret_angka', icon: 'chart', nama: 'Deret Angka', desc: '12 pola deret' },
+    { key: 'kraepelin', icon: 'zap', nama: 'Tes Kraepelin', desc: '3 menit, penjumlahan cepat' },
+    { key: 'epps', icon: 'user', nama: 'Tes Kepribadian (EPPS)', desc: '30 pasang pernyataan karakter perwira' }
   ];
 
   var html = '<div style="margin-bottom:20px">' +
-    '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">Tes Psikologi TNI 🧠</div>' +
+    '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-0.4px">' + ic('brain', 22) + ' Tes Psikologi TNI</div>' +
     '<div style="font-size:13px;color:var(--text2)">Simulasi seleksi psikologi militer resmi & kepribadian perwira</div>' +
     '</div>';
 
@@ -134,13 +134,13 @@ function renderPsiHome() {
 
     html += '<div class="card" style="padding:16px;cursor:pointer" onclick="startPsiTest(\''+t.key+'\')">' +
       '<div style="display:flex;gap:12px;align-items:start">' +
-        '<div style="font-size:32px">'+t.icon+'</div>' +
+        '<div class="kat-icon" style="margin-bottom:0">'+icon(t.icon, 22)+'</div>' +
         '<div style="flex:1">' +
           '<div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px">'+t.nama+'</div>' +
           '<div style="font-size:12px;color:var(--text3);margin-bottom:8px">'+t.desc+'</div>' +
           '<div style="font-size:11px;color:var(--text2)">'+soalCount+' soal tersedia</div>' +
         '</div>' +
-        '<div style="color:var(--primary);font-size:20px">→</div>' +
+        '<div style="color:var(--text3);font-size:20px;align-self:center">'+ic('chevron-right', 18)+'</div>' +
       '</div>' +
     '</div>';
   });
@@ -225,7 +225,7 @@ function renderPsiTest() {
 
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
     '<div style="font-size:18px;font-weight:700;color:var(--white)">' +
-      (isAr ? '➕ Aritmatika Lisan' : '📊 Deret Angka') + '</div>' +
+      (isAr ? ic('calculator', 18) + ' Aritmatika Lisan' : ic('chart', 18) + ' Deret Angka') + '</div>' +
     '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">← Menu</button>' +
   '</div>';
 
@@ -250,12 +250,12 @@ function renderPsiTest() {
     html += '<div style="padding:14px;border-radius:8px;margin-bottom:12px;font-size:14px;font-weight:600;' +
       'background:' + (isCorrect ? 'rgba(34,204,74,0.12)' : 'rgba(232,64,48,0.12)') + ';' +
       'color:' + (isCorrect ? 'var(--success, #22cc4a)' : 'var(--danger, #e84030)') + '">' +
-      (isCorrect ? '✅ Benar! ' : '❌ Kurang tepat. ') +
+      (isCorrect ? ic('check-circle', 14) + ' Benar! ' : ic('x-circle', 14) + ' Kurang tepat. ') +
       'Jawaban: <b>' + escapeHtml(q.jawaban) + '</b>' +
-      (cara ? '<div style="font-size:12px;font-weight:400;color:var(--text2);margin-top:6px">📖 ' + escapeHtml(cara) + '</div>' : '') +
+      (cara ? '<div style="font-size:12px;font-weight:400;color:var(--text2);margin-top:6px">' + ic('book', 14) + ' ' + escapeHtml(cara) + '</div>' : '') +
     '</div>';
     html += '<button class="btn btn-primary" style="width:100%" onclick="nextWrittenQuestion()">' +
-      (PSI.testIdx < n - 1 ? 'Soal Berikutnya →' : '✅ Selesai') + '</button>';
+      (PSI.testIdx < n - 1 ? 'Soal Berikutnya ' + ic('arrow-right', 15) : ic('check', 15) + ' Selesai') + '</button>';
   }
 
   html += '</div>';
@@ -335,12 +335,12 @@ function renderKraepelin() {
     '<div style="display:flex;gap:8px;align-items:center">' +
       '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">←</button>' +
       '<div>' +
-        '<div style="font-size:18px;font-weight:700;color:var(--white)">⚡ Tes Kraepelin</div>' +
+        '<div style="font-size:18px;font-weight:700;color:var(--white)">' + ic('zap', 18) + ' Tes Kraepelin</div>' +
         '<div style="font-size:12px;color:var(--text3)">Jumlahkan 2 angka berurutan, tulis digit terakhir</div>' +
       '</div>' +
     '</div>' +
     '<div style="display:flex;gap:8px;align-items:center">' +
-      '<button class="btn btn-ghost btn-sm" onclick="toggleFullscreen()" title="Layar Penuh" style="padding:6px 10px">⛶ Layar Penuh</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="toggleFullscreen()" title="Layar Penuh" style="padding:6px 10px">' + ic('maximize', 14) + ' Layar Penuh</button>' +
       '<div style="text-align:right">' +
         '<div style="font-size:22px;font-weight:700;color:var(--primary)" id="kraepelinTimer">03:00</div>' +
         '<button class="btn btn-danger btn-sm" style="margin-top:2px" onclick="finishKraepelin()">Selesai Sekarang</button>' +
@@ -482,9 +482,9 @@ function finishKraepelin() {
     var avgFirst = firstHalf / half;
     var avgSecond = secondHalf / (colStats.length - half);
 
-    if (avgSecond > avgFirst + 1.5) rhythm = 'Meningkat (Ketahanan Baik 📈)';
-    else if (avgFirst > avgSecond + 2) rhythm = 'Menurun (Indikasi Kelelahan 📉)';
-    else rhythm = 'Stabil & Konsisten (⚖️)';
+    if (avgSecond > avgFirst + 1.5) rhythm = 'Meningkat (Ketahanan Baik)';
+    else if (avgFirst > avgSecond + 2) rhythm = 'Menurun (Indikasi Kelelahan)';
+    else rhythm = 'Stabil & Konsisten';
   }
 
   PSI.history.push({
@@ -573,7 +573,7 @@ function renderMemorySpan() {
 
   // Header
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">' +
-    '<div style="font-size:18px;font-weight:700;color:var(--white)">🧠 Tes Daya Ingat</div>' +
+    '<div style="font-size:18px;font-weight:700;color:var(--white)">' + ic('brain', 18) + ' Tes Daya Ingat</div>' +
     '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">← Menu</button>' +
   '</div>';
 
@@ -601,7 +601,7 @@ function renderMemorySpan() {
       '<div style="font-size:64px;margin-bottom:16px">⏳</div>' +
       '<div style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:8px">Sedang mengingat...</div>' +
       '<div style="font-size:13px;color:var(--text2);margin-bottom:24px">Anda punya 30 detik untuk mengingat</div>' +
-      '<button class="btn btn-primary" onclick="PSI.memoryPhase=\'write\';render()">Lanjut ke Menulis →</button>' +
+      '<button class="btn btn-primary" onclick="PSI.memoryPhase=\'write\';render()">Lanjut ke Menulis ' + ic('arrow-right', 15) + '</button>' +
     '</div>';
   } else {
     html += '<div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px">Tulis kata yang Anda ingat (pisahkan dengan koma):</div>' +
@@ -713,7 +713,7 @@ function renderDigitSpan() {
   var html = '<div style="padding:16px;min-height:calc(100vh - 140px);display:flex;flex-direction:column">';
 
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">' +
-    '<div style="font-size:18px;font-weight:700;color:var(--white)">🔢 Digit Span</div>' +
+    '<div style="font-size:18px;font-weight:700;color:var(--white)">' + ic('hash', 18) + ' Digit Span</div>' +
     '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">← Menu</button>' +
   '</div>';
 
@@ -723,7 +723,7 @@ function renderDigitSpan() {
   html += '<div style="text-align:center;margin-bottom:16px">' +
     '<div style="font-size:12px;color:var(--text3)">Soal ' + (PSI.testIdx + 1) + ' / ' + n +
     ' &nbsp;·&nbsp; Level ' + q.level + ' &nbsp;·&nbsp; ' + q.angka.length + ' digit &nbsp;·&nbsp; ' +
-      (q.tipe === 'maju' ? 'Maju ➡️' : 'Mundur ⬅️') + '</div>' +
+      (q.tipe === 'maju' ? 'Maju ' + ic('arrow-right', 12) : 'Mundur ' + ic('arrow-left', 12)) + '</div>' +
   '</div>';
 
   if (PSI.digitPhase === 'listen') {
@@ -748,9 +748,9 @@ function renderDigitSpan() {
     html += '<div style="padding:14px;border-radius:8px;margin-bottom:12px;font-size:14px;font-weight:600;' +
       'background:' + (isCorrect ? 'rgba(34,204,74,0.12)' : 'rgba(232,64,48,0.12)') + ';' +
       'color:' + (isCorrect ? 'var(--success, #22cc4a)' : 'var(--danger, #e84030)') + '">' +
-      (isCorrect ? '✅ Benar!' : '❌ Kurang tepat.') + ' Jawaban: <b>' + q.jawaban + '</b></div>';
+      (isCorrect ? ic('check-circle', 14) + ' Benar!' : ic('x-circle', 14) + ' Kurang tepat.') + ' Jawaban: <b>' + q.jawaban + '</b></div>';
     html += '<button class="btn btn-primary" style="width:100%" onclick="nextDigitQuestion()">' +
-      (PSI.testIdx < n - 1 ? 'Soal Berikutnya →' : '✅ Selesai') + '</button>';
+      (PSI.testIdx < n - 1 ? 'Soal Berikutnya ' + ic('arrow-right', 15) : ic('check', 15) + ' Selesai') + '</button>';
   }
 
   html += '</div>';
@@ -877,7 +877,7 @@ function renderKraepelinChart(stats, rhythm) {
 
   return '<div class="kraepelin-chart-card">' +
     '<div class="kraepelin-chart-title">' +
-      '<span>📈 Kurva Ritme Kerja (Performance Curve)</span>' +
+      '<span>' + ic('trend', 16) + ' Kurva Ritme Kerja (Performance Curve)</span>' +
       '<span style="font-size:12px;color:var(--gold3);font-weight:600">' + (rhythm || 'Stabil') + '</span>' +
     '</div>' +
     '<div class="kraepelin-chart-sub">Grafik tempo penjumlahan per kolom selama 3 menit. Kuning: Kecepatan, Hijau: Ketelitian.</div>' +
@@ -908,7 +908,7 @@ function renderEppsTest() {
 
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
     '<div>' +
-      '<div style="font-size:18px;font-weight:700;color:var(--white)">🧩 Tes Kepribadian (EPPS Militer)</div>' +
+      '<div style="font-size:18px;font-weight:700;color:var(--white)">' + ic('user', 18) + ' Tes Kepribadian (EPPS Militer)</div>' +
       '<div style="font-size:12px;color:var(--text3)">Pilihlah 1 pernyataan yang paling menggambarkan diri Anda</div>' +
     '</div>' +
     '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">← Menu</button>' +
@@ -927,12 +927,12 @@ function renderEppsTest() {
     '<div class="epps-choice-text">' + escapeHtml(q.pilihanB.teks) + '</div>' +
   '</div>';
 
-  var prevBtn = '<button class="btn btn-ghost btn-sm" onclick="prevEppsQuestion()"' + (PSI.testIdx === 0 ? ' disabled' : '') + '>← Sebelumnya</button>';
+  var prevBtn = '<button class="btn btn-ghost btn-sm" onclick="prevEppsQuestion()"' + (PSI.testIdx === 0 ? ' disabled' : '') + '>' + ic('arrow-left', 15) + ' Sebelumnya</button>';
   var nextBtn = '';
   if (PSI.testIdx < n - 1) {
-    nextBtn = '<button class="btn btn-primary btn-sm" onclick="nextEppsQuestion()"' + (sel === null ? ' disabled' : '') + '>Berikutnya →</button>';
+    nextBtn = '<button class="btn btn-primary btn-sm" onclick="nextEppsQuestion()"' + (sel === null ? ' disabled' : '') + '>Berikutnya ' + ic('arrow-right', 15) + '</button>';
   } else {
-    nextBtn = '<button class="btn btn-primary btn-sm" onclick="finishEppsTest()"' + (sel === null ? ' disabled' : '') + '>✅ Selesai</button>';
+    nextBtn = '<button class="btn btn-primary btn-sm" onclick="finishEppsTest()"' + (sel === null ? ' disabled' : '') + '>' + ic('check', 15) + ' Selesai</button>';
   }
 
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px">' +
@@ -997,16 +997,16 @@ function finishEppsTest() {
     adaptability: Math.min(100, Math.round((traitCounts.adaptability / maxPerTrait) * 100))
   };
 
-  var primaryArchetype = 'Perwira Komando Lapangan ⚔️';
+  var primaryArchetype = 'Perwira Komando Lapangan';
   var archetypeDesc = 'Memiliki karakter kepemimpinan yang tegas, inisiatif tinggi, dan daya tahan prima di bawah tekanan.';
   if (traitPcts.discipline >= traitPcts.leadership && traitPcts.discipline >= traitPcts.solidarity) {
-    primaryArchetype = 'Perwira Staf, Operasi & Perencana 📋';
+    primaryArchetype = 'Perwira Staf, Operasi & Perencana';
     archetypeDesc = 'Sangat taat SOP militer, teliti dalam perencanaan taktis, dan memiliki loyalitas hierarki yang unggul.';
   } else if (traitPcts.solidarity >= traitPcts.leadership && traitPcts.solidarity >= traitPcts.discipline) {
-    primaryArchetype = 'Perwira Pembina Pasukan & Jiwa Korsa 🤝';
+    primaryArchetype = 'Perwira Pembina Pasukan & Jiwa Korsa';
     archetypeDesc = 'Memiliki ikatan batin kuat dengan bawahan, mengutamakan keselamatan regu, dan disegani prajurit.';
   } else if (traitPcts.adaptability >= traitPcts.leadership && traitPcts.adaptability >= traitPcts.endurance) {
-    primaryArchetype = 'Perwira Taktis & Intelijen / Lapangan 🧭';
+    primaryArchetype = 'Perwira Taktis & Intelijen / Lapangan';
     archetypeDesc = 'Cepat beradaptasi terhadap perubahan situasi medan, tenang dalam kondisi darurat, dan fleksibel mencari solusi.';
   }
 
@@ -1040,11 +1040,11 @@ function finishEppsTest() {
 function renderEppsResult(res) {
   var pcts = res.traitPcts || {};
   var traits = [
-    { name: '⚔️ Kepemimpinan & Inisiatif Komando', key: 'leadership', desc: 'Ketegasan mengambil keputusan & memimpin pasukan' },
-    { name: '📜 Kedisiplinan & Kepatuhan SOP', key: 'discipline', desc: 'Ketaatan hierarki, regulasi, dan prosedur dinas' },
-    { name: '🛡️ Daya Tahan Mental & Keuletan', key: 'endurance', desc: 'Stabilitas emosi & ketahanan di bawah tekanan berat' },
-    { name: '🤝 Jiwa Korsa & Solidaritas Pasukan', key: 'solidarity', desc: 'Kerjasama tim, empati, dan loyalitas prajurit' },
-    { name: '🧭 Daya Adaptasi & Fleksibilitas', key: 'adaptability', desc: 'Kecepatan menyesuaikan diri dengan dinamika medan' }
+    { name: 'Kepemimpinan & Inisiatif Komando', key: 'leadership', desc: 'Ketegasan mengambil keputusan & memimpin pasukan' },
+    { name: 'Kedisiplinan & Kepatuhan SOP', key: 'discipline', desc: 'Ketaatan hierarki, regulasi, dan prosedur dinas' },
+    { name: 'Daya Tahan Mental & Keuletan', key: 'endurance', desc: 'Stabilitas emosi & ketahanan di bawah tekanan berat' },
+    { name: 'Jiwa Korsa & Solidaritas Pasukan', key: 'solidarity', desc: 'Kerjasama tim, empati, dan loyalitas prajurit' },
+    { name: 'Daya Adaptasi & Fleksibilitas', key: 'adaptability', desc: 'Kecepatan menyesuaikan diri dengan dinamika medan' }
   ];
 
   var bars = traits.map(function(t) {
@@ -1060,14 +1060,14 @@ function renderEppsResult(res) {
   }).join('');
 
   return '<div style="padding:16px;max-width:680px;margin:0 auto;text-align:center">' +
-    '<div style="font-size:56px;margin-bottom:12px">🎖️</div>' +
+    '<div style="margin-bottom:12px;display:flex;justify-content:center">' + icon('medal', 56) + '</div>' +
     '<div style="font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px">Profil Kepribadian Perwira</div>' +
     '<div style="font-size:18px;font-weight:800;color:var(--gold3);margin-bottom:8px">' + escapeHtml(res.archetype) + '</div>' +
     '<div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6">' + escapeHtml(res.archetypeDesc) + '</div>' +
     '<div class="section-title" style="text-align:left;margin-bottom:12px">5 Dimensi Karakter Militer</div>' +
     bars +
     '<div class="tips-box" style="margin-top:20px;text-align:left">' +
-      '<div class="tips-title">💡 Panduan Wawancara Psikologi TNI</div>' +
+      '<div class="tips-title">' + ic('bulb', 16) + ' Panduan Wawancara Psikologi TNI</div>' +
       '<ul style="font-size:12px;color:var(--text2);line-height:1.6">' +
         '<li>Pertahankan konsistensi jawaban saat wawancara tatap muka dengan psikolog militer.</li>' +
         '<li>Tunjukkan rasa percaya diri, postur tegap, dan nada bicara yang mantap & tegas.</li>' +
@@ -1075,7 +1075,7 @@ function renderEppsResult(res) {
       '</ul>' +
     '</div>' +
     '<div style="margin-top:24px">' +
-      '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">🏠 Kembali ke Menu Psikologi</button>' +
+      '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">' + ic('home', 16) + ' Kembali ke Menu Psikologi</button>' +
     '</div>' +
   '</div>';
 }
@@ -1087,9 +1087,9 @@ function renderPsiResult() {
 
   var html = '<div style="padding:16px;max-width:680px;margin:0 auto;text-align:center">';
 
-  var emoji = PSI.scores.score >= 80 ? '🎉' : PSI.scores.score >= 60 ? '👍' : '💪';
+  var emoji = PSI.scores.score >= 80 ? 'medal' : PSI.scores.score >= 60 ? 'check-circle' : 'zap';
 
-  html += '<div style="font-size:56px;margin-bottom:12px">'+emoji+'</div>' +
+  html += '<div style="margin-bottom:12px;display:flex;justify-content:center">'+icon(emoji, 56)+'</div>' +
     '<div style="font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px">Tes Selesai!</div>' +
     '<div style="font-size:42px;font-weight:900;color:var(--gold3);margin-bottom:12px">'+PSI.scores.score+'%</div>' +
     '<div style="font-size:14px;color:var(--text2);margin-bottom:20px">' +
@@ -1101,7 +1101,7 @@ function renderPsiResult() {
   }
 
   html += '<div style="margin-top:24px">' +
-    '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">🏠 Kembali ke Menu Psikologi</button>' +
+    '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">' + ic('home', 16) + ' Kembali ke Menu Psikologi</button>' +
     '</div>';
 
   html += '</div>';
