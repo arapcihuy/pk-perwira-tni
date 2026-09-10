@@ -39,10 +39,14 @@ var PSI = {
 function loadPsiProgress() {
   try {
     var stored = localStorage.getItem('tni_psi_progress');
-    if (stored) {
-      PSI.history = JSON.parse(stored);
-    }
+    if (!stored) return;
+    var parsed = JSON.parse(stored);
+    // toleransi format: array (format asli) atau {history:[...]} (hasil import lama)
+    if (Array.isArray(parsed)) PSI.history = parsed;
+    else if (parsed && Array.isArray(parsed.history)) PSI.history = parsed.history;
+    else PSI.history = [];
   } catch (e) {
+    PSI.history = [];
     console.error('Failed to load PSI progress:', e);
   }
 }
@@ -131,6 +135,9 @@ function renderPsiHome() {
     if (testData && testData.soal) {
       soalCount = testData.soal.length;
     }
+    var jumlahTeks = (t.key === 'kraepelin')
+      ? ((testData && testData.kolom ? testData.kolom + ' kolom × ' + testData.baris + ' angka' : 'soal acak') + ' · ' + Math.round((testData && testData.waktu_total ? testData.waktu_total : 180) / 60) + ' menit')
+      : soalCount + ' soal tersedia';
 
     html += '<div class="card" style="padding:16px;cursor:pointer" onclick="startPsiTest(\''+t.key+'\')">' +
       '<div style="display:flex;gap:12px;align-items:start">' +
@@ -138,7 +145,7 @@ function renderPsiHome() {
         '<div style="flex:1">' +
           '<div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px">'+t.nama+'</div>' +
           '<div style="font-size:12px;color:var(--text3);margin-bottom:8px">'+t.desc+'</div>' +
-          '<div style="font-size:11px;color:var(--text2)">'+soalCount+' soal tersedia</div>' +
+          '<div style="font-size:11px;color:var(--text2)">'+jumlahTeks+'</div>' +
         '</div>' +
         '<div style="color:var(--text3);font-size:20px;align-self:center">'+ic('chevron-right', 18)+'</div>' +
       '</div>' +
@@ -457,10 +464,12 @@ function finishKraepelin() {
     var cAns = 0;
     var cCor = 0;
     for (var row = 0; row < PSI.kraepelinAnswers[col].length; row++) {
-      if (PSI.kraepelinAnswers[col][row] !== '') {
+      var val = PSI.kraepelinAnswers[col][row];
+      // hitung hanya sel yang benar-benar diisi angka (sel yang dilewati = undefined)
+      if (val !== undefined && val !== null && /^[0-9]$/.test(String(val))) {
         cAns++;
         totalAnswered++;
-        if (PSI.kraepelinAnswers[col][row] == correctAnswers[col][row]) {
+        if (String(val) === String(correctAnswers[col][row])) {
           cCor++;
           totalCorrect++;
         }
@@ -1156,6 +1165,7 @@ var _psiBaseNavTo = (typeof window !== 'undefined' && typeof window.navTo === 'f
 window.navTo = function(page) {
   if (page === 'psikologi') {
     psiTimerStop();
+    clearInterval(S.timer); S.timer = null;   // timer tryout jangan jalan di belakang
     S.page = 'psikologi';
     PSI.page = 'psi-home';
     loadPsiProgress();

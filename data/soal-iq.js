@@ -58,7 +58,7 @@ var IQ_REF = {
     { key: 'matriks',  nama: 'Matriks Figural',     kode: 'MR',  desc: 'Aturan baris-kolom: jumlah elemen, rotasi, isi bentuk' },
     { key: 'rotasi',   nama: 'Rotasi Figural',      kode: 'R3D', desc: 'Hasil putaran vs cermin (distraktor mirror)' },
     { key: 'verbal',   nama: 'Verbal & Aritmetika', kode: 'VR',  desc: 'Pecahan bertingkat, umur, perbandingan, sudut jam, kecepatan' },
-    { key: 'campuran', nama: 'Campuran 4 Domain',   kode: 'MIX', desc: 'Acak semua tipe item — simulasi ketahanan & kecepatan' }
+    { key: 'campuran', nama: 'Campuran Semua Jenis', kode: 'MIX', desc: 'Acak semua jenis soal — melatih ketahanan & kecepatan seperti tes asli' }
   ]
 };
 
@@ -100,8 +100,9 @@ var IQ_SVG = (function () {
     }
     return '<polygon points="' + pts.join(' ') + '"' + (filled ? ' fill="currentColor"' : '') + '/>';
   }
-  // Bentuk asimetris (panah bersirip) — asimetris agar rotasi & cermin terlihat beda
-  var ASYM = '32,8 52,52 32,42 12,52';
+  // Bentuk ASIMETRIS (panji pada tiang) — memang tidak simetris, jadi hasil
+  // CERMIN selalu berbeda dari hasil PUTARAN. Ini inti latihan rotasi vs cermin.
+  var ASYM = '14,6 50,42 14,30 14,58';
   function innerAsym(deg, mirror) {
     var t = 'rotate(' + (deg || 0) + ' 32 32)';
     if (mirror) t = 'translate(64,0) scale(-1,1) ' + t;
@@ -161,19 +162,22 @@ var IQ_GEN = (function () {
   function susunOpsi(correct, kandidat, extraFn) {
     var c = String(correct);
     var out = [c];
+    var cNum = Number(c);
+    var benarPositif = !isNaN(cNum) && c.trim() !== '' && cNum > 0;
     function coba(v) {
       if (v === null || v === undefined) return;
       var s = String(v);
       if (s.length === 0 || s === c) return;
       if (out.indexOf(s) !== -1) return;
+      // jangan tampilkan angka nol/negatif sebagai pilihan bila jawabannya positif
+      if (benarPositif && !isNaN(Number(s)) && Number(s) <= 0) return;
       if (out.length < 4) out.push(s);
     }
     (kandidat || []).forEach(coba);
     var n = Number(c);
     for (var bump = 1; out.length < 4 && bump <= 30; bump++) {
       if (!isNaN(n) && c.trim() !== '') {
-        var cand = (bump % 2 === 1) ? n + Math.ceil(bump / 2) * -1 + 0 : 0;
-        cand = (bump % 2 === 1) ? n - Math.ceil(bump / 2) : n + Math.ceil(bump / 2);
+        var cand = (bump % 2 === 1) ? n - Math.ceil(bump / 2) : n + Math.ceil(bump / 2);
         coba(cand);
       } else if (extraFn) {
         coba(extraFn(bump));
@@ -227,7 +231,8 @@ var IQ_GEN = (function () {
     } else if (r === 3) {
       var p = ri(3, 9), q = ri(11, 19);
       if (Math.random() < 0.4) q = -q;
-      var cur = ri(25, 60);
+      // mulai dari angka yang cukup besar supaya tidak ada suku (atau jawaban) yang 0/negatif
+      var cur = ri(2 * Math.abs(q) + 15, 2 * Math.abs(q) + 45);
       t.push(cur);
       for (var k2 = 0; k2 < 4; k2++) { cur += (k2 % 2 === 0) ? p : q; t.push(cur); }
       n = cur + p;
@@ -386,29 +391,33 @@ var IQ_GEN = (function () {
     var sudut = pick([45, 90, 135, 180, 225, 270, 315]);
     var svgBase = IQ_SVG.wrap(IQ_SVG.inner(0, 'rotasi'), 60);
     var benarSvg = IQ_SVG.wrap(IQ_SVG.inner(sudut, 'rotasi'), 60);
-    // kolam opsi: rotasi sudut lain (kelipatan 45, dijamin unik) + cermin
-    var pool = [];
-    for (var k = 1; k <= 7; k++) {
-      var s2 = IQ_SVG.wrap(IQ_SVG.inner((sudut + 45 * k) % 360, 'rotasi'), 60);
-      if (s2 !== benarSvg && pool.indexOf(s2) === -1) pool.push(s2);
+    function putar(s) { return IQ_SVG.wrap(IQ_SVG.inner(((s % 360) + 360) % 360, 'rotasi'), 60); }
+    function cermin(s) {
+      return IQ_SVG.wrap('<g transform="translate(64,0) scale(-1,1)">' + IQ_SVG.inner(((s % 360) + 360) % 360, 'rotasi') + '</g>', 60);
     }
-    var mirrorSvg = IQ_SVG.wrap('<g transform="translate(64,0) scale(-1,1)">' + IQ_SVG.inner(sudut, 'rotasi') + '</g>', 60);
-    // cermin WAJIB ada sebagai distraktor (inti latihan: membedakan rotasi vs mirror)
+
+    // Susun opsi dari pasangan (sudut, cermin) yang pasti berbeda satu sama lain.
+    // Bentuk dasar sudah asimetris, jadi hasil cermin TIDAK pernah sama dengan hasil putaran.
     var opsi = [benarSvg];
-    if (mirrorSvg !== benarSvg) opsi.push(mirrorSvg);
-    for (var k2 = 0; k2 < pool.length && opsi.length < 4; k2++) {
-      if (opsi.indexOf(pool[k2]) === -1) opsi.push(pool[k2]);
+    var cerminSvg = cermin(sudut);
+    if (cerminSvg !== benarSvg && opsi.indexOf(cerminSvg) === -1) opsi.push(cerminSvg);
+    var selisih = shuffle([45, 90, 135, 180, -45, -90, -135]);
+    for (var k = 0; k < selisih.length && opsi.length < 4; k++) {
+      var s2 = putar(sudut + selisih[k]);
+      if (opsi.indexOf(s2) === -1) opsi.push(s2);
     }
-    while (opsi.length < 4 && pool.length) opsi.push(pool.shift());
     if (opsi.length !== 4 || new Set(opsi).size !== 4) return deretAngka(); // jaring pengaman
     var acak = shuffle(opsi);
     return {
       id: 'iq-rotasi-' + Math.random().toString(36).slice(2, 9),
-      pertanyaan: 'Bentuk di kiri diputar ' + sudut + ' derajat searah jarum jam. Pilih hasil rotasinya (hati-hati: cermin/mirror bukan rotasi).',
+      pertanyaan: 'Perhatikan bentuk di kiri, lalu pilih gambar hasil MEMUTAR bentuk itu ' + sudut +
+        ' derajat searah jarum jam. Hati-hati: gambar cermin (dibalik) kelihatan mirip, tapi itu bukan hasil putaran.',
       pilihan: ['A', 'B', 'C', 'D'],
       pilihanSvg: acak,
       jawaban: acak.indexOf(benarSvg),
-      pembahasan: 'Putaran ' + sudut + ' derajat memindahkan posisi sirip secara berurutan sesuai arah jarum jam. Pada pilihan cermin, posisi sirip ada di sisi berlawanan dari hasil putaran. Jadi hitung arah putarannya, jangan hanya menilai kemiripan bentuk.',
+      pembahasan: 'Putar bentuk ' + sudut + ' derajat searah jarum jam: ujung panji pada tiang ikut berpindah ' + sudut + ' derajat. ' +
+        'Pada pilihan cermin, panji berada di sisi yang berlawanan (kanan jadi kiri) sehingga bukan hasil putaran. ' +
+        'Jadi hitung arah putarannya, jangan hanya menilai kemiripan bentuk.',
       kategori: 'IQ — Rotasi Figural',
       svg: svgBase,
       _tipe: 'rotasi',
