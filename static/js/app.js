@@ -5,9 +5,11 @@
 // ============================================================
 
 // ---- STATE ----
+var TRYOUT_MAX_SOAL = 60;   // tryout dibatasi 60 soal (90 menit) supaya realistis
+
 var S = {
   page: 'home',
-  mode: null,        // 'tryout' | 'learn' | 'drill'
+  mode: null,        // 'tryout' | 'learn' | 'drill' | 'iq'
   cat: 'all',
   questions: [],
   idx: 0,
@@ -16,9 +18,26 @@ var S = {
   timer: null,
   timeLeft: 0,
   totalTime: 0,
+  timed: false,      // true = pakai timer (tryout & simulasi); drill belajar tanpa timer
+  iqSpec: null,      // spesifikasi sesi IQ terakhir (untuk tombol Ulangi)
   bankCat: 'all',
+  bankQuery: '',
+  bankLimit: 60,
   wrongIds: [],      // ids soal yang salah untuk drill
 };
+
+// Format durasi: 90 -> "01:30", 5400 -> "1:30:00"
+function fmtDur(sec) {
+  if (sec < 0) sec = 0;
+  var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  return h > 0 ? (h + ':' + pad(m) + ':' + pad(s)) : (pad(m) + ':' + pad(s));
+}
+
+function loadToTotal() {
+  var v = parseInt(localStorage.getItem('tni_to_total') || '0', 10);
+  return isNaN(v) ? 0 : v;
+}
+function bumpToTotal() { localStorage.setItem('tni_to_total', String(loadToTotal() + 1)); }
 
 // ---- FULLSCREEN UTILITY ----
 window.toggleFullscreen = function() {
@@ -92,7 +111,7 @@ function updateHeaderStats() {
   var el3 = document.getElementById('hStatTO');
   if (el1) el1.textContent = allSoal.length;
   if (el2) el2.textContent = Object.keys(SOAL_DATABASE).length;
-  if (el3) el3.textContent = loadScores().length;
+  if (el3) el3.textContent = loadToTotal();
 }
 
 // ---- RENDER ROUTER ----
@@ -166,7 +185,7 @@ function renderHome() {
       '</div>' +
       '<div class="card card-sm">' +
         '<div class="card h3">Tryout Selesai</div>' +
-        '<div class="card num">' + scores.length + '</div>' +
+        '<div class="card num">' + loadToTotal() + '</div>' +
         '<div class="card sub">sesi tryout</div>' +
       '</div>' +
       '<div class="card card-sm">' +
@@ -206,7 +225,7 @@ function renderHome() {
 
     '<div class="section-title">Pilih Kategori Langsung</div>' +
     '<div class="grid-auto">' + catCards + '</div>' +
-    '<div style="text-align:center;font-size:11px;color:var(--text3);margin:20px 0 8px">Build v16 · IQ Lab aktif (menu IQ di navigasi)</div>';
+    '<div style="text-align:center;font-size:11px;color:var(--text3);margin:20px 0 8px">Build v17 · IQ Lab aktif (menu IQ di navigasi)</div>';
 }
 
 // ---- PILIH KATEGORI ----
@@ -233,7 +252,9 @@ function renderCat() {
   return '<div class="mode-badge">' + (isTO ? ic('clock', 14) + ' Mode Tryout dengan Timer' : ic('book', 14) + ' Mode Belajar tanpa Timer') + '</div>' +
     '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">' +
     (isTO ? 'Tryout' : 'Mode Belajar') + '</div>' +
-    '<div style="font-size:13px;color:var(--text2);margin-bottom:20px">Pilih kategori soal:</div>' +
+    '<div style="font-size:13px;color:var(--text2);margin-bottom:20px">' +
+    (isTO ? 'Pilih kategori soal — tiap sesi tryout berisi maksimal ' + TRYOUT_MAX_SOAL + ' soal acak (90 menit).'
+          : 'Pilih kategori soal — semua soal dibahas lengkap, tanpa batas waktu.') + '</div>' +
     '<div class="grid-auto">' + items + '</div>';
 }
 
@@ -242,20 +263,30 @@ function startCat(cat, mode) {
   S.cat = cat;
   S.mode = mode;
   S.isSimulasi = false;
+  S.iqSpec = null;
   S.idx = 0;
   S.answers = {};
   S.flagged = {};
 
   if (cat === 'all') {
     S.questions = shuffle(getAllSoal());
-  } else {
+  } else if (SOAL_DATABASE[cat]) {
     var db = SOAL_DATABASE[cat];
     S.questions = shuffle(db.soal.map(function(s) {
       return Object.assign({}, s, { kategori: db.nama });
     }));
+  } else {
+    S.questions = [];   // kategori tidak dikenal: jangan sampai error
   }
 
-  S.totalTime = S.questions.length * 90;
+  // Mode tryout dibatasi TRYOUT_MAX_SOAL (60 soal = 90 menit) supaya seperti
+  // ujian sebenarnya. Mode belajar tetap memakai semua soal tanpa timer.
+  if (mode === 'tryout' && S.questions.length > TRYOUT_MAX_SOAL) {
+    S.questions = S.questions.slice(0, TRYOUT_MAX_SOAL);
+  }
+
+  S.timed = (mode === 'tryout');
+  S.totalTime = S.timed ? S.questions.length * 90 : 0;
   S.timeLeft = S.totalTime;
   if (S.timer) { clearInterval(S.timer); S.timer = null; }
 
@@ -276,12 +307,10 @@ function renderSoal() {
   var isFlagged = !!S.flagged[S.idx];
 
   var timerHtml = '';
-  if (S.mode === 'tryout' || S.mode === 'iq') {
-    var mn = Math.floor(S.timeLeft / 60);
-    var sc = S.timeLeft % 60;
+  if (S.timed && S.timeLeft > 0) {
     var cls = S.timeLeft < 30 ? 'danger' : (S.timeLeft < 90 ? 'warning' : '');
     timerHtml = '<div class="timer-box"><div class="label">Sisa Waktu</div>' +
-      '<div class="timer-num ' + cls + '">' + pad(mn) + ':' + pad(sc) + '</div></div>';
+      '<div class="timer-num ' + cls + '">' + fmtDur(S.timeLeft) + '</div></div>';
   }
 
   var opts = q.pilihan.map(function(p, i) {
@@ -401,7 +430,7 @@ function jumpToQ(idx) {
   if (idx >= 0 && idx < S.questions.length) {
     S.idx = idx;
     render();
-    if (S.mode === 'tryout') startTimerIfNeeded();
+    startTimerIfNeeded();
   }
 }
 window.jumpToQ = jumpToQ;
@@ -414,7 +443,7 @@ window.toggleFlag = toggleFlag;
 
 // ---- TIMER ----
 function startTimerIfNeeded() {
-  if (S.mode !== 'tryout' && S.mode !== 'iq') return;
+  if (!S.timed || S.timeLeft <= 0) return;   // sesi tanpa timer (drill/belajar) tidak dihitung
   if (S.timer) return;
   S.timer = setInterval(function() {
     S.timeLeft--;
@@ -425,9 +454,7 @@ function startTimerIfNeeded() {
     }
     var el = document.querySelector('.timer-num');
     if (el) {
-      var mn = Math.floor(S.timeLeft / 60);
-      var sc = S.timeLeft % 60;
-      el.textContent = pad(mn) + ':' + pad(sc);
+      el.textContent = fmtDur(S.timeLeft);
       el.className = 'timer-num ' + (S.timeLeft < 30 ? 'danger' : (S.timeLeft < 90 ? 'warning' : ''));
     }
   }, 1000);
@@ -447,14 +474,14 @@ window.pickAnswer = function(i) {
   saveProgress(prog);
 
   render();
-  if (S.mode === 'tryout') startTimerIfNeeded();
+  startTimerIfNeeded();
 };
 
 window.nextQ = function() {
   if (S.idx < S.questions.length - 1) {
     S.idx++;
     render();
-    if (S.mode === 'tryout') startTimerIfNeeded();
+    startTimerIfNeeded();
   }
 };
 
@@ -462,7 +489,7 @@ window.prevQ = function() {
   if (S.idx > 0) {
     S.idx--;
     render();
-    if (S.mode === 'tryout') startTimerIfNeeded();
+    startTimerIfNeeded();
   }
 };
 
@@ -489,8 +516,7 @@ window.finishSession = function() {
   var nilai = Math.round((benar / n) * 100);
   var lulus = nilai >= 70;
   var tUsed = S.totalTime - S.timeLeft;
-  var tStr = S.mode === 'tryout'
-    ? Math.floor(tUsed / 60) + ' mnt ' + (tUsed % 60) + ' dtk' : '-';
+  var tStr = S.timed ? fmtDur(tUsed) : '-';
 
   S.lastResult = {
     nilai: nilai,
@@ -523,6 +549,7 @@ window.finishSession = function() {
     });
     if (scores.length > 10) scores.shift();
     saveScores(scores);
+    bumpToTotal();          // hitungan tryout total (riwayat tetap 10 terakhir)
   }
   updateHeaderStats();
 
@@ -546,26 +573,35 @@ function renderHasil() {
     res = { nilai: nil, lulus: nil >= 70, benar: b, salah: s, skip: sk, tStr: '-' };
   }
 
-  var iqNote = (S.mode === 'iq')
-    ? '<div class="tips-box" style="margin-bottom:14px"><div class="tips-title">' + ic('bulb', 15) + ' Catatan</div>' +
-      '<ul><li>Angka di atas = <strong>akurasi latihan</strong>, bukan skor IQ. Skor IQ hanya dari alat tervalidasi.</li>' +
-      '<li>Catat hasil retest resmi di menu <strong>IQ Lab → Log Skor</strong>.</li>' +
-      '<li>Target latihan: akurasi ≥ 80% sebelum naik ke level soal yang lebih cepat.</li></ul></div>'
+  var isIq = (S.mode === 'iq');
+  var iqNote = isIq
+    ? '<div class="tips-box" style="margin-bottom:14px"><div class="tips-title">' + ic('bulb', 15) + ' Cara baca hasil ini</div>' +
+      '<ul><li>Angka besar = <strong>akurasi latihan</strong> (persen jawaban benar), <strong>bukan skor IQ</strong>.</li>' +
+      '<li>Target latihan: akurasi <strong>≥ 80%</strong> dulu, baru naik ke soal yang lebih cepat.</li>' +
+      '<li>Skor IQ hanya keluar dari alat ukur tervalidasi — catat hasilnya di <strong>IQ Lab → Log Skor</strong>.</li></ul></div>'
     : '';
+
+  var badge = isIq
+    ? '<div class="result-status ' + (res.nilai >= 80 ? 'pass' : 'fail') + '">' +
+        (res.nilai >= 80
+          ? ic('check-circle', 16) + ' Akurasi bagus (≥ 80%) — naikkan level/kecepatan'
+          : ic('x-circle', 16) + ' Akurasi belum 80% — ulangi drill domain yang sama') +
+      '</div>'
+    : '<div class="result-status ' + (res.lulus ? 'pass' : 'fail') + '">' +
+        (res.lulus ? ic('check-circle', 16) + ' LULUS — Nilai ≥ 70' : ic('x-circle', 16) + ' Belum Lulus — Nilai < 70') +
+      '</div>';
 
   return '<div class="result-wrap">' + iqNote +
     '<div class="result-circle ' + (res.lulus ? 'pass' : 'fail') + '">' +
       '<div class="score">' + res.nilai + '</div>' +
-      '<div class="score-label">/ 100</div>' +
+      '<div class="score-label">' + (isIq ? '% akurasi' : '/ 100') + '</div>' +
     '</div>' +
-    '<div class="result-status ' + (res.lulus ? 'pass' : 'fail') + '">' +
-      (res.lulus ? ic('check-circle', 16) + ' LULUS — Nilai ≥ 70' : ic('x-circle', 16) + ' Belum Lulus — Nilai < 70') +
-    '</div>' +
+    badge +
     '<div class="result-stats">' +
       '<div class="result-stat"><div class="rs-num rs-correct">' + res.benar + '</div><div class="rs-lbl">Benar</div></div>' +
       '<div class="result-stat"><div class="rs-num rs-wrong">' + res.salah + '</div><div class="rs-lbl">Salah</div></div>' +
       '<div class="result-stat"><div class="rs-num">' + res.skip + '</div><div class="rs-lbl">Dilewati</div></div>' +
-      (S.mode === 'tryout' ? '<div class="result-stat"><div class="rs-num" style="font-size:16px">' + res.tStr + '</div><div class="rs-lbl">Waktu</div></div>' : '') +
+      (S.timed ? '<div class="result-stat"><div class="rs-num" style="font-size:16px">' + res.tStr + '</div><div class="rs-lbl">Waktu</div></div>' : '') +
     '</div>' +
     '<div class="result-actions">' +
       '<button class="btn btn-primary" onclick="retrySession()">' + ic('refresh', 16) + ' Ulangi</button>' +
@@ -577,10 +613,17 @@ function renderHasil() {
 }
 
 window.retrySession = function() {
+  // sesi IQ diulang lewat spesifikasi tersimpan (bukan lewat SOAL_DATABASE)
+  if (S.iqSpec && typeof IQ_GEN !== 'undefined') {
+    var items = IQ_GEN.buat(S.iqSpec.domain, S.iqSpec.jumlah);
+    if (items.length) { iqMulai(items, S.iqSpec.detik); return; }
+  }
   if (S.isSimulasi) {
     startSimulasi60();
-  } else {
+  } else if (SOAL_DATABASE[S.cat]) {
     startCat(S.cat, S.mode);
+  } else {
+    goPage('home');
   }
 };
 
@@ -595,6 +638,8 @@ window.drillWrong = function() {
   }
   if (!wrongQ.length) return;
   S.mode = 'learn';
+  S.iqSpec = null;
+  S.timed = false;
   S.questions = shuffle(wrongQ);
   S.idx = 0;
   S.answers = {};
@@ -610,11 +655,13 @@ window.startSimulasi60 = function() {
   var all = getAllSoal();
   S.cat = 'all';
   S.mode = 'tryout';
+  S.iqSpec = null;
   S.isSimulasi = true;
   S.questions = shuffle(all).slice(0, 60);
   S.idx = 0;
   S.answers = {};
   S.flagged = {};
+  S.timed = true;
   S.totalTime = 5400; // 90 menit = 5400 detik
   S.timeLeft = 5400;
   if (S.timer) { clearInterval(S.timer); S.timer = null; }
@@ -634,6 +681,7 @@ window.reviewSession = function() {
 function renderBank() {
   var catKeys = Object.keys(SOAL_DATABASE);
   var list = [];
+  var q = (S.bankQuery || '').toLowerCase().trim();
   catKeys.forEach(function(k) {
     if (S.bankCat === 'all' || S.bankCat === k) {
       SOAL_DATABASE[k].soal.forEach(function(s) {
@@ -642,30 +690,68 @@ function renderBank() {
     }
   });
 
+  var totalKategori = list.length;
+  if (q) {
+    list = list.filter(function(s) {
+      return String(s.pertanyaan).toLowerCase().indexOf(q) >= 0 ||
+        String(s.katNama).toLowerCase().indexOf(q) >= 0;
+    });
+  }
+
   var opts = '<option value="all"' + (S.bankCat==='all'?' selected':'') + '>Semua Kategori</option>';
   catKeys.forEach(function(k) {
     opts += '<option value="' + k + '"' + (S.bankCat===k?' selected':'') + '>' + SOAL_DATABASE[k].nama + '</option>';
   });
 
-  var items = list.map(function(s, i) {
+  var limit = Math.min(S.bankLimit || 60, list.length);
+  var items = list.slice(0, limit).map(function(s, i) {
     // Encode soal ke base64 untuk menghindari masalah quote
     var encoded = btoa(encodeURIComponent(JSON.stringify(s)));
     return '<div class="bank-item" onclick="showModal(\'' + encoded + '\')">' +
-      '<div class="bi-meta">' + (i+1) + '. ' + s.katNama + '</div>' +
-      '<div class="bi-q">' + s.pertanyaan + '</div>' +
+      '<div class="bi-meta">' + (i+1) + '. ' + escapeHtml(s.katNama) + '</div>' +
+      '<div class="bi-q">' + escapeHtml(s.pertanyaan) + '</div>' +
       '</div>';
   }).join('');
+
+  var moreBtn = (list.length > limit)
+    ? '<button class="btn btn-secondary btn-sm" style="width:100%;margin-top:10px" onclick="bankMore()">Tampilkan ' +
+      Math.min(60, list.length - limit) + ' soal lagi (' + limit + '/' + list.length + ' tampil)</button>'
+    : (list.length ? '<div style="text-align:center;font-size:11px;color:var(--text3);margin-top:12px">Semua ' + list.length + ' soal sudah tampil</div>' : '');
 
   return '<div class="bank-filters">' +
     '<span style="font-size:13px;font-weight:600;color:var(--text)">Bank Soal</span>' +
     '<select onchange="setBankCat(this.value)">' + opts + '</select>' +
     '<span class="bank-count">' + list.length + ' soal</span>' +
     '</div>' +
-    '<p style="font-size:12px;color:var(--text3);margin-bottom:14px">Klik soal untuk lihat kunci jawaban dan pembahasan.</p>' +
-    items;
+    '<input type="text" class="iq-input" id="bankSearch" placeholder="Cari kata kunci soal... (mis. Pancasila)" ' +
+      'value="' + escapeHtml(S.bankQuery || '') + '" oninput="bankSearch(this.value)" ' +
+      'style="width:100%;margin-bottom:12px">' +
+    '<p style="font-size:12px;color:var(--text3);margin-bottom:14px">Klik soal untuk lihat kunci jawaban dan pembahasan. ' +
+      (q ? 'Hasil pencarian dari ' + totalKategori + ' soal.' : 'Ditampilkan bertahap supaya HP tetap ringan.') + '</p>' +
+    (items || '<div class="empty"><div class="empty-icon">' + icon('alert', 40) + '</div><p>Tidak ada soal yang cocok.</p></div>') +
+    moreBtn;
 }
 
-window.setBankCat = function(v) { S.bankCat = v; S.page = 'bank'; render(); };
+function bankRerender() { S.page = 'bank'; render(); }
+
+window.setBankCat = function(v) { S.bankCat = v; S.bankLimit = 60; bankRerender(); };
+
+window.bankMore = function() { S.bankLimit = (S.bankLimit || 60) + 60; bankRerender(); };
+
+var _bankSearchTimer = null;
+window.bankSearch = function(v) {
+  if (_bankSearchTimer) clearTimeout(_bankSearchTimer);
+  // debounce sederhana supaya tidak render tiap ketikan
+  _bankSearchTimer = setTimeout(function() {
+    var aktif = document.activeElement;
+    var pos = aktif && aktif.id === 'bankSearch' ? aktif.selectionStart : null;
+    S.bankQuery = v;
+    S.bankLimit = 60;
+    bankRerender();
+    var el2 = document.getElementById('bankSearch');
+    if (el2) { el2.focus(); if (pos !== null) { try { el2.setSelectionRange(pos, pos); } catch (e) {} } }
+  }, 220);
+};
 
 function renderModal() {
   return '<div class="modal-bg" id="soalModal">' +
@@ -794,7 +880,8 @@ window.exportData = function() {
     tni_iq_meta: loadIqMeta(),
     tni_iq_nb: loadIqNb(),
     tni_iq_sesi: loadIqSesi(),
-    tni_psi_progress: (function(){ try { return JSON.parse(localStorage.getItem('tni_psi_progress')||'{}'); } catch(e){ return {}; } })()
+    tni_to_total: loadToTotal(),
+    tni_psi_progress: (function(){ try { return JSON.parse(localStorage.getItem('tni_psi_progress')||'[]'); } catch(e){ return []; } })()
   };
   var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   var url = URL.createObjectURL(blob);
@@ -855,23 +942,22 @@ window.importData = function(event) {
         });
       }
 
-      // Validasi tni_psi_progress
-      var cleanPsi = { history: [] };
-      if (json.tni_psi_progress && typeof json.tni_psi_progress === 'object') {
-        if (Array.isArray(json.tni_psi_progress.history)) {
-          json.tni_psi_progress.history.slice(0, 50).forEach(function(h) {
-            if (h && typeof h === 'object') {
-              cleanPsi.history.push({
-                testName: typeof h.testName === 'string' ? escapeHtml(h.testName).slice(0, 50) : '',
-                score: Number(h.score) || 0,
-                correct: Number(h.correct) || 0,
-                total: Number(h.total) || 0,
-                timestamp: Number(h.timestamp) || Date.now()
-              });
-            }
+      // Validasi tni_psi_progress (format yang dipakai psikologi.js = array)
+      var cleanPsi = [];
+      var psiSrc = [];
+      if (Array.isArray(json.tni_psi_progress)) psiSrc = json.tni_psi_progress;
+      else if (json.tni_psi_progress && Array.isArray(json.tni_psi_progress.history)) psiSrc = json.tni_psi_progress.history;
+      psiSrc.slice(0, 50).forEach(function(h) {
+        if (h && typeof h === 'object') {
+          cleanPsi.push({
+            testName: typeof h.testName === 'string' ? escapeHtml(h.testName).slice(0, 50) : '',
+            score: Number(h.score) || 0,
+            correct: Number(h.correct) || 0,
+            total: Number(h.total) || 0,
+            timestamp: Number(h.timestamp) || Date.now()
           });
         }
-      }
+      });
 
       // validasi data IQ Lab
       var cleanIqLog = [];
@@ -904,6 +990,7 @@ window.importData = function(event) {
       localStorage.setItem('tni_iq_meta', JSON.stringify(cleanIqMeta));
       localStorage.setItem('tni_iq_nb', JSON.stringify(cleanIqNb));
       localStorage.setItem('tni_psi_progress', JSON.stringify(cleanPsi));
+      localStorage.setItem('tni_to_total', String(Math.max(cleanScores.length, Number(json.tni_to_total) || 0)));
 
       updateHeaderStats();
       alert('Data backup terverifikasi aman & berhasil dipulihkan!');
@@ -919,9 +1006,12 @@ window.resetAll = function() {
   if (confirm('Hapus semua progress dan riwayat tryout?')) {
     localStorage.removeItem('tni_prog');
     localStorage.removeItem('tni_scores');
+    localStorage.removeItem('tni_to_total');
     localStorage.removeItem('tni_psi_progress');
     localStorage.removeItem('tni_iq_log');
     localStorage.removeItem('tni_iq_sesi');
+    localStorage.removeItem('tni_iq_meta');
+    localStorage.removeItem('tni_iq_nb');
     updateHeaderStats();
     render();
   }
@@ -939,7 +1029,7 @@ window.goHome = function() { goPage('home'); };
 
 window.navTo = function(page) {
   clearInterval(S.timer); S.timer = null;
-  if (page === 'bank') S.bankCat = 'all';
+  if (page === 'bank') { S.bankCat = 'all'; S.bankQuery = ''; S.bankLimit = 60; }
   if (page === 'tips') S.tipsCat = 'umum';
   if (page === 'iq' && typeof IQS !== 'undefined' && IQS.nb && IQS.nb.running) iqNbStop('Dihentikan.');
   if (page === 'iq') { S.mode = null; if (typeof IQS !== 'undefined') IQS.tab = 'lab'; }
@@ -950,6 +1040,8 @@ window.navTo = function(page) {
 // ---- KEYBOARD ----
 document.addEventListener('keydown', function(e) {
   if (S.page !== 'soal') return;
+  var t = e.target;
+  if (t && t.tagName && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
   var map = { '1':0, '2':1, '3':2, '4':3 };
   if (map[e.key] !== undefined) {
     if (S.answers[S.idx] === undefined) pickAnswer(map[e.key]);
@@ -990,13 +1082,13 @@ function renderTips(katKey) {
   var cards = d.tips.map(function(t,i) {
     return '<div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:flex-start;gap:12px">'+
       '<div style="background:var(--blue);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">'+(i+1)+'</div>'+
-      '<div><div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px">'+t.judul+'</div>'+
-      '<div style="font-size:13px;color:var(--text2);line-height:1.6">'+t.isi+'</div></div></div></div>';
+      '<div><div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px">'+escapeHtml(t.judul)+'</div>'+
+      '<div style="font-size:13px;color:var(--text2);line-height:1.6">'+escapeHtml(t.isi)+'</div></div></div></div>';
   }).join('');
   return '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">Strategi & Tips</div>'+
     '<div style="font-size:13px;color:var(--text2);margin-bottom:16px">Cara cepat dapat nilai tinggi PK Perwira TNI.</div>'+
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">'+tabs+'</div>'+
-    '<div style="font-size:16px;font-weight:700;color:var(--gold2);margin-bottom:16px">'+d.judul+'</div>'+cards;
+    '<div style="font-size:16px;font-weight:700;color:var(--gold2);margin-bottom:16px">'+escapeHtml(d.judul)+'</div>'+cards;
 }
 window.renderTips = renderTips;
 

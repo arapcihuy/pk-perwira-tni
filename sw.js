@@ -3,28 +3,32 @@
 //  - HTML (navigasi): NETWORK-FIRST, supaya update situs langsung kelihatan.
 //  - Aset (js/css/gambar/data): cache-first + update di belakang layar
 //    (stale-while-revalidate) supaya tetap cepat & bisa offline.
-const CACHE = 'tni-perwira-v16';
+const CACHE = 'tni-perwira-v17';
 const FILES = [
   './',
   './index.html',
   './manifest.json',
-  './data/soal.js',
-  './data/soal-psikologi.js',
-  './data/soal-iq.js',
-  './static/css/style.css',
-  './static/js/icons.js',
-  './static/js/app.js',
-  './static/js/psikologi.js',
-  './static/js/iq.js',
+  './data/soal.js?v=17',
+  './data/soal-psikologi.js?v=17',
+  './data/soal-iq.js?v=17',
+  './static/css/style.css?v=17',
+  './static/js/icons.js?v=17',
+  './static/js/app.js?v=17',
+  './static/js/psikologi.js?v=17',
+  './static/js/iq.js?v=17',
   './static/icons/icon-192.png',
   './static/icons/icon-512.png'
 ];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
-    caches.open(CACHE).then(function (c) { return c.addAll(FILES); })
+    caches.open(CACHE).then(function (c) {
+      // satu file gagal jangan sampai membatalkan seluruh instalasi PWA
+      return Promise.all(FILES.map(function (u) {
+        return c.add(u).catch(function () { return null; });
+      }));
+    }).then(function () { return self.skipWaiting(); })
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', function (e) {
