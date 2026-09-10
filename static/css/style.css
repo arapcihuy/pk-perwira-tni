@@ -983,3 +983,100 @@ kbd {
   .option { min-height: 56px; cursor: default; }
   select { min-height: 46px; font-size: 16px; }
 }
+
+
+/* ============================================================
+   IQ LAB — gaya khusus halaman IQ (ditambahkan, tidak mengubah
+   gaya halaman lain). Semua selector di-scope ke kelas iq-* / nb-*.
+   ============================================================ */
+.soal-svg { display: flex; justify-content: center; margin: 14px 0; color: var(--text); }
+.soal-svg svg { max-width: 100%; height: auto; }
+.opt-svg { display: flex; align-items: center; justify-content: center; color: var(--text); }
+.option .opt-svg svg { width: 54px; height: 54px; }
+
+.iq-tracker {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 16px; margin-bottom: 22px; backdrop-filter: blur(12px);
+}
+.iq-track-head { display: flex; justify-content: space-between; align-items: flex-end; }
+.iq-track-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 2px; }
+.iq-track-num { font-size: 34px; font-weight: 800; color: var(--gold3); line-height: 1; }
+.iq-track-target { font-size: 22px; font-weight: 700; color: var(--white); line-height: 1.2; }
+.iq-tracker .prog-track, .iq-prog-box .prog-track {
+  height: 8px; background: var(--border); border-radius: 6px; overflow: hidden;
+}
+.iq-tracker .prog-bar, .iq-prog-box .prog-bar {
+  height: 100%; border-radius: 6px; transition: width 0.5s ease;
+  background: linear-gradient(90deg, var(--blue), var(--gold2));
+}
+
+.iq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.iq-dom, .iq-home-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 14px; cursor: pointer; transition: border-color 0.2s ease, transform 0.15s ease;
+}
+.iq-dom:hover, .iq-home-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+.iq-home-card { cursor: default; margin-bottom: 24px; }
+.iq-dom-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.iq-kode {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.06em; padding: 3px 7px; border-radius: 6px;
+  background: var(--glow); color: var(--gold3); border: 1px solid var(--border);
+}
+.iq-dom-nama { font-size: 13px; font-weight: 700; color: var(--white); }
+.iq-dom-desc { font-size: 12px; color: var(--text2); line-height: 1.55; margin-bottom: 10px; }
+.iq-dom-foot { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+
+.iq-nb-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 16px; margin-bottom: 22px;
+}
+.iq-nb-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.iq-nb-area { display: flex; flex-direction: column; align-items: center; }
+.nb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.nb-cell {
+  width: 62px; height: 62px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface2); transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-cell.on { background: var(--blue); box-shadow: 0 0 18px rgba(10, 132, 255, 0.55); }
+.nb-status { font-size: 12px; color: var(--text2); margin-top: 12px; text-align: center; line-height: 1.6; }
+.btn.flash { box-shadow: 0 0 0 3px var(--glow); }
+
+.iq-links { display: grid; gap: 10px; margin-bottom: 22px; }
+.iq-link {
+  display: block; text-decoration: none; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 13px 14px; transition: border-color 0.2s ease;
+}
+.iq-link:hover { border-color: var(--border2); }
+.iq-link-nama { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.iq-link-ukur { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+.iq-link-dasar { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+.iq-link-url { font-size: 10px; color: var(--blue2); margin-top: 6px; word-break: break-all; }
+
+.iq-form { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 18px; }
+.iq-form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.iq-input {
+  flex: 1; min-width: 130px; background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); border-radius: 10px; padding: 11px 12px; font-size: 14px; font-family: inherit;
+}
+.iq-input:focus { outline: none; border-color: var(--blue); }
+
+.iq-chart {
+  display: flex; align-items: flex-end; gap: 8px; height: 130px; padding: 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 16px;
+}
+.iq-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.iq-bar { width: 100%; max-width: 34px; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, var(--gold2), var(--blue)); }
+.iq-bar-lbl { font-size: 10px; color: var(--text3); margin-top: 5px; }
+
+.iq-log-row {
+  display: flex; align-items: center; gap: 12px; padding: 11px 13px; margin-bottom: 8px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+}
+.iq-log-skor { font-size: 20px; font-weight: 800; color: var(--gold3); min-width: 42px; }
+.iq-prog-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+
+@media (max-width: 640px) {
+  .iq-grid { grid-template-columns: 1fr; }
+  .nb-cell { width: 54px; height: 54px; }
+  .iq-track-num { font-size: 30px; }
+}

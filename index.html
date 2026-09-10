@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PK Perwira">
-  <meta name="description" content="Platform belajar seleksi PK Perwira TNI AU - 1000 soal, tryout, drill, tes psikologi, tips trik">
+  <meta name="description" content="Platform belajar seleksi PK Perwira TNI AU - 1000 soal, tryout, drill, tes psikologi, IQ Lab (matriks, deret, rotasi, verbal) & tips trik">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="static/icons/icon-192.png">
   <title>PK Perwira TNI — Platform Belajar</title>
@@ -34,6 +34,7 @@
     <button class="nav-btn" data-page="psikologi" onclick="navTo('psikologi')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg></span><span>Psikologi</span></button>
     <button class="nav-btn" data-page="bank" onclick="navTo('bank')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span>Bank</span></button>
     <button class="nav-btn" data-page="tips" onclick="navTo('tips')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></span><span>Tips</span></button>
+    <button class="nav-btn" data-page="iq" onclick="navTo('iq')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M9 9h6"/><path d="M9 13h6"/></svg></span><span>IQ</span></button>
     <button class="nav-btn" data-page="prog" onclick="navTo('prog')"><span class="ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span><span>Progress</span></button>
   </nav>
 
@@ -76,9 +77,11 @@
 
   <script src="data/soal.js"></script>
   <script src="data/soal-psikologi.js"></script>
+  <script src="data/soal-iq.js"></script>
   <script src="static/js/icons.js"></script>
   <script src="static/js/app.js"></script>
   <script src="static/js/psikologi.js"></script>
+  <script src="static/js/iq.js"></script>
 
   <script>
     // Update header stats setelah semua script dimuat

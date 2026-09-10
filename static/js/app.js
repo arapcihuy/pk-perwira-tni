@@ -125,6 +125,7 @@ function render() {
     case 'bank':  m.innerHTML = renderBank();  break;
     case 'tips':  m.innerHTML = renderTips(S.tipsCat || 'umum'); break;
     case 'prog':  m.innerHTML = renderProg();  break;
+    case 'iq':    m.innerHTML = renderIQ();    break;
   }
 }
 window.render = render;
@@ -179,8 +180,17 @@ function renderHome() {
       '<button class="btn btn-primary btn-lg" style="flex:1" onclick="goPage(\'cat\',\'tryout\')">' + ic('clock', 17) + ' Mulai Tryout</button>' +
       '<button class="btn btn-secondary btn-lg" style="flex:1" onclick="goPage(\'cat\',\'learn\')">' + ic('book', 17) + ' Mode Belajar</button>' +
     '</div>' +
-    '<div style="margin-bottom:24px">' +
+    '<div style="margin-bottom:12px">' +
       '<button class="btn btn-danger btn-lg" style="width:100%" onclick="startSimulasi60()">' + ic('target', 17) + ' Simulasi PK Perwira — 60 Soal · 90 Menit</button>' +
+    '</div>' +
+
+    '<div class="iq-home-card">' +
+      '<div class="iq-dom-top"><span class="iq-kode">IQ</span><span class="iq-dom-nama">IQ Lab — Potensi Kognitif</span></div>' +
+      '<div class="iq-dom-desc">Latihan matriks figural, deret angka &amp; huruf, rotasi figural, verbal-aritmetika (format ICAR/Raven-style) + Dual N-Back. Bonus: tracker skor menuju target ' + loadIqMeta().target + '.</div>' +
+      '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">' +
+        '<button class="btn btn-primary btn-sm" style="flex:1" onclick="navTo(\'iq\')">' + ic('brain', 15) + ' Mulai Latihan IQ</button>' +
+        '<button class="btn btn-secondary btn-sm" style="flex:1" onclick="startIQSimulasi()">' + ic('clock', 15) + ' Simulasi IQ 25 Soal</button>' +
+      '</div>' +
     '</div>' +
 
     '<div class="tips-box">' +
@@ -265,7 +275,7 @@ function renderSoal() {
   var isFlagged = !!S.flagged[S.idx];
 
   var timerHtml = '';
-  if (S.mode === 'tryout') {
+  if (S.mode === 'tryout' || S.mode === 'iq') {
     var mn = Math.floor(S.timeLeft / 60);
     var sc = S.timeLeft % 60;
     var cls = S.timeLeft < 30 ? 'danger' : (S.timeLeft < 90 ? 'warning' : '');
@@ -283,9 +293,13 @@ function renderSoal() {
       if (i === ans) cls += ' selected';
     }
     var onclick = answered ? '' : 'onclick="pickAnswer(' + i + ')"';
+    var isi = '<span>' + escapeHtml(p) + '</span>';
+    if (q.pilihanSvg && q.pilihanSvg[i]) {
+      isi = '<span class="opt-svg">' + q.pilihanSvg[i] + '</span>' + (p ? '<span>' + escapeHtml(p) + '</span>' : '');
+    }
     return '<div class="' + cls + '" ' + onclick + '>' +
       '<div class="option-letter">' + letters[i] + '</div>' +
-      '<span>' + escapeHtml(p) + '</span>' +
+      isi +
       '</div>';
   }).join('');
 
@@ -313,6 +327,7 @@ function renderSoal() {
   var skipBtn = (!answered && S.mode === 'tryout')
     ? '<button class="btn btn-ghost btn-sm" onclick="skipQ()">' + ic('chevron-right', 15) + ' Lewati</button>' : '';
 
+  var svgHtml = (q.svg && typeof q.svg === 'string') ? '<div class="soal-svg">' + q.svg + '</div>' : '';
   var safeImg = sanitizeImgSrc(q.gambar);
   var imgHtml = safeImg ? '<div class="soal-img"><img src="' + safeImg + '" alt="Gambar soal" style="max-width:100%;max-height:320px;border-radius:8px;margin:10px 0;display:block;border:1px solid var(--border)"></div>' : '';
 
@@ -335,7 +350,7 @@ function renderSoal() {
         (isFlagged ? '<span style="font-size:11px;color:var(--gold3);font-weight:700;display:inline-flex;align-items:center;gap:4px">' + ic('flag', 12) + ' Ditandai Ragu-ragu</span>' : '') +
       '</div>' +
       '<div class="soal-text">' + escapeHtml(q.pertanyaan) + '</div>' +
-      imgHtml +
+      imgHtml + svgHtml +
       '<div class="options">' + opts + '</div>' +
     '</div>' +
     expHtml +
@@ -398,7 +413,7 @@ window.toggleFlag = toggleFlag;
 
 // ---- TIMER ----
 function startTimerIfNeeded() {
-  if (S.mode !== 'tryout') return;
+  if (S.mode !== 'tryout' && S.mode !== 'iq') return;
   if (S.timer) return;
   S.timer = setInterval(function() {
     S.timeLeft--;
@@ -486,16 +501,28 @@ window.finishSession = function() {
     isSimulasi: !!S.isSimulasi
   };
 
-  var scores = loadScores();
-  scores.push({
-    nilai: nilai,
-    benar: benar,
-    salah: salah,
-    skip: skip,
-    tgl: new Date().toLocaleDateString('id-ID')
-  });
-  if (scores.length > 10) scores.shift();
-  saveScores(scores);
+  if (S.mode === 'iq') {
+    // sesi latihan IQ dicatat terpisah supaya riwayat tryout tetap bersih
+    var sesi = (function () {
+      try { return JSON.parse(localStorage.getItem('tni_iq_sesi') || '[]'); } catch (e) { return []; }
+    })();
+    sesi.push({
+      nilai: nilai, benar: benar, salah: salah, skip: skip,
+      tgl: new Date().toLocaleDateString('id-ID')
+    });
+    localStorage.setItem('tni_iq_sesi', JSON.stringify(sesi.slice(-30)));
+  } else {
+    var scores = loadScores();
+    scores.push({
+      nilai: nilai,
+      benar: benar,
+      salah: salah,
+      skip: skip,
+      tgl: new Date().toLocaleDateString('id-ID')
+    });
+    if (scores.length > 10) scores.shift();
+    saveScores(scores);
+  }
   updateHeaderStats();
 
   S.page = 'hasil';
@@ -518,7 +545,14 @@ function renderHasil() {
     res = { nilai: nil, lulus: nil >= 70, benar: b, salah: s, skip: sk, tStr: '-' };
   }
 
-  return '<div class="result-wrap">' +
+  var iqNote = (S.mode === 'iq')
+    ? '<div class="tips-box" style="margin-bottom:14px"><div class="tips-title">' + ic('bulb', 15) + ' Catatan</div>' +
+      '<ul><li>Angka di atas = <strong>akurasi latihan</strong>, bukan skor IQ. Skor IQ hanya dari alat tervalidasi.</li>' +
+      '<li>Catat hasil retest resmi di menu <strong>IQ Lab → Log Skor</strong>.</li>' +
+      '<li>Target latihan: akurasi ≥ 80% sebelum naik ke level soal yang lebih cepat.</li></ul></div>'
+    : '';
+
+  return '<div class="result-wrap">' + iqNote +
     '<div class="result-circle ' + (res.lulus ? 'pass' : 'fail') + '">' +
       '<div class="score">' + res.nilai + '</div>' +
       '<div class="score-label">/ 100</div>' +
@@ -698,7 +732,35 @@ function renderProg() {
         '</div>';
       }).join('') + '</div>';
 
+  // --- seksi IQ Lab ---
+  var iqKeys = Object.keys(prog).filter(function (k) { return k.indexOf('IQ — ') === 0; });
+  var iqRows = iqKeys.map(function (k) {
+    var p = prog[k];
+    var pctIq = p.total > 0 ? Math.round((p.benar / p.total) * 100) : 0;
+    return '<div class="prog-row">' +
+      '<div class="prog-label">' + icon('brain', 16) + ' ' + escapeHtml(k.replace('IQ — ', '')) + '</div>' +
+      '<div class="prog-track"><div class="prog-bar" style="width:' + pctIq + '%"></div></div>' +
+      '<div class="prog-pct">' + pctIq + '%</div>' +
+      '</div><div class="prog-detail">' + p.benar + '/' + p.total + ' soal benar</div>';
+  }).join('');
+  var iqLog = loadIqLog();
+  var iqMeta = loadIqMeta();
+  var iqLast = iqLog.length ? iqLog[iqLog.length - 1] : null;
+  var iqBest = loadIqNb();
+  var iqBox = '<div class="iq-prog-box">' +
+    '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px">' +
+      '<div><div class="iq-track-label">Skor terakhir</div><div class="iq-track-num">' + (iqLast ? iqLast.skor : iqMeta.baseline) + '</div></div>' +
+      '<div><div class="iq-track-label">Target</div><div class="iq-track-target">' + iqMeta.target + '</div></div>' +
+      '<div><div class="iq-track-label">Retest tercatat</div><div class="iq-track-target">' + iqLog.length + 'x</div></div>' +
+      '<div><div class="iq-track-label">Rekor N-Back</div><div class="iq-track-target">' + (iqBest.best ? iqBest.best + '% (N=' + (iqBest.bestN || '-') + ')' : '-') + '</div></div>' +
+    '</div>' +
+    (iqRows || '<div class="prog-detail" style="margin-bottom:10px">Belum ada latihan IQ. Buka menu IQ Lab untuk mulai.</div>') +
+    '<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="navTo(\'iq\')">' + ic('brain', 15) + ' Buka IQ Lab</button>' +
+  '</div>';
+
   return '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:22px;letter-spacing:-0.4px">' + ic('trend', 20) + ' Progress Belajar</div>' +
+    '<div class="section-title">' + ic('brain', 16) + ' IQ Lab — Latihan Potensi Kognitif</div>' +
+    '<div style="margin-bottom:24px">' + iqBox + '</div>' +
     '<div class="section-title">Akurasi per Kategori</div>' +
     '<div style="margin-bottom:24px">' + rows + '</div>' +
     '<div class="section-title">Riwayat Tryout</div>' +
@@ -727,6 +789,10 @@ window.exportData = function() {
     exportDate: new Date().toISOString(),
     tni_prog: loadProgress(),
     tni_scores: loadScores(),
+    tni_iq_log: loadIqLog(),
+    tni_iq_meta: loadIqMeta(),
+    tni_iq_nb: loadIqNb(),
+    tni_iq_sesi: loadIqSesi(),
     tni_psi_progress: (function(){ try { return JSON.parse(localStorage.getItem('tni_psi_progress')||'{}'); } catch(e){ return {}; } })()
   };
   var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -806,8 +872,36 @@ window.importData = function(event) {
         }
       }
 
+      // validasi data IQ Lab
+      var cleanIqLog = [];
+      if (Array.isArray(json.tni_iq_log)) {
+        json.tni_iq_log.slice(0, 60).forEach(function (e) {
+          if (e && typeof e === 'object') {
+            cleanIqLog.push({
+              tgl: typeof e.tgl === 'string' ? escapeHtml(e.tgl).slice(0, 20) : '',
+              tes: typeof e.tes === 'string' ? escapeHtml(e.tes).slice(0, 80) : 'Lainnya',
+              skor: Math.max(40, Math.min(160, Number(e.skor) || 100)),
+              catatan: typeof e.catatan === 'string' ? escapeHtml(e.catatan).slice(0, 60) : ''
+            });
+          }
+        });
+      }
+      var cleanIqMeta = { baseline: 100, target: 110 };
+      if (json.tni_iq_meta && typeof json.tni_iq_meta === 'object') {
+        cleanIqMeta.baseline = Math.max(40, Math.min(160, Number(json.tni_iq_meta.baseline) || 100));
+        cleanIqMeta.target = Math.max(40, Math.min(160, Number(json.tni_iq_meta.target) || 110));
+      }
+      var cleanIqNb = {};
+      if (json.tni_iq_nb && typeof json.tni_iq_nb === 'object') {
+        cleanIqNb.best = Math.max(0, Math.min(100, Number(json.tni_iq_nb.best) || 0));
+        cleanIqNb.bestN = Math.max(0, Math.min(9, Number(json.tni_iq_nb.bestN) || 0));
+      }
+
       localStorage.setItem('tni_prog', JSON.stringify(cleanProg));
       localStorage.setItem('tni_scores', JSON.stringify(cleanScores));
+      localStorage.setItem('tni_iq_log', JSON.stringify(cleanIqLog));
+      localStorage.setItem('tni_iq_meta', JSON.stringify(cleanIqMeta));
+      localStorage.setItem('tni_iq_nb', JSON.stringify(cleanIqNb));
       localStorage.setItem('tni_psi_progress', JSON.stringify(cleanPsi));
 
       updateHeaderStats();
@@ -825,6 +919,8 @@ window.resetAll = function() {
     localStorage.removeItem('tni_prog');
     localStorage.removeItem('tni_scores');
     localStorage.removeItem('tni_psi_progress');
+    localStorage.removeItem('tni_iq_log');
+    localStorage.removeItem('tni_iq_sesi');
     updateHeaderStats();
     render();
   }
@@ -844,6 +940,8 @@ window.navTo = function(page) {
   clearInterval(S.timer); S.timer = null;
   if (page === 'bank') S.bankCat = 'all';
   if (page === 'tips') S.tipsCat = 'umum';
+  if (page === 'iq' && typeof IQS !== 'undefined' && IQS.nb && IQS.nb.running) iqNbStop('Dihentikan.');
+  if (page === 'iq') { S.mode = null; if (typeof IQS !== 'undefined') IQS.tab = 'lab'; }
   S.page = page;
   render();
 };
@@ -882,8 +980,8 @@ function renderTips(katKey) {
   if (!data) return '<div class="empty"><p>Data tips tidak ditemukan.</p></div>';
   var tabKeys = Object.keys(data);
   var tabs = tabKeys.map(function(k) {
-    var icons = {umum:'target',tkw:'landmark',matematika:'calculator',bahasa_inggris:'globe',penalaran_logika:'brain',numerik:'hash',verbal:'pencil',kraepelin:'zap',tes_gambar:'layers',kepribadian:'user'};
-    var label = ic(icons[k]||'file', 15) + ' ' + (k==='umum'?'Umum':k==='tkw'?'TWK':k==='matematika'?'MTK':k==='bahasa_inggris'?'Inggris':k==='penalaran_logika'?'Logika':k==='numerik'?'Numerik':k==='verbal'?'Verbal':k==='kraepelin'?'Kraepelin':k==='tes_gambar'?'Tes Gambar':k==='kepribadian'?'Kepribadian':k);
+    var icons = {umum:'target',iq:'brain',tkw:'landmark',matematika:'calculator',bahasa_inggris:'globe',penalaran_logika:'brain',numerik:'hash',verbal:'pencil',kraepelin:'zap',tes_gambar:'layers',kepribadian:'user'};
+    var label = ic(icons[k]||'file', 15) + ' ' + (k==='umum'?'Umum':k==='iq'?'IQ':k==='tkw'?'TWK':k==='matematika'?'MTK':k==='bahasa_inggris'?'Inggris':k==='penalaran_logika'?'Logika':k==='numerik'?'Numerik':k==='verbal'?'Verbal':k==='kraepelin'?'Kraepelin':k==='tes_gambar'?'Tes Gambar':k==='kepribadian'?'Kepribadian':k);
     return '<button class="btn '+(k===katKey?'btn-primary':'btn-secondary')+' btn-sm" onclick="window.showTips(\''+k+'\')">'+label+'</button>';
   }).join('');
   var d = data[katKey];

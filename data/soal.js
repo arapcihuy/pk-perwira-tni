@@ -6019,6 +6019,20 @@ function getAllSoal() {
 }
 // Tips dan Trik per kategori
 const TIPS_DATA = {
+  iq: {
+    judul: "Tips IQ Lab — Potensi Kognitif (Standar Internasional)",
+    tips: [
+      { judul: "Ukur dengan Alat Tervalidasi, Latih dengan Drill", isi: "Latihan di IQ Lab membuat kamu familiar dengan format soal (matriks, deret, rotasi, verbal). Tapi angka IQ hanya boleh diambil dari alat ukur ternorma: ICAR, Mensa Norway, CogniFit, atau TIKI. Catat hasilnya di IQ Lab → Log Skor." },
+      { judul: "Jawab Semua Soal, Tidak Ada Penalti Salah", isi: "Tes seleksi umumnya menilai jumlah benar, bukan mengurangi nilai salah. Soal yang dibiarkan kosong adalah poin yang hilang pasti. Tebak setelah eliminasi 2 pilihan." },
+      { judul: "Time-Boxing 90 Detik", isi: "Kalau satu soal melewati 90 detik, tandai ragu-ragu lalu lanjut. Kecepatan pemrosesan (speed of processing) adalah komponen yang paling bisa dilatih — dan paling sering jadi pembeda skor." },
+      { judul: "Matriks Figural: Baca Dua Arah", isi: "Periksa aturan dari baris DAN kolom. Aturan yang sering muncul: jumlah elemen naik (baris + kolom), rotasi tetap per langkah, jumlah sisi bertambah per kolom, dan baris tertentu berisi bentuk penuh." },
+      { judul: "Rotasi vs Cermin", isi: "Pada soal rotasi, hitung arah perpindahan sirip searah jarum jam. Pilihan cermin terlihat mirip tapi posisi sirip ada di sisi berlawanan — ini distraktor yang paling sering menjebak." },
+      { judul: "Deret Angka: Hitung Selisih Dulu", isi: "Tulis selisih antar suku. Selisih tetap = aritmetika; selisih naik tetap = beda-naik; rasio tetap = geometri; dua selisih bergantian = pola selang-seling; suku = jumlah dua suku sebelumnya = fibonacci." },
+      { judul: "Dual N-Back 15-20 Menit per Hari", isi: "Latihan working memory dengan N=2 dulu sampai akurasi 80%, baru naik N=3. Ini melatih daya tahan memori kerja yang dipakai di deret, matriks, dan aritmetika lisan." },
+      { judul: "Tidur, Aerobik, dan Energi Saat Tes", isi: "Kurang tidur langsung menurunkan skor penalaran cair. Tidur 7-8 jam, aerobik 30 menit 3-5x seminggu, dan latihan bertimer di jam yang sama dengan jadwal tes. Creatine 5 g/hari punya bukti RCT untuk performa kognitif saat kondisi lelah." },
+      { judul: "Target Bertahap, Bukan Lompat", isi: "Catat baseline, retest tiap 2-3 minggu pakai alat yang sama. Kenaikan besar biasanya datang dari penguasaan format + manajemen waktu, bukan menambah jam latihan tanpa arah. Fokuskan waktu ekstra ke domain dengan akurasi terendah." }
+    ]
+  },
   umum: {
     judul: "Strategi Umum Nilai Tinggi",
     tips: [
