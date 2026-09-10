@@ -60,7 +60,7 @@ function renderIQ() {
   var nb = loadIqNb();
 
   var head = '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-0.4px">' +
-    ic('brain', 20) + ' IQ Lab — Potensi Kognitif</div>' +
+    ic('brain', 20) + ' IQ Lab — Potensi Kognitif <span style="font-size:11px;font-weight:600;color:var(--text3);vertical-align:middle">build v16</span></div>' +
     '<div style="font-size:13px;color:var(--text2);margin-bottom:18px">Item latihan mengikuti format tes terstandar internasional (ICAR / Raven-style): ' +
     'matriks figural, deret angka &amp; huruf, rotasi figural, verbal-aritmetika. Semua digenerate di HP kamu, tanpa akun.</div>';
 

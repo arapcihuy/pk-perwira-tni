@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="static/icons/icon-192.png">
   <title>PK Perwira TNI — Platform Belajar</title>
-  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/style.css?v=16">
 </head>
 <body>
 
@@ -75,13 +75,13 @@
     </div>
   </div>
 
-  <script src="data/soal.js"></script>
-  <script src="data/soal-psikologi.js"></script>
-  <script src="data/soal-iq.js"></script>
-  <script src="static/js/icons.js"></script>
-  <script src="static/js/app.js"></script>
-  <script src="static/js/psikologi.js"></script>
-  <script src="static/js/iq.js"></script>
+  <script src="data/soal.js?v=16"></script>
+  <script src="data/soal-psikologi.js?v=16"></script>
+  <script src="data/soal-iq.js?v=16"></script>
+  <script src="static/js/icons.js?v=16"></script>
+  <script src="static/js/app.js?v=16"></script>
+  <script src="static/js/psikologi.js?v=16"></script>
+  <script src="static/js/iq.js?v=16"></script>
 
   <script>
     // Update header stats setelah semua script dimuat
@@ -95,12 +95,46 @@
       if (el3) el3.textContent = (JSON.parse(localStorage.getItem('tni_scores') || '[]')).length;
     });
 
-    // Register Service Worker untuk PWA offline
+    // Banner versi baru (muncul otomatis kalau service worker punya update)
+    function tampilkanBannerVersi() {
+      if (document.getElementById('bannerVersi')) return;
+      var d = document.createElement('div');
+      d.id = 'bannerVersi';
+      d.style.cssText = 'position:fixed;left:12px;right:12px;bottom:14px;z-index:9999;background:#16161c;border:1px solid rgba(255,255,255,.16);' +
+        'border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between;' +
+        'box-shadow:0 10px 30px rgba(0,0,0,.45);font:13px/1.4 -apple-system,system-ui,sans-serif;color:#f5f5f7';
+      d.innerHTML = '<div>Versi baru aplikasi tersedia.<div style="font-size:11px;color:#a1a1aa">Muat ulang supaya menu IQ Lab muncul.</div></div>' +
+        '<button id="btnMuatUlang" style="background:#0a84ff;color:#fff;border:0;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600">Muat Ulang</button>';
+      document.body.appendChild(d);
+      document.getElementById('btnMuatUlang').onclick = function () {
+        if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage('skipWaiting');
+        }
+        setTimeout(function () { location.reload(true); }, 150);
+      };
+    }
+    window.tampilkanBannerVersi = tampilkanBannerVersi;
+
+    // Register Service Worker untuk PWA offline + deteksi update
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('./sw.js')
-          .then(function(reg) { console.log('SW registered:', reg.scope); })
+        navigator.serviceWorker.register('./sw.js?v=16')
+          .then(function(reg) {
+            console.log('SW registered:', reg.scope);
+            if (reg.waiting && navigator.serviceWorker.controller) tampilkanBannerVersi();
+            reg.addEventListener('updatefound', function () {
+              var baru = reg.installing;
+              if (!baru) return;
+              baru.addEventListener('statechange', function () {
+                if (baru.state === 'installed' && navigator.serviceWorker.controller) tampilkanBannerVersi();
+              });
+            });
+            setInterval(function () { reg.update().catch(function(){}); }, 6 * 60 * 60 * 1000);
+          })
           .catch(function(err) { console.log('SW error:', err); });
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          console.log('SW controller berubah: versi baru aktif');
+        });
       });
     }
   </script>

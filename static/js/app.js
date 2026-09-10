@@ -205,7 +205,8 @@ function renderHome() {
     '</div>' +
 
     '<div class="section-title">Pilih Kategori Langsung</div>' +
-    '<div class="grid-auto">' + catCards + '</div>';
+    '<div class="grid-auto">' + catCards + '</div>' +
+    '<div style="text-align:center;font-size:11px;color:var(--text3);margin:20px 0 8px">Build v16 · IQ Lab aktif (menu IQ di navigasi)</div>';
 }
 
 // ---- PILIH KATEGORI ----
