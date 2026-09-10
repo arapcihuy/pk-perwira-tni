@@ -103,7 +103,7 @@ function renderIQ() {
 
   // --- header + tab internal ---
   var head = '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-0.4px">' +
-    ic('brain', 20) + ' IQ Lab — Latihan Potensi Kognitif <span style="font-size:11px;font-weight:600;color:var(--text3);vertical-align:middle">build v17</span></div>' +
+    ic('brain', 20) + ' IQ Lab — Latihan Potensi Kognitif <span style="font-size:11px;font-weight:600;color:var(--text3);vertical-align:middle">build v18</span></div>' +
     '<div style="font-size:13px;color:var(--text2);margin-bottom:14px">Latihan penalaran bergaya tes IQ (matriks gambar, deret angka &amp; huruf, putar vs cermin, soal cerita). ' +
     'Semua soal dibuat otomatis di HP kamu — tanpa akun, bisa offline.</div>';
 

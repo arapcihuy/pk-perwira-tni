@@ -632,16 +632,22 @@ function submitMemoryAnswer() {
   var answerEl = document.getElementById('memoryAnswer');
   if (!answerEl || typeof answerEl.value !== 'string') return;
 
-  var correctWords = PSI.testData.kata.map(function(w) { return w.toLowerCase().trim(); });
+  var kataAsli = PSI.testData.kata || [];
+  var correctWords = kataAsli.map(function(w) { return String(w).toLowerCase().trim(); });
   var seen = {};
   var correct = 0;
+  var dikenal = [];
 
   answerEl.value.split(/[,;\n\r]+/).forEach(function(raw) {
     var w = raw.trim().toLowerCase();
     if (!w || seen[w]) return; // abaikan kosong & duplikat
     seen[w] = true;
-    if (correctWords.indexOf(w) !== -1) correct++;
+    var i = correctWords.indexOf(w);
+    if (i !== -1) { correct++; dikenal.push(kataAsli[i]); }
   });
+
+  // daftar kata yang terlewat -> dipakai untuk menampilkan pembahasan hasil
+  var terlewat = kataAsli.filter(function (w) { return dikenal.indexOf(w) === -1; });
 
   var score = Math.min(100, Math.round((correct / correctWords.length) * 100));
 
@@ -659,7 +665,10 @@ function submitMemoryAnswer() {
   PSI.scores = {
     correct: correct,
     total: correctWords.length,
-    score: score
+    score: score,
+    kategori: PSI.testData.kategori,
+    dikenal: dikenal,
+    terlewat: terlewat
   };
 
   render();
@@ -754,10 +763,20 @@ function renderDigitSpan() {
     '</div>';
   } else {
     var isCorrect = PSI.answers[PSI.testIdx] === q.jawaban;
+    var dibaca = (q.angka || []).join(' ');
+    var urutanBenar = q.tipe === 'maju' ? (q.angka || []).join(' ') : (q.angka || []).slice().reverse().join(' ');
     html += '<div style="padding:14px;border-radius:8px;margin-bottom:12px;font-size:14px;font-weight:600;' +
       'background:' + (isCorrect ? 'rgba(34,204,74,0.12)' : 'rgba(232,64,48,0.12)') + ';' +
       'color:' + (isCorrect ? 'var(--success, #22cc4a)' : 'var(--danger, #e84030)') + '">' +
-      (isCorrect ? ic('check-circle', 14) + ' Benar!' : ic('x-circle', 14) + ' Kurang tepat.') + ' Jawaban: <b>' + q.jawaban + '</b></div>';
+      (isCorrect ? ic('check-circle', 14) + ' Benar!' : ic('x-circle', 14) + ' Kurang tepat.') + ' Jawaban: <b>' + escapeHtml(String(q.jawaban)) + '</b>' +
+      '<div style="font-size:12px;font-weight:400;color:var(--text2);margin-top:8px">' +
+        'Angka yang dibacakan: <b>' + escapeHtml(dibaca) + '</b><br>' +
+        'Cara mengerjakan soal ini: <b>' + (q.tipe === 'maju' ? 'tulis urut seperti dibacakan &rarr; ' + escapeHtml(dibaca) : 'balik urutannya &rarr; ' + escapeHtml(urutanBenar)) + '</b>' +
+      '</div>' +
+      '<div style="font-size:12px;font-weight:400;color:var(--text2);margin-top:8px">' + ic('bulb', 13) +
+        ' Trik: pegang 3 digit terakhir di kepala saat angka dibacakan, lalu tulis dari belakang untuk tipe "mundur".' +
+      '</div>' +
+    '</div>';
     html += '<button class="btn btn-primary" style="width:100%" onclick="nextDigitQuestion()">' +
       (PSI.testIdx < n - 1 ? 'Soal Berikutnya ' + ic('arrow-right', 15) : ic('check', 15) + ' Selesai') + '</button>';
   }
@@ -1108,6 +1127,58 @@ function renderPsiResult() {
   if (PSI.scores.colStats) {
     html += renderKraepelinChart(PSI.scores.colStats, PSI.scores.rhythm);
   }
+
+  // ---- Pembahasan / pengajaran hasil ----
+  var kotak = [];
+
+  if (PSI.scores.dikenal) {
+    var ingat = (PSI.scores.dikenal || []).join(', ') || '(tidak ada)';
+    var lewat = (PSI.scores.terlewat || []).join(', ') || '(tidak ada)';
+    kotak.push('<div class="tips-box" style="text-align:left">' +
+      '<div class="tips-title">' + ic('book', 16) + ' Pembahasan — Kategori: ' + escapeHtml(PSI.scores.kategori || '-') + '</div>' +
+      '<div style="font-size:13px;color:var(--text2);line-height:1.7">' +
+        '<div style="margin-bottom:8px">' + ic('check-circle', 13) + ' <strong>Berhasil kamu ingat:</strong><br>' + escapeHtml(ingat) + '</div>' +
+        '<div style="margin-bottom:8px">' + ic('x', 13) + ' <strong>Terlewat:</strong><br>' + escapeHtml(lewat) + '</div>' +
+        '<div style="font-size:12px;color:var(--text3)">Cara melatih: kelompokkan kata per kategori (binatang, benda, buah) atau buat cerita yang menghubungkan kata-kata itu. Ulangi kategori yang sama 2-3 hari lagi untuk melihat kenaikannya.</div>' +
+      '</div></div>');
+  }
+
+  var tipsTes = {
+    digit_span: { judul: 'Pembahasan — Digit Span', isi: [
+      'Tipe "maju": tulis persis urutan yang dibacakan. Tipe "mundur": balik urutannya, kerjakan dari angka terakhir.',
+      'Kelompokkan angka jadi 2-3 digit (mis. 4-72-8) agar lebih mudah dipegang daripada satu-satu.',
+      'Jangan melihat ke luar layar saat angka muncul — gangguan sekecil apa pun memotong rentang ingatan.',
+      'Rentang normal orang dewasa: 5-7 digit maju, 4-5 digit mundur. Latih 5 menit/hari, bukan sekali panjang.'
+    ] },
+    aritmatika: { judul: 'Pembahasan — Aritmatika Lisan', isi: [
+      'Tulis angka penting di kertas coret-coretan sebelum menghitung — jangan mengandalkan ingatan saja.',
+      'Bulatkan dulu (mis. 4.000 jadi 4 ribu), hitung, lalu kembalikan satuannya.',
+      'Cek satuan waktu/uang di akhir soal; banyak jawaban salah hanya karena salah satuan.',
+      'Latih tabel perkalian 1-15 dan persentase dasar (10% = bagi 10, 25% = bagi 4).'
+    ] },
+    deret_angka: { judul: 'Pembahasan — Deret Angka', isi: [
+      'Langkah 1: hitung selisih antar suku. Selisih tetap = deret aritmetika.',
+      'Langkah 2: kalau selisihnya naik/turun teratur, itu pola beda-naik (selisih 2, 4, 6, ...).',
+      'Langkah 3: kalau tiap suku ~2x suku sebelumnya, itu deret geometri atau x2+c.',
+      'Kalau tidak ketemu: cek pola selang-seling (suku ganjil dan genap punya aturan berbeda).'
+    ] },
+    kraepelin: { judul: 'Pembahasan — Tes Kraepelin', isi: [
+      'Isi digit TERAKHIR hasil penjumlahan (contoh 8+7=15 → tulis 5), bukan hasil penuhnya.',
+      'Kerjakan baris per baris dengan tempo tetap; grafik yang stabil lebih dihargai daripada naik-turun.',
+      'Jangan berhenti lama di satu hitungan — kalau ragu, tulis tebakan lalu lanjut.',
+      'Yang dinilai bukan hanya jumlah, tapi ketelitian dan ketahanan (ritme) sampai kolom terakhir.'
+    ] }
+  };
+  if (PSI.testType && tipsTes[PSI.testType]) {
+    var t = tipsTes[PSI.testType];
+    kotak.push('<div class="tips-box" style="text-align:left">' +
+      '<div class="tips-title">' + ic('bulb', 16) + ' ' + t.judul + '</div>' +
+      '<ul style="font-size:12px;color:var(--text2);line-height:1.6">' +
+      t.isi.map(function (x) { return '<li>' + x + '</li>'; }).join('') +
+      '</ul></div>');
+  }
+
+  if (kotak.length) html += '<div style="margin-top:20px">' + kotak.join('') + '</div>';
 
   html += '<div style="margin-top:24px">' +
     '<button class="btn btn-primary" onclick="navTo(\'psikologi\')">' + ic('home', 16) + ' Kembali ke Menu Psikologi</button>' +
