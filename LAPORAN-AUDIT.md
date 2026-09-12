@@ -457,3 +457,53 @@ file itu hasil generate.
 
 Catatan: `.audit/db.json`, `.audit/db-new.json`, dan `.audit/soal.js.bak` tidak dibagikan di repo
 (file besar, hanya bahan kerja).
+
+---
+
+# Bagian 9 — UJI SEMUA FITUR (build v28, 13 September 2026)
+
+Permintaan pengguna: "cek lagi semua fitur jangan sampai ada yang tidak berfungsi, error, dan bug."
+
+## Alat uji baru: `tools/uji-fitur-lengkap.py` (52 pemeriksaan, ikut CI)
+
+Menggerakkan aplikasi sungguhan di Chromium lalu memeriksa hasilnya, bagian per bagian
+(tiap bagian dimuat ulang bersih supaya tidak saling memengaruhi):
+
+| Bagian | Yang diperiksa |
+|--------|----------------|
+| Beranda | statistik header, kesiapan, rencana harian, latihan, hari ini, jalur, jelang ujian, tur, menu, pengaturan tampilan, 9 kartu kategori |
+| Tryout | 60 soal, timer 90 menit, ragu-ragu, kunci terkunci + buka kunci, hasil + panel kategori + kecepatan, tersimpan ke riwayat |
+| Belajar | seluruh 9 kategori: jumlah soal, pembahasan ≥ 2 baris, tombol lanjut, perpindahan soal |
+| Simulasi | format seleksi (komposisi tetap, 90 menit) dan simulasi 60 soal terkunci |
+| Bank Soal | daftar, filter topik, filter kategori, pencarian (pertanyaan/opsi/pembahasan), modal detail |
+| Tips | alur belajar 7 langkah + daftar fitur + kartu tips per kategori |
+| IQ Lab | drill tiap domain, Dual N-Back, panduan |
+| Psikologi | 6 jenis tes (Kraepelin, Digit Span, Daya Ingat, Aritmatika, Deret Angka, EPPS) bisa dibuka |
+| Progress | 11 panel inti tampil |
+| Hafalan | kartu, balik, tandai, ringkasan kiat, riwayat versi, halaman peraturan mutu |
+| Tampilan | tema terang/gelap, ukuran huruf, menu Lainnya |
+| Alur belajar | pengulangan berjadwal (soal salah terjadwal), statistik topik, latihan adaptif, mode 5 menit, jelang ujian 7 hari |
+| Ekspor | rapot kesiapan, ringkasan hafalan, laporan soal, soal salah, pengingat (.ics) — **isi berkasnya diperiksa**, bukan hanya tombolnya |
+| Sinkron | kode sinkron dibuat lalu dipakai kembali, lanjut sesi |
+| Aksesibilitas | tombol angka 1-4, tombol panah, label opsi, aria-live |
+| Pengaman baru | indeks soal di luar batas (terlalu besar / negatif / bukan angka) & tampilan panel saat data belum ada |
+
+## Dua bug nyata yang ditemukan dan diperbaiki
+
+1. **Halaman blank karena indeks soal di luar batas** (`static/js/app.js`).
+   Bila `S.idx` tertinggal dari daftar soal (mis. sesi yang dilanjutkan dengan daftar lebih
+   pendek, atau sisa indeks dari kategori sebelumnya), `S.questions[S.idx]` menjadi kosong dan
+   membaca `.pilihan` membuat **seluruh halaman gagal render (blank)**. Sekarang indeks dijepit
+   ke rentang yang sah (termasuk NaN dan negatif).
+
+2. **Tiga panel Progress menyembunyikan diri total saat data belum ada**
+   (`fitur2.js` panel tren, `fitur3.js` riwayat Kraepelin, `fitur4.js` daftar laporan).
+   Pengguna baru tidak bisa tahu fitur itu ada karena panelnya hilang tanpa jejak. Sekarang
+   masing-masing tampil dengan penjelasan singkat dan tombol menuju langkah berikutnya.
+
+## Hasil verifikasi build v28
+
+- **UJI SEMUA FITUR: SEMUA FITUR BERFUNGSI (52/52)** — dijalankan lokal dan di CI.
+- UJI RUNTIME: LULUS · VERIFIKASI SOAL: LULUS · PERATURAN MUTU: DIPATUHI.
+- Smoke test situs live: **SEHAT** (1225 soal, 106/106 gambar, 0 error JavaScript).
+- Tidak ada error JavaScript di seluruh pengujian.

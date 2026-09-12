@@ -49,7 +49,7 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   mode Jelang Ujian 7 Hari.
 - v27: PERATURAN MUTU SOAL resmi + pemeriksa otomatis 10 butir (mengikat di CI); 2 soal yang kuncinya
   bocor di pertanyaan (w74, w112) diperbaiki; 112 soal baru dilengkapi label topik.
-- Versi build saat ini: **v27** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
+- Versi build saat ini: **v28** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
 - **Peraturan mutu wajib:** `PEDOMAN-MUTU-SOAL.md` — 10 butir diperiksa mesin (`tools/peraturan-mutu.py`),
   10 aturan proses, aturan isi pembahasan, dan daftar larangan. Wajib lulus sebelum deploy.
 
@@ -88,7 +88,11 @@ Perintah menjalankan ulang:
 /usr/bin/python3 tools/verifikasi-soal.py  # verifikasi yang dipakai CI (wajib lulus sebelum push)
 ```
 
-## Hasil verifikasi v27
+- v28: uji semua fitur (`tools/uji-fitur-lengkap.py`, 52 pemeriksaan, ikut CI) — menemukan &
+  memperbaiki 2 bug: halaman blank saat indeks soal di luar batas, dan tiga panel Progress yang
+  hilang total saat data belum ada.
+
+## Hasil verifikasi v28
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
@@ -104,6 +108,7 @@ Perintah menjalankan ulang:
 - Sebaran posisi kunci merata 25% x 4 posisi (anti tebak), 38 soal dengan pembahasan bergambar.
 - Smoke test situs live SEHAT: versi aset tunggal, 1225 soal, 106/106 gambar render, 0 error JS.
 - PERATURAN MUTU SOAL: 0 pelanggaran (10 butir) pada 1225 soal.
+- UJI SEMUA FITUR: 52/52 lulus (lokal + CI).
 - Uji runtime otomatis di Chromium (Playwright) LULUS: 9 kategori, tryout terkunci, simulasi format,
   hafalan, bank soal, 0 error JavaScript.
 - Audit kunci gelombang kedua: 568 soal hafalan diperiksa ulang secara independen → 8 koreksi
