@@ -1294,3 +1294,15 @@ kbd {
 .b5-faktor .hari-sub { font-size:12px; }
 .card.bayar { border-color:var(--gold2); box-shadow:0 0 0 2px var(--glow); }
 .bayar-daftar { display:flex; flex-direction:column; gap:7px; font-size:13.5px; color:var(--text2); margin-top:10px; }
+
+/* FITUR 9 - Profil belajar & fokus harian */
+.card.profil .profil-form { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+.profil-input { background:var(--surface); border:1px solid var(--border); color:var(--text);
+  border-radius:9px; padding:10px 12px; font-size:14px; font-family:inherit; }
+.profil-input:focus { outline:none; border-color:var(--gold2); }
+.profil-hitung { font-size:15px; font-weight:600; color:var(--gold2); margin:6px 0; }
+.profil-aksi { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+.fokus-item { display:flex; gap:9px; align-items:flex-start; font-size:13.5px; color:var(--text2);
+  line-height:1.6; margin:8px 0; }
+.fokus-num { flex:0 0 20px; height:20px; border-radius:50%; background:var(--surface2);
+  color:var(--text2); font-size:11px; display:flex; align-items:center; justify-content:center; font-weight:700; }

@@ -1,29 +1,43 @@
-// Service Worker — PK Perwira TNI
+// Service Worker — SiapPsikotes
 // Strategi:
 //  - HTML (navigasi): NETWORK-FIRST, supaya update situs langsung kelihatan.
 //  - Aset (js/css/gambar/data): cache-first + update di belakang layar
 //    (stale-while-revalidate) supaya tetap cepat & bisa offline.
-const CACHE = 'tni-perwira-vbcface3';
+const CACHE = 'siap-psikotes-bd9f284';
 const FILES = [
   './',
   './index.html',
   './manifest.json',
-  './data/soal-index.js?v=bcface3',
-  './data/tips.js?v=bcface3',
-  './data/soal-psikologi.js?v=bcface3',
-  './data/soal-iq.js?v=bcface3',
-  './static/css/style.css?v=bcface3',
-  './static/js/icons.js?v=bcface3',
-  './static/js/data-loader.js?v=bcface3',
-  './static/js/app.js?v=bcface3',
-  './static/js/fitur.js?v=bcface3',
-  './static/js/fitur2.js?v=bcface3',
-  './static/js/fitur3.js?v=bcface3',
-  './static/js/fitur4.js?v=bcface3',
-  './static/js/fitur5.js?v=bcface3',
-  './static/js/fitur7.js?v=bcface3',
-  './static/js/psikologi.js?v=bcface3',
-  './static/js/iq.js?v=bcface3',
+  './data/soal-bahasa_inggris.js?v=bd9f284',
+  './data/soal-index.js?v=bd9f284',
+  './data/soal-iq.js?v=bd9f284',
+  './data/soal-kepribadian.js?v=bd9f284',
+  './data/soal-kraepelin.js?v=bd9f284',
+  './data/soal-matematika.js?v=bd9f284',
+  './data/soal-numerik.js?v=bd9f284',
+  './data/soal-penalaran_logika.js?v=bd9f284',
+  './data/soal-penuh.js?v=bd9f284',
+  './data/soal-psikologi.js?v=bd9f284',
+  './data/soal-tes_gambar.js?v=bd9f284',
+  './data/soal-tkw.js?v=bd9f284',
+  './data/soal-verbal.js?v=bd9f284',
+  './data/soal.js?v=bd9f284',
+  './data/tips.js?v=bd9f284',
+  './static/css/style.css?v=bd9f284',
+  './static/js/app.js?v=bd9f284',
+  './static/js/data-loader.js?v=bd9f284',
+  './static/js/fitur.js?v=bd9f284',
+  './static/js/fitur2.js?v=bd9f284',
+  './static/js/fitur3.js?v=bd9f284',
+  './static/js/fitur4.js?v=bd9f284',
+  './static/js/fitur5.js?v=bd9f284',
+  './static/js/fitur6.js?v=bd9f284',
+  './static/js/fitur7.js?v=bd9f284',
+  './static/js/fitur8.js?v=bd9f284',
+  './static/js/fitur9.js?v=bd9f284',
+  './static/js/icons.js?v=bd9f284',
+  './static/js/iq.js?v=bd9f284',
+  './static/js/psikologi.js?v=bd9f284',
   './static/icons/icon-192.png',
   './static/icons/icon-512.png'
 ];

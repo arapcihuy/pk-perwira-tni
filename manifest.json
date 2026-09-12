@@ -1,7 +1,7 @@
 {
-  "name": "SiapSeleksi — Latihan Psikotes, Tes IQ & SKD",
-  "short_name": "SiapSeleksi",
-  "description": "Platform belajar seleksi PK Perwira TNI AU — 1000 soal, tryout, drill, tes psikologi, tips trik",
+  "name": "SiapPsikotes - Latihan Tes IQ, Psikotes Kerja & Kepribadian",
+  "short_name": "SiapPsikotes",
+  "description": "Latihan psikotes kerja, tes IQ, dan tes kepribadian. Gratis, tanpa akun, bisa offline.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#05050a",

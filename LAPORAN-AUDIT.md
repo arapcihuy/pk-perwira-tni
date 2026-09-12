@@ -621,3 +621,78 @@ dengan alasan yang bisa diuji:
 - Penilaian IPIP diuji kebenarannya: seluruh jawaban "Sangat sesuai" menghasilkan 12/20 pada faktor campuran
   dan 10/20 pada faktor yang mayoritas butir negatif — sesuai aturan pembalikan resmi.
 - Tidak ada error JavaScript; gerbang pra-kirim (peraturan + verifikasi + sintaks) lulus sebelum dikirim.
+
+---
+
+# Bagian 12 — NAMA PRODUK, PROFIL TANPA AKUN & PERBAIKAN MODE OFFLINE (build v31, 13 September 2026)
+
+## 1. Nama produk diganti: SiapSeleksi → SiapPsikotes
+
+Nama produk diganti dari **SiapSeleksi** menjadi **SiapPsikotes**, dengan subjudul
+**"Latihan Tes IQ, Psikotes Kerja & Kepribadian"**.
+
+Alasan: nama harus memuat kata kunci yang benar-benar dicari orang ("psikotes") supaya mudah
+ditemukan di mesin pencari sekaligus mudah diingat. Judul halaman kini
+**"SiapPsikotes - Latihan Psikotes Kerja & Tes IQ Online Gratis"**.
+
+Nama juga diubah di seluruh tempat yang menampilkannya:
+
+- `manifest.json` — `name`, `short_name`, `description`.
+- Meta deskripsi halaman.
+- `og:title`.
+- JSON-LD.
+- Halaman arahan `psikotes/index.html`.
+
+## 2. Fitur baru — profil belajar tanpa akun (`static/js/fitur9.js`)
+
+Pengguna bisa mengisi **nama panggilan**, **tanggal ujian/seleksi**, dan **fokus utama**. Aplikasi lalu:
+
+- menyapa pengguna dengan namanya;
+- menampilkan **hitungan hari menuju ujian**;
+- menyusun **"Fokus hari ini"** sesuai jalur + sisa waktu (mis. kurang dari 14 hari: utamakan
+  ulangan soal salah, jangan tambah materi baru).
+
+Semua data tersimpan **HANYA di perangkat** (`localStorage` kunci `tni_profil`) — **tanpa server,
+tanpa akun**, dan bisa **dihapus pengguna kapan saja**.
+
+## 3. Keputusan tentang login/akun
+
+**Tidak ada login untuk belajar.** Alasannya:
+
+- **(a)** Login sebelum ada nilai membuat pengguna baru pergi, sedangkan "tanpa akun" adalah
+  keunggulan produk ini.
+- **(b)** "Tempat belajar masing-masing" sudah tercapai lewat profil lokal + pemilihan jalur.
+- **(c)** Akun baru diperlukan saat **PEMBAYARAN** (agar laporan bisa dibuka dari perangkat lain).
+  Bentuk paling ringan yang direncanakan adalah **kode akses tanpa kata sandi** (beli → dapat kode →
+  tempel di aplikasi), atau tautan/kode sekali pakai via surel. **Kata sandi tidak disimpan.**
+- **(d)** Akun penuh dengan server hanya kalau nanti perlu **multi-perangkat dan komunitas**.
+  Konsekuensinya: kewajiban pelindungan data pribadi (**UU 27/2022**), keamanan kata sandi, dan
+  **biaya server bulanan**.
+
+### Tabel keputusan akun
+
+| Tahap | Yang dipakai | Alasan & konsekuensi |
+|-------|--------------|----------------------|
+| **Sekarang** | Tanpa akun (profil lokal di perangkat, `localStorage` `tni_profil`) | Paling kecil hambatannya; pengguna baru tidak perlu mendaftar sebelum merasakan nilai. Konsekuensi: data tidak berpindah perangkat sendiri. |
+| **Saat penjualan** | Kode akses tanpa kata sandi (beli → dapat kode → tempel di aplikasi), atau tautan/kode sekali pakai via surel | Cukup untuk membuka laporan dari perangkat lain tanpa menyimpan kata sandi. Konsekuensi: perlu pengelolaan kode dan verifikasi pembelian. |
+| **Nanti** | Akun penuh + server (hanya jika perlu multi-perangkat dan komunitas) | Baru diperlukan saat fitur sosial/multi-perangkat nyata. Konsekuensi: kewajiban pelindungan data pribadi (UU 27/2022), keamanan kata sandi, dan biaya server bulanan. |
+
+## 4. Perbaikan penting service worker (`sw.js`)
+
+Ditemukan bug yang membuat **mode offline rusak**:
+
+- Nama variabel cache tidak konsisten — **dideklarasikan `CACHE_NAME` tetapi dipakai `CACHE`**;
+- Daftar berkas yang di-cache **tidak lengkap** — `fitur6.js`, `fitur8.js`, `fitur9.js` tidak terdaftar.
+
+Sudah diperbaiki:
+
+- Satu nama cache yang konsisten: **`'siap-psikotes-<stamp>'`**;
+- Daftar berkas dibangun dari keadaan nyata di disk — **14 dari 14 berkas JS terdaftar**.
+
+Dibuktikan dengan **uji offline sungguhan**: halaman dibuka, internet dimatikan, halaman dimuat ulang,
+dan aplikasi tetap jalan (**1225 soal, fitur8 & fitur9 termuat, 0 error**).
+
+## 5. Model jual
+
+Model jual tetap **SEKALI BELI** — **Rp 39.000 Laporan Lengkap**, rencana **Paket Musim Rp 79.000** —
+bukan langganan. Materi latihan **tidak dikunci**.

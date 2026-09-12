@@ -10,8 +10,8 @@
 // ============================================================
 
 // ---------- 1. IDENTITAS PRODUK (ubah di sini saja) ----------
-window.NAMA_APP = 'SiapSeleksi';
-window.SUB_APP = 'Latihan Psikotes, Tes IQ & SKD — Kedinasan, TNI, Polri, CPNS';
+window.NAMA_APP = 'SiapPsikotes';
+window.SUB_APP = 'Latihan Tes IQ, Psikotes Kerja & Kepribadian — Kedinasan, TNI, Polri, CPNS';
 
 window.terapkanIdentitas = function () {
   document.title = NAMA_APP + ' — ' + SUB_APP;

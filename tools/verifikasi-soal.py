@@ -247,11 +247,13 @@ def main():
     sw = open(os.path.join(ROOT, 'sw.js'), encoding='utf-8').read()
     v_html = sorted(set(re.findall(r'\?v=([A-Za-z0-9\.\-]+)', html)))
     v_sw = sorted(set(re.findall(r'\?v=([A-Za-z0-9\.\-]+)', sw)))
-    v_cache = re.findall(r"CACHE\s*=\s*'tni-perwira-([A-Za-z0-9\.\-]+)'", sw)
+    v_cache = re.findall(r"CACHE\s*=\s*'([^']+)'", sw)
     cek(len(v_html) == 1, 'index.html memakai satu versi aset', v_html)
     cek(set(v_html) == set(v_sw), 'versi di index.html sama dengan sw.js', (v_html, v_sw))
-    cache_bersih = [c.lstrip('vV') for c in v_cache]
-    cek(cache_bersih and cache_bersih[0] in v_html, 'nama cache service worker sesuai versi', v_cache)
+    # maksud pemeriksaan: nama cache WAJIB memuat versi aset yang sedang dipakai, supaya
+    # perangkat pengguna membuang cache lama. Merek di depan nama cache bebas.
+    versi_cache = [c.rsplit('-', 1)[-1].lstrip('vV') for c in v_cache]
+    cek(versi_cache and versi_cache[0] in v_html, 'nama cache service worker memuat versi aset', v_cache)
 
     print()
     if gagal:

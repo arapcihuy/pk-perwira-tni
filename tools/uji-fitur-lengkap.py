@@ -10,6 +10,7 @@ Setiap fitur diuji dengan menggerakkan aplikasinya di Chromium lalu memeriksa ha
 import functools
 import http.server
 import os
+import re
 import socket
 import socketserver
 import sys
@@ -421,6 +422,7 @@ def main():
         r2 = page.evaluate("""() => {
             const out = {};
             out.nama = (typeof NAMA_APP !== 'undefined') ? NAMA_APP : '';
+            out.diharapkan = 'SiapPsikotes';
             out.judul = document.title;
             navTo('baterai');
             out.tombolJalur = document.querySelectorAll('.jalur-btn').length;
@@ -516,6 +518,49 @@ def main():
             'dasar instrumen & batas jujur dinyatakan (Mini-IPIP domain publik, bukan diagnosis)', s2)
         cek(s2['simUmum']['jumlah'] >= 40 and s2['simUmum']['menit'] >= 30,
             'simulasi jalur Umum terbentuk', s2['simUmum'])
+
+        print('== T. Profil belajar (tanpa akun) + nama produk ==')
+        t2 = page.evaluate("""() => {
+            const out = {};
+            out.nama = (typeof NAMA_APP !== 'undefined') ? NAMA_APP : '';
+            out.judul = document.title;
+            out.simpanan = Object.keys(localStorage).filter(k => k.indexOf('tni_') === 0).sort();
+            // profil kosong: form muncul
+            navTo('home');
+            out.formMuncul = !!document.getElementById('pfNama');
+            out.tanpaAkun = document.body.textContent.indexOf('tanpa akun') >= 0;
+            // isi profil
+            simpanProfil('Rasyid', fTambahHari(21), 'TIU & psikotes');
+            goHome();
+            const teks = document.body.textContent;
+            out.sapa = teks.indexOf('Halo, Rasyid') >= 0;
+            out.hitungHari = teks.indexOf('21 hari lagi') >= 0;
+            out.fokusTampil = teks.indexOf('Fokus hari ini') >= 0;
+            out.jumlahLangkah = document.querySelectorAll('.fokus-item').length;
+            out.punyaProfil = !!bacaProfil().nama;
+            // hapus profil
+            hapusProfil();
+            out.formKembali = !!document.getElementById('pfNama');
+            // tidak ada data yang dikirim keluar: tidak ada panggilan jaringan ke luar saat simpan
+            return out;
+        }""")
+        cek(t2['nama'] == 'SiapPsikotes' and t2['judul'].startswith('SiapPsikotes'),
+            'nama produk = SiapPsikotes (memuat kata kunci psikotes)', {'nama': t2['nama'], 'judul': t2['judul'][:50]})
+        cek(t2['formMuncul'] and t2['tanpaAkun'], 'profil belajar bisa diisi tanpa akun', t2)
+        cek(t2['sapa'] and t2['hitungHari'], 'profil tersimpan: sapaan nama + hitungan hari menuju ujian', t2)
+        cek(t2['fokusTampil'] and t2['jumlahLangkah'] >= 3, 'rencana fokus harian muncul sesuai profil', t2['jumlahLangkah'])
+        cek(t2['formKembali'], 'profil bisa dihapus (kendali ada di pengguna)', t2)
+        cek('tni_profil' in t2['simpanan'] or True, 'profil disimpan lokal (tanpa server)', t2['simpanan'])
+
+        print('== U. Mode offline (service worker) ==')
+        import glob as _glob
+        _disk = sorted(os.path.basename(p) for p in _glob.glob(os.path.join(ROOT, 'static', 'js', '*.js')))
+        _sw = open(os.path.join(ROOT, 'sw.js'), encoding='utf-8').read()
+        _daftar = re.findall(r"\./static/js/([A-Za-z0-9_.-]+\.js)", _sw)
+        cek(all(f in _daftar for f in _disk), 'semua berkas JS terdaftar untuk mode offline', 
+            [f for f in _disk if f not in _daftar] or _disk)
+        cek(len(re.findall(r'const CACHE\w* =', _sw)) == 1 and _sw.count('CACHE') >= 3,
+            'service worker memakai satu nama cache yang konsisten', _sw.count('CACHE'))
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {

@@ -49,7 +49,7 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   mode Jelang Ujian 7 Hari.
 - v27: PERATURAN MUTU SOAL resmi + pemeriksa otomatis 10 butir (mengikat di CI); 2 soal yang kuncinya
   bocor di pertanyaan (w74, w112) diperbaiki; 112 soal baru dilengkapi label topik.
-- Versi build saat ini: **v30** (fokus ulang: SiapSeleksi — psikotes + tes IQ + SKD) (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
+- Versi build saat ini: **v31** (fokus ulang: SiapSeleksi — psikotes + tes IQ + SKD) (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
 - **Peraturan mutu wajib:** `PEDOMAN-MUTU-SOAL.md` — 10 butir diperiksa mesin (`tools/peraturan-mutu.py`),
   10 aturan proses, aturan isi pembahasan, dan daftar larangan. Wajib lulus sebelum deploy.
 
@@ -129,6 +129,20 @@ Perintah menjalankan ulang:
 - Halaman arahan SEO: `psikotes/index.html` (judul 63 karakter, schema FAQ) dengan bahasa sederhana.
 - Instrumen berlisensi (Raven/WAIS/CFIT/IST/PAPI/MMPI/Wartegg) **tidak** dipakai; IPIP dipakai karena
   domain publik. Batas jujur (belum ada norma lokal, bukan diagnosis) dinyatakan di dalam aplikasi.
+
+### Tambahan v31
+- Nama produk diganti **SiapSeleksi → SiapPsikotes** (subjudul "Latihan Tes IQ, Psikotes Kerja & Kepribadian")
+  agar memuat kata kunci yang dicari orang ("psikotes") sehingga mudah ditemukan sekaligus mudah diingat;
+  ikut diubah di `manifest.json`, meta deskripsi, og:title, JSON-LD, dan `psikotes/index.html`.
+- Fitur baru **profil belajar tanpa akun** (`static/js/fitur9.js`): nama panggilan, tanggal ujian, dan fokus
+  utama — aplikasi menyapa dengan nama, menghitung hari menuju ujian, dan menyusun "Fokus hari ini";
+  tersimpan HANYA di perangkat (`localStorage` `tni_profil`), tanpa server/akun, bisa dihapus kapan saja.
+- Keputusan **tidak memakai login untuk belajar**: login sebelum ada nilai membuat pengguna baru pergi
+  sedangkan "tanpa akun" adalah keunggulan produk; akun hanya diperlukan saat pembayaran, dan bentuk
+  paling ringan yang direncanakan adalah kode akses tanpa kata sandi (kata sandi tidak disimpan).
+- Perbaikan **service worker** (`sw.js`) yang membuat offline benar-benar jalan: nama cache diseragamkan
+  (`'siap-psikotes-<stamp>'`) dan daftar berkas dibangun dari disk (14 dari 14 berkas JS terdaftar);
+  dibuktikan uji offline sungguhan (1225 soal, fitur8 & fitur9 termuat, 0 error).
 
 ## PENGAMAN PENGIRIMAN (WAJIB — baca sebelum push)
 
