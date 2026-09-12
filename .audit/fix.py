@@ -858,6 +858,15 @@ for _cat in db.values():
             _n_gp += 1
 print('pembahasan bergambar ditambahkan:', _n_gp)
 
+
+# ============================================================ 1i. lint penulisan soal
+import importlib.util as _ilu4
+_spec4 = _ilu4.spec_from_file_location('lint_soal', '.audit/lint-soal.py')
+_lint = _ilu4.module_from_spec(_spec4)
+_spec4.loader.exec_module(_lint)
+_lint.jalankan(db)
+del _lint
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)

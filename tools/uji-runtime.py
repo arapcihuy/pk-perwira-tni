@@ -220,6 +220,66 @@ def main():
         except Exception as e:
             cek(False, 'pemeriksaan aksesibilitas axe berjalan', str(e)[:140])
 
+
+        print('== 11. Fitur v24 (laporan, pencarian luas, topik, target, 5 menit) ==')
+        f24 = page.evaluate("""() => {
+            const out = {};
+            // pencarian diperluas: kata di dalam pembahasan
+            S.bankCat = 'all'; S.bankQuery = 'nasams'; S.page = 'bank'; render();
+            out.cariPembahasan = document.querySelectorAll('.bank-item').length;
+            S.bankQuery = 'kata-yang-pasti-tidak-ada'; render();
+            out.cariKosong = document.querySelectorAll('.bank-item').length;
+            S.bankQuery = '';
+            // laporkan soal
+            startCat('tkw', 'learn');
+            bukaLapor(S.questions[0].id);
+            pilihAlasan('kunci');
+            ubahCatatan('uji otomatis');
+            kirimLapor();
+            out.laporan = jumlahLaporan();
+            // statistik topik (jawab beberapa soal dulu)
+            for (let i = 0; i < 14; i++) {
+                S.idx = i; S.tSoalIdx = -1; render();
+                pickAnswer(i < 4 ? (S.questions[i].jawaban + 1) % 4 : S.questions[i].jawaban);
+            }
+            out.topikTerpantau = statTopik().length;
+            // target nilai
+            setTargetNilai(90);
+            out.target = targetNilai();
+            // mode 5 menit
+            modeLimaMenit();
+            out.limaMenit = S.questions.length;
+            return out;
+        }""")
+        cek(f24['cariPembahasan'] >= 1 and f24['cariKosong'] == 0,
+            'pencarian bank menjangkau pembahasan/opsi', f24)
+        cek(f24['laporan'] >= 1, 'tombol laporkan soal menyimpan laporan', f24['laporan'])
+        cek(f24['topikTerpantau'] >= 1, 'statistik per topik terhitung', f24['topikTerpantau'])
+        cek(f24['target'] == 90, 'target nilai bisa diatur', f24['target'])
+        cek(f24['limaMenit'] == 10, 'mode 5 menit membuat sesi 10 soal', f24['limaMenit'])
+
+        print('== 12. Anggaran beban muat pertama ==')
+        ukuran = {'total': 0, 'berkas': 0}
+
+        def catat_ukuran(resp):
+            try:
+                cl = resp.headers.get('content-length')
+                if cl:
+                    ukuran['total'] += int(cl)
+                    ukuran['berkas'] += 1
+            except Exception:
+                pass
+
+        halaman2 = browser.new_page(viewport={'width': 1200, 'height': 900})
+        halaman2.on('response', catat_ukuran)
+        halaman2.goto(url + '?anggaran=1', wait_until='load', timeout=30000)
+        halaman2.wait_for_function('() => window.DATA_SOAL_INDEX && window.DATA_SOAL_INDEX.total > 0', timeout=20000)
+        halaman2.close()
+        kb = round(ukuran['total'] / 1024)
+        cek(ukuran['total'] < 450 * 1024,
+            'beban muat pertama %d KB dari %d berkas (anggaran 450 KB tanpa gzip)' % (kb, ukuran['berkas']),
+            ukuran)
+
         browser.close()
 
     print()

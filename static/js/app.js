@@ -800,6 +800,8 @@ function renderBank() {
   var totalKategori = list.length;
   if (q) {
     list = list.filter(function(s) {
+      // pencarian diperluas (pertanyaan, opsi, pembahasan, topik) lewat fitur4
+      if (window.cocokCariBank) return cocokCariBank(s, q);
       return String(s.pertanyaan).toLowerCase().indexOf(q) >= 0 ||
         String(s.katNama).toLowerCase().indexOf(q) >= 0;
     });

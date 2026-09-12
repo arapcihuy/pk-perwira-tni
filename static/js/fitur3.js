@@ -124,19 +124,21 @@ window.hitungKesiapan = function () {
     perkiraan = dasar;
     // rentang makin sempit bila soal yang dikerjakan makin banyak
     rentang = Math.max(3, Math.round(12 - (cakupan / 100) * 8));
-    catatan = 'Perkiraan dari akurasi latihan dan ' + (rataTryout !== null ? 'nilai tryout terakhir' : 'cakupan latihan') + '.';
+    catatan = 'Perkiraan dari akurasi latihan dan ' + (rataTryout !== null ? 'nilai tryout terakhir' : 'cakupan latihan') +
+      '. Targetmu ' + tgt + ', jadi status dinilai terhadap target itu.';
   } else {
     catatan = 'Belum cukup data (minimal 20 soal dikerjakan) untuk memperkirakan nilai.';
   }
 
   var status, warna;
+  var tgt = (typeof targetNilai === 'function') ? targetNilai() : 80;
   if (perkiraan === null) { status = 'Belum terukur'; warna = 'warn'; }
-  else if (perkiraan >= 80) { status = 'Siap'; warna = 'pass'; }
-  else if (perkiraan >= 70) { status = 'Cukup siap'; warna = 'warn'; }
-  else { status = 'Perlu latihan lagi'; warna = 'fail'; }
+  else if (perkiraan >= tgt) { status = 'Siap (target ' + tgt + ')'; warna = 'pass'; }
+  else if (perkiraan >= tgt - 10) { status = 'Cukup siap (target ' + tgt + ')'; warna = 'warn'; }
+  else { status = 'Perlu latihan lagi (target ' + tgt + ')'; warna = 'fail'; }
 
   return {
-    totalSoal: jmlSoal, dikerjakan: dikerjakan, cakupan: cakupan, akurasi: akurasi,
+    target: tgt, totalSoal: jmlSoal, dikerjakan: dikerjakan, cakupan: cakupan, akurasi: akurasi,
     percobaan: percobaan, rataTryout: rataTryout, perkiraan: perkiraan, rentang: rentang,
     status: status, warna: warna, catatan: catatan
   };
