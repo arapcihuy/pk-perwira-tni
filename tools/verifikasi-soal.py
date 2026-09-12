@@ -229,6 +229,19 @@ def main():
     tg_tanpa = [q['id'] for q in db.get('tes_gambar', {}).get('soal', []) if not q.get('gambar')]
     cek(not tg_tanpa, 'semua soal Tes Gambar punya gambar', tg_tanpa[:8])
 
+
+    print('== 7d. Kunci soal Tes Gambar dihitung ulang dari gambarnya ==')
+    try:
+        import importlib.util as _ilu
+        _spec = _ilu.spec_from_file_location('vg', os.path.join(ROOT, 'tools', 'verifikasi-gambar.py'))
+        _vg = _ilu.module_from_spec(_spec)
+        _spec.loader.exec_module(_vg)
+        _temuan = _vg.periksa_semua(db)
+        _jumlah = sum(1 for q in db.get('tes_gambar', {}).get('soal', []) if _vg.periksa(q)[0] is not None)
+        cek(not _temuan, 'kunci Tes Gambar cocok dengan isi gambarnya (%d soal diperiksa otomatis)' % _jumlah, _temuan[:5])
+    except Exception as e:
+        cek(False, 'pemeriksaan gambar berjalan', str(e)[:140])
+
     print('== 8. Versi aset konsisten ==')
     html = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     sw = open(os.path.join(ROOT, 'sw.js'), encoding='utf-8').read()

@@ -287,9 +287,35 @@ tidak melihat kunci lebih dulu. Pemeriksaan bergelombang dengan metode berbeda t
 - Aksesibilitas: tidak ada pelanggaran critical/serious (tersisa 1 catatan moderate 'region').
 - Situs live: 1113 soal, 60 topik, 106 gambar, 6 pembahasan bergambar, panel kesiapan & rencana tampil.
 
-Catatan: pemeriksaan visual terakhir untuk gambar baru dilakukan **secara terprogram** (jumlah elemen,
-angka di dalam SVG, jumlah label daerah bernomor) karena kuota layanan analisis gambar sedang penuh —
-angka pada soal Kraepelin diverifikasi langsung dari isi SVG, jadi lebih kuat daripada pemeriksaan mata.
+### Verifikasi gambar: jawaban dihitung ulang dari gambarnya
+
+Kuota layanan analisis gambar penuh saat pengerjaan, jadi alih-alih mengandalkan pemeriksaan mata,
+saya membuat pemeriksa otomatis yang **menghitung ulang jawaban dari isi SVG** dan memasukkannya ke CI
+(`tools/verifikasi-gambar.py`, dipanggil `tools/verifikasi-soal.py` bagian 7d). Yang diperiksa:
+
+| Soal | Cara verifikasi otomatis |
+|------|--------------------------|
+| tg51 | jumlah sel kisi dihitung dari garis yang ada → 3×2 = **6** |
+| tg53 | jumlah lingkaran (r > 5) dihitung → **7** |
+| tg54 | poligon bersisi 5 ada di gambar → jawaban **Segi lima** |
+| tg55 | titik per kotak dihitung → 1, 4, 9 (kuadrat) → berikutnya **16** |
+| tg60 | jumlah kotak kubus → **3** |
+| tg61/tg64/tg71 | jumlah titik sudut poligon → **6 / 6 / 8** (nama bangun dicocokkan juga) |
+| tg62 | urutan panah dibaca dari gambar (↑ → ↓ ←) → berikutnya **Atas** |
+| tg63 | ada lingkaran di gambar → jawaban **Lingkaran** |
+| tg65 | jumlah kotak = 24 (kelompok 4+8+12) → berikutnya **16** |
+| tg69 | warna kotak ke-12 dibaca dari gambar → **Putih** |
+| tg70 | titik per kotak 2, 4, 6 (+2) → gambar ke-5 **10** |
+| tg72 | poligon 5 sisi dengan 5 bulatan di titik sudut → **5** |
+| tg74 | jumlah garis diagonal di gambar → **2** |
+| tg75/tg76 | arah jarum jam dibaca dari koordinat garis → **180° / 90°** |
+| tg79 | titik per kotak 2, 5, 10 (n²+1) → gambar ke-4 **17** |
+| tg80 | label "180 derajat" + segitiga menghadap atas → jawaban **Bawah** |
+
+Total **19 soal Tes Gambar** dan **15 soal Kraepelin kolom** kini diverifikasi otomatis dari isi gambarnya
+(34 soal). Sisa soal Tes Gambar bersifat konseptual (mis. "berapakah rusuk kubus") sehingga pemeriksaan
+visual mata tetap berguna — bagian itu belum bisa dilakukan karena kuota layanan gambar penuh saat
+pengerjaan, dan itu saya laporkan apa adanya, bukan diklaim sudah diperiksa.
 
 ## Cara mengulang audit di masa depan
 
