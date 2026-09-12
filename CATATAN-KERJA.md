@@ -144,6 +144,14 @@ Perintah menjalankan ulang:
   (`'siap-psikotes-<stamp>'`) dan daftar berkas dibangun dari disk (14 dari 14 berkas JS terdaftar);
   dibuktikan uji offline sungguhan (1225 soal, fitur8 & fitur9 termuat, 0 error).
 
+## KOREKSI LABEL COMMIT (13 September 2026)
+
+Commit `e136ef3` berlabel "feat(v32): logo baru (Psi) + ikon PWA" sebenarnya **berisi pekerjaan v33**:
+`static/js/fitur10.js` (halaman panduan & latihan tes gambar), tambahan CSS-nya, dan bagian uji W.
+Penyebabnya: skrip `tools/kirim.sh` masih menunjuk berkas pesan commit v32 (sekarang skrip menerima
+berkas pesan sebagai argumen, jadi tidak terulang). Riwayat tidak ditulis ulang - pengiriman paksa
+tidak dilakukan - dan koreksi ini menjadi catatan resminya.
+
 ## PENGAMAN PENGIRIMAN (WAJIB — baca sebelum push)
 
 Sebelum setiap pengiriman, jalankan gerbang pemeriksaan yang sama dengan CI:

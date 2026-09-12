@@ -9,6 +9,7 @@
 // 1. MENU LAINNYA
 // ============================================================
 var TAUTAN_LAIN = [
+  { t: 'Halaman psikotes (bagikan ke teman)', k: 'psikotes', f: "window.open('psikotes/','_blank')", ic: 'globe' },
   { t: 'Ringkasan Hafalan', k: 'ringkasan', f: 'bukaRingkasan()', ic: 'bulb' },
   { t: 'Hafalan Cepat (kartu)', k: 'hafalan', f: 'bukaHafalan()', ic: 'layers' },
   { t: 'Laporan soal', k: 'laporan', f: "navTo('prog')", ic: 'flag' },
