@@ -1,4 +1,4 @@
-# Laporan Audit, Perbaikan & Pengembangan — build v24
+# Laporan Audit, Perbaikan & Pengembangan — build v25
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
@@ -354,6 +354,46 @@ pengerjaan, dan itu saya laporkan apa adanya, bukan diklaim sudah diperiksa.
   target nilai, mode 5 menit), mode offline, dan **axe tanpa pelanggaran**.
 - Lint: 0 soal yang masih memakai "x" antar angka; 29 soal memakai " × ".
 
+
+---
+
+# Bagian 7 — Lembar hafalan, penyeimbangan kunci, & pemantauan berkala (build v25)
+
+## Temuan yang memicu pengembangan
+
+1. **Posisi kunci jawaban masih miring**: B 37,7% vs D 14,1% (setelah penambahan soal baru, 92 soal
+   bahkan semuanya berkunci A). Di mode Belajar posisi opsi tidak diacak, jadi jawaban bisa ditebak.
+2. Pembahasan bergambar hanya ada di 6 soal; dari 32 soal matematika bertopik geometri,
+   **0** yang punya gambar penjelasan.
+3. Semua kiat hafalan (baris INGAT) tersebar di 1205 pembahasan tanpa satu lembar ringkas untuk
+   dibaca ulang menjelang ujian.
+4. Nilai sesi hanya menyimpan tanggal (tanpa jam) sehingga pola waktu belajar tidak bisa dianalisis.
+5. CI hanya berjalan saat ada push; kerusakan diam-diam di situs live tidak terdeteksi.
+
+## Perbaikan & fitur baru
+
+| # | Item | Hasil |
+|---|------|-------|
+| 1 | **Penyeimbangan posisi kunci** | Seluruh 1205 soal disusun ulang secara siklik sehingga posisi kunci merata: **A 25% · B 25% · C 25% · D 25%** (dari 930 soal yang digeser). Celah "tebak B" hilang bahkan di mode Belajar. |
+| 2 | **+92 soal** | 52 TWK + 40 Kepribadian Situasional. Total kini **1205 soal** (TWK 203, kepribadian 113). |
+| 3 | **Pembahasan bergambar geometri** | 32 soal geometri kini punya gambar bangun + rumus + nilai yang diketahui (persegi panjang, segitiga, lingkaran, kubus, balok, trapesium). Total pembahasan bergambar: **38 soal**. |
+| 4 | **Ringkasan Hafalan** | Halaman baru yang mengumpulkan 58+ kiat dari baris INGAT seluruh bank soal, dikelompokkan per bidang, dengan ekspor cetak/PDF — lembar terakhir sebelum ujian. |
+| 5 | **Insight waktu belajar** | Jam sesi kini disimpan; aplikasi menampilkan rata-rata nilai pagi/siang/malam dan jam terbaik, dengan catatan jujur bahwa jumlah sesi tiap jam masih sedikit. |
+| 6 | **Riwayat versi** | Halaman changelog di dalam aplikasi (v19 sampai v25) supaya pengguna tahu apa yang berubah. |
+| 7 | **Panduan awal** | Tur 4 langkah untuk pemakai baru (sekali saja, bisa ditutup). |
+| 8 | **Pemeriksaan terjadwal** | Workflow mingguan (Senin 08:00 WIB): verifikasi data + uji runtime + **smoke test situs live**. |
+| 9 | **Smoke test situs live** | `tools/uji-situs-live.py`: cek versi aset konsisten, semua berkas kunci tersedia, index live berisi 1205 soal, lalu memuat situs di Chromium (0 error JS, semua gambar ter-render, pembahasan tampil). |
+| 10 | **Uji runtime diperluas** | Bagian baru: sebaran posisi kunci (gagal bila selisih antar posisi > 3%), jumlah pembahasan bergambar, halaman ringkasan/riwayat, dan panduan awal. |
+
+## Verifikasi build v25
+
+- Verifikasi data: LULUS — 1205 soal, id unik, 0 opsi senilai, 0 duplikat, pembahasan seragam,
+  106 gambar valid, kunci Kraepelin kolom & 19 soal Tes Gambar cocok dengan gambarnya.
+- Uji runtime: LULUS — termasuk pemeriksaan sebaran kunci [25,25,25,25], 38 pembahasan bergambar,
+  58 kiat ringkasan, halaman riwayat, panduan awal, mode offline, dan axe tanpa pelanggaran.
+- **Smoke test situs live: SEHAT** — versi aset tunggal, seluruh berkas tersedia, 1205 soal,
+  106/106 gambar ter-render di Chromium, 0 error JavaScript.
+
 ## Cara mengulang audit di masa depan
 
 ```bash
@@ -362,6 +402,7 @@ pengerjaan, dan itu saya laporkan apa adanya, bukan diklaim sudah diperiksa.
 /usr/bin/python3 .audit/verify.py          # cek akurasi (versi kerja)
 /usr/bin/python3 tools/verifikasi-soal.py  # cek data yang dipakai CI (wajib lulus)
 /usr/bin/python3 tools/uji-runtime.py      # uji runtime di Chromium (Playwright)
+/usr/bin/python3 tools/uji-situs-live.py   # smoke test situs yang tayang (dipakai CI terjadwal)
 ```
 
 Urutan penting: `fix.py` menulis ulang `data/soal.js`, lalu otomatis memecahnya lewat

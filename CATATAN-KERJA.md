@@ -10,10 +10,11 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 
 ## Ringkasan isi aplikasi
 
-- 1113 soal, 9 kategori: Wawasan Kebangsaan (151), Matematika (166), Bahasa Inggris (110),
+- 1205 soal, 9 kategori: Wawasan Kebangsaan (203), Matematika (166), Bahasa Inggris (110),
   Penalaran dan Logika (134), Kemampuan Numerik (184), Kemampuan Verbal (100),
   Tes Kraepelin (115, termasuk 15 soal kolom angka bergambar), Tes Gambar dan Visual (80, semua bergambar),
-  Tes Kepribadian Situasional (73). Semua soal punya label topik (60 topik).
+  Tes Kepribadian Situasional (113). Semua soal punya label topik (60+ topik) dan posisi kunci
+  tersebar merata (A/B/C/D masing-masing ~25%).
 - Fitur: Tryout (60 soal / 90 menit), mode Belajar, Bank Soal + pencarian, Tes Psikologi
   (Kraepelin, Digit Span, Daya Ingat, EPPS), IQ Lab (matriks, deret, rotasi, Dual N-Back),
   Progress, backup/restore data lokal (localStorage), PWA offline (service worker).
@@ -40,7 +41,11 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   pengingat 28 hari (.ics).
 - Teknis v24: lint penulisan soal (94 perbaikan), axe nol pelanggaran (landmark footer + dialog),
   anggaran beban muat di CI, uji fitur v24 masuk uji runtime otomatis.
-- Versi build saat ini: **v24** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=53174b3`).
+- Fitur v25: Ringkasan Hafalan (58 kiat, bisa dicetak), pembahasan bergambar 32 soal geometri,
+  +92 soal (TWK & Kepribadian), insight waktu belajar, halaman riwayat versi, panduan awal 4 langkah.
+- Teknis v25: penyeimbangan posisi kunci (A/B/C/D ~25%), workflow pemeriksaan terjadwal mingguan,
+  smoke test situs live (`tools/uji-situs-live.py`), uji runtime diperluas.
+- Versi build saat ini: **v25** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=a3c3bfd`).
 
 ## Riwayat pekerjaan otonom
 
@@ -77,7 +82,7 @@ Perintah menjalankan ulang:
 /usr/bin/python3 tools/verifikasi-soal.py  # verifikasi yang dipakai CI (wajib lulus sebelum push)
 ```
 
-## Hasil verifikasi v24
+## Hasil verifikasi v25
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
@@ -90,6 +95,8 @@ Perintah menjalankan ulang:
 - Uji offline di CI LULUS (aplikasi tetap jalan tanpa internet setelah pemuatan pertama).
 - Uji aksesibilitas axe: **nol pelanggaran** (sebelumnya 1 moderate).
 - Beban muat pertama 344 KB tanpa gzip (16 berkas) — di situs live ~70 KB karena gzip.
+- Sebaran posisi kunci merata 25% x 4 posisi (anti tebak), 38 soal dengan pembahasan bergambar.
+- Smoke test situs live SEHAT: versi aset tunggal, 1205 soal, 106/106 gambar render, 0 error JS.
 - Uji runtime otomatis di Chromium (Playwright) LULUS: 9 kategori, tryout terkunci, simulasi format,
   hafalan, bank soal, 0 error JavaScript.
 - Audit kunci gelombang kedua: 568 soal hafalan diperiksa ulang secara independen → 8 koreksi
