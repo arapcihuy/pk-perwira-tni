@@ -5,3 +5,5 @@ retry-pages-deploy.sh
 .audit/db-new.json
 .audit/soal.js.bak
 .audit/*.bak
+__pycache__/
+*.pyc

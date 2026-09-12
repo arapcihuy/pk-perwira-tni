@@ -655,6 +655,76 @@ setq('penalaran_logika', 'l60', pertanyaan="Jika hari ini Rabu, maka 250 hari la
   pembahasan="250 dibagi 7 = 35 sisa 5. Hitung 5 langkah dari Rabu: Kamis, Jumat, Sabtu, Minggu, Senin. "
              "Jadi hari ke-250 jatuh pada hari Senin.")
 
+
+# ============================================================ 1c. tambahkan soal baru (v21)
+import importlib.util as _ilu
+_spec = _ilu.spec_from_file_location('tambahan', '.audit/tambahan.py')
+_mod = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
+
+def _tambah(daftar, kat, prefix, mulai):
+    dipakai = {q['id'] for q in db[kat]['soal']}
+    n = mulai
+    baru = 0
+    for (tanya, pilihan, kunci, pb) in daftar:
+        qid = '%s%d' % (prefix, n)
+        n += 1
+        if qid in dipakai:
+            continue
+        db[kat]['soal'].append({
+            'id': qid, 'pertanyaan': tanya, 'pilihan': pilihan,
+            'jawaban': kunci, 'pembahasan': pb
+        })
+        baru += 1
+    return baru
+
+_t1 = _tambah(_mod.TAMBAHAN_TKW, 'tkw', 'w', 113)
+_t2 = _tambah(_mod.TAMBAHAN_KEPRIBADIAN, 'kepribadian', 'kp', 45)
+print('soal baru ditambahkan: TWK %d, Kepribadian %d' % (_t1, _t2))
+print('total soal sekarang:', sum(len(v['soal']) for v in db.values()))
+
+
+# ============================================================ 1d. gambar untuk soal tes_gambar (tg31-tg50)
+import base64 as _b64
+_spec2 = _ilu.spec_from_file_location('svg_baru', '.audit/svg_baru.py')
+_svgmod = _ilu.module_from_spec(_spec2)
+_spec2.loader.exec_module(_svgmod)
+_ada_gambar = 0
+for _q in db['tes_gambar']['soal']:
+    _svg = _svgmod.SVG_BARU.get(_q['id'])
+    if not _svg:
+        continue
+    _q['gambar'] = 'data:image/svg+xml;base64,' + _b64.b64encode(_svg.encode()).decode()
+    if not _q['pertanyaan'].lower().startswith('perhatikan'):
+        _q['pertanyaan'] = 'Perhatikan gambar berikut. ' + _q['pertanyaan']
+    _ada_gambar += 1
+print('gambar soal tes_gambar ditambahkan:', _ada_gambar)
+
+
+# perbaikan gambar: tg31 harus menandai '?' pada urutan ke-7 (sesuai pertanyaan)
+GANTI_SVG = {
+ 'tg31': ("<svg xmlns='http://www.w3.org/2000/svg' width='300' height='150' style='background:#0c1829'>"
+          "<rect width='300' height='150' fill='#0c1829'/>"
+          "<circle cx='30' cy='62' r='12' fill='none' stroke='#4a90d9' stroke-width='2'/>"
+          "<polygon points='70,50 82,74 58,74' fill='none' stroke='#4a90d9' stroke-width='2'/>"
+          "<rect x='98' y='50' width='24' height='24' fill='none' stroke='#4a90d9' stroke-width='2'/>"
+          "<circle cx='150' cy='62' r='12' fill='none' stroke='#4a90d9' stroke-width='2'/>"
+          "<polygon points='190,50 202,74 178,74' fill='none' stroke='#4a90d9' stroke-width='2'/>"
+          "<rect x='218' y='50' width='24' height='24' fill='none' stroke='#4a90d9' stroke-width='2'/>"
+          "<text x='270' y='76' fill='#ffd700' font-size='34' text-anchor='middle' font-weight='bold'>?</text>"
+          "<text x='30' y='132' fill='#7a96b8' font-size='9' text-anchor='middle'>1</text>"
+          "<text x='70' y='132' fill='#7a96b8' font-size='9' text-anchor='middle'>2</text>"
+          "<text x='110' y='132' fill='#7a96b8' font-size='9' text-anchor='middle'>3</text>"
+          "<text x='150' y='132' fill='#7a96b8' font-size='9' text-anchor='middle'>4</text>"
+          "<text x='190' y='132' fill='#7a96b8' font-size='9' text-anchor='middle'>5</text>"
+          "<text x='230' y='132' fill='#7a96b8' font-size='9' text-anchor='middle'>6</text>"
+          "<text x='270' y='132' fill='#7a96b8' font-size='9' text-anchor='middle'>7</text>"
+          "</svg>"),
+}
+for _q in db['tes_gambar']['soal']:
+    if _q['id'] in GANTI_SVG:
+        _q['gambar'] = 'data:image/svg+xml;base64,' + _b64.b64encode(GANTI_SVG[_q['id']].encode()).decode()
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)
@@ -873,48 +943,30 @@ for q in db['numerik']['soal']:
 print('notasi desimal dinormalkan:', norm)
 
 # ============================================================ 4. tulis ulang data/soal.js
+# Seluruh SOAL_DATABASE ditulis ulang dari db (termasuk soal baru), bagian lain file
+# (getAllSoal, TIPS_DATA, dan kode lain) dipertahankan apa adanya.
 raw = open(SRC, encoding='utf-8').read()
+awal = raw.index('{', raw.index('SOAL_DATABASE'))
+depth = 0
+for n, ch in enumerate(raw[awal:]):
+    if ch == '{':
+        depth += 1
+    elif ch == '}':
+        depth -= 1
+        if depth == 0:
+            akhir_db = awal + n + 1
+            break
+sisa = raw[akhir_db:]
 
-def find_objs(text):
-    """Kembalikan dict id -> (start, end) untuk setiap objek soal."""
-    out = {}
-    for m in re.finditer(r'\{"id":\s*"([a-zA-Z]+)(\d+)"', text):
-        start = m.start()
-        depth = 0
-        i = start
-        while i < len(text):
-            if text[i] == '{':
-                depth += 1
-            elif text[i] == '}':
-                depth -= 1
-                if depth == 0:
-                    out[m.group(1) + m.group(2)] = (start, i + 1)
-                    break
-            i += 1
-    return out
-
-pos = find_objs(raw)
-print('objek ditemukan di data/soal.js:', len(pos))
-missing = [q['id'] for v in db.values() for q in v['soal'] if q['id'] not in pos]
-print('objek tidak ketemu:', missing)
-
-repl = []
-for cat, v in db.items():
-    for q in v['soal']:
-        s, e = pos[q['id']]
-        old = raw[s:e]
-        new = json.dumps(q, ensure_ascii=False, separators=(', ', ': '))
-        if old != new:
-            repl.append((s, e, new))
-repl.sort()
-out = []
-last = 0
-for s, e, new in repl:
-    out.append(raw[last:s]); out.append(new); last = e
-out.append(raw[last:])
-new_raw = ''.join(out)
+blok = []
+for kat, v in db.items():
+    baris = ',\n'.join('  ' + json.dumps(q, ensure_ascii=False, separators=(', ', ': '))
+                        for q in v['soal'])
+    blok.append('"%s":{"nama":%s, "soal":[\n%s\n]}' % (kat, json.dumps(v['nama'], ensure_ascii=False), baris))
+new_raw = raw[:awal] + '{' + ', '.join(blok) + '}' + sisa
 open(SRC, 'w', encoding='utf-8').write(new_raw)
-print('soal diubah:', len(repl), '| ukuran file:', len(new_raw))
+print('data/soal.js ditulis ulang | ukuran:', len(new_raw),
+      '| total soal:', sum(len(v['soal']) for v in db.values()))
 
 # sanity: file masih bisa diparse
 i = new_raw.index('{', new_raw.index('SOAL_DATABASE'))
@@ -930,3 +982,9 @@ for n, ch in enumerate(new_raw[i:]):
 check = json.loads(new_raw[i:end])
 print('parse ulang OK, total soal =', sum(len(v['soal']) for v in check.values()))
 json.dump(check, open('.audit/db-new.json', 'w'), ensure_ascii=False)
+
+
+# ============================================================ 5. pecah data per kategori
+import subprocess
+_r = subprocess.run(['/usr/bin/python3', 'tools/pecah-data.py'], capture_output=True, text=True)
+print(_r.stdout.strip() or _r.stderr.strip())

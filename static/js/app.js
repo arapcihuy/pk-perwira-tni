@@ -105,14 +105,16 @@ function saveScores(arr) { localStorage.setItem('tni_scores', JSON.stringify(arr
 
 // ---- HEADER STATS ----
 function updateHeaderStats() {
-  var allSoal = getAllSoal();
   var el1 = document.getElementById('hStatSoal');
   var el2 = document.getElementById('hStatKat');
   var el3 = document.getElementById('hStatTO');
-  if (el1) el1.textContent = allSoal.length;
-  if (el2) el2.textContent = Object.keys(SOAL_DATABASE).length;
+  if (el1) el1.textContent = totalSoal();
+  if (el2) el2.textContent = daftarKategori().length;
   if (el3) el3.textContent = loadToTotal();
 }
+
+function jumlahSoalKategori(k) { return jumlahSoal(k); }
+function namaKategoriAman(k) { return namaKategori(k); }
 
 // ---- RENDER ROUTER ----
 function render() {
@@ -137,6 +139,12 @@ function render() {
   if (kbh) kbh.classList.toggle('show', S.page === 'soal');
 
   switch (S.page) {
+    case 'memuat': m.innerHTML = htmlMemuat(S.pesanMemuat || 'Menyiapkan soal...'); break;
+    case 'gagal':
+      m.innerHTML = '<div class="empty"><div class="empty-icon">' + icon('alert', 40) + '</div>' +
+        '<p>Soal gagal dimuat. Periksa koneksi internet lalu coba lagi.</p>' +
+        '<button class="btn btn-primary" style="margin-top:12px" onclick="location.reload()">' + ic('refresh', 16) + ' Coba lagi</button></div>';
+      break;
     case 'home':  m.innerHTML = renderHome();  break;
     case 'cat':   m.innerHTML = renderCat();   break;
     case 'soal':  m.innerHTML = renderSoal();  startTimerIfNeeded(); break;
@@ -151,17 +159,16 @@ window.render = render;
 
 // ---- HOME ----
 function renderHome() {
-  var all = getAllSoal();
   var scores = loadScores();
   var avgScore = '-';
   if (scores.length > 0) {
     var sum = scores.reduce(function(a,b){ return a + b.nilai; }, 0);
     avgScore = Math.round(sum / scores.length);
   }
-  var catKeys = Object.keys(SOAL_DATABASE);
+  var catKeys = daftarKategori();
 
   var catCards = catKeys.map(function(k) {
-    var v = SOAL_DATABASE[k];
+    var v = { nama: namaKategori(k), soal: { length: jumlahSoal(k) } };
     return '<div class="card" style="cursor:pointer;padding:18px" onclick="startCat(\'' + k + '\',\'tryout\')">' +
       '<div class="kat-icon" style="margin-bottom:10px">' + icon(katIcon(k), 22) + '</div>' +
       '<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">' + v.nama + '</div>' +
@@ -180,7 +187,7 @@ function renderHome() {
     '<div class="grid-3" style="margin-bottom:20px">' +
       '<div class="card card-gold card-sm">' +
         '<div class="card h3">Total Soal</div>' +
-        '<div class="card num">' + all.length + '</div>' +
+        '<div class="card num">' + totalSoal() + '</div>' +
         '<div class="card sub">' + catKeys.length + ' kategori materi</div>' +
       '</div>' +
       '<div class="card card-sm">' +
@@ -225,29 +232,35 @@ function renderHome() {
 
     '<div class="section-title">Pilih Kategori Langsung</div>' +
     '<div class="grid-auto">' + catCards + '</div>' +
-    '<div style="text-align:center;font-size:11px;color:var(--text3);margin:20px 0 8px">Build v18 · IQ Lab aktif (menu IQ di navigasi)</div>';
+    '<div id="buildTag" style="text-align:center;font-size:11px;color:var(--text3);margin:20px 0 8px">Build v21 · pengulangan berjadwal, rincian per kategori, tema terang</div>';
 }
 
 // ---- PILIH KATEGORI ----
 function renderCat() {
   var isTO = S.mode === 'tryout';
-  var all = getAllSoal();
-  var catKeys = Object.keys(SOAL_DATABASE);
+  var catKeys = daftarKategori();
 
   var items = '<div class="kat-card" onclick="startCat(\'all\',\'' + S.mode + '\')">' +
     '<div class="kat-icon">' + icon('layers', 22) + '</div>' +
     '<div class="kat-name">Semua Kategori</div>' +
-    '<div class="kat-sub">' + all.length + ' soal · acak</div>' +
+    '<div class="kat-sub">' + totalSoal() + ' soal · acak</div>' +
     '</div>';
 
   catKeys.forEach(function(k) {
-    var v = SOAL_DATABASE[k];
+    var v = { nama: namaKategori(k), soal: { length: jumlahSoal(k) } };
     items += '<div class="kat-card" onclick="startCat(\'' + k + '\',\'' + S.mode + '\')">' +
       '<div class="kat-icon">' + icon(katIcon(k), 22) + '</div>' +
       '<div class="kat-name">' + v.nama + '</div>' +
       '<div class="kat-sub">' + v.soal.length + ' soal</div>' +
       '</div>';
   });
+
+  // kartu pintasan: simulasi lembar Kraepelin ada di menu Psikologi
+  items += '<div class="kat-card kat-card-alt" onclick="bukaKraepelinSim()">' +
+    '<div class="kat-icon">' + icon('zap', 22) + '</div>' +
+    '<div class="kat-name">Simulasi Lembar Kraepelin</div>' +
+    '<div class="kat-sub">10 kolom × 50 angka · 3 menit · ada grafik kecepatan</div>' +
+    '</div>';
 
   return '<div class="mode-badge">' + (isTO ? ic('clock', 14) + ' Mode Tryout dengan Timer' : ic('book', 14) + ' Mode Belajar tanpa Timer') + '</div>' +
     '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">' +
@@ -259,7 +272,22 @@ function renderCat() {
 }
 
 // ---- START ----
-function startCat(cat, mode) {
+function startCat(cat, mode, percobaan) {
+  // data soal dimuat bertahap: tunggu sampai kategori ini siap.
+  // percobaan dibatasi supaya aplikasi tidak berputar terus kalau file gagal dimuat.
+  percobaan = percobaan || 0;
+  var belumSiap = (cat === 'all') ? !katSiapSemua() : !katSiap(cat);
+  if (belumSiap) {
+    if (percobaan >= 2) { S.page = 'gagal'; render(); return; }
+    S.page = 'memuat';
+    S.pesanMemuat = (cat === 'all')
+      ? 'Menyiapkan seluruh soal (sekali saja, sesudah ini langsung siap)...'
+      : 'Menyiapkan soal ' + namaKategori(cat) + '...';
+    render();
+    var tunggu = (cat === 'all') ? pastikanSemua() : pastikanKategori(cat);
+    tunggu.then(function() { startCat(cat, mode, percobaan + 1); });
+    return;
+  }
   S.cat = cat;
   S.mode = mode;
   S.isSimulasi = false;
@@ -267,6 +295,8 @@ function startCat(cat, mode) {
   S.idx = 0;
   S.answers = {};
   S.flagged = {};
+  S.dur = {};
+  S.tSoalIdx = -1;
 
   if (cat === 'all') {
     S.questions = shuffle(getAllSoal());
@@ -301,6 +331,12 @@ function renderSoal() {
   var q = S.questions[S.idx];
   var n = S.questions.length;
   var pct = Math.round(((S.idx + 1) / n) * 100);
+
+  // fitur tambahan: mulai hitung waktu saat soal ini pertama kali tampil
+  if (S.tSoalIdx !== S.idx) {
+    S.tSoalIdx = S.idx;
+    S.tStart = Date.now();
+  }
   var letters = ['A','B','C','D'];
   var ans = S.answers[S.idx];
   var answered = ans !== undefined;
@@ -473,6 +509,13 @@ window.pickAnswer = function(i) {
   if (i === q.jawaban) prog[kat].benar++;
   saveProgress(prog);
 
+  // fitur tambahan: catat soal benar/salah untuk pengulangan berjadwal,
+  // ukur waktu pengerjaan, hitung aktivitas harian, simpan sesi
+  if (window.catatSoalSalah) catatSoalSalah(q.id, i === q.jawaban);
+  if (window.catatWaktuSoal && S.tStart) catatWaktuSoal(S.idx, Math.round((Date.now() - S.tStart) / 1000));
+  if (window.tambahHarian) tambahHarian('soal', 1);
+  if (window.simpanSesiAktif) simpanSesiAktif();
+
   render();
   startTimerIfNeeded();
 };
@@ -538,6 +581,9 @@ window.finishSession = function() {
       tgl: new Date().toLocaleDateString('id-ID')
     });
     localStorage.setItem('tni_iq_sesi', JSON.stringify(sesi.slice(-30)));
+  } else if (S.mode === 'drill') {
+    // drill (soal salah / ulangan) tidak masuk riwayat tryout
+    if (window.tambahHarian) tambahHarian('tryout', 0);
   } else {
     var scores = loadScores();
     scores.push({
@@ -552,6 +598,10 @@ window.finishSession = function() {
     bumpToTotal();          // hitungan tryout total (riwayat tetap 10 terakhir)
   }
   updateHeaderStats();
+
+  // fitur tambahan: rekap per kategori + kecepatan, lalu hapus penanda sesi aktif
+  if (window.rekapHasil) rekapHasil(S.lastResult);
+  if (window.buangSesiAktif) buangSesiAktif();
 
   S.page = 'hasil';
   render();
@@ -620,7 +670,7 @@ window.retrySession = function() {
   }
   if (S.isSimulasi) {
     startSimulasi60();
-  } else if (SOAL_DATABASE[S.cat]) {
+  } else if (S.cat === 'all' || SOAL_DATABASE[S.cat]) {
     startCat(S.cat, S.mode);
   } else {
     goPage('home');
@@ -652,6 +702,16 @@ window.drillWrong = function() {
 
 window.startSimulasi60 = function() {
   // Simulasi tryout 60 soal 90 menit persis format PK Perwira
+  if (!katSiapSemua()) {
+    S.simCoba = (S.simCoba || 0) + 1;
+    if (S.simCoba > 2) { S.page = 'gagal'; render(); return; }
+    S.page = 'memuat';
+    S.pesanMemuat = 'Menyiapkan 60 soal simulasi...';
+    render();
+    pastikanSemua().then(function() { startSimulasi60(); });
+    return;
+  }
+  S.simCoba = 0;
   var all = getAllSoal();
   S.cat = 'all';
   S.mode = 'tryout';
@@ -679,6 +739,15 @@ window.reviewSession = function() {
 
 // ---- BANK SOAL ----
 function renderBank() {
+  var butuh = (S.bankCat === 'all') ? pastikanSemua() : pastikanKategori(S.bankCat);
+  var bankSiap = (S.bankCat === 'all') ? katSiapSemua() : katSiap(S.bankCat);
+  if (!bankSiap) {
+    S.bankCoba = (S.bankCoba || 0) + 1;
+    if (S.bankCoba > 2) return htmlMemuat('Soal gagal dimuat. Periksa koneksi lalu buka ulang Bank Soal.');
+    butuh.then(function() { render(); });
+    return htmlMemuat('Memuat bank soal...');
+  }
+  S.bankCoba = 0;
   var catKeys = Object.keys(SOAL_DATABASE);
   var list = [];
   var q = (S.bankQuery || '').toLowerCase().trim();

@@ -1080,3 +1080,96 @@ kbd {
   .nb-cell { width: 54px; height: 54px; }
   .iq-track-num { font-size: 30px; }
 }
+
+/* ============================================================
+   v21 — TEMA TERANG, UKURAN HURUF, PANEL FITUR BARU
+   ============================================================ */
+[data-tema="terang"] {
+  --bg-base: #f2f2f7;
+  --bg: #f2f2f7;
+  --bg-elevated: #ffffff;
+  --primary: #0a84ff;
+  --surface: rgba(0, 0, 0, 0.045);
+  --surface2: rgba(0, 0, 0, 0.075);
+  --surface3: rgba(0, 0, 0, 0.12);
+  --surface-solid: #ffffff;
+  --surface-solid2: #f6f6fa;
+  --border: rgba(0, 0, 0, 0.10);
+  --border2: rgba(0, 0, 0, 0.18);
+  --blue: #0a63d6;
+  --blue2: #0a84ff;
+  --gold: #8a6a12;
+  --gold2: #a8801a;
+  --gold3: #7a5f10;
+  --glow: rgba(168, 128, 26, 0.16);
+  --green: #1a7f37;
+  --green2: #1a7f37;
+  --green3: #1a7f37;
+  --success: #1a7f37;
+  --red: #c0392b;
+  --red2: #c0392b;
+  --red3: #a93226;
+  --danger: #c0392b;
+  --text: #1c1c1e;
+  --text2: #48484a;
+  --text3: #6e6e78;
+  --white: #0b0b0f;
+}
+[data-tema="terang"] body { background: var(--bg-base); color: var(--text); }
+[data-tema="terang"] .topbar { background: rgba(255, 255, 255, 0.82); }
+[data-tema="terang"] .nav { background: rgba(255, 255, 255, 0.9); }
+
+/* baris tombol tampilan di topbar */
+.tampilan-bar { display: flex; align-items: center; gap: 4px; margin-left: 6px; }
+.tampilan-bar .btn { padding: 5px 8px; font-size: 11px; }
+.font-pill { font-size: 10px; color: var(--text3); min-width: 30px; text-align: center; }
+
+/* panel "hari ini" */
+.hari-ini, .jalur-card, .lanjut-sesi { margin-bottom: 14px; }
+.hari-head { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text); margin-bottom: 10px; }
+.hari-tgl { margin-left: auto; font-size: 10px; color: var(--text3); }
+.hari-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.hari-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 6px; text-align: center; }
+.hari-box.perlu { border-color: var(--gold2); background: var(--glow); }
+.hari-num { font-size: 19px; font-weight: 800; color: var(--white); line-height: 1.1; }
+.hari-lbl { font-size: 10px; color: var(--text3); margin-top: 3px; }
+.hari-track { height: 7px; border-radius: 6px; background: var(--surface3); overflow: hidden; margin: 12px 0 8px; }
+.hari-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold3)); border-radius: 6px; }
+.hari-sub { font-size: 11px; color: var(--text2); line-height: 1.6; }
+.hari-aman { font-size: 11px; color: var(--green); margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+.ulang-mini { margin-top: 8px; border-top: 1px dashed var(--border2); padding-top: 8px; }
+.ulang-mini-item { font-size: 11px; color: var(--text3); padding: 3px 0; }
+.lanjut-sesi { border-color: var(--gold2); background: var(--glow); font-size: 12px; color: var(--text); }
+
+/* rincian per kategori di layar hasil */
+.kat-row { margin-bottom: 9px; }
+.kat-row-top { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+.prog-bar.pass { background: var(--green); }
+.prog-bar.warn { background: var(--gold2); }
+.prog-bar.fail { background: var(--red); }
+.ok-text { color: var(--green); display: inline-flex; align-items: center; gap: 4px; }
+.warn-text { color: var(--gold2); display: inline-flex; align-items: center; gap: 4px; }
+
+/* bank soal salah */
+.ulang-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+.ulang-teks { flex: 1; font-size: 11px; color: var(--text2); }
+.ulang-aksi { display: flex; align-items: center; gap: 6px; }
+.pill-salah { font-size: 10px; padding: 2px 7px; border-radius: 20px; background: var(--surface3); color: var(--text2); }
+
+/* kode sinkron */
+.kode-box {
+  width: 100%; min-height: 74px; margin-top: 10px; padding: 9px; border-radius: 10px;
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; resize: vertical;
+}
+
+/* kartu pintasan kategori */
+.kat-card-alt { border-style: dashed; border-color: var(--gold2); }
+
+/* aksesibilitas: fokus jelas untuk navigasi keyboard */
+.option:focus-visible, .btn:focus-visible, .nav-btn:focus-visible, .kat-card:focus-visible {
+  outline: 3px solid var(--gold3); outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

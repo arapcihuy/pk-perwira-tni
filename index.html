@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="static/icons/icon-192.png">
   <title>PK Perwira TNI — Platform Belajar</title>
-  <link rel="stylesheet" href="static/css/style.css?v=20">
+  <link rel="stylesheet" href="static/css/style.css?v=21">
 </head>
 <body>
 
@@ -75,13 +75,17 @@
     </div>
   </div>
 
-  <script src="data/soal.js?v=20"></script>
-  <script src="data/soal-psikologi.js?v=20"></script>
-  <script src="data/soal-iq.js?v=20"></script>
-  <script src="static/js/icons.js?v=20"></script>
-  <script src="static/js/app.js?v=20"></script>
-  <script src="static/js/psikologi.js?v=20"></script>
-  <script src="static/js/iq.js?v=20"></script>
+  <script src="data/soal-index.js?v=21"></script>
+  <script src="data/tips.js?v=21"></script>
+  <script src="static/js/data-loader.js?v=21"></script>
+  <script src="data/soal-psikologi.js?v=21"></script>
+  <script src="data/soal-iq.js?v=21"></script>
+  <script src="static/js/icons.js?v=21"></script>
+  <script src="static/js/app.js?v=21"></script>
+  <script src="static/js/psikologi.js?v=21"></script>
+  <script src="static/js/iq.js?v=21"></script>
+  <script src="static/js/fitur.js?v=21"></script>
+  <script>if(typeof terapkanTema==="function")terapkanTema();</script>
 
   <script>
     // Update header stats setelah semua script dimuat
@@ -112,7 +116,7 @@
     // Register Service Worker untuk PWA offline + deteksi update
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('./sw.js?v=20')
+        navigator.serviceWorker.register('./sw.js?v=21')
           .then(function(reg) {
             console.log('SW registered:', reg.scope);
             if (reg.waiting && navigator.serviceWorker.controller) tampilkanBannerVersi();

@@ -1,0 +1,45 @@
+name: Cap Versi Otomatis
+
+# Penanda versi aset (?v=...) di index.html dan sw.js diganti dengan hash commit,
+# supaya pengguna lama selalu menerima pembaruan (cache service worker ikut berubah)
+# tanpa perlu menaikkan versi secara manual.
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'data/**.js'
+      - 'static/**'
+      - 'index.html'
+      - 'sw.js'
+
+permissions:
+  contents: write
+
+jobs:
+  cap-versi:
+    if: "!contains(github.event.head_commit.message, '[skip-versi]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Pasang versi dari hash commit
+        run: python3 tools/stamp-versi.py "${GITHUB_SHA::7}"
+
+      - name: Commit bila ada perubahan
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "penanda versi sudah sesuai, tidak ada yang perlu di-commit"
+            exit 0
+          fi
+          git add index.html sw.js
+          git commit -m "chore: cap versi aset ${GITHUB_SHA::7} [skip-versi]"
+          git push

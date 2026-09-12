@@ -10,13 +10,19 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 
 ## Ringkasan isi aplikasi
 
-- 1000 soal, 9 kategori: Wawasan Kebangsaan (112), Matematika (166), Bahasa Inggris (110),
+- 1068 soal, 9 kategori: Wawasan Kebangsaan (151), Matematika (166), Bahasa Inggris (110),
   Penalaran dan Logika (134), Kemampuan Numerik (184), Kemampuan Verbal (100),
-  Tes Kraepelin (100), Tes Gambar dan Visual (50), Tes Kepribadian Situasional (44).
+  Tes Kraepelin (100), Tes Gambar dan Visual (50, semua bergambar), Tes Kepribadian Situasional (73).
 - Fitur: Tryout (60 soal / 90 menit), mode Belajar, Bank Soal + pencarian, Tes Psikologi
   (Kraepelin, Digit Span, Daya Ingat, EPPS), IQ Lab (matriks, deret, rotasi, Dual N-Back),
   Progress, backup/restore data lokal (localStorage), PWA offline (service worker).
-- Versi build saat ini: **v20** (penanda `?v=20` pada aset + nama cache service worker).
+- Fitur v21: bank soal salah + pengulangan berjadwal (1-3-7-14-30 hari), rincian hasil per kategori,
+  ukuran kecepatan (detik/soal), lanjut sesi, jalur belajar 28 hari, kode sinkron antar perangkat,
+  ekspor soal salah (HTML/PDF), tema terang-gelap + ukuran huruf, pintasan simulasi Kraepelin.
+- Teknis v21: verifikasi otomatis di CI (`tools/verifikasi-soal.py`), data dipecah per kategori
+  (`tools/pecah-data.py` + `static/js/data-loader.js`), versi aset otomatis dari hash commit
+  (`.github/workflows/versi.yml`).
+- Versi build saat ini: **v21** (penanda `?v=21` pada aset + nama cache service worker; sudah otomatis lewat CI).
 
 ## Riwayat pekerjaan otonom
 
@@ -30,7 +36,7 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 | 2026-08-19 | Fitur CAT soal palette, tanda ragu-ragu, kurva kinerja Kraepelin, backup/restore, fullscreen; penguatan sanitasi XSS dan validasi skema backup; perbaikan variabel CSS dan kunci jawaban. | feat(psikologi): |
 | 2026-08-27 | Bank soal mencapai 1000 soal + redesign Apple glassmorphism + ikon SVG; perbaikan teks tidak terlihat dan sel Kraepelin aktif. | fix: |
 | 2026-09-10 | IQ Lab (drill matriks/deret/rotasi/verbal + Dual N-Back + log skor) dan PWA network-first. Audit menyeluruh build v17 (16 bug diperbaiki: timer tryout, kunci jawaban ganda rotasi figural, bank soal lebih ringan, Kraepelin, import backup) dan v18 (pembahasan di hasil Tes Psikologi). Laporan: `~/Downloads/pk-perwira-audit-2026-09-10/LAPORAN-AUDIT.md`. | feat(v18): |
-| 2026-09-12 | Audit akurasi 1000 soal + pembahasan dibuat mudah dipahami + pengecoh dan soal berulang dirapikan (build v19 lalu v20). Rincian di `LAPORAN-AUDIT.md`. | fix(v20): |
+| 2026-09-12 | Audit akurasi 1000 soal, pembahasan dibuat mudah dipahami, pengecoh dan soal berulang dirapikan, lalu dilanjutkan pengembangan fitur: pengulangan berjadwal, rincian per kategori, kecepatan, lanjut sesi, jalur belajar, sinkron kode, ekspor, tema + huruf, +68 soal baru, +20 gambar, CI verifikasi, data dipecah per kategori, versi otomatis (build v19, v20, v21). Rincian di `LAPORAN-AUDIT.md`. | fix(v21): |
 
 ## Cara kerja audit (12 September 2026)
 
@@ -47,12 +53,13 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 Perintah menjalankan ulang:
 
 ```bash
-/usr/bin/python3 .audit/extract.py   # ekstrak data
-/usr/bin/python3 .audit/fix.py       # terapkan koreksi + format pembahasan
-/usr/bin/python3 .audit/verify.py    # verifikasi akurasi
+/usr/bin/python3 .audit/extract.py         # ekstrak data dari data/soal.js
+/usr/bin/python3 .audit/fix.py             # koreksi + format pembahasan + pecah data per kategori
+/usr/bin/python3 .audit/verify.py          # verifikasi versi kerja
+/usr/bin/python3 tools/verifikasi-soal.py  # verifikasi yang dipakai CI (wajib lulus sebelum push)
 ```
 
-## Hasil verifikasi v20
+## Hasil verifikasi v21
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
@@ -60,5 +67,5 @@ Perintah menjalankan ulang:
 - Tidak ada dua opsi bernilai sama (soal ambigu) dan tidak ada dua soal yang isinya sama persis.
 - Pengecoh pada soal pangkat, volume, dan KPK/FPB sudah memakai pola kesalahan hitung yang wajar.
 - Semua pembahasan diawali `JAWABAN:` + memuat kunci, format 3 baris: JAWABAN / cara / INGAT.
-- 41 gambar soal valid dan ter-render.
+- 61 gambar soal valid dan ter-render (semua soal Tes Gambar kini bergambar).
 - Uji browser di situs live: 1000 soal termuat, pembahasan tampil 3 baris, 41/41 gambar OK, 0 error JS.

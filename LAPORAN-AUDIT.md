@@ -1,4 +1,4 @@
-# Laporan Audit & Perbaikan Bank Soal — build v20
+# Laporan Audit, Perbaikan & Pengembangan — build v21
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
@@ -108,13 +108,62 @@ INGAT: <poin hafalan / trik>
   Bhuwana Paksa), Paskhas 17 Oktober 1947 (13 prajurit, Kotawaringin), insiden Dakota VT-CLA 29 Juli 1947,
   Sumpah Prajurit diucapkan saat pelantikan.
 
+
+---
+
+# Bagian 2 — Pengembangan fitur (build v21, 12 September 2026)
+
+## Fitur belajar
+
+| # | Fitur | Cara kerja |
+|---|-------|-----------|
+| 1 | **Bank soal salah + pengulangan berjadwal** | Tiap jawaban salah dicatat per soal (jumlah salah + tanggal jadwal ulang). Jadwal: besok → 3 → 7 → 14 → 30 hari; kalau benar terus, catatannya lulus dan hilang sendiri. Beranda menampilkan jumlah soal yang jatuh tempo + tombol "Ulangi N soal". |
+| 2 | **Rincian hasil per kategori** | Layar hasil kini menampilkan bar per kategori (hijau ≥80%, kuning ≥70%, merah <70%) plus rekomendasi otomatis kategori terlemah. |
+| 3 | **Pengukuran kecepatan** | Waktu tiap soal dihitung; hasil menampilkan detik/soal, jumlah soal >2 menit, dan target 60 detik/soal. |
+| 4 | **Lanjutkan sesi** | Sesi tryout/belajar disimpan otomatis (tiap 8 detik, saat jawab, saat tab disembunyikan). Kalau aplikasi ditutup, beranda menawarkan "Lanjutkan". |
+| 5 | **Jalur belajar 28 hari** | Menyalakan jalur → aplikasi membagi materi 4 pekan (fondasi hafalan → hitung → logika → simulasi) dan menampilkan progres hari ke-N. |
+| 6 | **Kode sinkron antar perangkat** | Tombol "Buat + salin kode" menghasilkan satu kode (base64) berisi progres, bank soal salah, nilai, log IQ, jalur belajar. Tempel di HP lain → data dipulihkan. Tanpa server, tanpa akun. |
+| 7 | **Ekspor soal salah** | Menghasilkan berkas HTML siap cetak/simpan PDF berisi semua soal yang pernah salah + kunci + pembahasan. |
+| 8 | **Tema terang/gelap + ukuran huruf** | Sakelar tema dan A-/A+ (90%-130%), tersimpan di perangkat. |
+
+## Materi
+
+| # | Item | Hasil |
+|---|------|-------|
+| 9 | **Soal baru** | +39 TWK dan +29 Kepribadian Situasional (total kini **1068 soal**). Semua dengan pembahasan format JAWABAN/cara/INGAT. |
+| 10 | **20 gambar soal tes gambar** | tg31-tg50 sebelumnya tanpa gambar → sekarang punya ilustrasi SVG sesuai polanya (total **61 gambar**). Gambar tg31 digambar ulang agar tanda '?' berada di urutan ke-7 sesuai pertanyaannya. |
+| 11 | **Pintasan Kraepelin** | Kartu "Simulasi Lembar Kraepelin" di halaman pilih kategori, langsung membuka modul Kraepelin (10 kolom × 50 angka, 3 menit, grafik kecepatan). |
+
+## Teknis
+
+| # | Item | Hasil |
+|---|------|-------|
+| 12 | **Verifikasi otomatis di CI** | `tools/verifikasi-soal.py` (8 kelompok pemeriksaan) jalan otomatis di GitHub Actions tiap push: kunci, opsi senilai, duplikat, aturan Kraepelin, format pembahasan, gambar, dan konsistensi versi aset. Deploy ditolak kalau ada yang gagal. |
+| 13 | **Data dipecah per kategori** | `data/soal.js` (sumber tunggal) dipecah otomatis oleh `tools/pecah-data.py` menjadi `data/soal-index.js` (kecil, dimuat pertama) + 9 file kategori + `data/soal-penuh.js` (cadangan). Halaman pertama kini hanya memuat 0,7 KB data kategori; sisanya dimuat di latar belakang. |
+| 14 | **Cadangan anti-gagal** | Kalau file kategori gagal dimuat, loader otomatis memakai `soal-penuh.js`; kalau tetap gagal, muncul halaman "Soal gagal dimuat" dengan tombol Coba lagi (percobaan dibatasi 2x agar aplikasi tidak berputar tanpa henti). |
+| 15 | **Versi aset otomatis** | Workflow `versi.yml` menandai ulang `?v=` di index.html dan sw.js dengan hash commit tiap deploy, jadi pengguna lama selalu menerima pembaruan tanpa perlu mengingat menaikkan versi manual. |
+
+## Verifikasi build v21
+
+- 1068 soal, 9 kategori, id unik, semua indeks kunci valid, 4 opsi per soal.
+- 126 soal hitung diuji ulang otomatis; 95 soal Kraepelin diuji aturan satuannya; 0 salah.
+- 0 opsi senilai (anti-ambigu), 0 soal duplikat, 0 relasi pengecoh janggal.
+- 61 gambar valid dan dimuat di browser; seluruh 9 kategori dijalankan sampai pembahasan muncul; 0 error JS.
+- Uji fitur di browser: pengulangan berjadwal (jawab benar tidak dicatat, jawab salah dijadwalkan besok), tema, ukuran huruf, kode sinkron bolak-balik, ekspor soal salah, lanjut sesi, jalur belajar.
+- Uji jalur gagal: file kategori diblokir → aplikasi memakai cadangan; cadangan juga diblokir → halaman error muncul dan aplikasi tetap responsif.
+
 ## Cara mengulang audit di masa depan
 
 ```bash
-/usr/bin/python3 .audit/extract.py    # (bila perlu) ekstrak data ke .audit/db.json
-/usr/bin/python3 .audit/fix.py        # terapkan koreksi + format pembahasan (idempotent)
-/usr/bin/python3 .audit/verify.py     # cek akurasi & hasil
+/usr/bin/python3 .audit/extract.py         # ekstrak data ke .audit/db.json
+/usr/bin/python3 .audit/fix.py             # koreksi + format pembahasan + soal baru + pecah data
+/usr/bin/python3 .audit/verify.py          # cek akurasi (versi kerja)
+/usr/bin/python3 tools/verifikasi-soal.py  # cek yang dipakai CI (wajib lulus)
 ```
+
+Urutan penting: `fix.py` menulis ulang `data/soal.js`, lalu otomatis memecahnya lewat
+`tools/pecah-data.py`. Jangan mengedit file `data/soal-<kategori>.js` secara manual —
+file itu hasil generate.
 
 Catatan: `.audit/db.json`, `.audit/db-new.json`, dan `.audit/soal.js.bak` tidak dibagikan di repo
 (file besar, hanya bahan kerja).

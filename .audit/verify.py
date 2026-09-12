@@ -19,10 +19,10 @@ def rep(cond, label, detail=''):
 
 print('== 1. Struktur ==')
 tot = sum(len(v['soal']) for v in db.values())
-rep(tot == 1000, 'jumlah soal = 1000', tot)
+rep(tot >= 1000, 'jumlah soal minimal 1000', tot)
 rep(len(db) == 9, 'jumlah kategori = 9', len(db))
 ids = [q['id'] for v in db.values() for q in v['soal']]
-rep(len(set(ids)) == 1000, 'id unik', len(set(ids)) - len(ids))
+rep(len(set(ids)) == len(ids), 'id unik (tidak ada tabrakan id)', '%d id untuk %d soal' % (len(set(ids)), len(ids)))
 bad = [q['id'] for v in db.values() for q in v['soal'] if not (0 <= q['jawaban'] < len(q['pilihan']))]
 rep(not bad, 'semua indeks kunci valid', bad)
 rep(all(len(q['pilihan']) == 4 for v in db.values() for q in v['soal']), 'setiap soal 4 opsi')
