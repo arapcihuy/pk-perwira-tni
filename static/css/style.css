@@ -1173,3 +1173,29 @@ kbd {
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+/* ============================================================
+   v22 — kartu hafalan, panel latihan, ajakan pasang
+   ============================================================ */
+.flash-card {
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 16px;
+  padding: 22px 18px; min-height: 150px; cursor: pointer; text-align: center;
+  display: flex; flex-direction: column; justify-content: center; gap: 10px;
+}
+.flash-label { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text3); }
+.flash-teks { font-size: 16px; font-weight: 600; color: var(--white); line-height: 1.55; }
+.flash-hint { font-size: 10px; color: var(--text3); }
+.flash-jawab {
+  margin-top: 10px; padding: 16px 18px; border-radius: 16px;
+  background: var(--glow); border: 1px solid var(--gold2);
+}
+.flash-kunci { font-size: 17px; font-weight: 800; color: var(--gold3); margin: 6px 0; }
+.flash-ingat { font-size: 11px; color: var(--text2); line-height: 1.6; }
+.latihan-card { margin-bottom: 14px; }
+.tawar-pasang {
+  position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 60;
+  background: var(--surface-solid2); border: 1px solid var(--border2); border-radius: 14px;
+  padding: 14px; font-size: 12px; color: var(--text);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+.tawar-pasang strong { color: var(--white); }

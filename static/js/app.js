@@ -140,6 +140,7 @@ function render() {
 
   switch (S.page) {
     case 'memuat': m.innerHTML = htmlMemuat(S.pesanMemuat || 'Menyiapkan soal...'); break;
+    case 'hafalan': m.innerHTML = renderHafalan(); break;
     case 'gagal':
       m.innerHTML = '<div class="empty"><div class="empty-icon">' + icon('alert', 40) + '</div>' +
         '<p>Soal gagal dimuat. Periksa koneksi internet lalu coba lagi.</p>' +
@@ -315,6 +316,14 @@ function startCat(cat, mode, percobaan) {
     S.questions = S.questions.slice(0, TRYOUT_MAX_SOAL);
   }
 
+  // acak posisi opsi untuk tryout/simulasi supaya posisi jawaban tidak bisa dihafal
+  // (mode Belajar tetap berurutan agar enak dibaca)
+  if (mode === 'tryout' && window.acakOpsi) {
+    S.questions = S.questions.map(function(q) { return acakOpsi(q); });
+  }
+  // kunci disembunyikan selama tryout, dibuka di layar hasil / mode Review
+  S.tampilkanKunci = (mode !== 'tryout');
+
   S.timed = (mode === 'tryout');
   S.totalTime = S.timed ? S.questions.length * 90 : 0;
   S.timeLeft = S.totalTime;
@@ -353,8 +362,12 @@ function renderSoal() {
     var cls = 'option';
     if (answered) {
       cls += ' locked';
-      if (i === q.jawaban) cls += ' correct';
-      else if (i === ans) cls += ' wrong';
+      if (S.tampilkanKunci === false) {
+        if (i === ans) cls += ' selected';
+      } else {
+        if (i === q.jawaban) cls += ' correct';
+        else if (i === ans) cls += ' wrong';
+      }
     } else {
       if (i === ans) cls += ' selected';
     }
@@ -370,7 +383,15 @@ function renderSoal() {
   }).join('');
 
   var expHtml = '';
-  if (answered) {
+  if (answered && S.tampilkanKunci === false) {
+    expHtml = '<div class="explanation show">' +
+      '<div class="explanation-head"><strong>' + ic('book', 15) + ' Kunci dikunci selama tryout</strong>' +
+      '<span class="exp-verdict">' + ic('clock', 12) + ' MODE UJIAN</span></div>' +
+      '<div class="explanation-body">Di mode Tryout/Simulasi, kunci dan pembahasan baru dibuka setelah sesi selesai — supaya hasilnya jujur dan kebiasaan menandai soal ragu tetap terlatih.<br>' +
+      'Kamu tetap bisa membukanya sekarang kalau memang ingin belajar sambil mengerjakan.</div>' +
+      '<button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="bukaKunciSekarang()">' + ic('bulb', 14) + ' Buka kunci sekarang</button>' +
+      '</div>';
+  } else if (answered) {
     var benar = (ans === q.jawaban);
     var expTitle = benar
       ? '<span class="exp-verdict correct">' + ic('check', 13) + ' BENAR</span>'
@@ -512,6 +533,7 @@ window.pickAnswer = function(i) {
   // fitur tambahan: catat soal benar/salah untuk pengulangan berjadwal,
   // ukur waktu pengerjaan, hitung aktivitas harian, simpan sesi
   if (window.catatSoalSalah) catatSoalSalah(q.id, i === q.jawaban);
+  if (window.catatStatSoal) catatStatSoal(q.id, i === q.jawaban);
   if (window.catatWaktuSoal && S.tStart) catatWaktuSoal(S.idx, Math.round((Date.now() - S.tStart) / 1000));
   if (window.tambahHarian) tambahHarian('soal', 1);
   if (window.simpanSesiAktif) simpanSesiAktif();
@@ -591,9 +613,10 @@ window.finishSession = function() {
       benar: benar,
       salah: salah,
       skip: skip,
-      tgl: new Date().toLocaleDateString('id-ID')
+      tgl: new Date().toLocaleDateString('id-ID'),
+      perKat: S.lastResult.perKat || null
     });
-    if (scores.length > 10) scores.shift();
+    if (scores.length > 30) scores.shift();
     saveScores(scores);
     bumpToTotal();          // hitungan tryout total (riwayat tetap 10 terakhir)
   }
@@ -717,10 +740,14 @@ window.startSimulasi60 = function() {
   S.mode = 'tryout';
   S.iqSpec = null;
   S.isSimulasi = true;
-  S.questions = shuffle(all).slice(0, 60);
+  S.questions = shuffle(all).slice(0, 60).map(function(q) { return acakOpsi(q); });
   S.idx = 0;
   S.answers = {};
   S.flagged = {};
+  S.dur = {};
+  S.tSoalIdx = -1;
+  S.isFormat = false;
+  S.tampilkanKunci = false;
   S.timed = true;
   S.totalTime = 5400; // 90 menit = 5400 detik
   S.timeLeft = 5400;
@@ -732,6 +759,7 @@ window.startSimulasi60 = function() {
 window.reviewSession = function() {
   // Tampilkan semua soal dalam mode belajar dengan jawaban yang sudah ada
   S.mode = 'learn';
+  S.tampilkanKunci = true;
   S.idx = 0;
   S.page = 'soal';
   render();

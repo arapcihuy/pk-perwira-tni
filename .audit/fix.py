@@ -908,7 +908,7 @@ for cat, v in db.items():
         line1 = 'JAWABAN: ' + key
         tip = tip_for(cat, q)
         body = line1 + '\n' + base
-        if tip and not re.search(r'trik|tips', base, re.I):
+        if tip:
             body += '\nINGAT: ' + tip
         if body != q['pembahasan']:
             changed_pb += 1
