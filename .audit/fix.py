@@ -725,6 +725,64 @@ for _q in db['tes_gambar']['soal']:
     if _q['id'] in GANTI_SVG:
         _q['gambar'] = 'data:image/svg+xml;base64,' + _b64.b64encode(GANTI_SVG[_q['id']].encode()).decode()
 
+
+# ============================================================ 1e. koreksi hasil audit independen (pemeriksa kedua)
+# AUDIT KEDUA: temuan dari pemeriksa independen, sudah diverifikasi ulang ke sumber.
+setq('tkw', 'w47',
+  pertanyaan="Akademi Angkatan Laut (AAL) yang mencetak perwira TNI AL berlokasi di...",
+  pilihan=["Surabaya", "Magelang", "Yogyakarta", "Bandung"], jawaban=0,
+  pembahasan="Akademi Angkatan Laut (AAL) berada di Bumimoro, Surabaya. Pembanding: Akademi Militer "
+             "(Akmil) di Magelang untuk TNI AD, dan Akademi Angkatan Udara (AAU) di Yogyakarta untuk TNI AU.")
+setq('tkw', 'w56',
+  pertanyaan="Doktrin era ABRI (1966) yang berisi empat kewajiban dan satu tujuan disebut...",
+  pembahasan="Catur Dharma Eka Karma (Cadek) adalah doktrin era ABRI (hasil Seminar Hankamnas 1966) yang "
+             "berisi 'empat kewajiban, satu tujuan'. Catatan penting: doktrin TNI yang berlaku sekarang "
+             "adalah Tri Dharma Eka Karma (Tridek) — pengabdian tiga matra dalam satu jiwa. "
+             "Doktrin/semboyan tiap angkatan: TNI AD = Kartika Eka Paksi, TNI AL = Jalesveva Jayamahe, "
+             "TNI AU = Swa Bhuwana Paksa.")
+setq('tkw', 'w4',
+  pembahasan="Kata 'catur' berarti empat, jadi Catur Dharma Eka Karma (Cadek) = 'empat kewajiban, satu "
+             "tujuan' — doktrin era ABRI (1966). Pembeda yang sering diuji: Tri Dharma Eka Karma (Tridek) "
+             "menekankan pengabdian TIGA matra (AD, AL, AU) dalam satu jiwa; Sapta Marga = 7 butir kode etik "
+             "prajurit; Kartika Eka Paksi = semboyan/doktrin TNI AD; Swa Bhuwana Paksa = semboyan TNI AU.")
+setq('penalaran_logika', 'l22', jawaban=3,
+  pembahasan="Premis 'semua yang rajin lulus ujian' tidak bisa dibalik. Banyak sebab lain orang bisa lulus "
+             "(soal mudah, keberuntungan), jadi status 'rajin' Budi TIDAK dapat disimpulkan — bukan hanya "
+             "'mungkin'. Sama polanya dengan soal 'semua perwira lulus akademi' → tidak bisa disimpulkan.")
+setq('bahasa_inggris', 'e17',
+  pertanyaan="_____ soldier trains, _____ prepared he will be.",
+  pilihan=["The harder a / the more", "If a / but", "Although a / yet", "If a / the more"], jawaban=0,
+  pembahasan="Pola 'the + comparative ..., the + comparative ...' menyatakan makin ... makin .... "
+             "'The harder a soldier trains, the more prepared he will be' = makin giat prajurit berlatih, "
+             "makin siap ia. Opsi lain tidak membentuk pola yang sejajar.")
+setq('bahasa_inggris', 'e33',
+  pilihan=["Neither the soldiers nor the commander was ready",
+           "Neither the soldiers nor the commander were ready",
+           "Neither the soldiers nor the commander are ready",
+           "Neither the soldiers nor the commander is ready"], jawaban=0,
+  pembahasan="Aturan 'neither ... nor' mengikuti subjek TERDEKAT (proximity rule). Subjek terdekat = "
+             "'the commander' (tunggal), jadi verb harus tunggal dan sesuai konteks masa lalu: 'was ready'. "
+             "'were ready' salah karena mengikuti 'soldiers'; 'is ready' salah karena bukan bentuk lampau.")
+setq('bahasa_inggris', 'e110',
+  pilihan=["could", "can", "does", "was"], jawaban=0,
+  pembahasan="'Only after ... had passed' menuntut inversi dengan auxiliary. Karena kejadiannya lampau dan "
+             "bermakna mampu, dipakai 'could': 'Only after the storm had passed could the team take off.' "
+             "'can' salah (bukan lampau), 'does' salah (bukan lampau), 'was' tidak bisa berdiri dengan kata "
+             "kerja bentuk dasar.")
+setq('bahasa_inggris', 'e71',
+  pilihan=["If I were the commander, I would order a patrol.",
+           "I wish the weather is better for the flight.",
+           "She suggested that he report to the base immediately.",
+           "He acts as if he knows everything about missiles."], jawaban=1,
+  pembahasan="'I wish' diikuti pengandaian yang tidak nyata, jadi bentuknya harus lampau: 'I wish the weather "
+             "WERE better'. Penulisan 'is' jelas salah karena menyatakan kenyataan sekarang. Kalimat lain "
+             "sudah benar (subjunctive 'were', 'suggested that + V1', 'as if + present').")
+setq('verbal', 'v35',
+  pertanyaan="TAMU : HOTEL = PASIEN : ...",
+  pilihan=["Rumah sakit", "Obat", "Dokter", "Perawat"], jawaban=0,
+  pembahasan="Tamu dirawat/dilayani di hotel, pasien dirawat/dilayani di rumah sakit. Hubungannya: "
+             "orang yang dilayani → tempat pelayanan.")
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)

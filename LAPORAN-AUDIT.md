@@ -1,4 +1,4 @@
-# Laporan Audit, Perbaikan & Pengembangan — build v21
+# Laporan Audit, Perbaikan & Pengembangan — build v22
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
@@ -152,13 +152,64 @@ INGAT: <poin hafalan / trik>
 - Uji fitur di browser: pengulangan berjadwal (jawab benar tidak dicatat, jawab salah dijadwalkan besok), tema, ukuran huruf, kode sinkron bolak-balik, ekspor soal salah, lanjut sesi, jalur belajar.
 - Uji jalur gagal: file kategori diblokir → aplikasi memakai cadangan; cadangan juga diblokir → halaman error muncul dan aplikasi tetap responsif.
 
+
+---
+
+# Bagian 3 — Validitas latihan & mutu (build v22, 12 September 2026)
+
+## Temuan yang memicu perbaikan
+
+1. **Posisi kunci jawaban menumpuk di B**: A 20,6% · B 39,3% · C 26,9% · D 13,2%.
+   Akibatnya menebak "B" saja bisa memberi ~39% tanpa memahami materi, dan kebiasaan menghafal
+   posisi justru merugikan di ujian sebenarnya.
+2. **Kunci langsung terbuka saat Tryout**: begitu dijawab, aplikasi menampilkan BENAR/SALAH +
+   pembahasan — termasuk di simulasi 60 soal. Ini membuat simulasi tidak realistis.
+3. **Komposisi simulasi acak**: 60 soal diambil acak dari 1068 soal, sehingga bobotnya mengikuti
+   ukuran bank (Numerik 184 vs Tes Gambar 50), bukan komposisi format seleksi.
+
+## Perbaikan & fitur baru
+
+| # | Item | Hasil |
+|---|------|-------|
+| 1 | **Acak posisi opsi** | Saat Tryout/Simulasi posisi pilihan diacak tiap sesi (mode Belajar tetap berurutan agar enak dibaca). Celah "tebak B" hilang. |
+| 2 | **Kunci terkunci saat ujian** | Tryout/Simulasi menyembunyikan kunci dan pembahasan sampai sesi selesai; ada tombol "Buka kunci sekarang" bila memang ingin belajar sambil mengerjakan. Mode Review menampilkan kunci penuh. |
+| 3 | **Simulasi Format Seleksi** | 60 soal dengan komposisi tetap: TWK 15 · Verbal 8 · Numerik 10 · Penalaran 10 · Matematika 7 · Inggris 5 · Kepribadian 5, durasi 90 menit. |
+| 4 | **Latihan adaptif** | Setiap jawaban kini dicatat per soal (benar/salah). Latihan adaptif 25 soal memprioritaskan soal dengan tingkat benar 40-75% (zona belajar paling efektif). |
+| 5 | **Mode Hafalan Cepat** | Kartu bolak-balik 151 kartu TWK: ketuk untuk melihat jawaban + kiat INGAT, lalu tandai "sudah hafal"/"belum". Kartu yang belum diulang otomatis kembali ke antrean. |
+| 6 | **Grafik tren** | Grafik 30 sesi terakhir (warna hijau/kuning/merah menurut ambang 80/70) + rata-rata, terbaik, jumlah sesi, arah tren, dan kategori terlemah dari 5 sesi terakhir. Riwayat nilai kini disimpan 30 sesi (sebelumnya 10) berikut rincian per kategori. |
+| 7 | **Siapkan mode offline** | Tombol yang memuat seluruh kategori lalu melaporkan jumlah soal, jumlah berkas ter-cache, dan pemakaian penyimpanan; meminta penyimpanan permanen agar tidak dihapus browser. |
+| 8 | **Baris INGAT lengkap** | 1068 pembahasan kini semuanya memiliki baris INGAT (sebelumnya 124 belum). |
+| 9 | **Uji runtime otomatis** | `tools/uji-runtime.py` menjalankan Chromium sungguhan lewat Playwright di GitHub Actions: 9 kategori dibuka, 61 gambar dimuat, tryout terkunci diuji, simulasi format diuji, hafalan & bank soal diuji, dan gagal bila ada satu error JavaScript. |
+| 10 | **Favicon** | Ditambahkan supaya browser tidak lagi meminta `/favicon.ico` (404). |
+
+## Pengukuran kecepatan (setelah data dipecah per kategori)
+
+| Kondisi | Sebelum (satu berkas) | Sesudah (per kategori) |
+|---|---|---|
+| Buka pertama | ~160 KB (gzip) | **61-66 KB** (index 0,35 KB + tips 3,8 KB + skrip + CSS) |
+| Data soal saat membuka satu kategori | 98,6 KB sekali muat | 10-17 KB per kategori (sesuai yang dibuka) |
+| Cadangan `soal-penuh.js` | — | 95 KB, hanya dimuat bila file kategori gagal |
+
+Angka diambil dari situs live dengan `Accept-Encoding: gzip` (GitHub Pages mengirim gzip).
+
+## Verifikasi build v22
+
+- Uji runtime Playwright: **LULUS** — 9 kategori (151+166+110+134+184+100+100+50+73 soal),
+  61/61 gambar ter-render, tryout mengunci kunci, simulasi format 60 soal/90 menit, kartu hafalan
+  bisa dibalik, bank soal merender, halaman progress menampilkan panel tren/offline, 0 error JS.
+- Verifikasi data: LULUS (1068 soal, id unik, 0 opsi senilai, 0 duplikat, pengecoh wajar,
+  pembahasan seragam, gambar valid, versi aset konsisten).
+- CI: "Verifikasi Bank Soal", "Uji Runtime Aplikasi", dan "Cap Versi Otomatis" berjalan otomatis
+  pada setiap push.
+
 ## Cara mengulang audit di masa depan
 
 ```bash
 /usr/bin/python3 .audit/extract.py         # ekstrak data ke .audit/db.json
 /usr/bin/python3 .audit/fix.py             # koreksi + format pembahasan + soal baru + pecah data
 /usr/bin/python3 .audit/verify.py          # cek akurasi (versi kerja)
-/usr/bin/python3 tools/verifikasi-soal.py  # cek yang dipakai CI (wajib lulus)
+/usr/bin/python3 tools/verifikasi-soal.py  # cek data yang dipakai CI (wajib lulus)
+/usr/bin/python3 tools/uji-runtime.py      # uji runtime di Chromium (Playwright)
 ```
 
 Urutan penting: `fix.py` menulis ulang `data/soal.js`, lalu otomatis memecahnya lewat
