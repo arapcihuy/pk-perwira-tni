@@ -714,6 +714,21 @@ def main():
         cek(y2['tersimpan'] and y2['pindahSoal'] and y2['acakJalan'] and y2['timerAda'],
             'simpan kerangka jawaban, pindah soal, soal acak, dan timer jalan', y2)
 
+        print('== Z. Penyangkalan & tautan halaman publik ==')
+        z2 = page.evaluate("""() => {
+            const f = document.querySelector('.legal-footer');
+            return {
+                ada: !!f,
+                teks: f ? f.innerText : '',
+                tautan: f ? Array.from(f.querySelectorAll('a')).map(a => a.getAttribute('href')) : [],
+                tampak: f ? f.getBoundingClientRect().height > 0 : false
+            };
+        }""")
+        cek(z2['ada'] and z2['tampak'], 'kaki penyangkalan tampil di setiap halaman aplikasi', z2['teks'][:60])
+        cek('Bukan produk resmi instansi' in z2['teks'] and 'tidak berafiliasi' in z2['teks'],
+            'kaki menyatakan bukan produk resmi & tidak berafiliasi', z2['teks'][:80])
+        cek(z2['tautan'] == ['mutu/', 'syarat/', 'privasi/'], 'kaki menautkan mutu, syarat, privasi', z2['tautan'])
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};

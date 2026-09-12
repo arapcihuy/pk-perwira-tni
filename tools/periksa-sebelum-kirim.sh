@@ -65,6 +65,22 @@ else
 fi
 
 echo
+echo "=== 5/5 PENYANGKALAN AFILIASI (setiap halaman publik) ==="
+SANGKAL_GAGAL=0
+for f in index.html psikotes/index.html mutu/index.html syarat/index.html privasi/index.html; do
+  [ -f "$f" ] || continue
+  if ! grep -qi "bukan produk resmi instansi\|tidak berafiliasi dengan" "$f" 2>/dev/null; then
+    echo "  GAGAL | $f belum memuat penyangkalan afiliasi"
+    SANGKAL_GAGAL=1
+  fi
+done
+if [ "$SANGKAL_GAGAL" -eq 0 ]; then
+  echo "  OK    | semua halaman publik memuat penyangkalan afiliasi"
+else
+  GAGAL=1
+fi
+
+echo
 if [ "$GAGAL" -ne 0 ]; then
   echo "=============================================="
   echo "PENGIRIMAN DIBATALKAN - perbaiki dulu di atas."
