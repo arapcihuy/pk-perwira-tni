@@ -16,7 +16,7 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 - Fitur: Tryout (60 soal / 90 menit), mode Belajar, Bank Soal + pencarian, Tes Psikologi
   (Kraepelin, Digit Span, Daya Ingat, EPPS), IQ Lab (matriks, deret, rotasi, Dual N-Back),
   Progress, backup/restore data lokal (localStorage), PWA offline (service worker).
-- Versi build saat ini: **v19** (penanda `?v=19` pada aset + nama cache service worker).
+- Versi build saat ini: **v20** (penanda `?v=20` pada aset + nama cache service worker).
 
 ## Riwayat pekerjaan otonom
 
@@ -30,9 +30,9 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 | 2026-08-19 | Fitur CAT soal palette, tanda ragu-ragu, kurva kinerja Kraepelin, backup/restore, fullscreen; penguatan sanitasi XSS dan validasi skema backup; perbaikan variabel CSS dan kunci jawaban. | feat(psikologi): |
 | 2026-08-27 | Bank soal mencapai 1000 soal + redesign Apple glassmorphism + ikon SVG; perbaikan teks tidak terlihat dan sel Kraepelin aktif. | fix: |
 | 2026-09-10 | IQ Lab (drill matriks/deret/rotasi/verbal + Dual N-Back + log skor) dan PWA network-first. Audit menyeluruh build v17 (16 bug diperbaiki: timer tryout, kunci jawaban ganda rotasi figural, bank soal lebih ringan, Kraepelin, import backup) dan v18 (pembahasan di hasil Tes Psikologi). Laporan: `~/Downloads/pk-perwira-audit-2026-09-10/LAPORAN-AUDIT.md`. | feat(v18): |
-| 2026-09-12 | Audit akurasi 1000 soal + pembahasan dibuat mudah dipahami (build v19). Rincian di `LAPORAN-AUDIT-v19.md`. | fix(v19): |
+| 2026-09-12 | Audit akurasi 1000 soal + pembahasan dibuat mudah dipahami + pengecoh dan soal berulang dirapikan (build v19 lalu v20). Rincian di `LAPORAN-AUDIT.md`. | fix(v20): |
 
-## Cara kerja audit v19 (12 September 2026)
+## Cara kerja audit (12 September 2026)
 
 1. `data/soal.js` diekstrak ke bentuk terstruktur (`.audit/extract.py`).
 2. Pemeriksaan otomatis: kunci di luar rentang, opsi bernilai sama (soal ambigu),
@@ -52,11 +52,13 @@ Perintah menjalankan ulang:
 /usr/bin/python3 .audit/verify.py    # verifikasi akurasi
 ```
 
-## Hasil verifikasi v19
+## Hasil verifikasi v20
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
-- Tidak ada dua opsi bernilai sama (soal ambigu) di seluruh bank soal.
+- 95 soal Kraepelin angka: kunci selalu sama dengan angka satuan hasil penjumlahan.
+- Tidak ada dua opsi bernilai sama (soal ambigu) dan tidak ada dua soal yang isinya sama persis.
+- Pengecoh pada soal pangkat, volume, dan KPK/FPB sudah memakai pola kesalahan hitung yang wajar.
 - Semua pembahasan diawali `JAWABAN:` + memuat kunci, format 3 baris: JAWABAN / cara / INGAT.
 - 41 gambar soal valid dan ter-render.
 - Uji browser di situs live: 1000 soal termuat, pembahasan tampil 3 baris, 41/41 gambar OK, 0 error JS.

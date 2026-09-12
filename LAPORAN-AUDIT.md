@@ -1,9 +1,9 @@
-# Laporan Audit & Perbaikan Bank Soal — build v19
+# Laporan Audit & Perbaikan Bank Soal — build v20
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
 Repo: https://github.com/arapcihuy/pk-perwira-tni (branch `master`, GitHub Pages)
-Ruang lingkup: **akurasi 1000 soal** + **pembahasan dibuat lebih mudah dipahami**
+Ruang lingkup: **akurasi 1000 soal** + **pembahasan dibuat lebih mudah dipahami** + **pengecoh & soal berulang dirapikan**
 
 ## Cara audit dilakukan
 
@@ -57,6 +57,24 @@ Ruang lingkup: **akurasi 1000 soal** + **pembahasan dibuat lebih mudah dipahami*
 | 29 | n10, n34, n46, n154–n158 | Notasi desimal campur (`0.125` vs `0,125`). | Diseragamkan ke koma (kaidah Indonesia). |
 | 30 | tg47 | "Angka 6 di cermin → 9" secara fisika tidak tepat (6→9 itu putaran 180°). | Soal diubah menjadi **diputar 180°**. |
 
+## Rapikan pengecoh & soal berulang (lanjutan)
+
+| # | Cakupan | Masalah | Perbaikan |
+|---|---------|---------|-----------|
+| 31 | Pangkat numerik (16 soal) | Pengecoh acak: `2⁷` punya opsi 121, 69, 187. | Pengecoh diganti kesalahan yang wajar: nilai pangkat sebelum/sesudah dan hasil kali (64, 256, 14). |
+| 32 | Volume kubus & balok (10 soal) | Pengecoh seperti 83 dan 65 untuk 125. | Pengecoh = luas sisi (r²), enam sisi (6r²), pangkat tetangga, jumlah sisi, setengah volume. |
+| 33 | KPK & FPB (18 soal) | Pengecoh acak: KPK 8 dan 12 punya opsi 17, 25, 26. | Pengecoh = kesalahan lazim: hasil kali a×b (lupa bagi FPB), KPK/FPB tertukar, a+b, min(a,b). |
+| 34 | Deret geometri (5 soal) | Pengecoh takjelas (1179 untuk 1215). | Pengecoh = suku sebelum, sesudah, dan dua langkah sesudahnya. |
+| 35 | Akar kuadrat (4 soal) | Soal berulang: √169, √196, √225, √256 masing-masing 2x. | Diganti √729, √784, √841, √676 supaya tiap soal unik. |
+| 36 | Verbal (5 soal) | Duplikat/nyaris duplikat: v9=v37, v18=v46, v24=v42=v56, v47=v53. | Diganti soal baru (SIGAP, MUSYAWARAH, TELADAN, TANGGUH, analogi GURU:MURID). |
+| 37 | Tes gambar & logika | tg25 = tg11, l60 nyaris sama dengan l14. | Diganti: jumlah sisi kubus, dan hitungan hari Rabu + 250 hari. |
+| 38 | Kraepelin (95 soal angka) | Pasangan angka berulang (4+9 dua kali, 3+7 dua kali, 8+9 dua kali, 6+6 tiga kali) dan satu kunci salah (5+5 dijawab 12). | Opsi diseragamkan (jumlah, satuan, angka pertama, angka kedua) dan pasangan kembar diubah/dibalik urutannya. |
+| 39 | Bug perbaikan sendiri | Soal yang kuncinya sempat salah (k27: "5+5" berkunci 12) akibat penggabungan tabel koreksi. | Fungsi koreksi dibuat MENGGABUNG, bukan menimpa, lalu diverifikasi ulang dengan pemeriksaan aritmetika khusus Kraepelin. |
+
+Sisa yang sengaja dibiarkan (bukan kesalahan): beberapa kalimat perintah soal memang berulang
+(misalnya "Pilih kalimat yang SALAH secara grammar" muncul 10x, "Manakah penulisan yang BAKU" 9x) —
+isinya berbeda-beda, jadi soal tetap berbeda.
+
 ## Pembahasan dibuat lebih mudah dipahami (1000 soal)
 
 Semua pembahasan kini berformat tetap tiga bagian, jadi mudah dibaca:
@@ -75,11 +93,14 @@ INGAT: <poin hafalan / trik>
 - Panjang pembahasan: min 46, median 179, rata-rata 191 karakter (sebelumnya median 59).
 - Tampilan: baris pembahasan dirender per baris (`white-space: pre-line`) di halaman soal dan modal bank soal.
 
-## Hasil verifikasi akhir (build v19)
+## Hasil verifikasi akhir (build v20)
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis → semua cocok dengan kuncinya.
+- 95 soal Kraepelin angka diuji khusus → kunci = angka satuan hasil penjumlahan, semua cocok.
 - Tidak ada dua opsi bernilai sama (anti-ambigu) di seluruh bank soal.
+- Tidak ada dua soal yang isinya sama persis (duplikat = 0).
+- Pengecoh pada 44 soal yang dirapikan (pangkat, volume, KPK/FPB) terbukti berasal dari kesalahan hitung wajar.
 - Semua pembahasan diawali `JAWABAN:` dan memuat kuncinya.
 - 41 gambar soal (SVG) valid dan benar-benar ter-render di browser.
 - Uji browser: 9 kategori dibuka sampai muncul pembahasan, 0 error JavaScript.

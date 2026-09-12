@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*-
 """Verifikasi akhir bank soal setelah perbaikan (jalankan dari root repo)."""
 import json, re, math, base64, collections, xml.etree.ElementTree as ET
+from math import gcd
+
+
+def lcm(a, b):
+    return a * b // gcd(a, b)
 from fractions import Fraction as F
 
 db = json.load(open('.audit/db-new.json'))
@@ -108,6 +113,85 @@ for cat, v in db.items():
             if len(set(ps)) > 1:
                 amb.append((cat, q['id'], ps))
 rep(not amb, 'tidak ada dua opsi bernilai sama', amb)
+
+
+print('== 3b. Kraepelin: kunci = satuan hasil penjumlahan ==')
+kb = []
+for q in db['kraepelin']['soal']:
+    m = re.match(r'^(?:Berapa hasil:?\s*)?(\d+)\s*\+\s*(\d+)', q['pertanyaan'])
+    if not m:
+        m = re.search(r'menjumlahkan (\d+)\s*\+\s*(\d+)', q['pertanyaan'])
+    if not m:
+        continue
+    a, b = int(m.group(1)), int(m.group(2))
+    s2 = a + b
+    benar = str(s2 % 10) if s2 >= 10 else str(s2)
+    if q['pilihan'][q['jawaban']] != benar:
+        kb.append((q['id'], '%d+%d' % (a, b), q['pilihan'][q['jawaban']], benar))
+rep(not kb, 'semua soal Kraepelin angka cocok dengan aturan satuan', kb)
+
+print('== 3c. Tidak ada soal duplikat ==')
+grupd = collections.defaultdict(list)
+for cat, v in db.items():
+    for q in v['soal']:
+        grupd[(cat, ' '.join(q['pertanyaan'].lower().split()),
+               tuple(sorted(q['pilihan'])), q['pilihan'][q['jawaban']])].append(q['id'])
+dupd = [(k[0], ids) for k, ids in grupd.items() if len(ids) > 1]
+rep(not dupd, 'tidak ada dua soal yang isinya sama persis', dupd)
+
+print('== 3d. Pengecoh masuk akal (kesalahan hitung yang lazim) ==')
+POLA_CEK = ('Volume kubus dengan rusuk', 'Volume balok')
+jauh = []
+for cat, v in db.items():
+    for q in v['soal']:
+        t = q['pertanyaan']
+        jenis = None
+        m = re.match(r'^(KPK|FPB) dari (\d+) dan (\d+)', t)
+        if m:
+            jenis = 'kpkfpb'
+            a2, b2 = int(m.group(2)), int(m.group(3))
+        m2 = re.match(r'^(\d)([⁰¹²³⁴⁵⁶⁷⁸⁹]+) = \.\.\.$', t)
+        if m2:
+            jenis = 'pangkat'
+            p2, n2 = int(m2.group(1)), int(m2.group(2).translate(SUPMAP))
+        m3 = re.match(r'^Volume kubus dengan rusuk (\d+) cm', t)
+        if m3:
+            jenis = 'kubus'
+            r2 = int(m3.group(1))
+        m4 = re.match(r'^Volume balok (\d+) × (\d+) × (\d+) cm', t)
+        if m4:
+            jenis = 'balok'
+            d1, d2, d3 = map(int, m4.groups())
+        if not jenis:
+            continue
+        # hanya batch yang pengecohnya dirapikan (pangkat n123-n138, KPK/FPB n159-n176, volume m150-m159)
+        terpilih = (re.match(r'^n1(2[3-9]|3[0-8])$', q['id']) or re.match(r'^n1(5[9]|6\d|7[0-6])$', q['id'])
+                    or re.match(r'^m15\d$', q['id']))
+        if not terpilih:
+            continue
+        nilai = []
+        for p in q['pilihan']:
+            mm = re.match(r'^(\d+)', p.strip())
+            nilai.append(int(mm.group(1)) if mm else None)
+        kk = re.match(r'^(\d+)', q['pilihan'][q['jawaban']].strip())
+        if None in nilai or len(set(nilai)) != 4 or not kk:
+            jauh.append((cat, q['id'], q['pilihan'], 'opsi bukan angka unik'))
+            continue
+        k = int(kk.group(1))
+        izin = {k}
+        if jenis == 'kpkfpb':
+            izin |= {a2 * b2, a2 + b2, gcd(a2, b2), lcm(a2, b2), 2 * gcd(a2, b2), min(a2, b2)}
+            izin |= {x for x in nilai if x <= min(a2, b2) or a2 % x == 0 or b2 % x == 0}
+        elif jenis == 'pangkat':
+            izin |= {p2 ** (n2 - 1), p2 ** (n2 + 1), p2 * n2, p2 ** (n2 - 2), p2 ** (n2 + 2), 2 * p2 ** n2}
+        elif jenis == 'kubus':
+            izin |= {r2 * r2, 6 * r2 * r2, (r2 - 1) ** 3, (r2 + 1) ** 3}
+        else:
+            izin |= {d1 + d2 + d3, d1 * d2, 2 * k, k // 2}
+        asing = [x for x in nilai if x not in izin]
+        if asing:
+            jauh.append((cat, q['id'], q['pilihan'], 'pengecoh tidak lazim: %s' % asing))
+rep(not jauh, 'semua pengecoh berasal dari kesalahan hitung yang wajar', jauh[:6])
 
 print('== 4. Pembahasan mudah dipahami ==')
 L = [len(q['pembahasan']) for v in db.values() for q in v['soal']]

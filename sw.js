@@ -3,19 +3,19 @@
 //  - HTML (navigasi): NETWORK-FIRST, supaya update situs langsung kelihatan.
 //  - Aset (js/css/gambar/data): cache-first + update di belakang layar
 //    (stale-while-revalidate) supaya tetap cepat & bisa offline.
-const CACHE = 'tni-perwira-v19';
+const CACHE = 'tni-perwira-v20';
 const FILES = [
   './',
   './index.html',
   './manifest.json',
-  './data/soal.js?v=19',
-  './data/soal-psikologi.js?v=19',
-  './data/soal-iq.js?v=19',
-  './static/css/style.css?v=19',
-  './static/js/icons.js?v=19',
-  './static/js/app.js?v=19',
-  './static/js/psikologi.js?v=19',
-  './static/js/iq.js?v=19',
+  './data/soal.js?v=20',
+  './data/soal-psikologi.js?v=20',
+  './data/soal-iq.js?v=20',
+  './static/css/style.css?v=20',
+  './static/js/icons.js?v=20',
+  './static/js/app.js?v=20',
+  './static/js/psikologi.js?v=20',
+  './static/js/iq.js?v=20',
   './static/icons/icon-192.png',
   './static/icons/icon-512.png'
 ];
