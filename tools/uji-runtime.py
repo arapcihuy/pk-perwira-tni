@@ -281,6 +281,31 @@ def main():
         cek(f25['tur'] and f25['ringkasanKiat'] > 20 and f25['riwayat'],
             'panduan awal, ringkasan hafalan, dan riwayat versi tampil', f25)
 
+
+        print('== 14. Fitur v26 (reading, menu lainnya, alur Tips, jelang ujian) ==')
+        f26 = page.evaluate("""() => {
+            const out = {};
+            out.reading = getAllSoal().filter(q => q.pertanyaan.indexOf('Bacaan berikut') === 0).length;
+            bukaMenuLain();
+            out.menu = document.querySelectorAll('.menu-lain-item').length;
+            tutupMenuLain();
+            navTo('tips');
+            out.alur = document.body.textContent.indexOf('Alur belajar yang dianjurkan') >= 0;
+            out.langkah = document.querySelectorAll('.alur-tips .tur-item').length;
+            goHome();
+            mulaiJelang();
+            goHome();
+            out.jelang = document.body.textContent.indexOf('Jelang Ujian — hari 1 / 7') >= 0;
+            out.langkahJelang = document.querySelectorAll('.latihan-card.jelang .tur-item').length;
+            window.confirm = () => true;
+            akhiriJelang();
+            return out;
+        }""")
+        cek(f26['reading'] >= 15, 'soal reading comprehension tersedia', f26['reading'])
+        cek(f26['menu'] >= 4, 'menu Lainnya punya tautan', f26['menu'])
+        cek(f26['alur'] and f26['langkah'] >= 5, 'alur belajar tampil di halaman Tips', f26)
+        cek(f26['jelang'] and f26['langkahJelang'] >= 3, 'mode jelang ujian 7 hari berjalan', f26)
+
         print('== 12. Anggaran beban muat pertama ==')
         ukuran = {'total': 0, 'berkas': 0}
 

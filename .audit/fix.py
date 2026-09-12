@@ -942,6 +942,14 @@ for _cat in db.values():
             _n_gg += 1
 print('pembahasan bergambar geometri ditambahkan:', _n_gg)
 
+
+# ============================================================ 1l. soal reading comprehension (v26)
+_spec6 = _ilu4.spec_from_file_location('tambahan4', '.audit/tambahan4.py')
+_mod4 = _ilu4.module_from_spec(_spec6)
+_spec6.loader.exec_module(_mod4)
+_t5 = _tambah3(_mod4.jadi_soal(), 'bahasa_inggris', 'e', 111)
+print('soal reading baru: %d' % _t5)
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)

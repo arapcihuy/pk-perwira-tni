@@ -1224,3 +1224,32 @@ kbd {
   flex: 0 0 18px; height: 18px; border-radius: 50%; background: var(--surface3); color: var(--text);
   font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
 }
+
+/* ============================================================
+   v26 — menu lainnya, alur belajar, mode jelang ujian
+   ============================================================ */
+.menu-lain-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 80;
+  display: flex; align-items: flex-start; justify-content: center; padding: 70px 14px 14px;
+}
+.menu-lain-box {
+  width: 100%; max-width: 420px; background: var(--surface-solid2);
+  border: 1px solid var(--border2); border-radius: 16px; padding: 16px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+}
+.menu-lain-item {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  border-radius: 12px; padding: 12px 14px; margin-top: 8px; font-size: 13px; cursor: pointer;
+}
+.menu-lain-item:hover { border-color: var(--gold2); }
+.tur-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.tur-num {
+  flex: 0 0 22px; height: 22px; border-radius: 50%; background: var(--glow);
+  border: 1px solid var(--gold2); color: var(--gold3); font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.tur-judul { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.ringkas-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.ringkas-item { font-size: 12px; color: var(--text2); line-height: 1.6; padding-left: 14px; position: relative; }
+.ringkas-item::before { content: '•'; position: absolute; left: 2px; color: var(--gold2); }
