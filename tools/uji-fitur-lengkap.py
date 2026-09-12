@@ -622,6 +622,54 @@ def main():
         w4 = page.evaluate("() => ({ riwayat: statusGambar(), tersimpan: !!localStorage.getItem('tni_gambar_terakhir') })")
         cek(w4['riwayat'] >= 1 and w4['tersimpan'], 'hasil latihan tersimpan di perangkat (masuk status baterai)', w4)
 
+        print('== X. Produk berbayar: kode akses & laporan lengkap ==')
+        # kode dibuat oleh alat Python, dipakai untuk menguji pemeriksa di JavaScript
+        import subprocess as _sub
+        _sub.run(['/usr/bin/python3', os.path.join(ROOT, 'tools', 'buat-kode.py'),
+                  '--jumlah', '3', '--isi', 'UJI', '--keluaran', '/tmp/kode-uji-otomatis.txt'],
+                 check=False, capture_output=True)
+        _kode = [l.strip() for l in open('/tmp/kode-uji-otomatis.txt', encoding='utf-8') if l.startswith('SP')]
+        cek(len(_kode) >= 3, 'alat pembuat kode menghasilkan kode (Python)', _kode)
+        x2 = page.evaluate("""(kode) => {
+            const out = {};
+            out.sah = kode.map(k => periksaKode(k).sah);
+            out.ngawurDitolak = !periksaKode('SPZZZZZZZZZZZZ').sah && !periksaKode('SP1234').sah
+                                && !periksaKode('').sah && !periksaKode('SP UJI 01 XXXX').sah;
+            out.sebelumnyaTerkunci = !laporanSudahDibuka();
+            navTo('laporan');
+            out.halamanTerkunci = document.body.textContent.indexOf('sekali bayar') >= 0;
+            out.bukanLangganan = document.body.textContent.indexOf('bukan langganan') >= 0;
+            out.syaratAda = document.body.textContent.indexOf('Syarat') >= 0;
+            out.materiTidakDikunci = document.body.textContent.indexOf('Materi latihan tetap gratis') >= 0;
+            document.getElementById('kodeAkses').value = kode[0];
+            bukaLaporanDenganKode();
+            out.terbuka = laporanSudahDibuka();
+            navTo('laporan');
+            const t = document.body.innerText;
+            out.bagian = {
+                kesiapan: t.indexOf('Kesiapan ujianmu') >= 0 || t.indexOf('Belum cukup data') >= 0,
+                kepribadian: t.indexOf('Kepribadianmu') >= 0,
+                kelemahan: t.indexOf('perlu kamu kejar') >= 0,
+                rencana: t.indexOf('Rencana latihan 14 hari') >= 0,
+                wawancara: t.indexOf('Cara menjawab di wawancara') >= 0,
+                batas: t.indexOf('Batas laporan ini') >= 0
+            };
+            out.adaCetak = !!document.querySelector('[onclick*="print"]');
+            out.adaUnduh = !!document.querySelector('[onclick*="unduhLaporan"]');
+            return out;
+        }""", _kode)
+        cek(all(x2['sah']) and not x2['adaKodeGagal'] if 'adaKodeGagal' in x2 else all(x2['sah']),
+            'semua kode buatan Python sah di aplikasi (uji silang dua bahasa)', x2['sah'])
+        cek(x2['ngawurDitolak'], 'kode ngawur/format salah ditolak', x2['ngawurDitolak'])
+        cek(x2['sebelumnyaTerkunci'] and x2['halamanTerkunci'] and x2['bukanLangganan'],
+            'sebelum dibuka: halaman terkunci & menyatakan sekali bayar', x2)
+        cek(x2['syaratAda'] and x2['materiTidakDikunci'],
+            'syarat layanan tampil & materi latihan dinyatakan tetap gratis', x2)
+        cek(x2['terbuka'], 'kode akses membuka laporan', x2['terbuka'])
+        b = x2['bagian']
+        cek(all(b.values()), 'laporan memuat 6 bagian wajib', b)
+        cek(x2['adaCetak'] and x2['adaUnduh'], 'laporan bisa dicetak PDF & diunduh', x2)
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};
