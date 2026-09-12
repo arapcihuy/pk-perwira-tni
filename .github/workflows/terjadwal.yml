@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Peraturan mutu soal (10 butir)
+        run: python3 tools/peraturan-mutu.py
       - name: Verifikasi akurasi bank soal
         run: python3 tools/verifikasi-soal.py
 

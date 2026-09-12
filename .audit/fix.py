@@ -950,6 +950,36 @@ _spec6.loader.exec_module(_mod4)
 _t5 = _tambah3(_mod4.jadi_soal(), 'bahasa_inggris', 'e', 111)
 print('soal reading baru: %d' % _t5)
 
+
+# PERATURAN P4: kunci tidak boleh bocor di pertanyaan
+setq('tkw', 'w74',
+  pertanyaan="Satuan TNI AU yang mengoperasikan sejumlah pesawat sejenis dan dipimpin seorang komandan satuan disebut...",
+  pembahasan="Satuan operasi TNI AU yang mengoperasikan pesawat sejenis disebut Skadron, dipimpin Komandan "
+             "Skadron. Beberapa skadron dapat bergabung menjadi wing atau grup.")
+setq('tkw', 'w112',
+  pertanyaan="Tokoh TNI AU yang gugur dalam tugas dan namanya diabadikan menjadi nama Lanud di Jakarta Timur adalah...",
+  pembahasan="Halim Perdanakusuma adalah pahlawan nasional TNI AU yang gugur dalam tugas; namanya "
+             "diabadikan menjadi Lanud Halim Perdanakusuma di Jakarta Timur.")
+
+
+# ============================================================ 1m. lengkapi label topik (PERATURAN P1)
+_spec7 = _ilu4.spec_from_file_location('tag_soal', '.audit/tag-soal.py')
+_tag = _ilu4.module_from_spec(_spec7)
+_spec7.loader.exec_module(_tag)
+_n_topik = 0
+for _kat, _v in db.items():
+    for _q in _v['soal']:
+        if not _q.get('topik'):
+            _t = _tag.pilih_topik(_kat, _q['pertanyaan'])
+            if _t == 'umum':
+                _t = {'bahasa_inggris': 'reading' if 'Bacaan berikut' in _q['pertanyaan'] else 'vocabulary',
+                      'verbal': 'sinonim', 'numerik': 'hitung-cepat', 'matematika': 'statistik',
+                      'kepribadian': 'kerja-sama', 'tkw': 'uud', 'penalaran_logika': 'silogisme',
+                      'tes_gambar': 'deret-pola', 'kraepelin': 'aturan-satuan'}.get(_kat, 'umum')
+            _q['topik'] = _t
+            _n_topik += 1
+print('label topik dilengkapi untuk %d soal baru' % _n_topik)
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)

@@ -22,6 +22,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: PERATURAN MUTU SOAL (10 butir wajib) - lihat PEDOMAN-MUTU-SOAL.md
+        run: python3 tools/peraturan-mutu.py
+
       - name: Cek akurasi bank soal (kunci, opsi, duplikat, pembahasan, gambar)
         run: python3 tools/verifikasi-soal.py
 

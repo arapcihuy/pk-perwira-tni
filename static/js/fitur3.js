@@ -367,6 +367,19 @@ window.renderTentang = function () {
       'Soal dan pengaturan tema tidak terpengaruh.</div>' +
       '<button class="btn btn-danger btn-sm" style="margin-top:10px" onclick="resetAll()">Reset semua data progres</button>' +
       '</div>' +
+    '<div class="card" style="margin-bottom:14px">' +
+      '<div class="hari-head">' + ic('shield', 16) + ' <strong>PERATURAN MUTU SOAL (berlaku pada aplikasi ini)</strong></div>' +
+      '<div class="hari-sub">Setiap soal wajib lulus 10 peraturan yang diperiksa mesin sebelum naik ke situs: ' +
+      '(1) punya label topik, (2) tidak ada opsi kembar, (3) tanpa opsi "semua benar/salah", ' +
+      '(4) kunci tidak bocor di pertanyaan, (5) kunci tidak selalu jadi opsi terpanjang, ' +
+      '(6) pembahasan minimal 3 baris (JAWABAN / cara / INGAT), (7) soal hitung wajib memuat langkah perhitungan, ' +
+      '(8) posisi kunci merata 20-30% per huruf, (9) soal bergambar wajib diverifikasi ulang dari gambarnya, ' +
+      '(10) semua soal Tes Gambar wajib bergambar.</div>' +
+      '<div class="hari-sub" style="margin-top:8px">Saat ini: <strong>' + totalSoal() + ' soal</strong> lulus seluruh peraturan, ' +
+      'nol pelanggaran. Selain itu: setiap kunci diperiksa dua gelombang (gelombang kedua oleh pemeriksa independen), ' +
+      'soal yang kamu tandai lewat "Laporkan soal" masuk daftar prioritas audit. Bila kamu menemukan soal yang terasa keliru, ' +
+      'laporkan — itu bagian dari peraturan ini.</div>' +
+      '</div>' +
     '<div class="card">' +
       '<div class="hari-head">' + ic('bulb', 16) + ' <strong>Cara pakai singkat</strong></div>' +
       '<div class="hari-sub">1. Kerjakan 1 sesi (Tryout/Simulasi) atau Mode Belajar tiap hari.<br>' +
