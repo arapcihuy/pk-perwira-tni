@@ -49,7 +49,7 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   mode Jelang Ujian 7 Hari.
 - v27: PERATURAN MUTU SOAL resmi + pemeriksa otomatis 10 butir (mengikat di CI); 2 soal yang kuncinya
   bocor di pertanyaan (w74, w112) diperbaiki; 112 soal baru dilengkapi label topik.
-- Versi build saat ini: **v31** (fokus ulang: SiapSeleksi — psikotes + tes IQ + SKD) (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
+- Versi build saat ini: **v41** (fokus ulang: SiapSeleksi — psikotes + tes IQ + SKD) (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
 - **Peraturan mutu wajib:** `PEDOMAN-MUTU-SOAL.md` — 10 butir diperiksa mesin (`tools/peraturan-mutu.py`),
   10 aturan proses, aturan isi pembahasan, dan daftar larangan. Wajib lulus sebelum deploy.
 
@@ -143,6 +143,13 @@ Perintah menjalankan ulang:
 - Perbaikan **service worker** (`sw.js`) yang membuat offline benar-benar jalan: nama cache diseragamkan
   (`'siap-psikotes-<stamp>'`) dan daftar berkas dibangun dari disk (14 dari 14 berkas JS terdaftar);
   dibuktikan uji offline sungguhan (1225 soal, fitur8 & fitur9 termuat, 0 error).
+
+### Tambahan v33-v41 (sesi kerja malam 13 September 2026)
+Ringkas: modul tes gambar (panduan + kanvas), persiapan wawancara, produk berbayar berwujud
+(Laporan Lengkap + kode akses tanpa server), halaman publik mutu/syarat/privasi, pembersihan merek lama
+di seluruh layar & berkas ekspor (+ gerbang anti-kambuh), perbaikan kontras WCAG AA 19->0 titik,
+dan perbaikan penghambat publikasi (`.nojekyll` - dua build Pages gagal karena Jekyll).
+Rincian lengkap: LAPORAN-AUDIT.md bagian 13. Hasil verifikasi: 102 uji aplikasi + 15 uji situs LIVE lulus.
 
 ## KOREKSI LABEL COMMIT (13 September 2026)
 

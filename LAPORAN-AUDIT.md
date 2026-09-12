@@ -696,3 +696,58 @@ dan aplikasi tetap jalan (**1225 soal, fitur8 & fitur9 termuat, 0 error**).
 
 Model jual tetap **SEKALI BELI** — **Rp 39.000 Laporan Lengkap**, rencana **Paket Musim Rp 79.000** —
 bukan langganan. Materi latihan **tidak dikunci**.
+
+---
+
+# Bagian 13 — SESI KERJA MALAM: SIAP DIPUBLIKASIKAN & DIJUAL (v33–v41, 13 September 2026)
+
+Permintaan pengguna: kerjakan semalaman sampai "selayaknya dipublikasikan dan dikomersialkan",
+sambil berdiskusi antar-AI, agar pagi harinya tinggal diperiksa.
+
+## Panel peninjau (4 sisi)
+
+Empat sudut pandang dijalankan; dua di antaranya menghasilkan laporan lengkap yang dipakai sebagai
+dasar pekerjaan malam ini:
+- **Produk & UX** (`~/pk-bisnis/panel/1-produk-ux.md`) — audit dengan bukti DOM, menemukan 5 masalah
+  terbesar beserta langkah reproduksinya.
+- **Pasar & kepatuhan** (`~/pk-bisnis/panel/2-pasar-kepatuhan.md`) — skor kesiapan komersial 4/10,
+  rencana jual 30 hari, 11 butir yang mustahil diselesaikan tanpa pemilik.
+- **Saluran penjualan** (`~/pk-bisnis/SALURAN-PENJUALAN.md`) — 30 target B2B nyata dengan tautan resmi,
+  komunitas pelamar, dan marketplace jasa. Tidak ada kontak yang dikarang.
+- **Teknis & mutu** — gerbang pemeriksaan pra-kirim (11 peraturan + verifikasi + sintaks + merek).
+
+## Yang dikerjakan (setiap langkah lewat gerbang pemeriksaan)
+
+| Build | Isi |
+|-------|-----|
+| v33 | Halaman panduan & latihan **tes gambar** (Wartegg/BAUM/DAP/HTP) + kanvas latihan + timer; menggantikan pesan singkat. |
+| v34 | Kesiapapan publikasi: sitemap, robots, tag kanonik, tautan silang aplikasi ↔ halaman arahan. |
+| v35 | **Produk berbayar punya wujud**: Laporan Lengkap 6 bagian yang bisa dicetak PDF + **kode akses tanpa server** (alat pembuat Python, pemeriksa JavaScript, diuji silang dua bahasa). |
+| v36 | Halaman publik **mutu**, **syarat**, **privasi** + tautan dari aplikasi; penawaran B2B dirapikan. |
+| v37 | Modul **persiapan wawancara**: 12 pertanyaan, yang dinilai penguji, jawaban lemah, kriteria penilaian diri, daftar periksa hari seleksi. |
+| v38 | **Merek lama dibersihkan** (17 kemunculan): badge header, H1, subjudul beranda, Tips, Tentang, dan berkas ekspor pengguna. Ditambah gerbang anti-kambuh. |
+| v39 | Perbaikan audit UX: tombol jalur dobel dihapus, jalur **Umum/Kerja paling depan**, penawaran berbayar tidak lagi memasang harga sebelum bisa dibeli (minat dicatat; kolom kode tetap ada agar bisa jual manual), navigasi HP tidak terpotong. |
+| v40 | **Kontras WCAG AA diperbaiki dari 19 titik gagal menjadi 0** (diukur axe-core di 7 halaman), og-image 1200×630, ikon halaman arahan, nama berkas ekspor. |
+| v41 | **Perbaikan penghambat publikasi**: GitHub Pages memakai Jekyll dan dua build gagal ("Page build failed") sehingga situs tertinggal di versi lama. Ditambahkan `.nojekyll`. |
+
+## Verifikasi penutup (di situs LIVE, bukan lokal)
+
+`tools/uji-situs-live2.py` — **15/15 lulus**: nama & badge SiapPsikotes, tanpa merek lama, 1.225 soal,
+5 jalur (Umum paling depan), 9 modul baterai termasuk wawancara, halaman tes gambar hidup,
+laporan terkunci tanpa harga dengan kolom kode, simulasi SKD 110 soal/100 menit, 0 error JavaScript,
+dan empat halaman publik (psikotes, mutu, syarat, privasi) hidup.
+
+Ditambah: uji 102 pemeriksaan aplikasi (lokal & CI), uji runtime, verifikasi bank soal,
+11 peraturan mutu, dan gerbang merek — semuanya lulus. CI hijau.
+
+## Yang tersisa untuk pemilik (tidak bisa dikerjakan agen)
+
+1. Kanal pembayaran berlisensi (butuh identitas & rekening pemilik).
+2. Asal-usul Batch A 1.068 soal (lihat `~/pk-bisnis/ASAL-USUL-SOAL.md` — cukup satu kalimat bila disusun sendiri).
+3. Domain sendiri (panduan + skrip sudah siap di `domain/`).
+4. Badan usaha untuk penagihan B2B.
+5. Keputusan harga final (dokumen lama menyebut lantai Rp 49.000; aplikasi memakai Rp 39.000).
+
+Cara mengaktifkan penjualan setelah kanal siap: isi `TAUTAN_BELI` di `static/js/fitur11.js`,
+ubah `LAPORAN_BAYAR_AKTIF` menjadi `true`, kirim lewat `bash tools/kirim.sh`. Kode akses dibuat
+dengan `python3 tools/buat-kode.py --jumlah N` (20 kode sudah disiapkan di `~/pk-bisnis/`).
