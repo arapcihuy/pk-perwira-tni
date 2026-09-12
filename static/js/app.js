@@ -782,7 +782,8 @@ window.showModal = function(encoded) {
       (isKey ? '<span class="modal-key-label">' + ic('check', 12) + ' Kunci</span>' : '') +
       '</div>';
   }).join('');
-  document.getElementById('mExp').innerHTML = '<strong>' + ic('book', 14) + ' Pembahasan</strong><br>' + escapeHtml(s.pembahasan);
+  document.getElementById('mExp').innerHTML = '<strong>' + ic('book', 14) + ' Pembahasan</strong>' +
+    '<div style="white-space:pre-line;margin-top:6px">' + escapeHtml(s.pembahasan) + '</div>';
   document.getElementById('soalModal').classList.add('open');
 };
 

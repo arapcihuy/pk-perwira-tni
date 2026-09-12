@@ -1,3 +1,6 @@
 data/soal.js.bak
 retry-pages-deploy.sh
 .gen/
+.audit/db.json
+.audit/db-new.json
+.audit/soal.js.bak
