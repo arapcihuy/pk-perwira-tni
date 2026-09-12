@@ -162,6 +162,64 @@ def main():
         }""")
         cek(prog['tren'], 'halaman progress menampilkan panel tren/offline', prog)
 
+        print('== 8. Halaman tentang & topik ==')
+        tentang = page.evaluate("""() => {
+            bukaTentang();
+            const adaVersi = document.body.textContent.indexOf('Versi aset') >= 0;
+            const adaLihatSoal = document.body.textContent.indexOf('Jumlah soal') >= 0;
+            S.bankCat = 'tkw'; S.bankQuery = ''; S.page = 'bank'; render();
+            const chip = document.querySelectorAll('.chip').length;
+            setTopikBank('tni-au');
+            const setelah = document.querySelectorAll('.bank-item').length;
+            drillTopik('tni-au', 25);
+            return { adaVersi: adaVersi, adaLihatSoal: adaLihatSoal, chip: chip, saringHasil: setelah, topikDrill: S.questions.length };
+        }""")
+        cek(tentang['adaVersi'] and tentang['adaLihatSoal'], 'halaman tentang tampil', tentang)
+        cek(tentang['chip'] > 2 and tentang['saringHasil'] > 0 and tentang['topikDrill'] == 25,
+            'filter topik & drill topik berjalan', tentang)
+
+        print('== 9. Mode offline (jaringan dimatikan) ==')
+        try:
+            page.goto(url, wait_until='load', timeout=30000)
+            page.wait_for_function('() => window.DATA_SOAL_INDEX && window.DATA_SOAL_INDEX.total > 0', timeout=20000)
+            page.evaluate('() => pastikanSemua()')
+            page.wait_for_function('() => katSiapSemua()', timeout=30000)
+            page.wait_for_timeout(1500)          # beri waktu service worker menyimpan berkas
+            page.context.set_offline(True)
+            page.reload(wait_until='load', timeout=30000)
+            offline = page.evaluate("""async () => {
+                await pastikanSemua();
+                startCat('tkw', 'learn');
+                const q = S.questions[S.indexedDB ? S.idx : 0];
+                pickAnswer(q.jawaban);
+                const b = document.querySelector('.explanation-body');
+                return { total: totalSoal(), soal: S.questions.length, pb: b ? b.textContent.split('\\n').length : 0 };
+            }""")
+            cek(offline['soal'] > 0 and offline['pb'] >= 2, 'aplikasi tetap jalan tanpa internet (dari cache)', offline)
+        except Exception as e:
+            cek(False, 'aplikasi tetap jalan tanpa internet (dari cache)', str(e)[:140])
+        finally:
+            page.context.set_offline(False)
+
+        print('== 10. Aksesibilitas (axe-core) ==')
+        try:
+            page.goto(url, wait_until='load', timeout=30000)
+            page.wait_for_function('() => window.DATA_SOAL_INDEX && window.DATA_SOAL_INDEX.total > 0', timeout=20000)
+            page.add_script_tag(path=os.path.join(ROOT, 'tools', 'axe.min.js'))
+            page.evaluate("""async () => { await pastikanSemua(); startCat('tkw', 'learn'); }""")
+            hasil_axe = page.evaluate("""async () => {
+                const r = await axe.run(document, { resultTypes: ['violations'] });
+                return r.violations.map(v => ({ id: v.id, impact: v.impact, jumlah: v.nodes.length,
+                                                contoh: (v.nodes[0] && v.nodes[0].target) ? v.nodes[0].target.join(' ') : '' }));
+            }""")
+            berat = [v for v in hasil_axe if v['impact'] in ('critical', 'serious')]
+            cek(not berat, 'tidak ada pelanggaran aksesibilitas berat (axe)', berat[:5])
+            if hasil_axe:
+                print('           catatan axe (ringan/menengah): %s' %
+                      [('%s(%s,%d)' % (v['id'], v['impact'], v['jumlah'])) for v in hasil_axe][:8])
+        except Exception as e:
+            cek(False, 'pemeriksaan aksesibilitas axe berjalan', str(e)[:140])
+
         browser.close()
 
     print()

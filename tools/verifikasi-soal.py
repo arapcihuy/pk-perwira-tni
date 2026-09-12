@@ -197,6 +197,38 @@ def main():
             rusak.append((q['id'], str(e)[:40]))
     cek(not rusak, 'semua gambar soal valid', rusak[:5])
 
+
+    print('== 7b. Kraepelin kolom angka: kunci harus cocok dengan angka di gambar ==')
+    kk = []
+    for q in db.get('kraepelin', {}).get('soal', []):
+        t = str(q['pertanyaan'])
+        if not re.match(r'^k1\d\d$', q['id']) or not q.get('gambar'):
+            continue           # hanya soal kolom angka v23 (k101-k115)
+        m = re.search(r'kolom angka (\d) pada gambar.*?angka ke-(\d) dan ke-(\d)', t, re.S)
+        if not m:
+            kk.append((q['id'], 'pola pertanyaan tidak dikenali'))
+            continue
+        kolom, p1 = int(m.group(1)), int(m.group(2))
+        try:
+            svg = base64.b64decode(q['gambar'].split(',', 1)[1]).decode()
+        except Exception as e:
+            kk.append((q['id'], 'gambar tidak terbaca'))
+            continue
+        angka = [int(x) for x in re.findall(r"font-size='18'[^>]*>(\d)<", svg)]
+        if len(angka) != 18:
+            kk.append((q['id'], 'jumlah angka di gambar = %d (seharusnya 18)' % len(angka)))
+            continue
+        isi = angka[(kolom - 1) * 6: kolom * 6]
+        a, b = isi[p1 - 1], isi[p1]
+        harap = str((a + b) % 10)
+        if q['pilihan'][q['jawaban']] != harap:
+            kk.append((q['id'], 'kunci %s, seharusnya %s (%d+%d)' % (q['pilihan'][q['jawaban']], harap, a, b)))
+    cek(not kk, 'semua soal Kraepelin kolom cocok dengan angka di gambarnya', kk[:5])
+
+    print('== 7c. Kelengkapan gambar pada Tes Gambar ==')
+    tg_tanpa = [q['id'] for q in db.get('tes_gambar', {}).get('soal', []) if not q.get('gambar')]
+    cek(not tg_tanpa, 'semua soal Tes Gambar punya gambar', tg_tanpa[:8])
+
     print('== 8. Versi aset konsisten ==')
     html = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     sw = open(os.path.join(ROOT, 'sw.js'), encoding='utf-8').read()

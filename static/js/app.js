@@ -141,6 +141,7 @@ function render() {
   switch (S.page) {
     case 'memuat': m.innerHTML = htmlMemuat(S.pesanMemuat || 'Menyiapkan soal...'); break;
     case 'hafalan': m.innerHTML = renderHafalan(); break;
+    case 'tentang': m.innerHTML = renderTentang(); break;
     case 'gagal':
       m.innerHTML = '<div class="empty"><div class="empty-icon">' + icon('alert', 40) + '</div>' +
         '<p>Soal gagal dimuat. Periksa koneksi internet lalu coba lagi.</p>' +
@@ -233,7 +234,8 @@ function renderHome() {
 
     '<div class="section-title">Pilih Kategori Langsung</div>' +
     '<div class="grid-auto">' + catCards + '</div>' +
-    '<div id="buildTag" style="text-align:center;font-size:11px;color:var(--text3);margin:20px 0 8px">Build v21 · pengulangan berjadwal, rincian per kategori, tema terang</div>';
+    '<div id="buildTag" style="text-align:center;font-size:11px;color:var(--text3);margin:20px 0 8px">Build v21 · pengulangan berjadwal, rincian per kategori, tema terang</div>' +
+    '<div style="text-align:center;margin-bottom:16px"><button class="btn btn-ghost btn-sm" onclick="bukaTentang()">Tentang aplikasi & data</button></div>';
 }
 
 // ---- PILIH KATEGORI ----
@@ -314,6 +316,10 @@ function startCat(cat, mode, percobaan) {
   // ujian sebenarnya. Mode belajar tetap memakai semua soal tanpa timer.
   if (mode === 'tryout' && S.questions.length > TRYOUT_MAX_SOAL) {
     S.questions = S.questions.slice(0, TRYOUT_MAX_SOAL);
+  }
+  if (mode === 'drill25') {
+    S.mode = 'drill';
+    S.questions = S.questions.slice(0, 25).map(function(q) { return window.acakOpsi ? acakOpsi(q) : q; });
   }
 
   // acak posisi opsi untuk tryout/simulasi supaya posisi jawaban tidak bisa dihafal
@@ -399,6 +405,8 @@ function renderSoal() {
     expHtml = '<div class="explanation show">' +
       '<div class="explanation-head"><strong>' + ic('book', 15) + ' Pembahasan</strong>' + expTitle + '</div>' +
       '<div class="explanation-body">' + escapeHtml(q.pembahasan) + '</div>' +
+      (q.gambarPembahasan ? '<div style="text-align:center;margin-top:10px"><img src="' + sanitizeImgSrc(q.gambarPembahasan) +
+        '" alt="Gambar penjelasan" style="max-width:100%;border-radius:8px;border:1px solid var(--border)"></div>' : '') +
       '</div>';
   }
 
@@ -782,7 +790,9 @@ function renderBank() {
   catKeys.forEach(function(k) {
     if (S.bankCat === 'all' || S.bankCat === k) {
       SOAL_DATABASE[k].soal.forEach(function(s) {
-        list.push(Object.assign({}, s, { katKey: k, katNama: SOAL_DATABASE[k].nama }));
+        var item = Object.assign({}, s, { katKey: k, katNama: SOAL_DATABASE[k].nama });
+        if (window.bankSaringTopik && !bankSaringTopik(item)) return;   // filter topik (fitur3)
+        list.push(item);
       });
     }
   });

@@ -791,6 +791,73 @@ setq('penalaran_logika', 'l24',
              "2-1-12-9. Selalu ubah huruf ke posisi alfabet satu per satu supaya tidak tertukar "
              "antara huruf ke-10 (J) dan ke-11 (K).")
 
+
+# ============================================================ 1f. label topik soal (untuk filter & drill topik)
+_tp = json.load(open('.audit/topik.json'))
+_n = 0
+for _v in db.values():
+    for _q in _v['soal']:
+        if _q['id'] in _tp:
+            _q['topik'] = _tp[_q['id']]
+            _n += 1
+print('soal diberi label topik:', _n)
+
+
+# ============================================================ 1g. soal baru v23 (tes gambar + Kraepelin kolom)
+import importlib.util as _ilu3
+_spec3 = _ilu3.spec_from_file_location('tambahan2', '.audit/tambahan2.py')
+_mod2 = _ilu3.module_from_spec(_spec3)
+_spec3.loader.exec_module(_mod2)
+
+_spec_svg2 = _ilu3.spec_from_file_location('svg_tambahan', '.audit/svg_tambahan.py')
+_svg2 = _ilu3.module_from_spec(_spec_svg2)
+_spec_svg2.loader.exec_module(_svg2)
+
+_spec_svg3 = _ilu3.spec_from_file_location('svg_kraepelin', '.audit/svg_kraepelin.py')
+_svg3 = _ilu3.module_from_spec(_spec_svg3)
+_spec_svg3.loader.exec_module(_svg3)
+
+
+def _gbr(svg):
+    return 'data:image/svg+xml;base64,' + _b64.b64encode(svg.encode()).decode()
+
+
+_n_tg = 0
+for (qid, tanya, pilihan, kunci, pb, topik) in _mod2.SOAL_TES_GAMBAR2:
+    if any(q['id'] == qid for q in db['tes_gambar']['soal']):
+        continue
+    soal_baru = {'id': qid, 'pertanyaan': 'Perhatikan gambar berikut. ' + tanya,
+                 'pilihan': pilihan, 'jawaban': kunci, 'pembahasan': pb, 'topik': topik}
+    if qid in _svg2.SVG_TAMBAHAN:
+        soal_baru['gambar'] = _gbr(_svg2.SVG_TAMBAHAN[qid])
+    db['tes_gambar']['soal'].append(soal_baru)
+    _n_tg += 1
+
+_n_k = 0
+for item in _mod2.KOLOM_KRAEPELIN:
+    qid, tanya, pilihan, kunci, pb = _mod2.soal_kraepelin(item)
+    if any(q['id'] == qid for q in db['kraepelin']['soal']):
+        continue
+    soal_baru = {'id': qid, 'pertanyaan': tanya, 'pilihan': pilihan, 'jawaban': kunci,
+                 'pembahasan': pb, 'topik': 'kolom-angka'}
+    if qid in _svg3.SVG_KRAEPELIN:
+        soal_baru['gambar'] = _gbr(_svg3.SVG_KRAEPELIN[qid])
+    db['kraepelin']['soal'].append(soal_baru)
+    _n_k += 1
+
+print('soal baru: tes_gambar %d, kraepelin kolom %d' % (_n_tg, _n_k))
+
+
+# ============================================================ 1h. pembahasan bergambar (soal hitung bangun)
+_gp = json.load(open('.audit/gambar-pembahasan.json'))
+_n_gp = 0
+for _cat in db.values():
+    for _q in _cat['soal']:
+        if _q['id'] in _gp:
+            _q['gambarPembahasan'] = _gbr(_gp[_q['id']][0])
+            _n_gp += 1
+print('pembahasan bergambar ditambahkan:', _n_gp)
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)
