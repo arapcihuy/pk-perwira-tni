@@ -479,7 +479,10 @@ def main():
             out.jalurUmum = typeof JALUR !== 'undefined' && !!JALUR.umum;
             navTo('baterai');
             out.modulPertama = (document.querySelector('.baterai-nama') || {textContent: ''}).textContent.slice(0, 30);
-            out.tombolJalurUmum = !!document.querySelector('.jalur-btn.umum');
+            out.tombolJalurUmum = Array.from(document.querySelectorAll('.jalur-btn'))
+                .some(b => b.textContent.indexOf('Umum') >= 0);
+            out.jalurUmumPertama = (document.querySelector('.jalur-btn') || {textContent: ''})
+                .textContent.indexOf('Umum') >= 0;
             out.tautanUmum = !!document.querySelector('.tautan-umum');
             // jalankan tes kepribadian penuh
             setJalur('umum');
@@ -508,6 +511,7 @@ def main():
             return out;
         }""")
         cek(s2['jalurUmum'] and s2['tombolJalurUmum'] and s2['tautanUmum'], 'jalur Umum/Kerja tersedia & bisa dipilih', s2)
+        cek(s2['jalurUmumPertama'], 'jalur Umum/Kerja tampil paling depan (segmen terbesar pengunjung)', s2)
         cek(s2['modulPertama'].startswith('Kepribadian'), 'modul Big Five ada di daftar Baterai Psikotes', s2['modulPertama'])
         cek(s2['halamanTes'] and s2['jumlahPilihan'] == 5 and s2['pertanyaanBahasaSederhana'],
             'tes kepribadian jalan: 20 pernyataan, 5 pilihan, bahasa sederhana', s2)
@@ -637,10 +641,14 @@ def main():
                                 && !periksaKode('').sah && !periksaKode('SP UJI 01 XXXX').sah;
             out.sebelumnyaTerkunci = !laporanSudahDibuka();
             navTo('laporan');
-            out.halamanTerkunci = document.body.textContent.indexOf('sekali bayar') >= 0;
-            out.bukanLangganan = document.body.textContent.indexOf('bukan langganan') >= 0;
+            out.tanpaHargaSaatBelumSiap = document.body.textContent.indexOf('Rp 39.000') < 0;
+            out.adaLaporanSedangDisiapkan = document.body.textContent.indexOf('sedang disiapkan') >= 0;
+            out.adaPenangkapMinat = document.body.textContent.indexOf('Saya tertarik') >= 0
+                                    || document.body.textContent.indexOf('Sudah tercatat') >= 0;
+            out.adaKolomKode = !!document.getElementById('kodeAkses');
             out.syaratAda = document.body.textContent.indexOf('Syarat') >= 0;
-            out.materiTidakDikunci = document.body.textContent.indexOf('Materi latihan tetap gratis') >= 0;
+            out.materiTidakDikunci = document.body.textContent.indexOf('Materi latihan dan semua tes tetap') >= 0
+                                     || document.body.textContent.indexOf('Materi latihan tetap gratis') >= 0;
             document.getElementById('kodeAkses').value = kode[0];
             bukaLaporanDenganKode();
             out.terbuka = laporanSudahDibuka();
@@ -661,8 +669,10 @@ def main():
         cek(all(x2['sah']) and not x2['adaKodeGagal'] if 'adaKodeGagal' in x2 else all(x2['sah']),
             'semua kode buatan Python sah di aplikasi (uji silang dua bahasa)', x2['sah'])
         cek(x2['ngawurDitolak'], 'kode ngawur/format salah ditolak', x2['ngawurDitolak'])
-        cek(x2['sebelumnyaTerkunci'] and x2['halamanTerkunci'] and x2['bukanLangganan'],
-            'sebelum dibuka: halaman terkunci & menyatakan sekali bayar', x2)
+        cek(x2['sebelumnyaTerkunci'] and x2['tanpaHargaSaatBelumSiap'] and x2['adaLaporanSedangDisiapkan'],
+            'belum dibuka: laporan terkunci, harga tidak dipasang sebelum pembayaran siap', x2)
+        cek(x2['adaPenangkapMinat'] and x2['adaKolomKode'],
+            'minat pengguna bisa dicatat & kolom kode akses tersedia (bisa jual manual)', x2)
         cek(x2['syaratAda'] and x2['materiTidakDikunci'],
             'syarat layanan tampil & materi latihan dinyatakan tetap gratis', x2)
         cek(x2['terbuka'], 'kode akses membuka laporan', x2['terbuka'])

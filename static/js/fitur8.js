@@ -183,25 +183,7 @@ window.laporanB5 = function () {
 window.LAPORAN_BAYAR_AKTIF = false;
 window.HARGA_LAPORAN = 'Rp 39.000';
 
-window.panelLaporanLengkap = function (h) {
-  if (LAPORAN_BAYAR_AKTIF) return laporanLengkapIsi(h);
-  return '<div class="card bayar">' +
-    '<div class="hari-head">' + ic('file', 16) + ' <strong>Laporan Lengkap</strong>' +
-      '<span class="hari-tgl">segera</span></div>' +
-    '<div class="hari-sub">Versi gratis menunjukkan 5 skormu. Laporan Lengkap berisi:</div>' +
-    '<div class="bayar-daftar">' +
-      '<div>' + ic('check', 13) + ' Penjelasan tiap sifat dengan bahasa sehari-hari</div>' +
-      '<div>' + ic('check', 13) + ' Pekerjaan dan suasana kerja yang paling cocok untukmu</div>' +
-      '<div>' + ic('check', 13) + ' Cara menjawab saat wawancara menanyakan kelemahanmu</div>' +
-      '<div>' + ic('check', 13) + ' Rencana latihan 2 minggu sebelum psikotes</div>' +
-      '<div>' + ic('check', 13) + ' Bisa dicetak atau disimpan sebagai PDF</div>' +
-    '</div>' +
-    '<div class="hari-sub" style="margin-top:10px">Harga rencana: <strong>' + HARGA_LAPORAN + '</strong> sekali bayar (bukan langganan). ' +
-    'Bagian tes dan latihan tetap gratis selamanya.</div>' +
-    '<div class="hari-sub" style="margin-top:8px"><em>Belum bisa dibeli sekarang — pembayaran sedang disiapkan. ' +
-    'Simpan hasilmu dulu; saat laporan dibuka, hasil ini yang dipakai.</em></div>' +
-    '</div>';
-};
+window.panelLaporanLengkap = function () { return panelCaraBeli(); };
 
 function laporanLengkapIsi(h) {
   return '<div class="card"><div class="hari-head">' + ic('file', 16) + ' <strong>Laporan Lengkap</strong></div>' +
@@ -309,14 +291,6 @@ function sisipPanel8() {
 
   // di halaman baterai: tambahkan tombol jalur Umum + tautan halaman umum
   if (S.page === 'baterai') {
-    var bar = m.querySelector('.jalur-bar');
-    if (bar && !m.querySelector('.jalur-btn.umum')) {
-      var b = document.createElement('button');
-      b.className = 'jalur-btn umum' + (jalurAktif() === 'umum' ? ' on' : '');
-      b.innerHTML = '<span class="jalur-nama">Umum / Kerja</span>';
-      b.setAttribute('onclick', "setJalur('umum')");
-      bar.appendChild(b);
-    }
     var kartu = m.querySelector('.card:last-of-type');
     if (kartu && !m.querySelector('.tautan-umum')) {
       var w = document.createElement('div');

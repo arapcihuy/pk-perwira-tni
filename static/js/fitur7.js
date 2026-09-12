@@ -323,11 +323,15 @@ window.panelAiOffline = function () {
 window.renderBateraiPsi = function () {
   var j = jalurAktif();
   var jj = j && JALUR[j] ? JALUR[j] : null;
-  var kartuJalur = Object.keys(JALUR).map(function (k) {
+  var URUTAN_JALUR = ['umum', 'kedinasan', 'tni', 'polri', 'cpns'];
+  var kunciJalur = URUTAN_JALUR.filter(function (k) { return !!JALUR[k]; })
+    .concat(Object.keys(JALUR).filter(function (k) { return URUTAN_JALUR.indexOf(k) < 0; }));
+  var kartuJalur = kunciJalur.map(function (k) {
     var x = JALUR[k];
     var aktif = k === j;
     return '<button class="jalur-btn' + (aktif ? ' on' : '') + '" onclick="setJalur(\'' + k + '\')">' +
-      '<span class="jalur-nama">' + escapeHtml(x.singkat) + '</span></button>';
+      '<span class="jalur-nama">' + escapeHtml(x.singkat) + '</span>' +
+      (k === 'umum' ? '<span class="jalur-ket">pencari kerja</span>' : '') + '</button>';
   }).join('');
 
   return '<div class="card">' +
