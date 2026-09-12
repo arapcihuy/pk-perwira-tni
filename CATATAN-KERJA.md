@@ -120,3 +120,33 @@ Perintah menjalankan ulang:
   (termasuk 1 kunci yang benar-benar salah: w47).
 - Ukuran buka pertama turun dari ~160 KB menjadi ~66-70 KB (gzip) setelah data dipecah per kategori.
 - Uji browser di situs live: 1000 soal termuat, pembahasan tampil 3 baris, 41/41 gambar OK, 0 error JS.
+
+## PENGAMAN PENGIRIMAN (WAJIB — baca sebelum push)
+
+Sebelum setiap pengiriman, jalankan gerbang pemeriksaan yang sama dengan CI:
+
+```bash
+bash tools/periksa-sebelum-kirim.sh
+```
+
+Isinya: PERATURAN MUTU SOAL (11 butir) · VERIFIKASI BANK SOAL (termasuk **konsistensi versi aset**) ·
+pemeriksaan sintaks seluruh JavaScript. Kalau ada satu gagal, pengiriman dibatalkan.
+
+Agar tidak bisa terlewat, pasang sebagai hook git (sekali per clone):
+
+```bash
+python3 tools/pasang-hook.py
+```
+
+### Aturan saat menambah berkas aset baru
+
+Tulis penanda versinya SAMA dengan berkas lain (lihat nilai `?v=` yang sedang dipakai), atau jalankan
+`python3 tools/stamp-versi.py <stamp-terbaru>` sebelum commit. Versi aset yang tidak seragam adalah
+penyebab CI merah yang paling sering terjadi — gerbang di atas menangkapnya sebelum terkirim.
+
+### Pelajaran yang melahirkan pengaman ini
+
+Dua kali CI merah ("Verifikasi Bank Soal") hanya karena pemeriksaan yang **sebenarnya tersedia lokal**:
+pertama karena skrip pemeriksa membaca berkas kerja `.audit/` yang tidak ikut ke repo; kedua karena
+berkas baru (`fitur7.js`) ditulis dengan `?v=1` sehingga konsistensi versi aset gagal. Keduanya bisa
+dicegah mesin, dan sekarang memang dicegah.
