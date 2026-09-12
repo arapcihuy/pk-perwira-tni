@@ -729,6 +729,49 @@ def main():
             'kaki menyatakan bukan produk resmi & tidak berafiliasi', z2['teks'][:80])
         cek(z2['tautan'] == ['mutu/', 'syarat/', 'privasi/'], 'kaki menautkan mutu, syarat, privasi', z2['tautan'])
 
+        print('== AA. Aksi lanjutan & kartu hasil yang bisa dibagikan ==')
+        a2 = page.evaluate("""() => {
+            const out = {};
+            navTo('baterai'); mulaiBigFive();
+            for (let i = 0; i < 20; i++) jawabB5(4);
+            out.aksiDiHasilB5 = !!document.querySelector('.aksi-lanjutan');
+            out.bagikanDiHasilB5 = !!document.querySelector('[onclick*="salinHasil"]');
+            out.tombol = Array.from(document.querySelectorAll('.aksi-bar button')).map(x => x.innerText.trim());
+            const teks = ringkasanHasil();
+            out.ringkasanBaris = teks.split('\n').length;
+            out.adaTautan = teks.indexOf('pk-perwira-tni') >= 0;
+            out.adaBatasJujur = teks.indexOf('bukan tes resmi') >= 0;
+            // aksi lanjutan benar-benar memulai sesi
+            latihTerlemah();
+            out.mulaiSesi = S.page === 'soal' && S.questions.length >= 10;
+            // layar hasil tryout
+            goHome(); startCat('tkw', 'tryout');
+            for (let i = 0; i < 3; i++) { S.idx = i; S.tSoalIdx = -1; pickAnswer(0); }
+            finishSession();
+            out.halamanHasil = S.page === 'hasil';
+            out.aksiDiHasilTryout = !!document.querySelector('.aksi-lanjutan');
+            out.tombolBagikan = !!document.querySelector('[onclick*="unduhKartuHasil"]');
+            return out;
+        }""")
+        cek(a2['aksiDiHasilB5'] and a2['bagikanDiHasilB5'], 'layar hasil kepribadian: aksi lanjutan + bagikan', a2['tombol'])
+        cek(a2['mulaiSesi'], 'tombol aksi lanjutan langsung memulai sesi (tanpa kembali ke beranda)', a2)
+        cek(a2['ringkasanBaris'] >= 6 and a2['adaTautan'] and a2['adaBatasJujur'],
+            'ringkasan hasil: memuat angka, tautan, dan batas jujur', a2)
+        cek(a2['halamanHasil'] and a2['aksiDiHasilTryout'] and a2['tombolBagikan'],
+            'layar hasil tryout: aksi lanjutan + tombol bagikan', a2)
+        a3 = page.evaluate("""() => {
+            let diunduh = null;
+            const asli = HTMLAnchorElement.prototype.click;
+            HTMLAnchorElement.prototype.click = function () {
+                diunduh = { nama: this.download, panjang: (this.href || '').length };
+            };
+            unduhKartuHasil();
+            HTMLAnchorElement.prototype.click = asli;
+            return diunduh;
+        }""")
+        cek(a3 and a3['nama'].endswith('.png') and a3['panjang'] > 50000,
+            'kartu hasil benar-benar terbentuk sebagai gambar PNG', a3)
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};
