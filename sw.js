@@ -3,25 +3,25 @@
 //  - HTML (navigasi): NETWORK-FIRST, supaya update situs langsung kelihatan.
 //  - Aset (js/css/gambar/data): cache-first + update di belakang layar
 //    (stale-while-revalidate) supaya tetap cepat & bisa offline.
-const CACHE = 'tni-perwira-v26';
+const CACHE = 'tni-perwira-v53174b3';
 const FILES = [
   './',
   './index.html',
   './manifest.json',
-  './data/soal-index.js?v=26',
-  './data/tips.js?v=26',
-  './data/soal-psikologi.js?v=26',
-  './data/soal-iq.js?v=26',
-  './static/css/style.css?v=26',
-  './static/js/icons.js?v=26',
-  './static/js/data-loader.js?v=26',
-  './static/js/app.js?v=26',
-  './static/js/fitur.js?v=26',
-  './static/js/fitur2.js?v=26',
-  './static/js/fitur3.js?v=26',
-  './static/js/fitur4.js?v=26',
-  './static/js/psikologi.js?v=26',
-  './static/js/iq.js?v=26',
+  './data/soal-index.js?v=53174b3',
+  './data/tips.js?v=53174b3',
+  './data/soal-psikologi.js?v=53174b3',
+  './data/soal-iq.js?v=53174b3',
+  './static/css/style.css?v=53174b3',
+  './static/js/icons.js?v=53174b3',
+  './static/js/data-loader.js?v=53174b3',
+  './static/js/app.js?v=53174b3',
+  './static/js/fitur.js?v=53174b3',
+  './static/js/fitur2.js?v=53174b3',
+  './static/js/fitur3.js?v=53174b3',
+  './static/js/fitur4.js?v=53174b3',
+  './static/js/psikologi.js?v=53174b3',
+  './static/js/iq.js?v=53174b3',
   './static/icons/icon-192.png',
   './static/icons/icon-512.png'
 ];
