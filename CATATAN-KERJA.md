@@ -10,9 +10,10 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 
 ## Ringkasan isi aplikasi
 
-- 1068 soal, 9 kategori: Wawasan Kebangsaan (151), Matematika (166), Bahasa Inggris (110),
+- 1113 soal, 9 kategori: Wawasan Kebangsaan (151), Matematika (166), Bahasa Inggris (110),
   Penalaran dan Logika (134), Kemampuan Numerik (184), Kemampuan Verbal (100),
-  Tes Kraepelin (100), Tes Gambar dan Visual (50, semua bergambar), Tes Kepribadian Situasional (73).
+  Tes Kraepelin (115, termasuk 15 soal kolom angka bergambar), Tes Gambar dan Visual (80, semua bergambar),
+  Tes Kepribadian Situasional (73). Semua soal punya label topik (60 topik).
 - Fitur: Tryout (60 soal / 90 menit), mode Belajar, Bank Soal + pencarian, Tes Psikologi
   (Kraepelin, Digit Span, Daya Ingat, EPPS), IQ Lab (matriks, deret, rotasi, Dual N-Back),
   Progress, backup/restore data lokal (localStorage), PWA offline (service worker).
@@ -29,7 +30,12 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 - Teknis v22: uji runtime Chromium otomatis di CI (`tools/uji-runtime.py` + workflow), favicon,
   audit kunci gelombang kedua (pemeriksa independen) yang menemukan 1 kunci salah (w47) dan
   7 soal rapuh lain — semuanya sudah dikoreksi.
-- Versi build saat ini: **v22** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=f332b85`).
+- Fitur v23: label topik + filter/drill topik, Skor Kesiapan Ujian, Rencana Harian Otomatis,
+  Rapor Kesiapan (bank + psikotes + IQ), riwayat Kraepelin antar sesi, waktu per kategori,
+  +30 soal Tes Gambar, +15 soal Kraepelin kolom angka, 6 pembahasan bergambar, halaman Tentang.
+- Teknis v23: uji aksesibilitas axe-core + uji mode offline otomatis di CI; landmark <main>;
+  verifikasi baru (kunci Kraepelin kolom vs angka di gambar, kelengkapan gambar Tes Gambar).
+- Versi build saat ini: **v23** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=26aabd7`).
 
 ## Riwayat pekerjaan otonom
 
@@ -66,7 +72,7 @@ Perintah menjalankan ulang:
 /usr/bin/python3 tools/verifikasi-soal.py  # verifikasi yang dipakai CI (wajib lulus sebelum push)
 ```
 
-## Hasil verifikasi v22
+## Hasil verifikasi v23
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
@@ -74,10 +80,13 @@ Perintah menjalankan ulang:
 - Tidak ada dua opsi bernilai sama (soal ambigu) dan tidak ada dua soal yang isinya sama persis.
 - Pengecoh pada soal pangkat, volume, dan KPK/FPB sudah memakai pola kesalahan hitung yang wajar.
 - Semua pembahasan diawali `JAWABAN:` + memuat kunci, format 3 baris: JAWABAN / cara / INGAT.
-- 61 gambar soal valid dan ter-render (semua soal Tes Gambar kini bergambar).
+- 106 gambar soal valid dan ter-render (semua soal Tes Gambar bergambar; 15 soal Kraepelin kolom angka).
+- 15 soal kolom Kraepelin diverifikasi otomatis: kunci cocok dengan angka di gambarnya.
+- Uji offline di CI LULUS (aplikasi tetap jalan tanpa internet setelah pemuatan pertama).
+- Uji aksesibilitas axe: tidak ada pelanggaran critical/serious.
 - Uji runtime otomatis di Chromium (Playwright) LULUS: 9 kategori, tryout terkunci, simulasi format,
   hafalan, bank soal, 0 error JavaScript.
 - Audit kunci gelombang kedua: 568 soal hafalan diperiksa ulang secara independen → 8 koreksi
   (termasuk 1 kunci yang benar-benar salah: w47).
-- Ukuran buka pertama turun dari ~160 KB menjadi ~66 KB (gzip) setelah data dipecah per kategori.
+- Ukuran buka pertama turun dari ~160 KB menjadi ~66-70 KB (gzip) setelah data dipecah per kategori.
 - Uji browser di situs live: 1000 soal termuat, pembahasan tampil 3 baris, 41/41 gambar OK, 0 error JS.

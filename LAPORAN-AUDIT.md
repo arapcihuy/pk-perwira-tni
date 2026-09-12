@@ -1,4 +1,4 @@
-# Laporan Audit, Perbaikan & Pengembangan — build v22 (audit gelombang kedua)
+# Laporan Audit, Perbaikan & Pengembangan — build v23
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
@@ -244,6 +244,52 @@ tidak melihat kunci lebih dulu. Pemeriksaan bergelombang dengan metode berbeda t
 - Uji runtime Playwright: LULUS (9 kategori, 61 gambar, tryout terkunci, simulasi format, hafalan, 0 error JS).
 - Situs live diperiksa ulang: seluruh koreksi gelombang pertama dan kedua tampil, versi aset otomatis
   (`?v=f332b85`), 61/61 gambar ter-render.
+
+
+---
+
+# Bagian 5 — Arah belajar presisi & penjagaan mutu (build v23, 12 September 2026)
+
+## Temuan yang memicu pengembangan
+
+1. Soal tidak punya label topik (field hanya id/pertanyaan/pilihan/jawaban/pembahasan/gambar),
+   sehingga filter Bank Soal hanya bisa per kategori — padahal TWK sendiri mencakup Pancasila, UUD,
+   TNI, TNI AU, sejarah, dan ketahanan.
+2. Tidak ada satu angka yang menjawab "seberapa siap saya" (cakupan + akurasi + perkiraan nilai).
+3. Hasil psikotes & IQ Lab berdiri sendiri, tidak terhubung ke rekomendasi latihan; grafik Kraepelin
+   hanya untuk sesi terakhir.
+
+## Perbaikan & fitur baru
+
+| # | Item | Hasil |
+|---|------|-------|
+| 1 | **Label topik** | Seluruh 1113 soal diberi topik (60 topik). Contoh TWK: pancasila (25), uud (35), tni-umum (33), tni-au (30), sejarah (20), ketahanan (8). |
+| 2 | **Filter + drill topik** | Bank Soal punya baris chip topik; memilih topik menyaring daftar dan menyediakan tombol "Latihan 25 soal topik ini". |
+| 3 | **Skor Kesiapan Ujian** | Perkiraan nilai + rentang, akurasi latihan, cakupan soal, status. Menyatakan "belum terukur" bila data < 20 soal — tidak mengarang angka. |
+| 4 | **Rencana Harian Otomatis** | Menyusun langkah hari ini dari data: kategori terlemah, soal jatuh tempo, soal zona sulit, saran simulasi. |
+| 5 | **Rapor Kesiapan** | Menggabungkan estimasi nilai + hasil psikotes terakhir + IQ Lab, dengan saran prioritas pada bagian terendah. |
+| 6 | **Riwayat Kraepelin antar sesi** | Grafik 10 sesi terakhir + selisih skor pertama ke terakhir. |
+| 7 | **Waktu per kategori** | Layar hasil menampilkan detik/soal tiap kategori dan menyorot yang paling lambat. |
+| 8 | **+30 soal Tes Gambar (tg51-tg80)** | Semua bergambar. Kategori Tes Gambar kini 80 soal (sebelumnya 50). |
+| 9 | **+15 soal Kraepelin kolom angka (k101-k115)** | Berbentuk lembar Kraepelin (3 kolom × 6 angka); kunci dihitung dari angka di gambar. Kategori Kraepelin kini 115 soal. |
+| 10 | **Pembahasan bergambar** | 6 soal hitung bangun (tg6, tg29, tg36, tg52, tg60, tg68) kini punya gambar penjelasan dengan daerah bernomor. |
+| 11 | **Uji aksesibilitas di CI** | axe-core dijalankan otomatis; build gagal bila ada pelanggaran critical/serious. Landmark `<main>` ditambahkan (temuan 'landmark-one-main' hilang). |
+| 12 | **Uji offline di CI** | Setelah pemuatan pertama, jaringan dimatikan lalu aplikasi harus tetap membuka kategori dari cache — sudah lulus. |
+| 13 | **Halaman Tentang** | Versi, jumlah soal, jumlah gambar, pemakaian penyimpanan, cara sinkron antar perangkat, dan tombol reset. |
+| 14 | **Verifikasi baru di CI** | Kunci soal kolom Kraepelin harus cocok dengan angka yang benar-benar ada di gambarnya; semua soal Tes Gambar wajib punya gambar. |
+
+## Verifikasi build v23
+
+- Verifikasi data: LULUS — 1113 soal, id unik, 0 opsi senilai, 0 duplikat, pembahasan seragam,
+  106 gambar valid, 15 soal kolom Kraepelin cocok dengan angka di gambarnya, semua Tes Gambar bergambar.
+- Uji runtime (Chromium/Playwright): LULUS — 9 kategori dibuka, 106 gambar ter-render, tryout terkunci,
+  simulasi format, hafalan, filter topik, halaman tentang, mode offline, dan 0 error JavaScript.
+- Aksesibilitas: tidak ada pelanggaran critical/serious (tersisa 1 catatan moderate 'region').
+- Situs live: 1113 soal, 60 topik, 106 gambar, 6 pembahasan bergambar, panel kesiapan & rencana tampil.
+
+Catatan: pemeriksaan visual terakhir untuk gambar baru dilakukan **secara terprogram** (jumlah elemen,
+angka di dalam SVG, jumlah label daerah bernomor) karena kuota layanan analisis gambar sedang penuh —
+angka pada soal Kraepelin diverifikasi langsung dari isi SVG, jadi lebih kuat daripada pemeriksaan mata.
 
 ## Cara mengulang audit di masa depan
 
