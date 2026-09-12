@@ -224,9 +224,16 @@ ulang (termasuk ke sumber luar), dan sudah diterapkan:
 | 7 | e71 | Bergantung pada perdebatan "I wish he was/were" yang dianggap berterima di tata bahasa modern. | Kalimat salah diubah menjadi **"I wish the weather is better"** (jelas salah). |
 | 8 | v35 | Analogi ambigu: LATIHAN:OLIMPIADE = SEKOLAH: **wisuda atau ujian** dua-duanya bisa dibela. | Diganti analogi bersih: **TAMU:HOTEL = PASIEN:Rumah sakit**. |
 
+| 9 | **l24** | Cacat pada contoh soal sandi: "JAWA = 11-1-23-1", padahal dengan A=1 huruf J adalah **10** (11 = K). Kunci BALI sudah benar, tetapi contoh yang salah bisa menyesatkan. | Contoh diperbaiki menjadi **10-1-23-1** + konvensi alfabet ditulis eksplisit. |
+
 Temuan yang **tidak** diubah setelah dicek: lg1 dan lg2 (auditor tidak menerima gambar stimulusnya,
 sementara di aplikasi keduanya bergambar dan sudah saya verifikasi ulang: matriks 3x3 → 9 dan pola
 kotak 1-4-9 → 16 benar).
+
+Auditor kedua juga memverifikasi ulang dan **mengonfirmasi benar** sejumlah fakta kunci: UU TNI
+terbaru = UU No. 3/2025, lambang TNI AU = Keppres No. 137/1952, motto lama Alae Patriae,
+38 provinsi, NASAMS milik TNI AU, Paskhas 17 Oktober; serta memastikan seluruh 13 soal hari-dalam-minggu,
+deret angka/huruf, soal kode/geser-huruf, dan soal peluang/pekerja punya kunci yang benar.
 
 **Pelajaran**: satu kesalahan kunci (w47) hanya ketahuan pada pemeriksaan kedua oleh pemeriksa yang
 tidak melihat kunci lebih dulu. Pemeriksaan bergelombang dengan metode berbeda terbukti sepadan.
