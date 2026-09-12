@@ -4,3 +4,4 @@ retry-pages-deploy.sh
 .audit/db.json
 .audit/db-new.json
 .audit/soal.js.bak
+.audit/*.bak
