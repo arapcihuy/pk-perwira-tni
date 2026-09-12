@@ -30,6 +30,9 @@ def main():
         s = open(path, encoding='utf-8').read()
         s2 = re.sub(r'\?v=[A-Za-z0-9\.\-]+', '?v=' + versi, s)
         s2 = re.sub(r'v=([A-Za-z0-9\.\-]+)([\'"])', r'v=' + versi + r'\2', s2)
+        # nama cache service worker: pertahankan merek di depannya, perbarui versinya
+        s2 = re.sub(r"(CACHE\s*=\s*')([A-Za-z0-9\.\-]+)(-[A-Za-z0-9\.\-]+)(')",
+                    r"\g<1>\g<2>-" + versi + r"\g<4>", s2)
         s2 = re.sub(r'tni-perwira-[A-Za-z0-9\.\-]+', 'tni-perwira-v' + versi, s2)
         if s2 != s:
             open(path, 'w', encoding='utf-8').write(s2)
