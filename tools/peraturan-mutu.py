@@ -139,7 +139,16 @@ def periksa(db):
         # soal kolom Kraepelin juga diverifikasi otomatis (kunci dihitung dari angka di gambar)
         terverifikasi += sum(1 for q in db.get('kraepelin', {}).get('soal', [])
                              if re.match(r'^k1\d\d$', q['id']) and q.get('gambar'))
-        if terverifikasi < 30:
+        # batas minimum per proyek (portabel): dibaca dari tools/peraturan-mutu.cfg
+        # P9: soal bergambar yang jawabannya bisa dihitung wajib diverifikasi otomatis.
+        _batas = 0
+        _cfg = os.path.join(ROOT, 'tools', 'peraturan-mutu.cfg')
+        if os.path.exists(_cfg):
+            for _baris in open(_cfg, encoding='utf-8'):
+                if _baris.strip().startswith('min_gambar_terverifikasi'):
+                    _batas = int(_baris.split('=')[-1].strip() or 0)
+        _ada_gambar = sum(1 for _v in db.values() for _q in _v['soal'] if _q.get('gambar'))
+        if _ada_gambar and terverifikasi < _batas:
             langgar.append(('P9', '-', 'soal bergambar yang diverifikasi otomatis hanya %d (minimal 30)' % terverifikasi))
     except Exception as e:
         langgar.append(('P9', '-', 'pemeriksaan gambar gagal dijalankan: %s' % str(e)[:60]))

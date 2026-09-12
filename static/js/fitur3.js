@@ -390,6 +390,13 @@ window.renderTentang = function () {
       'laporkan — itu bagian dari peraturan ini.</div>' +
       '</div>' +
     '<div class="card">' +
+      '<div class="card" style="margin-bottom:14px">' +
+        '<div class="hari-head">' + ic('alert', 16) + ' <strong>Keterangan resmi</strong></div>' +
+        '<div class="hari-sub">Situs ini <strong>bukan situs resmi instansi mana pun</strong>. Kami tidak berafiliasi dengan, ' +
+        'dan tidak didukung oleh, TNI maupun lembaga pemerintah. Seluruh soal adalah karya penyusun sendiri, dibuat untuk ' +
+        'latihan, dan tidak memuat lambang atau atribut resmi apa pun. Nama instansi dipakai hanya sebagai keterangan ' +
+        'jenis ujian yang dipersiapkan.</div>' +
+        '</div>' +
       '<div class="hari-head">' + ic('bulb', 16) + ' <strong>Cara pakai singkat</strong></div>' +
       '<div class="hari-sub">1. Kerjakan 1 sesi (Tryout/Simulasi) atau Mode Belajar tiap hari.<br>' +
       '2. Soal yang salah otomatis masuk bank soal salah dan muncul lagi setelah 1-3-7-14-30 hari.<br>' +
