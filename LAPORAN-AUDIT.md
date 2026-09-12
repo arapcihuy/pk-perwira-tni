@@ -553,3 +553,71 @@ kedinasan, tes IQ, dan psikotes — sambil tetap bisa dipakai sendiri oleh pemil
 - PERATURAN MUTU SOAL (kini **11 butir**, termasuk P11 tanpa AI online): DIPATUHI, 0 pelanggaran.
 - Uji semua fitur: 52 pemeriksaan lama + bagian baru (jalur, baterai, tutor, kebijakan AI).
 - Uji runtime & smoke test situs live: dijalankan sebelum kirim.
+
+---
+
+# Bagian 11 — PSIKOTES & TES IQ UNTUK UMUM (build v30, 13 September 2026)
+
+Permintaan pengguna: fitur psikotes dan tes IQ juga harus bisa dipakai untuk **non-kedinasan**, dengan
+**standar internasional yang valid**, bahasanya **mudah**, menarik, dan **gampang ditemukan di internet** —
+serta siap dikomersialkan.
+
+## Temuan lisensi yang menentukan bentuk fitur (13 September 2026)
+
+| Instrumen | Status | Boleh dipakai? |
+|-----------|--------|----------------|
+| **IPIP / Mini-IPIP** (kepribadian Big Five) | **Domain publik** — "boleh disalin, diubah, diterjemahkan, dipakai untuk tujuan apa pun tanpa izin dan tanpa biaya" (ipip.ori.org) | **Ya, termasuk komersial** |
+| Raven, WAIS, CFIT, IST, Stanford-Binet | Milik penerbit (Pearson dll.) | Tidak — tidak boleh direproduksi |
+| PAPI Kostick, MMPI, Wartegg, Baum, DAP | Milik penerbit/pengembang | Tidak — hanya dipakai sebagai *acuan format*, bukan salinan butir |
+| ICAR (International Cognitive Ability Resource) | Alat "public-domain", **tetapi** catatan pengembangnya menyatakan ditujukan untuk **penggunaan akademik**, dan berkas butirnya dibagikan dengan syarat menjaga integritas butir | Tidak dipakai butirnya; hanya teknik pembuatan butir |
+
+Landasan yang dipakai: **Mini-IPIP 20 butir** (Goldberg 1999 untuk IPIP; Donnellan dkk 2006 untuk Mini-IPIP,
+reliabilitas internal tiap faktor 0,65–0,77). Penilaian mengikuti aturan resmi IPIP: butir positif 1–5,
+butir negatif dibalik (5–1), dijumlahkan per faktor (rentang 4–20).
+
+## Yang dibangun
+
+1. **Tes Kepribadian Big Five (20 pernyataan)** — terjemahan sederhana, 5 titik pilihan, penilaian resmi,
+   laporan 5 sifat dengan bahasa sehari-hari, tersimpan di perangkat (tanpa akun).
+2. **Jalur "Umum / Dunia Kerja"** — untuk pencari kerja: tes IQ, kecepatan kerja (Kraepelin/Pauli),
+   kepribadian Big Five, tes gambar, dan persiapan wawancara. Simulasi latihan 60 soal / 60 menit.
+3. **Modul Big Five masuk ke Baterai Psikotes** (kini 9 modul, 5 jalur).
+4. **Laporan Lengkap siap dijual** — disiapkan tapi belum dibuka (`LAPORAN_BAYAR_AKTIF = false`), berisi
+   penjelasan tiap sifat, kecocokan kerja, cara menjawab kelemahan saat wawancara, dan rencana latihan
+   2 minggu. Harga rencana **Rp 39.000 sekali bayar** (bukan langganan).
+5. **Halaman validitas & batas jujur** di dalam aplikasi: menyebut sumber IPIP, menyebut tes berlisensi yang
+   **tidak** dipakai, dan menyatakan terus terang bahwa terjemahan ini belum divalidasi lokal serta bukan
+   diagnosis dan bukan penentu kelulusan.
+6. **Halaman arahan untuk mesin pencari**: `psikotes/index.html` (233 baris) — judul 63 karakter, deskripsi
+   145 karakter, satu H1, bagian FAQ dengan schema.org FAQPage, kata kunci: tes IQ online, latihan psikotes
+   kerja, tes kepribadian, gratis, tanpa akun, offline. Bahasa sederhana, tanpa JavaScript.
+7. **Meta aplikasi diperbarui**: deskripsi sederhana (tidak lagi menyebut nama instansi), og:title,
+   og:description, dan JSON-LD WebApplication.
+
+## Keputusan model jual: sekali beli, bukan langganan (beserta alasannya)
+
+Pertanyaan pengguna: mana yang lebih mudah dipasarkan — beli atau langganan? Jawabannya **sekali beli**,
+dengan alasan yang bisa diuji:
+
+1. **Kebutuhan pembeli bertanggal.** Orang menghadapi psikotes pada momen tertentu (melamar kerja, seleksi).
+   Setelah tesnya lewat, langganan menjadi beban; sekali beli terasa seperti membeli amunisi untuk ujian besok.
+2. **Sederhana dipasarkan.** "Rp 39.000 sekali bayar, akses selamanya" tidak perlu menjelaskan syarat,
+   masa tenggang, atau cara berhenti berlangganan.
+3. **Pembayaran berulang rapuh di Indonesia.** Penetrasi kartu kredit rendah; QRIS dan e-wallet pada umumnya
+   tidak menagih otomatis, sehingga langganan menimbulkan churn dan gagal tagih. Sekali beli selesai dalam
+   satu transaksi.
+4. **Harga kecil = keputusan cepat.** Di bawah Rp 50.000 pembelian lebih impulsif.
+5. **Kompromi yang dipakai:** jenjang sekali beli (Laporan Lengkap Rp 39.000 → Paket Musim Rp 79.000 untuk
+   satu musim seleksi), ditambah langganan yang memang cocok: **B2B** (Rp 900.000/bulan untuk jaga mutu bank
+   soal), karena kebutuhan institusi memang berkelanjutan.
+6. **Satu aturan yang tidak dilanggar:** materi latihan **tidak** dikunci. Yang dijual adalah laporan dan
+   kedalaman, bukan akses soal — ini pelajaran dari model Duolingo (konversi bayar hanya 9% walau konten gratis).
+
+## Verifikasi build v30
+
+- PERATURAN MUTU SOAL 11 butir: DIPATUHI · VERIFIKASI BANK SOAL: LULUS (termasuk konsistensi versi aset).
+- UJI SEMUA FITUR: **68/68 LULUS**, termasuk bagian baru S (Big Five, jalur Umum, laporan berbayar,
+  pernyataan validitas) dan bagian R (jalur seleksi, baterai, tutor, kebijakan AI).
+- Penilaian IPIP diuji kebenarannya: seluruh jawaban "Sangat sesuai" menghasilkan 12/20 pada faktor campuran
+  dan 10/20 pada faktor yang mayoritas butir negatif — sesuai aturan pembalikan resmi.
+- Tidak ada error JavaScript; gerbang pra-kirim (peraturan + verifikasi + sintaks) lulus sebelum dikirim.

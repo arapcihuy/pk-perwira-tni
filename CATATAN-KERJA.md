@@ -49,7 +49,7 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   mode Jelang Ujian 7 Hari.
 - v27: PERATURAN MUTU SOAL resmi + pemeriksa otomatis 10 butir (mengikat di CI); 2 soal yang kuncinya
   bocor di pertanyaan (w74, w112) diperbaiki; 112 soal baru dilengkapi label topik.
-- Versi build saat ini: **v29** (fokus ulang: SiapSeleksi — psikotes + tes IQ + SKD) (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
+- Versi build saat ini: **v30** (fokus ulang: SiapSeleksi — psikotes + tes IQ + SKD) (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
 - **Peraturan mutu wajib:** `PEDOMAN-MUTU-SOAL.md` — 10 butir diperiksa mesin (`tools/peraturan-mutu.py`),
   10 aturan proses, aturan isi pembahasan, dan daftar larangan. Wajib lulus sebelum deploy.
 
@@ -120,6 +120,15 @@ Perintah menjalankan ulang:
   (termasuk 1 kunci yang benar-benar salah: w47).
 - Ukuran buka pertama turun dari ~160 KB menjadi ~66-70 KB (gzip) setelah data dipecah per kategori.
 - Uji browser di situs live: 1000 soal termuat, pembahasan tampil 3 baris, 41/41 gambar OK, 0 error JS.
+
+### Tambahan v30 (13 September 2026)
+- Tes kepribadian **Big Five dari Mini-IPIP (20 butir, domain publik)** + jalur **Umum / Dunia Kerja** untuk
+  non-kedinasan (pencari kerja). Baterai kini 9 modul & 5 jalur.
+- **Laporan Lengkap siap dijual** (belum dibuka): rencana Rp 39.000 **sekali bayar**, bukan langganan —
+  alasan lengkapnya di LAPORAN-AUDIT.md bagian 11.
+- Halaman arahan SEO: `psikotes/index.html` (judul 63 karakter, schema FAQ) dengan bahasa sederhana.
+- Instrumen berlisensi (Raven/WAIS/CFIT/IST/PAPI/MMPI/Wartegg) **tidak** dipakai; IPIP dipakai karena
+  domain publik. Batas jujur (belum ada norma lokal, bukan diagnosis) dinyatakan di dalam aplikasi.
 
 ## PENGAMAN PENGIRIMAN (WAJIB — baca sebelum push)
 

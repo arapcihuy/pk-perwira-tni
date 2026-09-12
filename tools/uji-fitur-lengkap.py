@@ -455,7 +455,7 @@ def main():
             return out;
         }""")
         cek(r2['nama'] and r2['judul'].startswith(r2['nama']), 'nama produk netral dipakai di judul', r2['nama'])
-        cek(r2['tombolJalur'] == 4 and r2['modulBaterai'] >= 8, 'baterai psikotes: 4 jalur & >=8 modul', r2)
+        cek(r2['tombolJalur'] >= 5 and r2['modulBaterai'] >= 9, 'baterai psikotes: >=5 jalur (termasuk Umum/Kerja) & >=9 modul', r2)
         cek(r2['detailJalur'], 'pilih jalur menampilkan rincian yang diuji', r2['detailJalur'])
         skd = r2['skd']
         benar_komposisi = (skd['jumlah'] == 110 and skd['menit'] == 100 and skd['terkunci']
@@ -470,6 +470,52 @@ def main():
             and r2['kebijakan']['biayaPerPertanyaan'] == 0 and r2['aiOnlineDilarang'],
             'kebijakan AI terkunci: hanya mengajar, hanya offline, tanpa AI online', r2['kebijakan'])
         cek(r2['catatanAiOffline'], 'kebijakan AI dinyatakan jelas di antarmuka', r2['catatanAiOffline'])
+
+        print('== S. Psikotes untuk umum (Big Five, jalur Umum, laporan berbayar) ==')
+        s2 = page.evaluate("""() => {
+            const out = {};
+            out.jalurUmum = typeof JALUR !== 'undefined' && !!JALUR.umum;
+            navTo('baterai');
+            out.modulPertama = (document.querySelector('.baterai-nama') || {textContent: ''}).textContent.slice(0, 30);
+            out.tombolJalurUmum = !!document.querySelector('.jalur-btn.umum');
+            out.tautanUmum = !!document.querySelector('.tautan-umum');
+            // jalankan tes kepribadian penuh
+            setJalur('umum');
+            mulaiBigFive();
+            out.halamanTes = S.page === 'b5';
+            out.jumlahPilihan = document.querySelectorAll('.b5-pilih').length;
+            const teksPertama = (document.querySelector('.b5-tanya') || {textContent: ''}).textContent;
+            out.pertanyaanBahasaSederhana = teksPertama.length > 10 && teksPertama.indexOf('Saya') === 0;
+            for (let i = 0; i < 20; i++) jawabB5(5);
+            out.selesai = B5.selesai;
+            const h = hitungB5();
+            // semua jawaban 5 (Sangat sesuai): butir + bernilai 5, butir - bernilai 1
+            out.skor = Object.keys(h).map(k => k + ':' + h[k].skor);
+            out.rentangBenar = Object.keys(h).every(k => h[k].skor >= 4 && h[k].skor <= h[k].maks);
+            out.adaLaporan = document.body.textContent.indexOf('Hasil Tes Kepribadian') >= 0;
+            out.adaLaporanBayar = document.body.textContent.indexOf('Laporan Lengkap') >= 0
+                                  && document.body.textContent.indexOf('sekali bayar') >= 0;
+            out.adaValiditas = document.body.textContent.indexOf('domain publik') >= 0
+                               && document.body.textContent.indexOf('Mini-IPIP') >= 0;
+            out.adaBatasJujur = document.body.textContent.indexOf('bukan diagnosis') >= 0;
+            out.tersimpan = !!b5Terakhir();
+            // simulasi latihan umum (format bebas, bukan format resmi)
+            goHome();
+            mulaiSimulasiJalur('umum');
+            out.simUmum = { jumlah: S.questions.length, menit: Math.round(S.totalTime / 60) };
+            return out;
+        }""")
+        cek(s2['jalurUmum'] and s2['tombolJalurUmum'] and s2['tautanUmum'], 'jalur Umum/Kerja tersedia & bisa dipilih', s2)
+        cek(s2['modulPertama'].startswith('Kepribadian'), 'modul Big Five ada di daftar Baterai Psikotes', s2['modulPertama'])
+        cek(s2['halamanTes'] and s2['jumlahPilihan'] == 5 and s2['pertanyaanBahasaSederhana'],
+            'tes kepribadian jalan: 20 pernyataan, 5 pilihan, bahasa sederhana', s2)
+        cek(s2['selesai'] and s2['tersimpan'] and s2['rentangBenar'], 'tes selesai, hasil tersimpan, skor dalam rentang sah', s2)
+        cek(s2['adaLaporan'] and s2['adaLaporanBayar'],
+            'laporan hasil + tawaran Laporan Lengkap (sekali bayar) tampil', s2)
+        cek(s2['adaValiditas'] and s2['adaBatasJujur'],
+            'dasar instrumen & batas jujur dinyatakan (Mini-IPIP domain publik, bukan diagnosis)', s2)
+        cek(s2['simUmum']['jumlah'] >= 40 and s2['simUmum']['menit'] >= 30,
+            'simulasi jalur Umum terbentuk', s2['simUmum'])
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
