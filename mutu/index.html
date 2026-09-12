@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mutu &amp; Bukti Pemeriksaan Soal — SiapPsikotes</title>
+<meta name="description" content="Cara kami memeriksa soal: 11 peraturan yang dijalankan mesin, hasil pemeriksaan terbuka, dan laporan temuan nyata. Bukti, bukan klaim.">
+<link rel="canonical" href="https://arapcihuy.github.io/pk-perwira-tni/mutu/">
+<style>
+  :root { --ink:#12181f; --muted:#5a6b7b; --line:#e3e8ee; --soft:#f6f8fa; --acc:#0b6bcb; --ok:#0f7b3f; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#fff; color:var(--ink);
+         font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  .page { max-width:840px; margin:0 auto; padding:48px 24px 72px; }
+  .nav { font-size:14px; margin-bottom:28px; }
+  .nav a { color:var(--acc); text-decoration:none; }
+  h1 { font-size:31px; line-height:1.2; letter-spacing:-.4px; margin:0 0 10px; }
+  h2 { font-size:19px; margin:34px 0 10px; }
+  .lead { font-size:17.5px; color:#2b3743; }
+  .muted { color:var(--muted); }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:15px; }
+  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .kotak { background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:16px 0; }
+  .kotak.ok { background:#f2fbf6; border-color:#cdeadb; }
+  ol, ul { padding-left:22px; }
+  li { margin:6px 0; }
+  code { background:var(--soft); padding:2px 6px; border-radius:5px; font-size:13.5px; }
+  footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); font-size:14px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="nav"><a href="../">&larr; Kembali ke aplikasi</a></div>
+
+  <h1>Mutu &amp; bukti pemeriksaan soal</h1>
+  <p class="lead">Setiap soal di SiapPsikotes diperiksa <strong>mesin</strong>, bukan hanya dibaca sekilas.
+  Halaman ini menjelaskan apa yang diperiksa, apa hasilnya, dan di mana batasnya. Semuanya bisa Anda periksa
+  sendiri — kami tidak meminta Anda percaya begitu saja.</p>
+
+  <h2>Yang diperiksa (11 peraturan, dijalankan otomatis)</h2>
+  <table>
+    <tr><th>#</th><th>Peraturan</th></tr>
+    <tr><td>1</td><td>Setiap soal punya label topik</td></tr>
+    <tr><td>2</td><td>Tidak ada dua opsi berteks sama</td></tr>
+    <tr><td>3</td><td>Tidak ada opsi "semua benar" atau "semua salah"</td></tr>
+    <tr><td>4</td><td>Kunci jawaban tidak tertulis di pertanyaannya sendiri</td></tr>
+    <tr><td>5</td><td>Kunci tidak selalu menjadi opsi terpanjang</td></tr>
+    <tr><td>6</td><td>Pembahasan wajib 3 baris: jawaban, cara mengerjakan, kiat ingat</td></tr>
+    <tr><td>7</td><td>Soal hitung wajib memuat langkah perhitungan, bukan hanya hasil</td></tr>
+    <tr><td>8</td><td>Posisi kunci merata di pilihan A/B/C/D (20-30% masing-masing)</td></tr>
+    <tr><td>9</td><td>Soal bergambar yang jawabannya bisa dihitung diperiksa ulang dari gambarnya</td></tr>
+    <tr><td>10</td><td>Semua soal kategori bergambar wajib memiliki gambar</td></tr>
+    <tr><td>11</td><td>Tidak ada AI online atau API berbayar di dalam aplikasi</td></tr>
+  </table>
+  <p class="muted">Pemeriksaan ini berjalan di setiap perubahan dan menolak rilis bila ada satu pelanggaran.</p>
+
+  <h2>Hasil pemeriksaan terakhir</h2>
+  <table>
+    <tr><th>Ukuran</th><th>Hasil</th></tr>
+    <tr><td>Jumlah soal</td><td>1.225 soal, 9 kategori</td></tr>
+    <tr><td>Pelanggaran 11 peraturan</td><td><strong>0</strong></td></tr>
+    <tr><td>Sebaran posisi kunci</td><td>A 309 · B 308 · C 302 · D 306 (masing-masing sekitar 25%)</td></tr>
+    <tr><td>Soal hitung diperiksa ulang mesin</td><td>137 soal</td></tr>
+    <tr><td>Soal bergambar yang jawabannya dihitung ulang dari gambarnya</td><td>34 soal</td></tr>
+    <tr><td>Pemeriksaan aplikasi otomatis (fungsi &amp; halaman)</td><td>94 pemeriksaan, semuanya lulus</td></tr>
+  </table>
+
+  <div class="kotak">
+    <strong>Bukti bahwa pemeriksaan ini bekerja — bukan hiasan.</strong>
+    Setelah 1.225 soal dinyatakan "sudah beres", pemeriksaan mesin justru menemukan
+    <strong>135 pelanggaran nyata</strong>: 112 soal belum berlabel topik, dan
+    <strong>2 soal yang kunci jawabannya tertulis di pertanyaannya sendiri</strong> sehingga bisa ditebak
+    tanpa menguasai materi. Keduanya sudah diperbaiki, dan sejak itu pemeriksaan berjalan otomatis.
+    Kami menuliskan temuan ini apa adanya karena inilah gunanya pemeriksaan.
+  </div>
+
+  <h2>Cara kami menjaga kunci jawaban</h2>
+  <ul>
+    <li><strong>Soal hitung:</strong> jawaban dihitung ulang mesin. Tiap soal diverifikasi terpisah dari cara penulisnya menghitung.</li>
+    <li><strong>Soal hafalan:</strong> diperiksa dua gelombang. Gelombang kedua menentukan jawabannya lebih dulu tanpa melihat kunci, lalu dibandingkan. Beda pendapat diperiksa ulang dengan sumber.</li>
+    <li><strong>Soal dari gambar:</strong> jawaban dihitung ulang dari isi gambarnya, bukan dari catatan penyusunnya.</li>
+    <li><strong>Kepribadian:</strong> memakai Mini-IPIP dari IPIP yang berstatus domain publik, dengan aturan penilaian resminya.</li>
+  </ul>
+
+  <h2>Batas yang kami akui terbuka</h2>
+  <ul>
+    <li>Mesin memeriksa <strong>bentuk</strong> dan <strong>perhitungan</strong>. Kebenaran fakta tetap bergantung pada pemeriksaan dua gelombang dan sumber — karena itu soal yang kamu laporkan selalu kami dahulukan.</li>
+    <li>Terjemahan tes kepribadian belum diuji ulang pada orang Indonesia, jadi <strong>bukan diagnosis</strong> dan tidak memakai norma lokal.</li>
+    <li>Kami tidak memakai tes berlisensi (Raven, WAIS, CFIT, IST, PAPI Kostick, MMPI, Wartegg). Bila Anda mencari hasil tes bersertifikat, kami bukan tempatnya — dan kami tidak berpura-pura menjadi tempatnya.</li>
+    <li>Ujian dan seleksi punya aturan resmi masing-masing. Aplikasi ini alat latihan, bukan penyelenggara ujian.</li>
+  </ul>
+
+  <h2>Kalau Anda menemukan soal yang keliru</h2>
+  <p>Tekan tombol <strong>Laporkan soal</strong> di dalam aplikasi. Laporan masuk daftar prioritas pemeriksaan.
+  Bila terbukti salah, kuncinya diperbaiki dan catatannya masuk laporan audit. Inilah cara satu orang bisa ikut
+  menjaga mutu 1.225 soal.</p>
+
+  <footer>
+    <a href="../">Kembali ke aplikasi</a> · <a href="../syarat/">Syarat &amp; ketentuan</a> ·
+    <a href="../privasi/">Kebijakan privasi</a><br>
+    SiapPsikotes bukan produk resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah.
+    Halaman ini diperbarui 13 September 2026.
+  </footer>
+</div>
+</body>
+</html>

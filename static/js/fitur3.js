@@ -390,6 +390,15 @@ window.renderTentang = function () {
       'laporkan — itu bagian dari peraturan ini.</div>' +
       '</div>' +
     '<div class="card">' +
+      '<div class="card tautan-publik" style="margin-bottom:14px">' +
+        '<div class="hari-head">' + ic('shield', 16) + ' <strong>Mutu &amp; ketentuan (halaman terbuka)</strong></div>' +
+        '<div class="hari-sub">Kami mempublikasikan apa yang diperiksa dan apa hasilnya, termasuk temuan yang merugikan kami.</div>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">' +
+          '<button class="btn btn-secondary btn-sm" onclick="window.open(\'mutu/\',\'_blank\')">Halaman mutu</button>' +
+          '<button class="btn btn-ghost btn-sm" onclick="window.open(\'syarat/\',\'_blank\')">Syarat &amp; ketentuan</button>' +
+          '<button class="btn btn-ghost btn-sm" onclick="window.open(\'privasi/\',\'_blank\')">Kebijakan privasi</button>' +
+        '</div>' +
+        '</div>' +
       '<div class="card" style="margin-bottom:14px">' +
         '<div class="hari-head">' + ic('alert', 16) + ' <strong>Keterangan resmi</strong></div>' +
         '<div class="hari-sub">Situs ini <strong>bukan situs resmi instansi mana pun</strong>. Kami tidak berafiliasi dengan, ' +
