@@ -783,6 +783,14 @@ setq('verbal', 'v35',
   pembahasan="Tamu dirawat/dilayani di hotel, pasien dirawat/dilayani di rumah sakit. Hubungannya: "
              "orang yang dilayani → tempat pelayanan.")
 
+
+# cacat contoh pada soal sandi (ditemukan audit kedua): J = 10, bukan 11
+setq('penalaran_logika', 'l24',
+  pertanyaan="Kode: JAWA = 10-1-23-1 (A=1, B=2, ..., Z=26). Kode untuk BALI adalah...",
+  pembahasan="Konvensi A=1, B=2, ..., J=10, W=23, Z=26. Jadi BALI = B(2)-A(1)-L(12)-I(9) = "
+             "2-1-12-9. Selalu ubah huruf ke posisi alfabet satu per satu supaya tidak tertukar "
+             "antara huruf ke-10 (J) dan ke-11 (K).")
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)
