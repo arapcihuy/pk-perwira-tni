@@ -1,0 +1,50 @@
+name: Pemeriksaan Terjadwal
+
+# Berjalan otomatis setiap minggu (Senin 01:00 UTC / 08:00 WIB) tanpa perlu ada push:
+# memeriksa akurasi data, menjalankan uji runtime, lalu memastikan situs live masih sehat.
+# Kalau ada kerusakan diam-diam (deploy gagal, berkas hilang, versi tidak konsisten),
+# hasilnya muncul di tab Actions dan email GitHub.
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  verifikasi-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verifikasi akurasi bank soal
+        run: python3 tools/verifikasi-soal.py
+
+  uji-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pasang Playwright + Chromium
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+      - name: Uji runtime aplikasi
+        run: python3 tools/uji-runtime.py
+
+  situs-live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pasang Playwright + Chromium
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+      - name: Smoke test situs live
+        run: python3 tools/uji-situs-live.py

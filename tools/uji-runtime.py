@@ -258,6 +258,29 @@ def main():
         cek(f24['target'] == 90, 'target nilai bisa diatur', f24['target'])
         cek(f24['limaMenit'] == 10, 'mode 5 menit membuat sesi 10 soal', f24['limaMenit'])
 
+
+        print('== 13. Fitur v25 (ringkasan hafalan, riwayat versi, tur, sebaran kunci) ==')
+        f25 = page.evaluate("""() => {
+            const out = {};
+            const c = [0, 0, 0, 0];
+            getAllSoal().forEach(q => c[q.jawaban]++);
+            const tot = c.reduce((a, b) => a + b, 0);
+            out.sebaran = c.map(x => Math.round((x / tot) * 100));
+            out.pembahasanBergambar = getAllSoal().filter(q => q.gambarPembahasan).length;
+            goHome();
+            out.tur = !!document.querySelector('.tur-card');
+            bukaRingkasan();
+            out.ringkasanKiat = document.querySelectorAll('.ringkas-item').length;
+            bukaRiwayat();
+            out.riwayat = document.body.textContent.indexOf('Apa yang berubah') >= 0;
+            return out;
+        }""")
+        cek(max(f25['sebaran']) - min(f25['sebaran']) <= 3,
+            'posisi kunci tersebar merata (anti tebak) %s' % (f25['sebaran'],), f25['sebaran'])
+        cek(f25['pembahasanBergambar'] >= 30, 'soal dengan pembahasan bergambar', f25['pembahasanBergambar'])
+        cek(f25['tur'] and f25['ringkasanKiat'] > 20 and f25['riwayat'],
+            'panduan awal, ringkasan hafalan, dan riwayat versi tampil', f25)
+
         print('== 12. Anggaran beban muat pertama ==')
         ukuran = {'total': 0, 'berkas': 0}
 

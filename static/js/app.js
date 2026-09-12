@@ -142,6 +142,8 @@ function render() {
     case 'memuat': m.innerHTML = htmlMemuat(S.pesanMemuat || 'Menyiapkan soal...'); break;
     case 'hafalan': m.innerHTML = renderHafalan(); break;
     case 'tentang': m.innerHTML = renderTentang(); break;
+    case 'ringkasan': m.innerHTML = renderRingkasan(); break;
+    case 'riwayat': m.innerHTML = renderRiwayat(); break;
     case 'gagal':
       m.innerHTML = '<div class="empty"><div class="empty-icon">' + icon('alert', 40) + '</div>' +
         '<p>Soal gagal dimuat. Periksa koneksi internet lalu coba lagi.</p>' +
@@ -622,6 +624,7 @@ window.finishSession = function() {
       salah: salah,
       skip: skip,
       tgl: new Date().toLocaleDateString('id-ID'),
+      jam: new Date().getHours(),
       perKat: S.lastResult.perKat || null
     });
     if (scores.length > 30) scores.shift();

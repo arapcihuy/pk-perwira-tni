@@ -867,6 +867,81 @@ _spec4.loader.exec_module(_lint)
 _lint.jalankan(db)
 del _lint
 
+
+# ============================================================ 1j. soal baru v25 (+52 TWK, +40 kepribadian)
+_spec5 = _ilu4.spec_from_file_location('tambahan3', '.audit/tambahan3.py')
+_mod3 = _ilu4.module_from_spec(_spec5)
+_spec5.loader.exec_module(_mod3)
+
+import random as _rnd
+_rng = _rnd.Random(20260912)
+
+
+def _acak_kunci(pilihan, kunci):
+    """Acak urutan opsi + sesuaikan indeks kunci (supaya kunci tidak menumpuk di A)."""
+    urut = list(range(len(pilihan)))
+    _rng.shuffle(urut)
+    baru = [pilihan[i] for i in urut]
+    return baru, urut.index(kunci)
+
+
+def _tambah3(daftar, kat, prefix, mulai):
+    dipakai = {q['id'] for q in db[kat]['soal']}
+    n = mulai
+    jumlah = 0
+    for (tanya, pilihan, kunci, pb) in daftar:
+        qid = '%s%d' % (prefix, n)
+        n += 1
+        if qid in dipakai:
+            continue
+        pil, kk = _acak_kunci(pilihan, kunci)
+        db[kat]['soal'].append({'id': qid, 'pertanyaan': tanya, 'pilihan': pil,
+                                'jawaban': kk, 'pembahasan': pb})
+        jumlah += 1
+    return jumlah
+
+
+_t3 = _tambah3(_mod3.TAMBAHAN_TKW3, 'tkw', 'w', 152)
+_t4 = _tambah3(_mod3.TAMBAHAN_KEPRIBADIAN3, 'kepribadian', 'kp', 74)
+print('soal baru v25: TWK %d, Kepribadian %d' % (_t3, _t4))
+
+
+# ============================================================ 1k. seimbangkan posisi kunci (anti "tebak B")
+# Sebaran kunci yang menumpuk di satu posisi membuat orang bisa menebak tanpa paham.
+# Opsi digeser secara siklik (rotasi) sehingga posisi kunci tersebar merata A/B/C/D.
+def seimbangkan_kunci(base, urutan=(0, 1, 3, 2)):
+    perbaikan = 0
+    for _kat, _v in base.items():
+        _soal = _v['soal']
+        for _i, _q in enumerate(_soal):
+            _target = urutan[_i % 4]
+            _kini = _q['jawaban']
+            _n = len(_q['pilihan'])
+            if _kini == _target or not (0 <= _target < _n):
+                continue
+            _geser = (_kini - _target) % _n
+            _q['pilihan'] = _q['pilihan'][_geser:] + _q['pilihan'][:_geser]
+            if _q.get('pilihanSvg'):
+                _q['pilihanSvg'] = _q['pilihanSvg'][_geser:] + _q['pilihanSvg'][:_geser]
+            _q['jawaban'] = _target
+            perbaikan += 1
+    return perbaikan
+
+
+_perbaikan_kunci = seimbangkan_kunci(db)
+print('posisi kunci diseimbangkan pada %d soal' % _perbaikan_kunci)
+
+
+# gambar pembahasan untuk soal geometri (v25)
+_gg = json.load(open('.audit/gambar-geometri.json'))
+_n_gg = 0
+for _cat in db.values():
+    for _q in _cat['soal']:
+        if _q['id'] in _gg and not _q.get('gambarPembahasan'):
+            _q['gambarPembahasan'] = _gbr(_gg[_q['id']])
+            _n_gg += 1
+print('pembahasan bergambar geometri ditambahkan:', _n_gg)
+
 print('PERINGATAN setelah koreksi:', len(warn))
 for w in warn:
     print('   ', w)
