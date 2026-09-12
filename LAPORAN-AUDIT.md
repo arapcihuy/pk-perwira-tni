@@ -1,4 +1,4 @@
-# Laporan Audit, Perbaikan & Pengembangan — build v25
+# Laporan Audit, Perbaikan & Pengembangan — build v27
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
@@ -394,12 +394,58 @@ pengerjaan, dan itu saya laporkan apa adanya, bukan diklaim sudah diperiksa.
 - **Smoke test situs live: SEHAT** — versi aset tunggal, seluruh berkas tersedia, 1205 soal,
   106/106 gambar ter-render di Chromium, 0 error JavaScript.
 
+
+---
+
+# Bagian 8 — PERATURAN MUTU SOAL (build v27, 12 September 2026)
+
+Permintaan pengguna: akurasi soal, kunci, dan pembahasan (cara mengerjakan) harus dijamin karena ini
+**platform belajar** — jangan sampai pengguna belajar hal yang keliru. Jawabannya bukan janji, tetapi
+**peraturan tertulis + pemeriksa mesin yang mengikat**.
+
+## Yang dibuat
+
+1. **`PEDOMAN-MUTU-SOAL.md`** — peraturan resmi platform, berisi:
+   - **A. 10 butir diperiksa mesin:** label topik · opsi kembar · opsi "semua benar/salah" ·
+     kunci bocor di pertanyaan · kunci selalu opsi terpanjang · pembahasan ≥ 3 baris
+     (JAWABAN/cara/INGAT) · langkah perhitungan wajib pada soal hitung · sebaran posisi kunci 20–30% ·
+     soal bergambar wajib diverifikasi ulang dari gambarnya · semua soal Tes Gambar wajib bergambar.
+   - **B. 10 aturan proses:** hanya lewat pipeline · dilarang mengedit berkas hasil generate ·
+     kunci wajib dari perhitungan atau sumber · **dua gelombang pemeriksaan** untuk soal hafalan ·
+     setiap figur wajib punya pemeriksa otomatis · pembahasan harus bisa diikuti langkahnya ·
+     versi aset wajib naik · **dilarang mengklaim "sudah diverifikasi" tanpa bukti** ·
+     laporan pengguna masuk prioritas audit.
+   - **C. aturan isi pembahasan** per jenis soal (hitungan, hafalan, grammar, gambar, kepribadian).
+   - **D. daftar 8 larangan eksplisit.**
+2. **`tools/peraturan-mutu.py`** — pemeriksa 10 butir yang menghasilkan daftar pelanggaran;
+   dijalankan di CI setiap push dan setiap minggu. Soal yang tidak lolos **tidak naik ke situs**.
+3. **Halaman Tentang di aplikasi** kini menampilkan 10 peraturan itu ke pengguna, sebagai bukti
+   transparansi: pengguna tahu standar yang dipakai dan tahu bahwa laporannya masuk prioritas audit.
+
+## Pelanggaran yang ditemukan pemeriksa baru & langsung diperbaiki
+
+| Butir | Temuan | Perbaikan |
+|-------|--------|-----------|
+| P1 | **112 soal baru belum berlabel topik** (pemeriksa topik belum dijalankan ulang setelah penambahan soal) | pelabelan topik otomatis ditambahkan ke pipeline |
+| P4 | **2 soal kuncinya bocor di pertanyaan**: w74 ("Komandan **Skadron** disebut...") dan w112 ("...menjadi Lanud **Halim Perdanakusuma**...") | kedua pertanyaan ditulis ulang |
+| P4 | 10 temuan lain ternyata pengecualian sah (soal bacaan, soal bergambar, soal kalender, besaran yang memang diberikan) | aturan diperhalus + pengecualiannya ditulis di kode dan pedoman |
+| P7 | 4 soal strategi/pengetahuan Kraepelin dianggap "soal hitung" | aturan P7 dibatasi ke soal yang benar-benar memuat perhitungan |
+| P9 | pemeriksa hanya menghitung soal Tes Gambar | kini menghitung juga 15 soal kolom Kraepelin (total 34 soal diverifikasi dari gambarnya) |
+
+## Verifikasi build v27
+
+- Peraturan mutu: **SEMUA PERATURAN DIPATUHI** (0 pelanggaran dari 1225 soal).
+- Verifikasi data: LULUS · uji runtime: LULUS · smoke test situs live: SEHAT.
+- CI: langkah "PERATURAN MUTU SOAL (10 butir wajib)" kini tampil dan lulus di tab Actions.
+- Situs live: `PEDOMAN-MUTU-SOAL.md` dapat diakses publik (200).
+
 ## Cara mengulang audit di masa depan
 
 ```bash
 /usr/bin/python3 .audit/extract.py         # ekstrak data ke .audit/db.json
 /usr/bin/python3 .audit/fix.py             # koreksi + format pembahasan + soal baru + pecah data
 /usr/bin/python3 .audit/verify.py          # cek akurasi (versi kerja)
+/usr/bin/python3 tools/peraturan-mutu.py   # periksa 10 butir PERATURAN MUTU (wajib lulus)
 /usr/bin/python3 tools/verifikasi-soal.py  # cek data yang dipakai CI (wajib lulus)
 /usr/bin/python3 tools/uji-runtime.py      # uji runtime di Chromium (Playwright)
 /usr/bin/python3 tools/uji-situs-live.py   # smoke test situs yang tayang (dipakai CI terjadwal)

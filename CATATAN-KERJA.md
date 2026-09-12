@@ -45,7 +45,13 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   +92 soal (TWK & Kepribadian), insight waktu belajar, halaman riwayat versi, panduan awal 4 langkah.
 - Teknis v25: penyeimbangan posisi kunci (A/B/C/D ~25%), workflow pemeriksaan terjadwal mingguan,
   smoke test situs live (`tools/uji-situs-live.py`), uji runtime diperluas.
-- Versi build saat ini: **v25** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=a3c3bfd`).
+- Fitur v26: 20 soal reading comprehension, menu Lainnya, alur belajar di halaman Tips,
+  mode Jelang Ujian 7 Hari.
+- v27: PERATURAN MUTU SOAL resmi + pemeriksa otomatis 10 butir (mengikat di CI); 2 soal yang kuncinya
+  bocor di pertanyaan (w74, w112) diperbaiki; 112 soal baru dilengkapi label topik.
+- Versi build saat ini: **v27** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
+- **Peraturan mutu wajib:** `PEDOMAN-MUTU-SOAL.md` — 10 butir diperiksa mesin (`tools/peraturan-mutu.py`),
+  10 aturan proses, aturan isi pembahasan, dan daftar larangan. Wajib lulus sebelum deploy.
 
 ## Riwayat pekerjaan otonom
 
@@ -82,7 +88,7 @@ Perintah menjalankan ulang:
 /usr/bin/python3 tools/verifikasi-soal.py  # verifikasi yang dipakai CI (wajib lulus sebelum push)
 ```
 
-## Hasil verifikasi v25
+## Hasil verifikasi v27
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
@@ -96,7 +102,8 @@ Perintah menjalankan ulang:
 - Uji aksesibilitas axe: **nol pelanggaran** (sebelumnya 1 moderate).
 - Beban muat pertama 344 KB tanpa gzip (16 berkas) — di situs live ~70 KB karena gzip.
 - Sebaran posisi kunci merata 25% x 4 posisi (anti tebak), 38 soal dengan pembahasan bergambar.
-- Smoke test situs live SEHAT: versi aset tunggal, 1205 soal, 106/106 gambar render, 0 error JS.
+- Smoke test situs live SEHAT: versi aset tunggal, 1225 soal, 106/106 gambar render, 0 error JS.
+- PERATURAN MUTU SOAL: 0 pelanggaran (10 butir) pada 1225 soal.
 - Uji runtime otomatis di Chromium (Playwright) LULUS: 9 kategori, tryout terkunci, simulasi format,
   hafalan, bank soal, 0 error JavaScript.
 - Audit kunci gelombang kedua: 568 soal hafalan diperiksa ulang secara independen → 8 koreksi
