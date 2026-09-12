@@ -98,11 +98,11 @@ window.renderRingkasan = function () {
 
 window.eksporRingkasan = function () {
   var golongan = ringkasanHafalan();
-  var h = ['<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>Ringkasan Hafalan — PK Perwira</title>',
+  var h = ['<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>Ringkasan Hafalan — SiapPsikotes</title>',
     '<style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6;max-width:820px;margin:24px auto;padding:0 16px}',
     'h1{font-size:20px}h2{font-size:15px;margin-top:20px;border-bottom:1px solid #ddd;padding-bottom:4px}',
     'ul{padding-left:20px}li{margin:4px 0}</style></head><body>',
-    '<h1>Ringkasan Hafalan — PK Perwira TNI</h1>',
+    '<h1>Ringkasan Hafalan — SiapPsikotes</h1>',
     '<p>Dicetak: ' + new Date().toLocaleString('id-ID') + ' · sumber: baris kiat (INGAT) pada pembahasan bank soal</p>',
     '<p><button onclick="window.print()">Cetak / Simpan PDF</button></p>'];
   golongan.forEach(function (g) {

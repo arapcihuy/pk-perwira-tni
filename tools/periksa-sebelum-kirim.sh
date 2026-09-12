@@ -49,6 +49,22 @@ else
 fi
 
 echo
+echo "=== 4/4 MEREK & IDENTITAS (berkas yang dilihat pengguna) ==="
+MEREK_GAGAL=0
+for f in index.html manifest.json sw.js static/js/*.js data/*.js; do
+  [ -f "$f" ] || continue
+  if grep -q "PK Perwira" "$f" 2>/dev/null; then
+    echo "  GAGAL | merek lama 'PK Perwira' masih ada di $f"
+    MEREK_GAGAL=1
+  fi
+done
+if [ "$MEREK_GAGAL" -eq 0 ]; then
+  echo "  OK    | tidak ada merek lama di berkas yang dilihat pengguna"
+else
+  GAGAL=1
+fi
+
+echo
 if [ "$GAGAL" -ne 0 ]; then
   echo "=============================================="
   echo "PENGIRIMAN DIBATALKAN - perbaiki dulu di atas."

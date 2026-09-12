@@ -69,11 +69,11 @@ window.eksporLaporan = function () {
   if (!a.length) { alert('Belum ada laporan soal.'); return; }
   var peta = {};
   getAllSoal().forEach(function (s) { peta[s.id] = s; });
-  var html = ['<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>Laporan Soal — PK Perwira</title>',
+  var html = ['<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>Laporan Soal — SiapPsikotes</title>',
     '<style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6;max-width:820px;margin:24px auto;padding:0 16px}',
     'h2{font-size:15px;border-bottom:1px solid #ddd;padding-bottom:4px}.pg{background:#f6f6f8;padding:10px;border-radius:8px;white-space:pre-line}',
     '.lbl{display:inline-block;background:#e8e8ef;border-radius:12px;padding:2px 8px;font-size:12px;margin-right:6px}</style></head><body>',
-    '<h1 style="font-size:20px">Laporan Soal — PK Perwira TNI</h1>',
+    '<h1 style="font-size:20px">Laporan Soal — SiapPsikotes</h1>',
     '<p>Dicetak: ' + new Date().toLocaleString('id-ID') + ' · ' + a.length + ' laporan</p>',
     '<p><button onclick="window.print()">Cetak / Simpan PDF</button></p>'];
   a.slice().reverse().forEach(function (l, i) {
@@ -259,12 +259,12 @@ window.eksporRapot = function () {
   var topik = statTopik().slice(0, 10);
   var psi = (typeof PSI !== 'undefined' && PSI.history) ? PSI.history.slice(-8) : [];
   var skor = loadScores().slice(-10);
-  var h = ['<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>Rapot Kesiapan — PK Perwira</title>',
+  var h = ['<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>Rapot Kesiapan — SiapPsikotes</title>',
     '<style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6;max-width:820px;margin:24px auto;padding:0 16px;color:#111}',
     'h1{font-size:20px}h2{font-size:15px;margin-top:22px;border-bottom:1px solid #ddd;padding-bottom:4px}',
     'table{border-collapse:collapse;width:100%;font-size:14px}td,th{border:1px solid #ddd;padding:6px 8px;text-align:left}',
     '.big{font-size:34px;font-weight:800}</style></head><body>'];
-  h.push('<h1>Rapot Kesiapan — PK Perwira TNI</h1>');
+  h.push('<h1>Rapot Kesiapan — SiapPsikotes</h1>');
   h.push('<p>Dicetak: ' + new Date().toLocaleString('id-ID') + ' · versi aplikasi ' + escapeHtml(buildKu()) + ' · target nilai ' + t + '</p>');
   h.push('<p><button onclick="window.print()">Cetak / Simpan PDF</button></p>');
   h.push('<h2>Ringkasan</h2><table><tr><th>Perkiraan nilai</th><td class="big">' +
@@ -360,16 +360,16 @@ window.eksporPengingat = function () {
     baris.push('DTSTAMP:' + tgl + 'T000000Z');
     baris.push('DTSTART:' + tgl + 'T' + z(jam) + '0000');
     baris.push('DURATION:PT30M');
-    baris.push('SUMMARY:Belajar PK Perwira — target harian');
+    baris.push('SUMMARY:Belajar SiapPsikotes — target harian');
     baris.push('DESCRIPTION:Buka aplikasi belajar: 1 sesi + ulangi soal yang jatuh tempo + hafalan TWK.');
     baris.push('BEGIN:VALARM');
     baris.push('TRIGGER:-PT10M');
     baris.push('ACTION:DISPLAY');
-    baris.push('DESCRIPTION:Pengingat belajar PK Perwira');
+    baris.push('DESCRIPTION:Pengingat belajar SiapPsikotes');
     baris.push('END:VALARM');
     baris.push('END:VEVENT');
   }
-  var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PK Perwira//Belajar//ID',
+  var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SiapPsikotes//Belajar//ID',
     'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'].concat(baris).concat(['END:VCALENDAR']).join('\r\n');
   unduhBerkas('pengingat-belajar-pk-perwira.ics', ics, 'text/calendar');
 };

@@ -496,13 +496,13 @@ window.eksporSoalSalah = function() {
   getAllSoal().forEach(function(s) { peta[s.id] = s; });
   var html = [];
   html.push('<!DOCTYPE html><html lang="id"><head><meta charset="utf-8">');
-  html.push('<title>Daftar Soal Salah — PK Perwira</title>');
+  html.push('<title>Daftar Soal Salah — SiapPsikotes</title>');
   html.push('<style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6;max-width:820px;margin:24px auto;padding:0 16px;color:#111}');
   html.push('h1{font-size:20px}h2{font-size:15px;margin-top:22px;border-bottom:1px solid #ddd;padding-bottom:4px}');
   html.push('.pg{background:#f6f6f8;padding:10px;border-radius:8px;white-space:pre-line}');
   html.push('.opsi{margin:6px 0}.kunci{color:#0a7a2f;font-weight:700}.salah{color:#c0392b}');
   html.push('@media print{.noprint{display:none}}</style></head><body>');
-  html.push('<h1>Daftar Soal Salah — PK Perwira TNI</h1>');
+  html.push('<h1>Daftar Soal Salah — SiapPsikotes</h1>');
   html.push('<p>Dicetak: ' + new Date().toLocaleString('id-ID') + ' · ' + ids.length + ' soal</p>');
   html.push('<p class="noprint"><button onclick="window.print()">Cetak / Simpan PDF</button></p>');
   ids.sort(function(a, c) { return (b[c].s || 0) - (b[a].s || 0); });

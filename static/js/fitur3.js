@@ -350,7 +350,7 @@ window.renderTentang = function () {
   var pakai = '';
   var berkas = '';
   return '<div class="mode-badge">' + ic('shield', 14) + ' Tentang aplikasi</div>' +
-    '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">Platform Belajar PK Perwira TNI</div>' +
+    '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">SiapPsikotes — Latihan Psikotes, Tes IQ & Kepribadian</div>' +
     '<div style="font-size:13px;color:var(--text2);margin-bottom:16px">Gratis, tanpa akun, data tersimpan di perangkat ini saja.</div>' +
     '<div class="card" style="margin-bottom:14px">' +
       '<div class="hari-head">' + ic('file', 16) + ' <strong>Isi & versi</strong></div>' +

@@ -185,7 +185,7 @@ function renderHome() {
 
   return '<div style="margin-bottom:20px">' +
     '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-0.4px">Selamat Datang</div>' +
-    '<div style="font-size:13px;color:var(--text2)">Platform belajar PK Perwira TNI — gratis, offline, tanpa akun.</div>' +
+    '<div style="font-size:13px;color:var(--text2)">Latihan psikotes kerja, tes IQ & kepribadian — gratis, offline, tanpa akun.</div>' +
     '</div>' +
 
     '<div class="grid-3" style="margin-bottom:20px">' +
@@ -211,7 +211,7 @@ function renderHome() {
       '<button class="btn btn-secondary btn-lg" style="flex:1" onclick="goPage(\'cat\',\'learn\')">' + ic('book', 17) + ' Mode Belajar</button>' +
     '</div>' +
     '<div style="margin-bottom:12px">' +
-      '<button class="btn btn-danger btn-lg" style="width:100%" onclick="startSimulasi60()">' + ic('target', 17) + ' Simulasi PK Perwira — 60 Soal · 90 Menit</button>' +
+      '<button class="btn btn-danger btn-lg" style="width:100%" onclick="startSimulasi60()">' + ic('target', 17) + ' Simulasi 60 Soal · 90 Menit (campuran)</button>' +
     '</div>' +
 
     '<div class="iq-home-card">' +
@@ -224,7 +224,7 @@ function renderHome() {
     '</div>' +
 
     '<div class="tips-box">' +
-      '<div class="tips-title">' + ic('bulb', 16) + ' Tips Persiapan PK Perwira TNI</div>' +
+      '<div class="tips-title">' + ic('bulb', 16) + ' Tips Persiapan Psikotes & Tes IQ</div>' +
       '<ul>' +
         '<li>Kerjakan minimal 1 tryout per hari, review semua yang salah</li>' +
         '<li>Fokus TWK (Wawasan Kebangsaan) — bobotnya besar di seleksi</li>' +
@@ -741,7 +741,7 @@ window.drillWrong = function() {
 };
 
 window.startSimulasi60 = function() {
-  // Simulasi tryout 60 soal 90 menit persis format PK Perwira
+  // Simulasi tryout 60 soal 90 menit (campuran semua kategori)
   if (!katSiapSemua()) {
     S.simCoba = (S.simCoba || 0) + 1;
     if (S.simCoba > 2) { S.page = 'gagal'; render(); return; }
@@ -1205,7 +1205,7 @@ function renderTips(katKey) {
       '<div style="font-size:13px;color:var(--text2);line-height:1.6">'+escapeHtml(t.isi)+'</div></div></div></div>';
   }).join('');
   return '<div style="font-size:20px;font-weight:700;color:var(--white);margin-bottom:4px">Strategi & Tips</div>'+
-    '<div style="font-size:13px;color:var(--text2);margin-bottom:16px">Cara cepat dapat nilai tinggi PK Perwira TNI.</div>'+
+    '<div style="font-size:13px;color:var(--text2);margin-bottom:16px">Cara cepat menaikkan kesiapanmu.</div>'+
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">'+tabs+'</div>'+
     '<div style="font-size:16px;font-weight:700;color:var(--gold2);margin-bottom:16px">'+escapeHtml(d.judul)+'</div>'+cards;
 }
