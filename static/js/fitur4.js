@@ -134,7 +134,16 @@ window.panelLapor = function () {
 
 window.panelDaftarLaporan = function () {
   var a = storeLaporan();
-  if (!a.length) return '';
+  if (!a.length) {
+    return '<div class="card" style="margin-top:16px">' +
+      '<div class="hari-head">' + ic('flag', 16) + ' <strong>Laporan soal</strong>' +
+        '<span class="hari-tgl">belum ada laporan</span></div>' +
+      '<div class="hari-sub">Kalau kamu menemukan soal yang terasa keliru (kunci tidak cocok, pembahasan sulit diikuti, ' +
+      'atau pertanyaan ambigu), tekan tombol <strong>Laporkan soal</strong> di halaman Bank Soal atau saat mengerjakan. ' +
+      'Laporanmu masuk daftar prioritas audit sesuai PERATURAN MUTU SOAL.</div>' +
+      '<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="navTo(\'bank\')">Buka Bank Soal</button>' +
+      '</div>';
+  }
   var peta = {};
   getAllSoal().forEach(function (s) { peta[s.id] = s; });
   var baris = a.slice().reverse().slice(0, 12).map(function (l) {

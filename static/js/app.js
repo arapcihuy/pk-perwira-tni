@@ -345,6 +345,12 @@ function startCat(cat, mode, percobaan) {
 function renderSoal() {
   if (!S.questions.length) return '<div class="empty"><div class="empty-icon">' + icon('alert', 44) + '</div><p>Tidak ada soal.</p></div>';
 
+  // pengaman: indeks soal bisa tertinggal dari daftar soal (mis. sesi yang dilanjutkan dengan
+  // daftar lebih pendek, atau sisa indeks dari kategori sebelumnya) — jepit agar tidak blank
+  if (typeof S.idx !== 'number' || isNaN(S.idx)) S.idx = 0;
+  if (S.idx < 0) S.idx = 0;
+  if (S.idx > S.questions.length - 1) S.idx = S.questions.length - 1;
+
   var q = S.questions[S.idx];
   var n = S.questions.length;
   var pct = Math.round(((S.idx + 1) / n) * 100);

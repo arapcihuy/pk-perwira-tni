@@ -266,7 +266,16 @@ window.panelRapor = function () {
 window.panelKraepelinRiwayat = function () {
   if (typeof PSI === 'undefined' || !PSI.history) return '';
   var krap = PSI.history.filter(function (h) { return /kraepelin/i.test(h.testName || ''); }).slice(-10);
-  if (krap.length < 2) return '';
+  if (krap.length < 2) {
+    var sudah = 'Kamu sudah menyelesaikan ' + krap.length + ' sesi. Grafik perbandingan muncul setelah 2 sesi — ' +
+      'yang dinilai psikolog adalah kestabilan antar kolom, bukan satu angka.';
+    return '<div class="card" style="margin-top:16px">' +
+      '<div class="hari-head">' + ic('zap', 16) + ' <strong>Riwayat Tes Kraepelin</strong>' +
+        '<span class="hari-tgl">' + (krap.length ? '1 sesi' : 'belum ada data') + '</span></div>' +
+      '<div class="hari-sub">' + sudah + '</div>' +
+      '<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="bukaKraepelinSim()">Buka Tes Kraepelin</button>' +
+      '</div>';
+  }
   var w = 320, h = 90, pad = 8, maks = 100;
   var lebar = (w - pad * 2) / krap.length;
   var batang = krap.map(function (s, i) {

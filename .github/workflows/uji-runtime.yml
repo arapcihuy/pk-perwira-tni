@@ -26,3 +26,6 @@ jobs:
 
       - name: Uji runtime (9 kategori, gambar, tryout, simulasi, hafalan)
         run: python3 tools/uji-runtime.py
+
+      - name: UJI SEMUA FITUR (52 pemeriksaan - tiap halaman, tombol, ekspor, sinkron)
+        run: python3 tools/uji-fitur-lengkap.py

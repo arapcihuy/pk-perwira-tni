@@ -310,7 +310,15 @@ function grafikTren(skor) {
 
 window.panelTren = function () {
   var skor = loadScores();
-  if (!skor.length) return '';
+  if (!skor.length) {
+    return '<div class="card" style="margin-top:16px">' +
+      '<div class="hari-head">' + ic('chart', 16) + ' <strong>Tren nilai</strong>' +
+        '<span class="hari-tgl">belum ada data</span></div>' +
+      '<div class="hari-sub">Grafik tren muncul setelah kamu menyelesaikan minimal satu tryout. ' +
+        'Grafik ini yang menunjukkan apakah nilaimu naik dari sesi ke sesi — lebih berguna daripada satu nilai saja.</div>' +
+      '<button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="startSimulasi60()">Mulai tryout pertama</button>' +
+      '</div>';
+  }
   var nampil = skor.slice(-30);
   var rata = Math.round(nampil.reduce(function (a, s) { return a + (s.nilai || 0); }, 0) / nampil.length);
   var terbaik = Math.max.apply(null, nampil.map(function (s) { return s.nilai || 0; }));
