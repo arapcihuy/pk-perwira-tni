@@ -22,7 +22,14 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
 - Teknis v21: verifikasi otomatis di CI (`tools/verifikasi-soal.py`), data dipecah per kategori
   (`tools/pecah-data.py` + `static/js/data-loader.js`), versi aset otomatis dari hash commit
   (`.github/workflows/versi.yml`).
-- Versi build saat ini: **v21** (penanda `?v=21` pada aset + nama cache service worker; sudah otomatis lewat CI).
+- Fitur v22: posisi opsi diacak saat Tryout/Simulasi, kunci dikunci selama ujian, Simulasi Format
+  Seleksi (komposisi tetap 60 soal/90 menit), latihan adaptif berbasis tingkat kesulitan nyata,
+  mode Hafalan Cepat (kartu bolak-balik 151 kartu TWK), grafik tren nilai 30 sesi + tren per kategori,
+  tombol siapkan mode offline, ajakan pasang ke layar utama.
+- Teknis v22: uji runtime Chromium otomatis di CI (`tools/uji-runtime.py` + workflow), favicon,
+  audit kunci gelombang kedua (pemeriksa independen) yang menemukan 1 kunci salah (w47) dan
+  7 soal rapuh lain — semuanya sudah dikoreksi.
+- Versi build saat ini: **v22** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=f332b85`).
 
 ## Riwayat pekerjaan otonom
 
@@ -59,7 +66,7 @@ Perintah menjalankan ulang:
 /usr/bin/python3 tools/verifikasi-soal.py  # verifikasi yang dipakai CI (wajib lulus sebelum push)
 ```
 
-## Hasil verifikasi v21
+## Hasil verifikasi v22
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
@@ -68,4 +75,9 @@ Perintah menjalankan ulang:
 - Pengecoh pada soal pangkat, volume, dan KPK/FPB sudah memakai pola kesalahan hitung yang wajar.
 - Semua pembahasan diawali `JAWABAN:` + memuat kunci, format 3 baris: JAWABAN / cara / INGAT.
 - 61 gambar soal valid dan ter-render (semua soal Tes Gambar kini bergambar).
+- Uji runtime otomatis di Chromium (Playwright) LULUS: 9 kategori, tryout terkunci, simulasi format,
+  hafalan, bank soal, 0 error JavaScript.
+- Audit kunci gelombang kedua: 568 soal hafalan diperiksa ulang secara independen → 8 koreksi
+  (termasuk 1 kunci yang benar-benar salah: w47).
+- Ukuran buka pertama turun dari ~160 KB menjadi ~66 KB (gzip) setelah data dipecah per kategori.
 - Uji browser di situs live: 1000 soal termuat, pembahasan tampil 3 baris, 41/41 gambar OK, 0 error JS.

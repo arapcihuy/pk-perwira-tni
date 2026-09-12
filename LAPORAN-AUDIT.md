@@ -1,4 +1,4 @@
-# Laporan Audit, Perbaikan & Pengembangan — build v22
+# Laporan Audit, Perbaikan & Pengembangan — build v22 (audit gelombang kedua)
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
@@ -201,6 +201,42 @@ Angka diambil dari situs live dengan `Accept-Encoding: gzip` (GitHub Pages mengi
   pembahasan seragam, gambar valid, versi aset konsisten).
 - CI: "Verifikasi Bank Soal", "Uji Runtime Aplikasi", dan "Cap Versi Otomatis" berjalan otomatis
   pada setiap push.
+
+
+---
+
+# Bagian 4 — Audit kunci gelombang kedua (pemeriksa independen)
+
+Seluruh 1068 kunci sudah diperiksa manual sekali. Untuk jaring pengaman terakhir, 568 soal hafalan
+(TWK 151, Bahasa Inggris 110, Verbal 100, Penalaran 134, Kepribadian 73) diperiksa ULANG oleh
+pemeriksa independen yang menentukan jawabannya sendiri lebih dulu, baru dibandingkan dengan kunci
+yang tertulis. Hasilnya 11 temuan; 8 di antaranya terbukti perlu diperbaiki setelah saya verifikasi
+ulang (termasuk ke sumber luar), dan sudah diterapkan:
+
+| # | Soal | Temuan | Perbaikan |
+|---|------|--------|-----------|
+| 1 | **w47** | **Kunci salah**: "Tri Ubaya Sakti adalah doktrin TNI AL". Sumber sejarah menunjukkan Tri Ubaya Sakti adalah doktrin era TNI AD/SESKOAD (1965-1966). | Soal diganti: lokasi Akademi Angkatan Laut → **Surabaya** (fakta yang pasti). |
+| 2 | w4, w56 | Redaksi menyebut Cadek sebagai "doktrin induk TNI" (usang: doktrin TNI sekarang Tri Dharma Eka Karma). | Penjelasan diperbaiki: Cadek = doktrin era ABRI (1966); Tridek = doktrin TNI sekarang. Redaksi w56 jadi "Doktrin era ABRI". |
+| 3 | l22 | Tidak konsisten dengan soal sejenis (l12): bentuk konvers yang sama diberi kunci berbeda. | Kunci diselaraskan → **"Tidak bisa disimpulkan"** + penjelasan kenapa. |
+| 4 | e17 | Kalimat kunci tidak idiomatik ("the more a soldier trains hard"). | Diubah jadi **"The harder a soldier trains, the more prepared he will be."** |
+| 5 | e33 | Dua jawaban benar (was/is ready sama-sama gramatikal tanpa penanda waktu). | Pengecoh diganti "were ready" (jelas salah menurut aturan proximity). |
+| 6 | e110 | Dua jawaban benar (could/did sama-sama gramatikal). | Pengecoh "did" diganti "does" → hanya **could** yang tepat. |
+| 7 | e71 | Bergantung pada perdebatan "I wish he was/were" yang dianggap berterima di tata bahasa modern. | Kalimat salah diubah menjadi **"I wish the weather is better"** (jelas salah). |
+| 8 | v35 | Analogi ambigu: LATIHAN:OLIMPIADE = SEKOLAH: **wisuda atau ujian** dua-duanya bisa dibela. | Diganti analogi bersih: **TAMU:HOTEL = PASIEN:Rumah sakit**. |
+
+Temuan yang **tidak** diubah setelah dicek: lg1 dan lg2 (auditor tidak menerima gambar stimulusnya,
+sementara di aplikasi keduanya bergambar dan sudah saya verifikasi ulang: matriks 3x3 → 9 dan pola
+kotak 1-4-9 → 16 benar).
+
+**Pelajaran**: satu kesalahan kunci (w47) hanya ketahuan pada pemeriksaan kedua oleh pemeriksa yang
+tidak melihat kunci lebih dulu. Pemeriksaan bergelombang dengan metode berbeda terbukti sepadan.
+
+## Verifikasi setelah koreksi gelombang kedua
+
+- Verifikasi data: LULUS (1068 soal, 0 opsi senilai, 0 duplikat, pembahasan seragam, gambar valid).
+- Uji runtime Playwright: LULUS (9 kategori, 61 gambar, tryout terkunci, simulasi format, hafalan, 0 error JS).
+- Situs live diperiksa ulang: seluruh koreksi gelombang pertama dan kedua tampil, versi aset otomatis
+  (`?v=f332b85`), 61/61 gambar ter-render.
 
 ## Cara mengulang audit di masa depan
 
