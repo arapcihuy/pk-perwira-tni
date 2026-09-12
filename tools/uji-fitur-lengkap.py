@@ -562,6 +562,26 @@ def main():
         cek(len(re.findall(r'const CACHE\w* =', _sw)) == 1 and _sw.count('CACHE') >= 3,
             'service worker memakai satu nama cache yang konsisten', _sw.count('CACHE'))
 
+        print('== V. Logo & ikon aplikasi ==')
+        import glob as _g
+        import json as _j
+        _ikon = sorted(os.path.basename(p) for p in _g.glob(os.path.join(ROOT, 'static', 'icons', '*.png')))
+        cek('logo.svg' in os.listdir(os.path.join(ROOT, 'static', 'icons')),
+            'logo sumber (SVG) tersimpan supaya ikon bisa dicetak ulang', _ikon)
+        cek(all(n in _ikon for n in ('icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
+                                    'apple-touch-icon-180.png', 'favicon-32.png')),
+            'kelima ukuran ikon tersedia', _ikon)
+        _man = _j.load(open(os.path.join(ROOT, 'manifest.json'), encoding='utf-8'))
+        _tujuan = [i.get('purpose') for i in _man.get('icons', [])]
+        cek('any' in _tujuan and 'maskable' in _tujuan,
+            'manifest memuat ikon biasa dan maskable (Android tidak memotong logo)', _tujuan)
+        _html = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
+        _sw = open(os.path.join(ROOT, 'sw.js'), encoding='utf-8').read()
+        cek('apple-touch-icon-180.png' in _html and 'favicon-32.png' in _html,
+            'index.html memakai ikon iOS dan favicon baru', None)
+        cek(all(n in _sw for n in _ikon), 'seluruh berkas ikon terdaftar untuk mode offline',
+            [n for n in _ikon if n not in _sw] or 'lengkap')
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};

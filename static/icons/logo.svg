@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Logo SiapPsikotes — sumber tunggal (dipakai untuk mencetak semua ikon).
+  Konsep: huruf Yunani Psi (Ψ), simbol universal psikologi.
+  Anatomi benar: tangkai tegak menerusi cawan, dari atas (di antara dua lengan) sampai bawah.
+  Satu warna (emas) supaya tidak pecah saat diperkecil. Tanpa teks, tanpa lambang negara.
+  Cetak ulang ikon: python3 tools/buat-ikon.py
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Logo SiapPsikotes">
+  <defs>
+    <linearGradient id="dasar" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="512">
+      <stop offset="0%" stop-color="#141d2b"/>
+      <stop offset="100%" stop-color="#080b11"/>
+    </linearGradient>
+    <linearGradient id="emas" gradientUnits="userSpaceOnUse" x1="140" y1="110" x2="372" y2="424">
+      <stop offset="0%" stop-color="#f4d47a"/>
+      <stop offset="100%" stop-color="#cfae3d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- dasar -->
+  <rect width="512" height="512" rx="116" fill="url(#dasar)"/>
+  <rect x="7" y="7" width="498" height="498" rx="109" fill="none"
+        stroke="#ffffff" stroke-opacity="0.07" stroke-width="5"/>
+
+  <g fill="none" stroke="url(#emas)" stroke-width="46"
+     stroke-linecap="round" stroke-linejoin="round">
+    <!-- cawan: dua lengan melengkung ke atas -->
+    <path d="M156 132 C156 262, 194 322, 256 322 C318 322, 356 262, 356 132"/>
+    <!-- tangkai tegak: dari atas (di antara lengan) menembus cawan sampai bawah -->
+    <path d="M256 118 L256 412"/>
+  </g>
+</svg>

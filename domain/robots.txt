@@ -1,0 +1,9 @@
+# robots.txt — SiapPsikotes
+# Mengizinkan semua mesin pencari membaca seluruh halaman.
+# Berkas ini dicetak ulang oleh domain/pasang-domain.py saat domain dipasang,
+# supaya baris Sitemap menunjuk ke domain baru.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://arapcihuy.github.io/pk-perwira-tni/sitemap.xml
