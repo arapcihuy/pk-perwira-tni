@@ -1,4 +1,4 @@
-# Laporan Audit, Perbaikan & Pengembangan — build v23
+# Laporan Audit, Perbaikan & Pengembangan — build v24
 
 Tanggal: 12 September 2026
 Situs: https://arapcihuy.github.io/pk-perwira-tni/
@@ -316,6 +316,43 @@ Total **19 soal Tes Gambar** dan **15 soal Kraepelin kolom** kini diverifikasi o
 (34 soal). Sisa soal Tes Gambar bersifat konseptual (mis. "berapakah rusuk kubus") sehingga pemeriksaan
 visual mata tetap berguna — bagian itu belum bisa dilakukan karena kuota layanan gambar penuh saat
 pengerjaan, dan itu saya laporkan apa adanya, bukan diklaim sudah diperiksa.
+
+
+---
+
+# Bagian 6 — Pengguna sebagai penguji & keluaran belajar (build v24, 12 September 2026)
+
+## Temuan yang memicu pengembangan
+
+1. Pencarian Bank Soal hanya menyisir **teks pertanyaan + nama kategori** — pembahasan, pilihan jawaban,
+   dan label topik tidak ikut dicari, padahal semua penjelasan konsep ada di pembahasan.
+2. Label topik baru dipakai untuk filter/drill, **belum untuk statistik** ("topik terlemah" belum ada).
+3. **Tidak ada cara melaporkan soal yang mencurigakan dari dalam aplikasi** — celah terpenting untuk
+   pengguna yang ingin memastikan soalnya tidak menyesatkan.
+4. Target nilai tidak bisa diatur (ambang kesiapan tetap 70/80).
+
+## Perbaikan & fitur baru
+
+| # | Item | Hasil |
+|---|------|-------|
+| 1 | **Laporkan soal** | Tombol di setiap soal; pilih alasan (kunci salah / pembahasan kurang jelas / ambigu / salah tulis) + catatan. Tersimpan lokal, bisa diekspor jadi satu berkas HTML untuk audit lanjutan. |
+| 2 | **Pencarian konsep** | Pencarian Bank Soal menjangkau pembahasan, pilihan jawaban, dan topik. Diuji: "137 tahun 1952" → 1 hasil, "nasams" → 1, "jalesveva" → 5. |
+| 3 | **Topik terlemah** | Statistik akurasi per topik (minimal 3 soal) + panel peringkat + tombol latih langsung topik terlemah. |
+| 4 | **Target nilai** | Bisa diatur 70/80/85/90; status kesiapan ("Siap (target 90)") dan saran menyesuaikan target. |
+| 5 | **Mode 5 menit** | Sesi 10 soal dari 3 topik terlemah, untuk waktu senggang. |
+| 6 | **Rapot Kesiapan** | Ekspor HTML siap cetak/PDF: ringkasan, per kategori, topik terlemah, hasil psikotes, riwayat nilai. |
+| 7 | **Pengingat 28 hari (.ics)** | Berkas kalender untuk diimpor ke HP/Mac — pengingat harian tanpa izin notifikasi. |
+| 8 | **Lint penulisan soal** | 94 perbaikan: perkalian memakai ×, spasi ganda dirapikan, tanda ≥/≤ diseragamkan, konvensi analogi "A : B = C : ..." diseragamkan. Elipsis "..." tidak diubah. |
+| 9 | **Aksesibilitas bersih** | Landmark `<footer>` untuk bilah pintasan keyboard + `role="dialog"`/`aria-modal` pada modal. axe-core kini melaporkan **nol pelanggaran** (sebelumnya 1 moderate). |
+| 10 | **Anggaran beban muat di CI** | Uji otomatis: gagal bila muat pertama melewati 450 KB (kini 344 KB dari 16 berkas, tanpa gzip; setara ~70 KB di situs live karena gzip). |
+
+## Verifikasi build v24
+
+- Verifikasi data: LULUS — 1113 soal, id unik, 0 opsi senilai, 0 duplikat, pembahasan seragam,
+  106 gambar valid, kunci Kraepelin kolom & 19 soal Tes Gambar cocok dengan gambarnya.
+- Uji runtime: LULUS — termasuk fitur v24 (laporan soal, pencarian konsep, statistik topik,
+  target nilai, mode 5 menit), mode offline, dan **axe tanpa pelanggaran**.
+- Lint: 0 soal yang masih memakai "x" antar angka; 29 soal memakai " × ".
 
 ## Cara mengulang audit di masa depan
 

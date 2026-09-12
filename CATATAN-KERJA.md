@@ -35,7 +35,12 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   +30 soal Tes Gambar, +15 soal Kraepelin kolom angka, 6 pembahasan bergambar, halaman Tentang.
 - Teknis v23: uji aksesibilitas axe-core + uji mode offline otomatis di CI; landmark <main>;
   verifikasi baru (kunci Kraepelin kolom vs angka di gambar, kelengkapan gambar Tes Gambar).
-- Versi build saat ini: **v23** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=26aabd7`).
+- Fitur v24: tombol laporkan soal (+ ekspor laporan), pencarian konsep (pembahasan/opsi/topik),
+  statistik & drill topik terlemah, target nilai bisa diatur, mode 5 menit, ekspor Rapot Kesiapan,
+  pengingat 28 hari (.ics).
+- Teknis v24: lint penulisan soal (94 perbaikan), axe nol pelanggaran (landmark footer + dialog),
+  anggaran beban muat di CI, uji fitur v24 masuk uji runtime otomatis.
+- Versi build saat ini: **v24** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=53174b3`).
 
 ## Riwayat pekerjaan otonom
 
@@ -72,7 +77,7 @@ Perintah menjalankan ulang:
 /usr/bin/python3 tools/verifikasi-soal.py  # verifikasi yang dipakai CI (wajib lulus sebelum push)
 ```
 
-## Hasil verifikasi v23
+## Hasil verifikasi v24
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.
@@ -83,7 +88,8 @@ Perintah menjalankan ulang:
 - 106 gambar soal valid dan ter-render (semua soal Tes Gambar bergambar; 15 soal Kraepelin kolom angka).
 - 15 soal kolom Kraepelin diverifikasi otomatis: kunci cocok dengan angka di gambarnya.
 - Uji offline di CI LULUS (aplikasi tetap jalan tanpa internet setelah pemuatan pertama).
-- Uji aksesibilitas axe: tidak ada pelanggaran critical/serious.
+- Uji aksesibilitas axe: **nol pelanggaran** (sebelumnya 1 moderate).
+- Beban muat pertama 344 KB tanpa gzip (16 berkas) — di situs live ~70 KB karena gzip.
 - Uji runtime otomatis di Chromium (Playwright) LULUS: 9 kategori, tryout terkunci, simulasi format,
   hafalan, bank soal, 0 error JavaScript.
 - Audit kunci gelombang kedua: 568 soal hafalan diperiksa ulang secara independen → 8 koreksi
