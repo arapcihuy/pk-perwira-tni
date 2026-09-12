@@ -9,7 +9,8 @@
 # Kalau ada satu saja gagal, pengiriman DIBATALKAN. Ini mencegah kejadian
 # berulang: CI merah karena pemeriksaan yang sebenarnya bisa dijalankan lokal.
 #
-# Pemakaian:  bash tools/periksa-sebelum-kirim.sh
+# Pemakaian:  bash tools/periksa-sebelum-kirim.sh            # lengkap (termasuk uji peramban)
+#            bash tools/periksa-sebelum-kirim.sh --cepat   # lewati uji peramban
 # Hook:       .git/hooks/pre-push memanggil skrip ini (lihat tools/pasang-hook.py)
 
 set -u
@@ -19,21 +20,21 @@ cd "$AKAR" || exit 1
 PY=/usr/bin/python3
 GAGAL=0
 
-echo "=== 1/3 PERATURAN MUTU SOAL ==="
+echo "=== 1/6 PERATURAN MUTU SOAL (11 butir) ==="
 if ! $PY tools/peraturan-mutu.py; then
   echo ">>> GAGAL: peraturan mutu soal tidak dipatuhi"
   GAGAL=1
 fi
 
 echo
-echo "=== 2/3 VERIFIKASI BANK SOAL ==="
+echo "=== 2/6 VERIFIKASI BANK SOAL ==="
 if ! $PY tools/verifikasi-soal.py; then
   echo ">>> GAGAL: verifikasi bank soal tidak lulus"
   GAGAL=1
 fi
 
 echo
-echo "=== 3/3 SINTAKS JAVASCRIPT ==="
+echo "=== 3/6 SINTAKS JAVASCRIPT ==="
 if command -v node > /dev/null 2>&1; then
   for f in static/js/*.js data/*.js sw.js; do
     [ -f "$f" ] || continue
@@ -49,7 +50,7 @@ else
 fi
 
 echo
-echo "=== 4/4 MEREK & IDENTITAS (berkas yang dilihat pengguna) ==="
+echo "=== 4/6 MEREK & IDENTITAS ==="
 MEREK_GAGAL=0
 for f in index.html manifest.json sw.js static/js/*.js data/*.js; do
   [ -f "$f" ] || continue
@@ -65,7 +66,7 @@ else
 fi
 
 echo
-echo "=== 5/5 PENYANGKALAN AFILIASI (setiap halaman publik) ==="
+echo "=== 5/6 PENYANGKALAN AFILIASI ==="
 SANGKAL_GAGAL=0
 for f in index.html psikotes/index.html mutu/index.html syarat/index.html privasi/index.html; do
   [ -f "$f" ] || continue
@@ -78,6 +79,17 @@ if [ "$SANGKAL_GAGAL" -eq 0 ]; then
   echo "  OK    | semua halaman publik memuat penyangkalan afiliasi"
 else
   GAGAL=1
+fi
+
+echo
+echo "=== 6/6 UJI PERAMBAN (sama dengan CI: 25 bagian, 110 pemeriksaan) ==="
+if [ "${1:-}" = "--cepat" ]; then
+  echo "  (dilewati karena --cepat - JANGAN kirim bila menambah atau mengubah fitur)"
+else
+  if ! /usr/bin/python3 tools/uji-fitur-lengkap.py; then
+    echo ">>> GAGAL: uji peramban tidak lulus"
+    GAGAL=1
+  fi
 fi
 
 echo

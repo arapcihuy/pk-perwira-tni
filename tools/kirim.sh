@@ -46,7 +46,7 @@ grep -o "?v=[A-Za-z0-9]*" index.html | sort -u | tr '\n' ' '; echo
 grep -o "CACHE = '[^']*'" sw.js
 
 echo "=== 4. gerbang pemeriksaan ==="
-if ! bash tools/periksa-sebelum-kirim.sh > /tmp/gate-kirim.log 2>&1; then
+if ! bash tools/periksa-sebelum-kirim.sh "${2:-}" > /tmp/gate-kirim.log 2>&1; then
   tail -4 /tmp/gate-kirim.log
   echo "GERBANG GAGAL - tidak dikirim"
   exit 1
