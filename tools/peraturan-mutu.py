@@ -24,6 +24,22 @@ import base64
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KATEGORI_HITUNG = {'matematika', 'numerik', 'kraepelin'}
+SUMBER = os.path.join(ROOT, 'data', 'soal.js')
+
+
+def baca_db():
+    """Selalu membaca sumber resmi data/soal.js (agar lokal dan CI identik)."""
+    raw = open(SUMBER, encoding='utf-8').read()
+    i = raw.index('{', raw.index('SOAL_DATABASE'))
+    depth = 0
+    for n, ch in enumerate(raw[i:]):
+        if ch == '{':
+            depth += 1
+        elif ch == '}':
+            depth -= 1
+            if depth == 0:
+                return json.loads(raw[i:i + n + 1])
+    raise SystemExit('SOAL_DATABASE tidak ditemukan di data/soal.js')
 
 
 def _teks_key(q):
@@ -138,7 +154,7 @@ def periksa(db):
 
 
 def main():
-    db = json.load(open(os.path.join(ROOT, '.audit', 'db-new.json')))
+    db = baca_db()
     langgar, ringkas = periksa(db)
     print('PERATURAN MUTU SOAL — pemeriksaan 10 butir')
     print('  total soal:', ringkas['total_soal'])
