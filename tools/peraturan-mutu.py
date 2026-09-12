@@ -158,6 +158,33 @@ def periksa(db):
             if not q.get('gambar'):
                 langgar.append(('P10', q['id'], 'soal %s tanpa gambar' % kat))
 
+
+    # P11: TIDAK ADA AI ONLINE / API AI berbayar di dalam aplikasi.
+    # Keputusan pemilik produk: AI di aplikasi ini hanya untuk mengajar, hanya berjalan di perangkat,
+    # nol biaya per pertanyaan. Butir ini menjaganya supaya tidak dilanggar oleh perubahan berikutnya.
+    POLA_AI_ONLINE = [
+        'api.openai.com', 'api.anthropic.com', 'generativelanguage.googleapis.com',
+        'openrouter.ai/api', 'api.mistral.ai', 'api.cohere.ai', 'api.deepseek.com',
+        'api.groq.com', 'chat/completions', 'api.together.xyz', 'api.perplexity.ai',
+    ]
+    berkas_js = []
+    for _folder in ('static/js', 'data'):
+        _d = os.path.join(ROOT, _folder)
+        if os.path.isdir(_d):
+            berkas_js += [os.path.join(_d, f) for f in os.listdir(_d) if f.endswith('.js')]
+    for _nama in ('index.html', 'sw.js'):
+        _f = os.path.join(ROOT, _nama)
+        if os.path.exists(_f):
+            berkas_js.append(_f)
+    for _f in berkas_js:
+        try:
+            _isi = open(_f, encoding='utf-8').read().lower()
+        except Exception:
+            continue
+        for _pola in POLA_AI_ONLINE:
+            if _pola in _isi:
+                langgar.append(('P11', os.path.basename(_f), 'memuat alamat AI online: %s' % _pola))
+
     return langgar, {'total_soal': total_soal, 'rasio_kunci_terpanjang': rasio,
                      'sebaran_kunci': hitung}
 
@@ -165,7 +192,7 @@ def periksa(db):
 def main():
     db = baca_db()
     langgar, ringkas = periksa(db)
-    print('PERATURAN MUTU SOAL — pemeriksaan 10 butir')
+    print('PERATURAN MUTU SOAL — pemeriksaan 11 butir')
     print('  total soal:', ringkas['total_soal'])
     print('  sebaran posisi kunci:', ringkas['sebaran_kunci'])
     print('  kunci sebagai opsi terpanjang: %d%%' % ringkas['rasio_kunci_terpanjang'])

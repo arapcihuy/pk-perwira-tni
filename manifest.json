@@ -1,6 +1,6 @@
 {
-  "name": "PK Perwira TNI — Platform Belajar",
-  "short_name": "PK Perwira",
+  "name": "SiapSeleksi — Latihan Psikotes, Tes IQ & SKD",
+  "short_name": "SiapSeleksi",
   "description": "Platform belajar seleksi PK Perwira TNI AU — 1000 soal, tryout, drill, tes psikologi, tips trik",
   "start_url": "./index.html",
   "display": "standalone",

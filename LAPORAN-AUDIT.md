@@ -507,3 +507,49 @@ Menggerakkan aplikasi sungguhan di Chromium lalu memeriksa hasilnya, bagian per 
 - UJI RUNTIME: LULUS · VERIFIKASI SOAL: LULUS · PERATURAN MUTU: DIPATUHI.
 - Smoke test situs live: **SEHAT** (1225 soal, 106/106 gambar, 0 error JavaScript).
 - Tidak ada error JavaScript di seluruh pengujian.
+
+---
+
+# Bagian 10 — TAHAP 1 FOKUS ULANG KE PSIKOTES (build v29, 13 September 2026)
+
+Permintaan pengguna: sebelum mengerjakan penawaran komersial, arahkan dulu aplikasinya ke pasar yang tepat —
+kedinasan, tes IQ, dan psikotes — sambil tetap bisa dipakai sendiri oleh pemilik produk.
+
+## Temuan pasar yang mendasari
+
+- Platform belajar kedinasan **tidak jarang**: MisiPNS, KedinasanID, Pintarly, ASN Institute, jadisekdin.id,
+  tryout.one, mediasimulasi, Ruangguru Kedinasan — bahkan ada yang gratis. Sisi SKD sudah padat dan murah
+  (mulai Rp 20.000).
+- Yang **kosong** adalah baterai psikotes lengkap: Kraepelin/Pauli interaktif, IQ (matriks/deret/verbal),
+  tes gambar, dan kepribadian dengan umpan balik konsistensi. Pesaing terdekat hanya menyediakan
+  "simulasi" dan artikel contoh soal.
+- Harga tertinggi yang terbukti dibayar ada di segmen kedinasan/TNI/Polri (paket bimbel Rp 300.000; offline
+  jutaan), sedangkan CPNS dijual Rp 29–99 ribu/tahun untuk isi yang sama.
+
+## Yang dibangun
+
+1. **Identitas produk netral**: `SiapSeleksi — Latihan Psikotes, Tes IQ & SKD`. Nama instansi tidak lagi
+   dipakai sebagai merek (aman dari sisi UU 20/2016 Pasal 21 ayat (2) huruf b), keterangan resmi tetap ada.
+2. **Empat jalur seleksi** dengan rincian apa yang diuji tiap jalur: Kedinasan, TNI, Polri, CPNS/PPPK.
+3. **Simulasi SKD sesuai format resmi**: 110 soal / 100 menit dengan komposisi TWK 30 · TIU 35
+   (numerik 12, verbal 8, matematika 8, penalaran 7) · TKP 45. Sebelumnya simulasi terpanjang hanya 60 soal/90 menit.
+4. **Layar Baterai Psikotes**: 8 modul dalam urutan seperti ujian sungguhan, status tiap modul disimpulkan
+   dari riwayat yang sudah ada, plus rekap berapa modul yang sudah dicoba.
+5. **Tutor Lapisan 0 (tanpa unduhan)** pada setiap soal di mode belajar: inti cara mengerjakan, kiat ingat,
+   pembeda tiap opsi, dan tombol "latih topik ini" yang mengarah ke soal teraudit lain pada topik sama.
+   Seluruh isinya diambil dari pembahasan yang sudah diaudit — tidak ada fakta karangan.
+6. **Kebijakan AI dikunci di kode** (`AI_KEBIJAKAN`): hanya mengajar, hanya offline, tanpa AI online,
+   biaya per pertanyaan nol. Ditegakkan oleh aturan mesin **P11**.
+
+## Bug yang tertangkap saat pengujian dan langsung diperbaiki
+
+| Temuan | Akibat | Perbaikan |
+|--------|--------|-----------|
+| Kunci komposisi memakai nama kategori yang tidak ada (`tiu`, `tkp`) | Simulasi SKD mengambil soal acak dari seluruh kategori — komposisinya tidak karuan | Komposisi memakai kunci data yang benar dan dipetakan lewat `namaKategori()`; hasil uji: 110 soal dengan komposisi persis (30/12/8/8/7/45) |
+| Tutor disisipkan pada penanda `.card` yang tidak ada di layar soal | Tutor tidak pernah muncul | Penanda diganti ke blok pembahasan (`.explanation`), tutor kini muncul tepat setelah soal dijawab |
+
+## Verifikasi
+
+- PERATURAN MUTU SOAL (kini **11 butir**, termasuk P11 tanpa AI online): DIPATUHI, 0 pelanggaran.
+- Uji semua fitur: 52 pemeriksaan lama + bagian baru (jalur, baterai, tutor, kebijakan AI).
+- Uji runtime & smoke test situs live: dijalankan sebelum kirim.

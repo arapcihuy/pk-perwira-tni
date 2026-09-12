@@ -49,7 +49,7 @@ supaya mudah ditelusuri kembali: apa yang diubah, kapan, dan hasil verifikasinya
   mode Jelang Ujian 7 Hari.
 - v27: PERATURAN MUTU SOAL resmi + pemeriksa otomatis 10 butir (mengikat di CI); 2 soal yang kuncinya
   bocor di pertanyaan (w74, w112) diperbaiki; 112 soal baru dilengkapi label topik.
-- Versi build saat ini: **v28** (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
+- Versi build saat ini: **v29** (fokus ulang: SiapSeleksi — psikotes + tes IQ + SKD) (penanda aset otomatis dari hash commit lewat CI, mis. `?v=5a7a9b0`).
 - **Peraturan mutu wajib:** `PEDOMAN-MUTU-SOAL.md` — 10 butir diperiksa mesin (`tools/peraturan-mutu.py`),
   10 aturan proses, aturan isi pembahasan, dan daftar larangan. Wajib lulus sebelum deploy.
 
@@ -92,7 +92,12 @@ Perintah menjalankan ulang:
   memperbaiki 2 bug: halaman blank saat indeks soal di luar batas, dan tiga panel Progress yang
   hilang total saat data belum ada.
 
-## Hasil verifikasi v28
+- v29 (Tahap 1 fokus ulang): nama produk netral `SiapSeleksi`, 4 jalur seleksi (Kedinasan/TNI/Polri/CPNS),
+  simulasi SKD format resmi 110 soal/100 menit (TWK 30 · TIU 35 · TKP 45), layar Baterai Psikotes (8 modul),
+  Tutor Lapisan 0 berbasis materi teraudit (tanpa unduhan), dan kebijakan AI dikunci di kode
+  (hanya mengajar, hanya offline, tanpa AI online) + aturan mesin **P11**.
+
+## Hasil verifikasi v29
 
 - 1000 soal, 9 kategori, id unik, semua indeks kunci valid, semua soal 4 opsi.
 - 126 soal hitung diuji ulang otomatis: semua cocok dengan kuncinya.

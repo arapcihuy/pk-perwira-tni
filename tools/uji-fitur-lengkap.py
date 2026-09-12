@@ -417,6 +417,60 @@ def main():
         cek(o3['ada'] and o3['live'], 'label aksesibilitas & aria-live ada', o3)
 
         segar()
+        print('== R. Jalur seleksi, baterai psikotes, tutor, kebijakan AI ==')
+        r2 = page.evaluate("""() => {
+            const out = {};
+            out.nama = (typeof NAMA_APP !== 'undefined') ? NAMA_APP : '';
+            out.judul = document.title;
+            navTo('baterai');
+            out.tombolJalur = document.querySelectorAll('.jalur-btn').length;
+            out.modulBaterai = document.querySelectorAll('.baterai-item').length;
+            out.catatanAiOffline = document.body.textContent.indexOf('Tidak ada AI online') >= 0;
+            setJalur('kedinasan');
+            navTo('baterai');
+            out.detailJalur = !!document.querySelector('.jalur-detail');
+            // simulasi SKD: 110 soal / 100 menit dengan komposisi resmi
+            mulaiSimulasiJalur('kedinasan');
+            const per = {};
+            S.questions.forEach(q => per[q.kategori] = (per[q.kategori] || 0) + 1);
+            out.skd = { jumlah: S.questions.length, menit: Math.round(S.totalTime / 60),
+                        terkunci: S.tampilkanKunci === false, komposisi: per };
+            // jalur TNI & Polri ikut jalan
+            goHome(); mulaiSimulasiJalur('tni'); out.tni = S.questions.length;
+            goHome(); mulaiSimulasiJalur('polri'); out.polri = S.questions.length;
+            // tutor: muncul setelah soal dijawab di mode belajar
+            goHome(); startCat('tkw', 'learn');
+            S.idx = 0; S.tSoalIdx = -1; render();
+            out.tutorSebelum = !!document.querySelector('.tutor');
+            pickAnswer((S.questions[0].jawaban + 1) % 4);
+            render();
+            const t = document.querySelector('.tutor');
+            out.tutorSesudah = !!t;
+            out.tutorTombol = t ? { topik: !!t.querySelector('[onclick*="tutorLatihTopik"]'),
+                                    lapor: !!t.querySelector('[onclick*="bukaLapor"]') } : null;
+            out.tutorMenyebutSumber = t ? /materi teraudit/.test(t.textContent) : false;
+            // kebijakan AI
+            out.kebijakan = (typeof AI_KEBIJAKAN !== 'undefined') ? AI_KEBIJAKAN : null;
+            out.aiOnlineDilarang = (typeof aiOnlineDilarang === 'function') ? aiOnlineDilarang() : null;
+            return out;
+        }""")
+        cek(r2['nama'] and r2['judul'].startswith(r2['nama']), 'nama produk netral dipakai di judul', r2['nama'])
+        cek(r2['tombolJalur'] == 4 and r2['modulBaterai'] >= 8, 'baterai psikotes: 4 jalur & >=8 modul', r2)
+        cek(r2['detailJalur'], 'pilih jalur menampilkan rincian yang diuji', r2['detailJalur'])
+        skd = r2['skd']
+        benar_komposisi = (skd['jumlah'] == 110 and skd['menit'] == 100 and skd['terkunci']
+                           and skd['komposisi'].get('Wawasan Kebangsaan') == 30
+                           and skd['komposisi'].get('Tes Kepribadian Situasional') == 45)
+        cek(benar_komposisi, 'simulasi SKD: 110 soal/100 menit, komposisi resmi TWK 30 / TIU 35 / TKP 45', skd)
+        cek(r2['tni'] >= 40 and r2['polri'] >= 40, 'simulasi jalur TNI & Polri terbentuk', {'tni': r2['tni'], 'polri': r2['polri']})
+        cek(not r2['tutorSebelum'] and r2['tutorSesudah'], 'tutor muncul tepat setelah soal dijawab (mode belajar)', r2)
+        cek(r2['tutorTombol'] and r2['tutorTombol']['topik'] and r2['tutorTombol']['lapor'] and r2['tutorMenyebutSumber'],
+            'tutor menyediakan aksi & menyatakan sumbernya materi teraudit', r2['tutorTombol'])
+        cek(r2['kebijakan'] and r2['kebijakan']['aiOnline'] is False and r2['kebijakan']['hanyaOffline']
+            and r2['kebijakan']['biayaPerPertanyaan'] == 0 and r2['aiOnlineDilarang'],
+            'kebijakan AI terkunci: hanya mengajar, hanya offline, tanpa AI online', r2['kebijakan'])
+        cek(r2['catatanAiOffline'], 'kebijakan AI dinyatakan jelas di antarmuka', r2['catatanAiOffline'])
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};

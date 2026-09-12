@@ -11,7 +11,7 @@ Situs: https://arapcihuy.github.io/pk-perwira-tni/
 
 ---
 
-## A. Peraturan yang diperiksa mesin (10 butir)
+## A. Peraturan yang diperiksa mesin (11 butir)
 
 | Kode | Peraturan | Cara diperiksa | Akibat bila dilanggar |
 |------|-----------|----------------|------------------------|
@@ -25,6 +25,7 @@ Situs: https://arapcihuy.github.io/pk-perwira-tni/
 | **P8** | **Sebaran posisi kunci merata**: tiap posisi A/B/C/D 20–30% (sekarang 25% masing-masing) | pemeriksa | Build gagal |
 | **P9** | Soal bergambar yang jawabannya bisa dihitung **wajib diverifikasi otomatis dari gambarnya** (minimal 30 soal; sekarang 34) | pemeriksa | Build gagal |
 | **P10** | Semua soal kategori Tes Gambar **wajib punya gambar** | pemeriksa | Build gagal |
+| **P11** | **Tidak boleh ada AI online / API AI berbayar di dalam aplikasi.** AI hanya untuk mengajar, hanya berjalan di perangkat, nol biaya per pertanyaan | pemeriksa | Build gagal |
 
 Pemeriksaan tambahan yang juga mengikat (dari `tools/verifikasi-soal.py`):
 indeks kunci valid · tepat 4 opsi · tidak ada soal duplikat · hitung ulang aritmetika (126 soal) ·
@@ -81,7 +82,7 @@ INGAT: <kiat hafalan / rumus cepat>
 ```bash
 /usr/bin/python3 .audit/extract.py          # 1. ekstrak dari data/soal.js
 /usr/bin/python3 .audit/fix.py              # 2. terapkan koreksi + pembahasan + pecah per kategori
-/usr/bin/python3 tools/peraturan-mutu.py    # 3. periksa 10 butir peraturan  (WAJIB lulus)
+/usr/bin/python3 tools/peraturan-mutu.py    # 3. periksa 11 butir peraturan  (WAJIB lulus)
 /usr/bin/python3 tools/verifikasi-soal.py   # 4. periksa akurasi & konsistensi (WAJIB lulus)
 /usr/bin/python3 tools/uji-runtime.py       # 5. uji aplikasi di Chromium
 ```
@@ -97,3 +98,20 @@ termasuk smoke test situs yang tayang. Tidak ada pemeriksaan yang boleh dilewati
 - 38 soal punya gambar penjelasan bernomor; 1225 pembahasan berformat JAWABAN/cara/INGAT.
 - Nol pelanggaran pada 10 butir peraturan; uji runtime lulus; aksesibilitas axe tanpa pelanggaran;
   smoke test situs tayang SEHAT.
+
+## G. Tambahan 13 September 2026 — aturan P11 (kebijakan AI)
+
+Keputusan pemilik produk: **AI di aplikasi ini hanya untuk mengajar, hanya berjalan di perangkat pengguna,
+dan tidak boleh ada AI online/API berbayar** (nol biaya per pertanyaan, tanpa akun, tanpa data keluar).
+
+Konsekuensinya, tiga hal menjadi aturan yang diperiksa mesin:
+
+1. **P11** menolak build bila ada alamat AI online di dalam kode aplikasi (static/js, data, index.html, sw.js).
+2. AI hanya boleh bekerja di atas **materi yang sudah lulus peraturan mutu** — ia dilarang menyusun fakta baru.
+   Kalau jawabannya tidak ada di materi, ia harus menyatakan tidak ada, bukan mengarang.
+3. Soal baru yang lahir dari bantuan AI **wajib melewati 11 peraturan ini** sebelum dipakai, sama seperti soal
+   yang ditulis manusia.
+
+Yang sudah berjalan tanpa unduhan apa pun: **Tutor Lapisan 0** — menjelaskan inti cara mengerjakan, kiat ingat,
+pembeda tiap opsi, dan mengarahkan ke soal teraudit lain pada topik yang sama. Seluruh isinya diambil dari
+pembahasan yang sudah diaudit, jadi akurasinya sama dengan bank soalnya.
