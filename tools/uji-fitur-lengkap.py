@@ -670,6 +670,40 @@ def main():
         cek(all(b.values()), 'laporan memuat 6 bagian wajib', b)
         cek(x2['adaCetak'] and x2['adaUnduh'], 'laporan bisa dicetak PDF & diunduh', x2)
 
+        print('== Y. Persiapan wawancara ==')
+        y2 = page.evaluate("""() => {
+            const out = {};
+            navTo('baterai');
+            out.modulDiBaterai = !!document.querySelector('.modul-wawancara');
+            bukaWawancara();
+            out.halaman = S.page === 'wawancara';
+            out.jumlahPertanyaan = document.querySelectorAll('.ulang-row').length;
+            out.adaYangDinilai = document.body.textContent.indexOf('Yang dinilai penguji') >= 0;
+            out.adaJawabanLemah = document.body.textContent.indexOf('Jawaban yang lemah') >= 0;
+            out.adaKriteria = document.querySelectorAll('.fokus-item').length >= 10;
+            out.adaChecklist = document.body.textContent.indexOf('sebelum hari seleksi') >= 0;
+            out.adaBatasJujur = document.body.textContent.indexOf('Tidak ada janji kelulusan') >= 0;
+            out.adaCatatanLokal = document.body.textContent.indexOf('tersimpan di perangkat') >= 0;
+            document.getElementById('wawCatatan').value = 'Kerangka uji: situasi, tugas, langkah, hasil.';
+            simpanCatatanWawancara();
+            out.tersimpan = !!catatanWawancara(WAW.soal);
+            pilihSoalKhusus(2);
+            out.pindahSoal = WAW.soal === 2;
+            pilihSoalWawancara(true);
+            out.acakJalan = WAW.soal !== null && WAW.soal >= 0 && WAW.soal < 12;
+            mulaiLatihanWawancara();
+            out.timerAda = !!WAW.timer;
+            if (WAW.timer) { clearInterval(WAW.timer); WAW.timer = null; }
+            return out;
+        }""")
+        cek(y2['modulDiBaterai'], 'modul wawancara muncul di Baterai Psikotes', y2)
+        cek(y2['halaman'] and y2['jumlahPertanyaan'] == 12, 'halaman wawancara memuat 12 pertanyaan', y2)
+        cek(y2['adaYangDinilai'] and y2['adaJawabanLemah'], 'setiap pertanyaan menjelaskan yang dinilai & jawaban lemah', y2)
+        cek(y2['adaKriteria'] and y2['adaChecklist'], 'kriteria penilaian diri + daftar periksa hari seleksi', y2)
+        cek(y2['adaBatasJujur'] and y2['adaCatatanLokal'], 'batas jujur & catatan hanya di perangkat', y2)
+        cek(y2['tersimpan'] and y2['pindahSoal'] and y2['acakJalan'] and y2['timerAda'],
+            'simpan kerangka jawaban, pindah soal, soal acak, dan timer jalan', y2)
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};
