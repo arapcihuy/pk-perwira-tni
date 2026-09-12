@@ -521,7 +521,7 @@ window.eksporSoalSalah = function() {
   var blob = new Blob([html.join('\n')], { type: 'text/html;charset=utf-8' });
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'soal-salah-pk-perwira-' + fHariIni() + '.html';
+  a.download = 'soal-salah-siappsikotes-' + fHariIni() + '.html';
   document.body.appendChild(a);
   a.click();
   setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1500);

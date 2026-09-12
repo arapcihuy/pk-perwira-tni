@@ -1008,7 +1008,7 @@ window.exportData = function() {
   a.href = url;
   var d = new Date();
   var dateStr = d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
-  a.download = 'backup-pk-perwira-' + dateStr + '.json';
+  a.download = 'backup-siappsikotes-' + dateStr + '.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

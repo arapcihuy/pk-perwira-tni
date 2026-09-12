@@ -356,7 +356,7 @@ window.eksporPengingat = function () {
     var d = new Date(mulai.getFullYear(), mulai.getMonth(), mulai.getDate() + i);
     var tgl = d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate());
     baris.push('BEGIN:VEVENT');
-    baris.push('UID:pk-perwira-' + tgl + '@lokal');
+    baris.push('UID:siappsikotes-' + tgl + '@lokal');
     baris.push('DTSTAMP:' + tgl + 'T000000Z');
     baris.push('DTSTART:' + tgl + 'T' + z(jam) + '0000');
     baris.push('DURATION:PT30M');
@@ -371,7 +371,7 @@ window.eksporPengingat = function () {
   }
   var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SiapPsikotes//Belajar//ID',
     'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'].concat(baris).concat(['END:VCALENDAR']).join('\r\n');
-  unduhBerkas('pengingat-belajar-pk-perwira.ics', ics, 'text/calendar');
+  unduhBerkas('pengingat-belajar-siappsikotes.ics', ics, 'text/calendar');
 };
 
 // ============================================================
