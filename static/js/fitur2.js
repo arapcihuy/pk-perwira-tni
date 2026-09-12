@@ -1,16 +1,4 @@
-// ============================================================
-// FITUR TAMBAHAN 2 — v22
-// 1) Acak posisi opsi saat Tryout/Simulasi
-// 2) Sembunyikan kunci selama Tryout/Simulasi
-// 3) Simulasi Format Seleksi (komposisi tetap)
-// 4) Drill adaptif berbasis tingkat kesulitan nyata
-// 5) Mode hafalan cepat (kartu bolak-balik)
-// 6) Grafik tren nilai + tren per kategori
-// 7) Siapkan mode offline
-// 8) Ajakan pasang ke layar utama (PWA)
-// ============================================================
 
-// ---------- 1. acak posisi opsi ----------
 window.acakOpsi = function (q) {
   var n = (q.pilihan || []).length;
   if (n < 2) return q;
@@ -28,13 +16,11 @@ window.acakOpsi = function (q) {
   return baru;
 };
 
-// ---------- 2. buka kunci lebih awal (saat tryout) ----------
 window.bukaKunciSekarang = function () {
   S.tampilkanKunci = true;
   render();
 };
 
-// ---------- 3. simulasi format seleksi ----------
 var KOMPOSISI_SELEKSI = [
   ['tkw', 15], ['verbal', 8], ['numerik', 10], ['penalaran_logika', 10],
   ['matematika', 7], ['bahasa_inggris', 5], ['kepribadian', 5]
@@ -90,7 +76,6 @@ window.infoKomposisiFormat = function () {
   }).join(' · ');
 };
 
-// ---------- 4. drill adaptif ----------
 function statSoal() {
   try { return JSON.parse(localStorage.getItem('tni_soal_stat') || '{}') || {}; } catch (e) { return {}; }
 }
@@ -106,7 +91,6 @@ window.catatStatSoal = function (id, benar) {
   simpanStatSoal(st);
 };
 
-// tingkat kesulitan nyata: persentase benar. Zona belajar efektif 40-75%.
 window.drillAdaptif = function () {
   if (!katSiapSemua()) {
     S.adaptifCoba = (S.adaptifCoba || 0) + 1;
@@ -165,7 +149,6 @@ window.infoAdaptif = function () {
   return { dipantau: n, zona: zona };
 };
 
-// ---------- 5. mode hafalan (kartu bolak-balik) ----------
 var HAF = { daftar: [], idx: 0, balik: false, saring: 'belum', sesi: 0 };
 
 function hafalStore() {
@@ -284,7 +267,6 @@ window.renderHafalan = function () {
   return head + depan + belakang;
 };
 
-// ---------- 6. grafik tren nilai ----------
 function grafikTren(skor) {
   if (!skor.length) return '';
   var w = 320, h = 90, pad = 8;
@@ -336,7 +318,6 @@ window.panelTren = function () {
         : '<span class="hari-sub">stabil dibanding sesi sebelumnya</span>');
   }
 
-  // tren per kategori dari sesi terakhir yang menyimpan rincian
   var denganKat = nampil.filter(function (s) { return s.perKat; });
   var katBaris = '';
   if (denganKat.length) {
@@ -374,7 +355,6 @@ window.panelTren = function () {
     '</div>';
 };
 
-// ---------- 7. siapkan mode offline ----------
 var PESAN_OFFLINE = '';
 window.siapkanOffline = async function () {
   function tulis(t) {
@@ -431,7 +411,6 @@ window.panelOffline = function () {
     '</div>';
 };
 
-// ---------- 8. ajakan pasang ke layar utama ----------
 var _promptPasang = null;
 window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
@@ -463,7 +442,6 @@ window.pasangNanti = function () {
   localStorage.setItem('tni_pasang_nanti', fHariIni());
 };
 
-// ---------- 9. panel beranda tambahan ----------
 window.panelLatihan = function () {
   var info = infoAdaptif();
   return '<div class="card latihan-card">' +
@@ -482,7 +460,6 @@ window.panelLatihan = function () {
     '</div>';
 };
 
-// tempelkan panel tambahan pada halaman yang sesuai
 var _renderSebelumFitur2 = window.render;
 window.render = function () {
   if (_renderSebelumFitur2) _renderSebelumFitur2.apply(this, arguments);

@@ -1,20 +1,9 @@
-// ============================================================
-// IQ LAB — UI (static/js/iq.js)
-// Halaman latihan IQ berbasis item terstandar internasional:
-// - Drill 5 jenis soal (deret angka/huruf, matriks, rotasi, verbal)
-//   digenerate di data/soal-iq.js
-// - Simulasi 25 soal / 20 menit
-// - Dual N-Back (latihan memori kerja)
-// - Log Skor retest dari alat ukur tervalidasi
-// Struktur halaman: tab "Latihan" / "Cara Pakai" / "Log Skor"
-// ============================================================
 
 var IQS = {
   tab: 'latihan',  // 'latihan' | 'cara' | 'log'
   nb: null         // state dual n-back
 };
 
-// Penjelasan bahasa sehari-hari untuk tiap jenis soal
 var IQ_PANDUAN = {
   angka:    { judul: 'Deret Angka',          kode: 'LN',  cara: 'Cari pola bilangannya (ditambah atau dikali berapa tiap langkah), lalu tentukan angka berikutnya.' },
   huruf:    { judul: 'Deret Huruf',          kode: 'LN',  cara: 'Ubah huruf jadi angka (A=1, B=2, dst), cari lompatannya, lalu tentukan huruf berikutnya.' },
@@ -24,7 +13,6 @@ var IQ_PANDUAN = {
   campuran: { judul: 'Campuran Semua Jenis', kode: 'MIX', cara: 'Soal semua jenis diacak — melatih ketahanan & kecepatan seperti tes asli.' }
 };
 
-// ---- STORAGE ----
 function loadIqLog() {
   try { return JSON.parse(localStorage.getItem('tni_iq_log') || '[]'); } catch (e) { return []; }
 }
@@ -50,14 +38,12 @@ function loadIqSesi() {
 }
 function saveIqSesi(a) { localStorage.setItem('tni_iq_sesi', JSON.stringify(a.slice(-30))); }
 
-// ---- SKOR BERJALAN ----
 function iqTerakhir() {
   var log = loadIqLog();
   if (!log.length) return null;
   return log[log.length - 1];
 }
 
-// Akurasi latihan per jenis soal (campuran = gabungan semua jenis)
 function iqAkurasiDomain(key) {
   var prog = loadProgress();
   if (key === 'campuran') {
@@ -87,9 +73,6 @@ function iqKartuDomain(key) {
     '</div>';
 }
 
-// ============================================================
-// HALAMAN IQ LAB
-// ============================================================
 function renderIQ() {
   var meta = loadIqMeta();
   var log = loadIqLog();
@@ -101,7 +84,6 @@ function renderIQ() {
   }
   var nb = loadIqNb();
 
-  // --- header + tab internal ---
   var head = '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-0.4px">' +
     ic('brain', 20) + ' IQ Lab — Latihan Potensi Kognitif <span style="font-size:11px;font-weight:600;color:var(--text3);vertical-align:middle">build v18</span></div>' +
     '<div style="font-size:13px;color:var(--text2);margin-bottom:14px">Latihan penalaran bergaya tes IQ (matriks gambar, deret angka &amp; huruf, putar vs cermin, soal cerita). ' +
@@ -113,7 +95,6 @@ function renderIQ() {
       return '<button class="btn ' + (IQS.tab === t[0] ? 'btn-primary' : 'btn-secondary') + ' btn-sm" onclick="iqTab(\'' + t[0] + '\')">' + t[1] + '</button>';
     }).join('') + '</div>';
 
-  // --- tracker target ---
   var tracker = '<div class="iq-tracker">' +
     '<div class="iq-track-head">' +
       '<div><div class="iq-track-label">Skor IQ terakhir</div><div class="iq-track-num">' + nilai + '</div></div>' +
@@ -130,7 +111,6 @@ function renderIQ() {
     '</div>' +
   '</div>';
 
-  // --- langkah singkat ---
   var langkah = '<div class="tips-box" style="margin:16px 0 6px">' +
     '<div class="tips-title">' + ic('bulb', 16) + ' Cara pakai IQ Lab (3 langkah)</div>' +
     '<ul>' +
@@ -141,7 +121,6 @@ function renderIQ() {
     '<div style="font-size:12px;color:var(--text2);margin-top:8px">Latihan menaikkan <em>kemampuan mengerjakan tes</em> (familiaritas, kecepatan, ketelitian). Skor IQ itu sendiri diukur sekali-dua kali, bukan tiap hari.</div>' +
   '</div>';
 
-  // --- drill per jenis soal ---
   var urut = ['angka', 'huruf', 'matriks', 'rotasi', 'verbal', 'campuran'];
   var domCards = urut.map(iqKartuDomain).join('');
 
@@ -152,7 +131,6 @@ function renderIQ() {
       '<button class="btn btn-secondary btn-lg" style="flex:1;min-width:200px" onclick="startIQDrill(\'campuran\')">' + ic('layers', 17) + ' Drill Campuran 10 Soal</button>' +
     '</div>';
 
-  // --- dual n-back ---
   var n = nb.n || 2;
   var nback = '<div class="section-title">' + ic('zap', 16) + ' Dual N-Back — Latihan Memori Kerja</div>' +
     '<div class="iq-nb-box">' +
@@ -175,10 +153,8 @@ function renderIQ() {
       '<div style="font-size:11px;color:var(--text3);margin-top:8px">Satu sesi = 30 percobaan. Target: akurasi ≥ 80% di N=3, baru naik ke N=4.</div>' +
     '</div>';
 
-  // --- tab: cara pakai ---
   var cara = iqPanduanHtml();
 
-  // --- tab: log retest ---
   var logHtml = iqRenderLog(log, meta);
 
   var isi;
@@ -190,7 +166,6 @@ function renderIQ() {
 }
 window.renderIQ = renderIQ;
 
-// ---------------- Tab "Cara Pakai" ----------------
 function iqPanduanHtml() {
   var jenis = ['angka', 'huruf', 'matriks', 'rotasi', 'verbal', 'campuran'].map(function (k) {
     var pd = IQ_PANDUAN[k];
@@ -264,9 +239,6 @@ function iqTipsBox() {
   '</div>';
 }
 
-// ============================================================
-// LOG & RETEST
-// ============================================================
 function iqRenderLog(log, meta) {
   var rows = log.slice().reverse().map(function (e, i) {
     return '<div class="iq-log-row">' +
@@ -375,9 +347,6 @@ window.iqClearLog = function () {
   render();
 };
 
-// ============================================================
-// DRILL — memakai mesin soal app.js (S.questions + S.page='soal')
-// ============================================================
 function iqMulai(items, timerDetik) {
   S.cat = 'iq';
   S.mode = 'iq';
@@ -386,8 +355,6 @@ function iqMulai(items, timerDetik) {
   S.idx = 0;
   S.answers = {};
   S.flagged = {};
-  // PENTING: drill tanpa timer (timerDetik = 0) tidak boleh menghitung waktu,
-  // kalau tidak sesi langsung "habis" dan lompat ke halaman hasil.
   S.timed = !!(timerDetik > 0);
   S.totalTime = S.timed ? timerDetik : 0;
   S.timeLeft = S.totalTime;
@@ -412,9 +379,6 @@ window.startIQSimulasi = function () {
   iqMulai(items, S.iqSpec.detik);
 };
 
-// ============================================================
-// DUAL N-BACK
-// ============================================================
 function iqNbIdleHtml() {
   var cells = '';
   for (var i = 0; i < 9; i++) cells += '<div class="nb-cell" id="nbC' + i + '"></div>';
@@ -473,7 +437,6 @@ function iqNbTrial() {
       var cc = document.getElementById('nbC' + j);
       if (cc) cc.className = 'nb-cell';
     }
-    // evaluasi jawaban trial ini
     if (isMatch && !st.answered) st.miss++;
     if (!isMatch && st.answered) st.fa++;
     if (isMatch && st.answered) st.hits++;

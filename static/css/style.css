@@ -1,7 +1,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  /* Apple dark palette */
+  
   --bg-base: #05050a;
   --surface: rgba(255, 255, 255, 0.055);
   --surface2: rgba(255, 255, 255, 0.09);
@@ -14,11 +14,11 @@
   --bg-elevated: #12121a;
   --primary: #05050a;
 
-  /* Apple system blue as accent */
+  
   --blue: #0a84ff;
   --blue2: #409cff;
 
-  /* TNI gold (refined, premium) */
+  
   --gold: #c9a227;
   --gold2: #e0b84c;
   --gold3: #f4d47a;
@@ -59,7 +59,7 @@ body {
   font-size: 15px;
   line-height: 1.55;
   letter-spacing: -0.01em;
-  /* Apple-style aurora background */
+  
   background-image:
     radial-gradient(1200px 600px at 80% -10%, rgba(10, 132, 255, 0.14), transparent 60%),
     radial-gradient(900px 500px at -10% 20%, rgba(224, 184, 76, 0.10), transparent 55%),
@@ -67,13 +67,11 @@ body {
   background-attachment: fixed;
 }
 
-/* Scrollbar — Apple thin */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 20px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.24); }
 
-/* ===================== ICON HELPER ===================== */
 .ic {
   display: inline-flex;
   align-items: center;
@@ -84,7 +82,6 @@ body {
 }
 .ic svg { display: block; }
 
-/* ===================== TOPBAR ===================== */
 .topbar {
   background: rgba(18, 18, 24, 0.62);
   backdrop-filter: blur(24px) saturate(180%);
@@ -132,7 +129,6 @@ body {
 }
 .stat-pill strong { color: var(--gold3); font-size: 13px; font-weight: 700; }
 
-/* ===================== NAV ===================== */
 .nav {
   background: rgba(18, 18, 24, 0.55);
   backdrop-filter: blur(24px) saturate(180%);
@@ -169,10 +165,8 @@ body {
 .nav-btn:hover .ic { transform: translateY(-1px); }
 .nav-btn.active { color: var(--blue2); border-bottom-color: var(--blue2); font-weight: 600; }
 
-/* ===================== MAIN ===================== */
 .main { padding: 24px; max-width: 960px; margin: 0 auto; }
 
-/* ===================== BUTTONS (Apple) ===================== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -239,7 +233,6 @@ body {
   color: var(--gold3);
 }
 
-/* ===================== CARDS (Glass) ===================== */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -263,11 +256,9 @@ body {
 .card .num { font-size: 32px; font-weight: 800; color: var(--white); letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
 .card .sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
 
-/* ===================== GRID ===================== */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
 .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
 
-/* ===================== KAT CARD ===================== */
 .kat-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -302,7 +293,6 @@ body {
 .kat-card .kat-sub { font-size: 12px; color: var(--text3); }
 .kat-card.selected { border-color: var(--blue2); }
 
-/* ===================== SECTION TITLE ===================== */
 .section-title {
   font-size: 12px;
   font-weight: 700;
@@ -314,7 +304,6 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-/* ===================== TIPS BOX ===================== */
 .tips-box {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -337,7 +326,6 @@ body {
 }
 .tips-box ul { padding-left: 18px; color: var(--text2); font-size: 14px; line-height: 1.75; }
 
-/* ===================== SOAL PAGE ===================== */
 .soal-wrap {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -409,7 +397,6 @@ body {
 }
 .soal-img img { border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
 
-/* ===================== OPTIONS ===================== */
 .options { display: flex; flex-direction: column; gap: 10px; }
 .option {
   display: flex;
@@ -454,7 +441,6 @@ body {
 .option.selected .option-letter { background: var(--blue); border-color: var(--blue2); color: #fff; }
 .option span { font-size: 15px; color: var(--text); line-height: 1.45; }
 
-/* ===================== EXPLANATION ===================== */
 .explanation {
   display: none;
   background: rgba(10, 132, 255, 0.08);
@@ -505,7 +491,6 @@ body {
   gap: 10px;
 }
 
-/* ===================== RESULT ===================== */
 .result-wrap { text-align: center; padding: 40px 24px; animation: fadeSlideIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .result-circle {
   width: 128px;
@@ -545,7 +530,6 @@ body {
 .rs-lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; }
 .result-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 
-/* ===================== BANK SOAL ===================== */
 .bank-filters { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
 .bank-filters select {
   background: var(--surface2);
@@ -576,7 +560,6 @@ body {
 .bi-meta { font-size: 10px; color: var(--blue2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 7px; }
 .bi-q { font-size: 14px; color: var(--text); line-height: 1.5; }
 
-/* ===================== MODAL ===================== */
 .modal-bg {
   display: none;
   position: fixed; inset: 0; z-index: 200;
@@ -646,7 +629,6 @@ body {
   line-height: 1.65;
 }
 
-/* ===================== PALETTE ===================== */
 .palette-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
@@ -701,7 +683,6 @@ body {
 .dot-answered { background: rgba(48, 209, 88, 0.3); border: 1px solid var(--green); }
 .dot-flagged { background: rgba(224, 184, 76, 0.3); border: 1px solid var(--gold2); }
 
-/* ===================== KRAEPELIN CHART ===================== */
 .kraepelin-chart-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -724,7 +705,6 @@ body {
 .kraepelin-chart-wrap { width: 100%; overflow-x: auto; padding-bottom: 6px; }
 .kraepelin-svg-chart { width: 100%; min-width: 320px; height: 180px; }
 
-/* ===================== BACKUP ===================== */
 .backup-box {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -739,7 +719,6 @@ body {
   backdrop-filter: blur(16px);
 }
 
-/* ===================== PROGRESS ===================== */
 .prog-row {
   margin-bottom: 14px;
   padding: 16px 18px;
@@ -755,7 +734,6 @@ body {
 .prog-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--blue2)); transition: width 0.5s ease; }
 .prog-detail { font-size: 11px; color: var(--text3); margin-top: 7px; }
 
-/* ===================== HISTORY ===================== */
 .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
 .history-item {
   background: var(--surface);
@@ -771,7 +749,6 @@ body {
 .h-date { font-size: 11px; color: var(--text3); margin-top: 2px; }
 .h-detail { font-size: 12px; color: var(--text2); }
 
-/* ===================== MODE BADGE ===================== */
 .mode-badge {
   display: inline-flex; align-items: center; gap: 7px;
   background: rgba(10, 132, 255, 0.1);
@@ -780,7 +757,6 @@ body {
   color: var(--blue2); margin-bottom: 18px; font-weight: 600;
 }
 
-/* ===================== KB HINT ===================== */
 .kb-hint {
   display: none;
   position: fixed;
@@ -810,15 +786,12 @@ kbd {
   color: var(--text);
 }
 
-/* ===================== EMPTY ===================== */
 .empty { text-align: center; padding: 70px 20px; color: var(--text3); }
 .empty .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.6; }
 .empty p { font-size: 15px; }
 
-/* ===================== DIVIDER ===================== */
 .divider { height: 1px; background: var(--border); margin: 22px 0; }
 
-/* ===================== TIPS PAGE ===================== */
 .tips-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -840,7 +813,6 @@ kbd {
 }
 .tips-card-body { font-size: 14px; color: var(--text2); line-height: 1.65; }
 
-/* ===================== EPPS ===================== */
 .epps-container {
   max-width: 680px;
   margin: 0 auto;
@@ -902,13 +874,11 @@ kbd {
 .epps-trait-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--blue), var(--blue2)); transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .epps-trait-desc { font-size: 12px; color: var(--text3); margin-top: 6px; }
 
-/* ===================== RESPONSIVE ===================== */
 @media (min-width: 641px) {
   .modal-bg { align-items: center; padding: 20px; }
   .modal-box { border-radius: var(--radius2); max-height: 80vh; }
 }
 
-/* Tablet (iPad) — 2-3 kolom, tombol cukup lega */
 @media (min-width: 641px) and (max-width: 1024px) {
   .grid-auto { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -961,7 +931,7 @@ kbd {
   .score { font-size: 40px; }
   .result-actions { flex-direction: column; gap: 8px; }
   .result-actions .btn { width: 100%; }
-  /* Kategori: 1 kolom penuh supaya tombol Tryout/Belajar lega & sejajar */
+  
   .grid-auto { grid-template-columns: 1fr; }
   .bank-filters { gap: 7px; }
 }
@@ -984,11 +954,6 @@ kbd {
   select { min-height: 46px; font-size: 16px; }
 }
 
-
-/* ============================================================
-   IQ LAB — gaya khusus halaman IQ (ditambahkan, tidak mengubah
-   gaya halaman lain). Semua selector di-scope ke kelas iq-* / nb-*.
-   ============================================================ */
 .soal-svg { display: flex; justify-content: center; margin: 14px 0; color: var(--text); }
 .soal-svg svg { max-width: 100%; height: auto; }
 .opt-svg { display: flex; align-items: center; justify-content: center; color: var(--text); }
@@ -1081,9 +1046,6 @@ kbd {
   .iq-track-num { font-size: 30px; }
 }
 
-/* ============================================================
-   v21 — TEMA TERANG, UKURAN HURUF, PANEL FITUR BARU
-   ============================================================ */
 [data-tema="terang"] {
   --bg-base: #f2f2f7;
   --bg: #f2f2f7;
@@ -1119,12 +1081,10 @@ kbd {
 [data-tema="terang"] .topbar { background: rgba(255, 255, 255, 0.82); }
 [data-tema="terang"] .nav { background: rgba(255, 255, 255, 0.9); }
 
-/* baris tombol tampilan di topbar */
 .tampilan-bar { display: flex; align-items: center; gap: 4px; margin-left: 6px; }
 .tampilan-bar .btn { padding: 5px 8px; font-size: 11px; }
 .font-pill { font-size: 10px; color: var(--text3); min-width: 30px; text-align: center; }
 
-/* panel "hari ini" */
 .hari-ini, .jalur-card, .lanjut-sesi { margin-bottom: 14px; }
 .hari-head { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text); margin-bottom: 10px; }
 .hari-tgl { margin-left: auto; font-size: 10px; color: var(--text3); }
@@ -1141,7 +1101,6 @@ kbd {
 .ulang-mini-item { font-size: 11px; color: var(--text3); padding: 3px 0; }
 .lanjut-sesi { border-color: var(--gold2); background: var(--glow); font-size: 12px; color: var(--text); }
 
-/* rincian per kategori di layar hasil */
 .kat-row { margin-bottom: 9px; }
 .kat-row-top { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 4px; }
 .prog-bar.pass { background: var(--green); }
@@ -1150,23 +1109,19 @@ kbd {
 .ok-text { color: var(--green); display: inline-flex; align-items: center; gap: 4px; }
 .warn-text { color: var(--gold2); display: inline-flex; align-items: center; gap: 4px; }
 
-/* bank soal salah */
 .ulang-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
 .ulang-teks { flex: 1; font-size: 11px; color: var(--text2); }
 .ulang-aksi { display: flex; align-items: center; gap: 6px; }
 .pill-salah { font-size: 10px; padding: 2px 7px; border-radius: 20px; background: var(--surface3); color: var(--text2); }
 
-/* kode sinkron */
 .kode-box {
   width: 100%; min-height: 74px; margin-top: 10px; padding: 9px; border-radius: 10px;
   background: var(--surface2); border: 1px solid var(--border); color: var(--text);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; resize: vertical;
 }
 
-/* kartu pintasan kategori */
 .kat-card-alt { border-style: dashed; border-color: var(--gold2); }
 
-/* aksesibilitas: fokus jelas untuk navigasi keyboard */
 .option:focus-visible, .btn:focus-visible, .nav-btn:focus-visible, .kat-card:focus-visible {
   outline: 3px solid var(--gold3); outline-offset: 2px;
 }
@@ -1174,9 +1129,6 @@ kbd {
   * { animation: none !important; transition: none !important; }
 }
 
-/* ============================================================
-   v22 — kartu hafalan, panel latihan, ajakan pasang
-   ============================================================ */
 .flash-card {
   background: var(--surface2); border: 1px solid var(--border2); border-radius: 16px;
   padding: 22px 18px; min-height: 150px; cursor: pointer; text-align: center;
@@ -1200,9 +1152,6 @@ kbd {
 }
 .tawar-pasang strong { color: var(--white); }
 
-/* ============================================================
-   v23 — chip topik, skor kesiapan, rencana harian
-   ============================================================ */
 .topik-wrap { margin: 10px 0 14px; }
 .topik-bar { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
@@ -1225,9 +1174,6 @@ kbd {
   font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
 }
 
-/* ============================================================
-   v26 — menu lainnya, alur belajar, mode jelang ujian
-   ============================================================ */
 .menu-lain-bg {
   position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 80;
   display: flex; align-items: flex-start; justify-content: center; padding: 70px 14px 14px;
@@ -1254,9 +1200,6 @@ kbd {
 .ringkas-item { font-size: 12px; color: var(--text2); line-height: 1.6; padding-left: 14px; position: relative; }
 .ringkas-item::before { content: '•'; position: absolute; left: 2px; color: var(--gold2); }
 
-/* ============================================================
-   FITUR 7 — Baterai Psikotes, jalur seleksi, tutor
-   ============================================================ */
 .jalur-aktif-badge { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text2);
   background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:8px 12px; margin:10px 0; }
 .jalur-bar { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
@@ -1283,8 +1226,6 @@ kbd {
 .tutor-isi { font-size:13.5px; color:var(--text); line-height:1.65; }
 .tutor-opsi { font-size:12.5px; color:var(--text2); line-height:1.6; padding-left:2px; }
 
-
-/* FITUR 8 - Tes kepribadian Big Five & laporan */
 .b5-tanya { font-size:17px; font-weight:600; line-height:1.5; margin:6px 0 14px; }
 .b5-pilihan { display:flex; flex-direction:column; gap:8px; }
 .b5-pilih { background:var(--surface); border:1px solid var(--border); color:var(--text);
@@ -1295,7 +1236,6 @@ kbd {
 .card.bayar { border-color:var(--gold2); box-shadow:0 0 0 2px var(--glow); }
 .bayar-daftar { display:flex; flex-direction:column; gap:7px; font-size:13.5px; color:var(--text2); margin-top:10px; }
 
-/* FITUR 9 - Profil belajar & fokus harian */
 .card.profil .profil-form { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
 .profil-input { background:var(--surface); border:1px solid var(--border); color:var(--text);
   border-radius:9px; padding:10px 12px; font-size:14px; font-family:inherit; }
@@ -1307,15 +1247,11 @@ kbd {
 .fokus-num { flex:0 0 20px; height:20px; border-radius:50%; background:var(--surface2);
   color:var(--text2); font-size:11px; display:flex; align-items:center; justify-content:center; font-weight:700; }
 
-
-/* FITUR 10 - Tes gambar: panduan & latihan */
 .kanvas { width:100%; max-width:720px; height:auto; background:#fff; border-radius:12px;
   border:1px solid var(--border); touch-action:none; display:block; margin-top:6px; }
 .gambar-info { padding:12px 0; border-top:1px solid var(--border); }
 .gambar-info:first-child { border-top:none; }
 
-
-/* Perbaikan audit UX: tab navigasi terpotong di layar HP (8 tab > lebar layar) */
 .jalur-ket { display:block; font-size:10.5px; color:var(--text3); margin-top:2px; }
 @media (max-width: 460px) {
   .nav { flex-wrap: wrap; overflow-x: visible; justify-content: center; row-gap: 4px; }

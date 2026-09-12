@@ -1,14 +1,4 @@
-// ============================================================
-// FITUR TAMBAHAN 5 — v25
-// 1) Ringkasan Hafalan (lembar ringkas dari semua baris INGAT)
-// 2) Insight waktu belajar (pagi/siang/malam)
-// 3) Riwayat versi (changelog) di dalam aplikasi
-// 4) Tur awal 4 langkah untuk pemakai baru
-// ============================================================
 
-// ============================================================
-// 1. RINGKASAN HAFALAN
-// ============================================================
 var JUDUL_KATEGORI = {
   tkw: 'Wawasan Kebangsaan (tanggal, pasal, Pancasila, TNI)',
   bahasa_inggris: 'Bahasa Inggris (tenses, grammar)',
@@ -45,7 +35,6 @@ window.ringkasanHafalan = function () {
       hasil.push({ kategori: kat, judul: JUDUL_KATEGORI[kategoriKunci(kat)] || kat, items: items });
     }
   });
-  // urutkan kategori sesuai urutan ujian yang lazim
   var urut = ['Wawasan Kebangsaan', 'Kemampuan Verbal', 'Bahasa Inggris', 'Penalaran & Logika',
               'Kemampuan Numerik', 'Matematika', 'Tes Kraepelin (Hitung Cepat)',
               'Tes Gambar & Visual', 'Tes Kepribadian Situasional'];
@@ -114,9 +103,6 @@ window.eksporRingkasan = function () {
   unduhBerkas('ringkasan-hafalan-' + fHariIni() + '.html', h.join('\n'), 'text/html');
 };
 
-// ============================================================
-// 2. INSIGHT WAKTU BELAJAR
-// ============================================================
 window.panelWaktuBelajar = function () {
   var skor = loadScores().filter(function (s) { return typeof s.jam === 'number'; });
   if (skor.length < 4) return '';
@@ -150,9 +136,6 @@ window.panelWaktuBelajar = function () {
     '</div>';
 };
 
-// ============================================================
-// 3. RIWAYAT VERSI
-// ============================================================
 var CHANGELOG = [
   { v: 'v25', tgl: '12 Sep 2026', isi: [
     'Ringkasan Hafalan: lembar kiat dari seluruh bank soal, siap dicetak.',
@@ -208,9 +191,6 @@ window.renderRiwayat = function () {
       'Setiap perubahan data maupun fitur dicatat di sini.</div>' + bagian;
 };
 
-// ============================================================
-// 4. TUR AWAL
-// ============================================================
 var TUR = [
   { j: 'Mulai dari satu sesi', i: 'Tekan Simulasi Format Seleksi (60 soal, 90 menit) atau Mode Belajar. Setelah selesai, kunci dan pembahasan terbuka otomatis. Soal yang salah masuk ke bank soal salah dan muncul lagi besok.' },
   { j: 'Ulangi yang jatuh tempo', i: 'Setiap hari, buka beranda dan kerjakan soal yang perlu diulang (jadwal 1-3-7-14-30 hari). Pola ini yang paling cepat menaikkan nilai.' },
@@ -234,9 +214,6 @@ window.panelTur = function () {
     '</div>';
 };
 
-// ============================================================
-// tempelkan panel + tautan
-// ============================================================
 var _renderSebelumFitur5 = window.render;
 window.render = function () {
   if (_renderSebelumFitur5) _renderSebelumFitur5.apply(this, arguments);

@@ -1,13 +1,4 @@
-// ============================================================
-// FITUR TAMBAHAN 6 — v26
-// 1) Menu "Lainnya" yang bisa dibuka dari halaman mana pun
-// 2) Alur belajar di halaman Tips (mengikuti fitur terbaru)
-// 3) Mode "Jelang Ujian 7 Hari"
-// ============================================================
 
-// ============================================================
-// 1. MENU LAINNYA
-// ============================================================
 var TAUTAN_LAIN = [
   { t: 'Halaman psikotes (bagikan ke teman)', k: 'psikotes', f: "window.open('psikotes/','_blank')", ic: 'globe' },
   { t: 'Ringkasan Hafalan', k: 'ringkasan', f: 'bukaRingkasan()', ic: 'bulb' },
@@ -44,9 +35,6 @@ window.tutupMenuLain = function () {
   menuLainTerbuka = false;
 };
 
-// ============================================================
-// 2. ALUR BELAJAR DI HALAMAN TIPS
-// ============================================================
 var ALUR = [
   ['Kerjakan satu sesi', 'Simulasi Format Seleksi (60 soal/90 menit) atau Mode Belajar satu kategori. Kunci disembunyikan selama tryout supaya hasilnya jujur, lalu terbuka di layar hasil.'],
   ['Baca pembahasan tiap soal salah', 'Setiap pembahasan berformat JAWABAN / cara mengerjakan / INGAT. Soal hitung memakai langkah eksplisit, soal bergambar kadang disertai gambar penjelasan bernomor.'],
@@ -90,9 +78,6 @@ window.panelFiturBaru = function () {
     }).join('') + '</div>';
 };
 
-// ============================================================
-// 3. MODE JELANG UJIAN 7 HARI
-// ============================================================
 window.jelangInfo = function () {
   var mulai = localStorage.getItem('tni_jelang');
   if (!mulai) return null;
@@ -145,9 +130,6 @@ window.panelJelang = function () {
     '</div>';
 };
 
-// ============================================================
-// tempelkan panel
-// ============================================================
 var _renderSebelumFitur6 = window.render;
 window.render = function () {
   if (_renderSebelumFitur6) _renderSebelumFitur6.apply(this, arguments);
@@ -158,7 +140,6 @@ function sisipPanel6() {
   var m = document.getElementById('main');
   if (!m) return;
 
-  // tombol menu di topbar (sekali saja)
   var bar = document.querySelector('.topbar-right');
   if (bar && !document.getElementById('btnMenuLain')) {
     var b = document.createElement('div');

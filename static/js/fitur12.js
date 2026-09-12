@@ -1,16 +1,3 @@
-// ============================================================
-// FITUR 12 — v37: PERSIAPAN WAWANCARA & KESIAPAN DIRI
-//
-// Mengisi celah terakhir baterai psikotes: wawancara (dan kesiapan
-// administratif/jasmani) yang hampir selalu menggugurkan peserta.
-//
-// Kejujuran yang dipegang:
-//  - Tidak ada janji kelulusan; yang dilatih adalah cara menyusun
-//    jawaban dan mengenali apa yang dinilai.
-//  - Penilaian jawaban dilakukan pengguna sendiri dengan kriteria
-//    yang terbuka (bukan penilaian otomatis yang mengarang).
-//  - Catatan jurnal tidak dikirim ke mana pun; tersimpan di perangkat.
-// ============================================================
 
 window.WAWANCARA_SOAL = [
   { k: 'Perkenalkan diri Anda dalam dua menit.',
@@ -193,7 +180,6 @@ window.renderWawancara = function () {
 };
 
 
-// ---------- PEMASANGAN ----------
 var _renderSebelumFitur12 = window.render;
 window.render = function () {
   if (_renderSebelumFitur12) _renderSebelumFitur12.apply(this, arguments);
@@ -205,7 +191,6 @@ function sisipPanel12() {
   if (!m) return;
   if (S.page === 'wawancara') { m.innerHTML = renderWawancara(); return; }
 
-  // modul wawancara di Baterai Psikotes
   if (S.page === 'baterai' && !m.querySelector('.modul-wawancara')) {
     var kotak = m.querySelector('.card');
     if (kotak) {

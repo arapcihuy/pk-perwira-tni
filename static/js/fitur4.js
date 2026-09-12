@@ -1,22 +1,8 @@
-// ============================================================
-// FITUR TAMBAHAN 4 — v24
-// 1) Laporkan soal (kunci terasa salah / ambigu / salah tulis) + ekspor
-// 2) Pencarian Bank Soal diperluas (pembahasan, opsi, topik)
-// 3) Statistik per topik + topik terlemah + drill dari situ
-// 4) Target nilai bisa diatur
-// 5) Ekspor Rapot Kesiapan (HTML siap cetak)
-// 6) Mode 5 menit (10 soal dari topik terlemah)
-// 7) Pengingat belajar (.ics untuk kalender)
-// ============================================================
 
-// ---------- util ----------
 function topikSoal(q) { return q && q.topik ? q.topik : null; }
 
 function semuaStat() { return (typeof statSoal === 'function') ? statSoal() : {}; }
 
-// ============================================================
-// 1. LAPORKAN SOAL
-// ============================================================
 function storeLaporan() {
   try { return JSON.parse(localStorage.getItem('tni_laporan') || '[]') || []; } catch (e) { return []; }
 }
@@ -166,9 +152,6 @@ window.hapusLaporan = function (id) {
   render();
 };
 
-// ============================================================
-// 2. PENCARIAN BANK SOAL DIPERLUAS
-// ============================================================
 window.cocokCariBank = function (item, kata) {
   if (!kata) return true;
   var t = String(kata).toLowerCase();
@@ -177,9 +160,6 @@ window.cocokCariBank = function (item, kata) {
   return bahan.indexOf(t) >= 0;
 };
 
-// ============================================================
-// 3. STATISTIK PER TOPIK
-// ============================================================
 window.statTopik = function () {
   var st = semuaStat();
   var peta = {};
@@ -224,9 +204,6 @@ window.panelTopikLemah = function () {
     '</div></div>';
 };
 
-// ============================================================
-// 4. TARGET NILAI
-// ============================================================
 window.targetNilai = function () {
   var v = parseInt(localStorage.getItem('tni_target') || '80', 10);
   return (isNaN(v) || v < 60 || v > 100) ? 80 : v;
@@ -249,9 +226,6 @@ window.panelTarget = function () {
     '</div>';
 };
 
-// ============================================================
-// 5. EKSPOR RAPOT KESIAPAN
-// ============================================================
 window.eksporRapot = function () {
   var k = hitungKesiapan();
   var t = targetNilai();
@@ -312,9 +286,6 @@ window.eksporRapot = function () {
   unduhBerkas('rapot-kesiapan-' + fHariIni() + '.html', h.join('\n'), 'text/html');
 };
 
-// ============================================================
-// 6. MODE 5 MENIT & PENGINGAT .ICS
-// ============================================================
 window.modeLimaMenit = function (jumlah) {
   if (!katSiapSemua()) {
     S.limaCoba = (S.limaCoba || 0) + 1;
@@ -374,9 +345,6 @@ window.eksporPengingat = function () {
   unduhBerkas('pengingat-belajar-siappsikotes.ics', ics, 'text/calendar');
 };
 
-// ============================================================
-// tempelkan panel ke halaman
-// ============================================================
 var _renderSebelumFitur4 = window.render;
 window.render = function () {
   if (_renderSebelumFitur4) _renderSebelumFitur4.apply(this, arguments);
@@ -418,7 +386,6 @@ function sisipPanel4() {
   }
 }
 
-// pencarian bank: pakai pencocokan yang lebih luas
 var _setBankCatLama = window.setBankCat;
 window.setBankCat = function (k) {
   if (typeof _setBankCatLama === 'function') _setBankCatLama.apply(this, arguments);

@@ -1,13 +1,3 @@
-// ============================================================
-// FITUR 9 — v31: PROFIL BELAJAR (tanpa akun)
-//
-// Tujuan: setiap orang punya "tempat belajar"-nya sendiri — nama, tujuan,
-// dan tanggal ujiannya tersimpan — TANPA membuat akun, tanpa server, tanpa
-// mengirim data ke mana pun. Semua disimpan di perangkat pengguna.
-//
-// Kenapa begini: login sebelum ada nilai = orang langsung pergi. Akun baru
-// perlu saat mereka MEMBAYAR (untuk membuka laporan dari perangkat lain).
-// ============================================================
 
 window.PROFIL = { nama: '', jalur: '', target: '', catatan: '' };
 
@@ -44,7 +34,6 @@ window.hapusProfil = function () {
   render();
 };
 
-// berapa hari lagi ke tanggal ujian
 window.sisaHari = function () {
   var t = bacaProfil().target;
   if (!t) return null;
@@ -104,7 +93,6 @@ window.ubahProfil = function () {
   render();
 };
 
-// ---------- rencana harian yang menyesuaikan fokus pengguna ----------
 window.rencanaFokus = function () {
   bacaProfil();
   var jalur = jalurAktif();
@@ -132,7 +120,6 @@ window.rencanaFokus = function () {
 };
 
 
-// ---------- PEMASANGAN: profil & fokus di beranda ----------
 var _renderSebelumFitur9 = window.render;
 window.render = function () {
   if (_renderSebelumFitur9) _renderSebelumFitur9.apply(this, arguments);

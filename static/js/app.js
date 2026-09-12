@@ -1,10 +1,5 @@
 
-// ============================================================
-// TNI PERWIRA BELAJAR — app.js
-// Semua fungsi di window scope agar inline onclick bisa akses
-// ============================================================
 
-// ---- STATE ----
 var TRYOUT_MAX_SOAL = 60;   // tryout dibatasi 60 soal (90 menit) supaya realistis
 
 var S = {
@@ -26,7 +21,6 @@ var S = {
   wrongIds: [],      // ids soal yang salah untuk drill
 };
 
-// Format durasi: 90 -> "01:30", 5400 -> "1:30:00"
 function fmtDur(sec) {
   if (sec < 0) sec = 0;
   var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
@@ -39,7 +33,6 @@ function loadToTotal() {
 }
 function bumpToTotal() { localStorage.setItem('tni_to_total', String(loadToTotal() + 1)); }
 
-// ---- FULLSCREEN UTILITY ----
 window.toggleFullscreen = function() {
   if (!document.fullscreenElement) {
     if (document.documentElement.requestFullscreen) {
@@ -52,7 +45,6 @@ window.toggleFullscreen = function() {
   }
 };
 
-// ---- SECURITY & SANITIZATION ----
 function escapeHtml(str) {
   if (str === null || str === undefined) return '';
   return String(str)
@@ -74,7 +66,6 @@ function sanitizeImgSrc(url) {
 }
 window.sanitizeImgSrc = sanitizeImgSrc;
 
-// ---- UTILS ----
 function shuffle(arr) {
   var a = arr.slice();
   for (var i = a.length - 1; i > 0; i--) {
@@ -103,7 +94,6 @@ function loadScores() {
 }
 function saveScores(arr) { localStorage.setItem('tni_scores', JSON.stringify(arr)); }
 
-// ---- HEADER STATS ----
 function updateHeaderStats() {
   var el1 = document.getElementById('hStatSoal');
   var el2 = document.getElementById('hStatKat');
@@ -116,7 +106,6 @@ function updateHeaderStats() {
 function jumlahSoalKategori(k) { return jumlahSoal(k); }
 function namaKategoriAman(k) { return namaKategori(k); }
 
-// ---- RENDER ROUTER ----
 function render() {
   var m = document.getElementById('main');
   if (!m) return;
@@ -134,7 +123,6 @@ function render() {
     b.classList.toggle('active', isActive);
   });
 
-  // Keyboard hint hanya saat soal
   var kbh = document.getElementById('kbHint');
   if (kbh) kbh.classList.toggle('show', S.page === 'soal');
 
@@ -161,7 +149,6 @@ function render() {
 }
 window.render = render;
 
-// ---- HOME ----
 function renderHome() {
   var scores = loadScores();
   var avgScore = '-';
@@ -240,7 +227,6 @@ function renderHome() {
     '<div style="text-align:center;margin-bottom:16px"><button class="btn btn-ghost btn-sm" onclick="bukaTentang()">Tentang aplikasi & data</button></div>';
 }
 
-// ---- PILIH KATEGORI ----
 function renderCat() {
   var isTO = S.mode === 'tryout';
   var catKeys = daftarKategori();
@@ -260,7 +246,6 @@ function renderCat() {
       '</div>';
   });
 
-  // kartu pintasan: simulasi lembar Kraepelin ada di menu Psikologi
   items += '<div class="kat-card kat-card-alt" onclick="bukaKraepelinSim()">' +
     '<div class="kat-icon">' + icon('zap', 22) + '</div>' +
     '<div class="kat-name">Simulasi Lembar Kraepelin</div>' +
@@ -276,10 +261,7 @@ function renderCat() {
     '<div class="grid-auto">' + items + '</div>';
 }
 
-// ---- START ----
 function startCat(cat, mode, percobaan) {
-  // data soal dimuat bertahap: tunggu sampai kategori ini siap.
-  // percobaan dibatasi supaya aplikasi tidak berputar terus kalau file gagal dimuat.
   percobaan = percobaan || 0;
   var belumSiap = (cat === 'all') ? !katSiapSemua() : !katSiap(cat);
   if (belumSiap) {
@@ -314,8 +296,6 @@ function startCat(cat, mode, percobaan) {
     S.questions = [];   // kategori tidak dikenal: jangan sampai error
   }
 
-  // Mode tryout dibatasi TRYOUT_MAX_SOAL (60 soal = 90 menit) supaya seperti
-  // ujian sebenarnya. Mode belajar tetap memakai semua soal tanpa timer.
   if (mode === 'tryout' && S.questions.length > TRYOUT_MAX_SOAL) {
     S.questions = S.questions.slice(0, TRYOUT_MAX_SOAL);
   }
@@ -324,12 +304,9 @@ function startCat(cat, mode, percobaan) {
     S.questions = S.questions.slice(0, 25).map(function(q) { return window.acakOpsi ? acakOpsi(q) : q; });
   }
 
-  // acak posisi opsi untuk tryout/simulasi supaya posisi jawaban tidak bisa dihafal
-  // (mode Belajar tetap berurutan agar enak dibaca)
   if (mode === 'tryout' && window.acakOpsi) {
     S.questions = S.questions.map(function(q) { return acakOpsi(q); });
   }
-  // kunci disembunyikan selama tryout, dibuka di layar hasil / mode Review
   S.tampilkanKunci = (mode !== 'tryout');
 
   S.timed = (mode === 'tryout');
@@ -341,12 +318,9 @@ function startCat(cat, mode, percobaan) {
   render();
 }
 
-// ---- SOAL ----
 function renderSoal() {
   if (!S.questions.length) return '<div class="empty"><div class="empty-icon">' + icon('alert', 44) + '</div><p>Tidak ada soal.</p></div>';
 
-  // pengaman: indeks soal bisa tertinggal dari daftar soal (mis. sesi yang dilanjutkan dengan
-  // daftar lebih pendek, atau sisa indeks dari kategori sebelumnya) — jepit agar tidak blank
   if (typeof S.idx !== 'number' || isNaN(S.idx)) S.idx = 0;
   if (S.idx < 0) S.idx = 0;
   if (S.idx > S.questions.length - 1) S.idx = S.questions.length - 1;
@@ -355,7 +329,6 @@ function renderSoal() {
   var n = S.questions.length;
   var pct = Math.round(((S.idx + 1) / n) * 100);
 
-  // fitur tambahan: mulai hitung waktu saat soal ini pertama kali tampil
   if (S.tSoalIdx !== S.idx) {
     S.tSoalIdx = S.idx;
     S.tStart = Date.now();
@@ -468,7 +441,6 @@ function renderSoal() {
   '</div>';
 }
 
-// ---- PALETTE (CAT MODAL) ----
 function openPalette() {
   var grid = document.getElementById('paletteGrid');
   var modal = document.getElementById('paletteModal');
@@ -514,7 +486,6 @@ function toggleFlag(idx) {
 }
 window.toggleFlag = toggleFlag;
 
-// ---- TIMER ----
 function startTimerIfNeeded() {
   if (!S.timed || S.timeLeft <= 0) return;   // sesi tanpa timer (drill/belajar) tidak dihitung
   if (S.timer) return;
@@ -533,7 +504,6 @@ function startTimerIfNeeded() {
   }, 1000);
 }
 
-// ---- ACTIONS ----
 window.pickAnswer = function(i) {
   if (S.answers[S.idx] !== undefined) return;
   S.answers[S.idx] = i;
@@ -546,8 +516,6 @@ window.pickAnswer = function(i) {
   if (i === q.jawaban) prog[kat].benar++;
   saveProgress(prog);
 
-  // fitur tambahan: catat soal benar/salah untuk pengulangan berjadwal,
-  // ukur waktu pengerjaan, hitung aktivitas harian, simpan sesi
   if (window.catatSoalSalah) catatSoalSalah(q.id, i === q.jawaban);
   if (window.catatStatSoal) catatStatSoal(q.id, i === q.jawaban);
   if (window.catatWaktuSoal && S.tStart) catatWaktuSoal(S.idx, Math.round((Date.now() - S.tStart) / 1000));
@@ -610,7 +578,6 @@ window.finishSession = function() {
   };
 
   if (S.mode === 'iq') {
-    // sesi latihan IQ dicatat terpisah supaya riwayat tryout tetap bersih
     var sesi = (function () {
       try { return JSON.parse(localStorage.getItem('tni_iq_sesi') || '[]'); } catch (e) { return []; }
     })();
@@ -620,7 +587,6 @@ window.finishSession = function() {
     });
     localStorage.setItem('tni_iq_sesi', JSON.stringify(sesi.slice(-30)));
   } else if (S.mode === 'drill') {
-    // drill (soal salah / ulangan) tidak masuk riwayat tryout
     if (window.tambahHarian) tambahHarian('tryout', 0);
   } else {
     var scores = loadScores();
@@ -639,7 +605,6 @@ window.finishSession = function() {
   }
   updateHeaderStats();
 
-  // fitur tambahan: rekap per kategori + kecepatan, lalu hapus penanda sesi aktif
   if (window.rekapHasil) rekapHasil(S.lastResult);
   if (window.buangSesiAktif) buangSesiAktif();
 
@@ -647,7 +612,6 @@ window.finishSession = function() {
   render();
 };
 
-// ---- HASIL ----
 function renderHasil() {
   var res = S.lastResult;
   if (!res) {
@@ -703,7 +667,6 @@ function renderHasil() {
 }
 
 window.retrySession = function() {
-  // sesi IQ diulang lewat spesifikasi tersimpan (bukan lewat SOAL_DATABASE)
   if (S.iqSpec && typeof IQ_GEN !== 'undefined') {
     var items = IQ_GEN.buat(S.iqSpec.domain, S.iqSpec.jumlah);
     if (items.length) { iqMulai(items, S.iqSpec.detik); return; }
@@ -718,7 +681,6 @@ window.retrySession = function() {
 };
 
 window.drillWrong = function() {
-  // Kumpulkan soal yang dijawab salah
   var wrongQ = [];
   for (var i = 0; i < S.questions.length; i++) {
     var a = S.answers[i];
@@ -741,7 +703,6 @@ window.drillWrong = function() {
 };
 
 window.startSimulasi60 = function() {
-  // Simulasi tryout 60 soal 90 menit (campuran semua kategori)
   if (!katSiapSemua()) {
     S.simCoba = (S.simCoba || 0) + 1;
     if (S.simCoba > 2) { S.page = 'gagal'; render(); return; }
@@ -774,7 +735,6 @@ window.startSimulasi60 = function() {
 };
 
 window.reviewSession = function() {
-  // Tampilkan semua soal dalam mode belajar dengan jawaban yang sudah ada
   S.mode = 'learn';
   S.tampilkanKunci = true;
   S.idx = 0;
@@ -782,7 +742,6 @@ window.reviewSession = function() {
   render();
 };
 
-// ---- BANK SOAL ----
 function renderBank() {
   var butuh = (S.bankCat === 'all') ? pastikanSemua() : pastikanKategori(S.bankCat);
   var bankSiap = (S.bankCat === 'all') ? katSiapSemua() : katSiap(S.bankCat);
@@ -809,7 +768,6 @@ function renderBank() {
   var totalKategori = list.length;
   if (q) {
     list = list.filter(function(s) {
-      // pencarian diperluas (pertanyaan, opsi, pembahasan, topik) lewat fitur4
       if (window.cocokCariBank) return cocokCariBank(s, q);
       return String(s.pertanyaan).toLowerCase().indexOf(q) >= 0 ||
         String(s.katNama).toLowerCase().indexOf(q) >= 0;
@@ -823,7 +781,6 @@ function renderBank() {
 
   var limit = Math.min(S.bankLimit || 60, list.length);
   var items = list.slice(0, limit).map(function(s, i) {
-    // Encode soal ke base64 untuk menghindari masalah quote
     var encoded = btoa(encodeURIComponent(JSON.stringify(s)));
     return '<div class="bank-item" onclick="showModal(\'' + encoded + '\')">' +
       '<div class="bi-meta">' + (i+1) + '. ' + escapeHtml(s.katNama) + '</div>' +
@@ -859,7 +816,6 @@ window.bankMore = function() { S.bankLimit = (S.bankLimit || 60) + 60; bankReren
 var _bankSearchTimer = null;
 window.bankSearch = function(v) {
   if (_bankSearchTimer) clearTimeout(_bankSearchTimer);
-  // debounce sederhana supaya tidak render tiap ketikan
   _bankSearchTimer = setTimeout(function() {
     var aktif = document.activeElement;
     var pos = aktif && aktif.id === 'bankSearch' ? aktif.selectionStart : null;
@@ -910,7 +866,6 @@ window.closeModal = function() {
   if (m) m.classList.remove('open');
 };
 
-// ---- PROGRESS ----
 function renderProg() {
   var prog = loadProgress();
   var scores = loadScores();
@@ -938,7 +893,6 @@ function renderProg() {
         '</div>';
       }).join('') + '</div>';
 
-  // --- seksi IQ Lab ---
   var iqKeys = Object.keys(prog).filter(function (k) { return k.indexOf('IQ — ') === 0; });
   var iqRows = iqKeys.map(function (k) {
     var p = prog[k];
@@ -1030,7 +984,6 @@ window.importData = function(event) {
         throw new Error('Struktur file JSON tidak valid.');
       }
 
-      // Validasi tni_prog
       var cleanProg = {};
       if (json.tni_prog && typeof json.tni_prog === 'object' && !Array.isArray(json.tni_prog)) {
         Object.keys(json.tni_prog).forEach(function(k) {
@@ -1045,7 +998,6 @@ window.importData = function(event) {
         });
       }
 
-      // Validasi tni_scores
       var cleanScores = [];
       if (Array.isArray(json.tni_scores)) {
         json.tni_scores.slice(0, 50).forEach(function(sc) {
@@ -1061,7 +1013,6 @@ window.importData = function(event) {
         });
       }
 
-      // Validasi tni_psi_progress (format yang dipakai psikologi.js = array)
       var cleanPsi = [];
       var psiSrc = [];
       if (Array.isArray(json.tni_psi_progress)) psiSrc = json.tni_psi_progress;
@@ -1078,7 +1029,6 @@ window.importData = function(event) {
         }
       });
 
-      // validasi data IQ Lab
       var cleanIqLog = [];
       if (Array.isArray(json.tni_iq_log)) {
         json.tni_iq_log.slice(0, 60).forEach(function (e) {
@@ -1136,7 +1086,6 @@ window.resetAll = function() {
   }
 };
 
-// ---- NAV HELPERS ----
 window.goPage = function(page, mode) {
   clearInterval(S.timer); S.timer = null;
   S.mode = mode || null;
@@ -1156,7 +1105,6 @@ window.navTo = function(page) {
   render();
 };
 
-// ---- KEYBOARD ----
 document.addEventListener('keydown', function(e) {
   if (S.page !== 'soal') return;
   var t = e.target;
@@ -1171,7 +1119,6 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Close modal on backdrop click
 document.addEventListener('click', function(e) {
   var modal1 = document.getElementById('soalModal');
   if (modal1 && e.target === modal1) closeModal();
@@ -1179,7 +1126,6 @@ document.addEventListener('click', function(e) {
   if (modal2 && e.target === modal2) closePaletteModal();
 });
 
-// ---- INIT ----
 document.addEventListener('DOMContentLoaded', function() {
   updateHeaderStats();
   render();

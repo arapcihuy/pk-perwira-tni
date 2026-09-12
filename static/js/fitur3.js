@@ -1,23 +1,9 @@
-// ============================================================
-// FITUR TAMBAHAN 3 — v23
-// 1) Filter Bank Soal per TOPIK + drill topik
-// 2) Skor kesiapan ujian (dengan rentang kepercayaan)
-// 3) Rencana harian otomatis
-// 4) Rapor kesiapan menyatu (bank + psikotes + IQ Lab)
-// 5) Riwayat Kraepelin antar sesi
-// 6) Waktu per kategori (dipakai layar hasil)
-// 7) Halaman Tentang aplikasi
-// ============================================================
 
-// ---------- util ----------
 function semuaSoalLengkap() {
   return getAllSoal();
 }
 function ringkas(cat, q) { return q; }
 
-// ============================================================
-// 1. FILTER TOPIK DI BANK SOAL
-// ============================================================
 window.TOPIK_S = { cat: 'all', topik: 'all' };
 
 window.daftarTopik = function (cat) {
@@ -88,15 +74,11 @@ window.drillTopik = function (topik, jumlah) {
   render();
 };
 
-// saring daftar bank soal sesuai topik terpilih
 window.bankSaringTopik = function (q) {
   if (!TOPIK_S.topik || TOPIK_S.topik === 'all') return true;
   return q.topik === TOPIK_S.topik;
 };
 
-// ============================================================
-// 2. SKOR KESIAPAN UJIAN
-// ============================================================
 function statSoalSemua() { return (typeof statSoal === 'function') ? statSoal() : {}; }
 
 window.hitungKesiapan = function () {
@@ -113,7 +95,6 @@ window.hitungKesiapan = function () {
   var akurasi = percobaan ? Math.round((benar / percobaan) * 100) : 0;
   var cakupan = jmlSoal ? Math.round((dikerjakan / jmlSoal) * 100) : 0;
 
-  // nilai tryout terakhir (bila ada) sebagai pembanding
   var skor = loadScores();
   var nSkor = skor.slice(-5);
   var rataTryout = nSkor.length ? Math.round(nSkor.reduce(function (a, s) { return a + (s.nilai || 0); }, 0) / nSkor.length) : null;
@@ -122,7 +103,6 @@ window.hitungKesiapan = function () {
   if (percobaan >= 20) {
     var dasar = (rataTryout !== null) ? Math.round((akurasi * 0.6) + (rataTryout * 0.4)) : akurasi;
     perkiraan = dasar;
-    // rentang makin sempit bila soal yang dikerjakan makin banyak
     rentang = Math.max(3, Math.round(12 - (cakupan / 100) * 8));
     catatan = 'Perkiraan dari akurasi latihan dan ' + (rataTryout !== null ? 'nilai tryout terakhir' : 'cakupan latihan') +
       '. Targetmu ' + tgt + ', jadi status dinilai terhadap target itu.';
@@ -164,9 +144,6 @@ window.panelKesiapan = function () {
     '</div>';
 };
 
-// ============================================================
-// 3. RENCANA HARIAN OTOMATIS
-// ============================================================
 window.rencanaHarian = function () {
   if (!katSiapSemua()) return null;
   var st = statSoalSemua();
@@ -221,9 +198,6 @@ window.drillKategori = function (namaKat) {
   startCat(kunci, 'drill25');
 };
 
-// ============================================================
-// 4. RAPOR KESIAPAN MENYATU (bank + psikotes + IQ Lab)
-// ============================================================
 window.panelRapor = function () {
   var k = hitungKesiapan();
   var psi = (typeof PSI !== 'undefined' && PSI.history) ? PSI.history.slice(-8) : [];
@@ -260,9 +234,6 @@ window.panelRapor = function () {
     '</div>';
 };
 
-// ============================================================
-// 5. RIWAYAT KRAEPELIN ANTAR SESI
-// ============================================================
 window.panelKraepelinRiwayat = function () {
   if (typeof PSI === 'undefined' || !PSI.history) return '';
   var krap = PSI.history.filter(function (h) { return /kraepelin/i.test(h.testName || ''); }).slice(-10);
@@ -300,9 +271,6 @@ window.panelKraepelinRiwayat = function () {
     '</div>';
 };
 
-// ============================================================
-// 6. WAKTU PER KATEGORI (dipakai layar hasil)
-// ============================================================
 window.hitungWaktuKategori = function () {
   var dur = S.dur || {};
   var per = {};
@@ -337,9 +305,6 @@ window.panelKecepatanKategori = function (res) {
     '</div>';
 };
 
-// ============================================================
-// 7. HALAMAN TENTANG
-// ============================================================
 window.bukaTentang = function () {
   S.page = 'tentang';
   render();
@@ -442,9 +407,6 @@ window.tampilkanPakaiPenyimpanan = async function () {
   }
 };
 
-// ============================================================
-// tempelkan panel-panel ke halaman terkait
-// ============================================================
 var _renderSebelumFitur3 = window.render;
 window.render = function () {
   if (_renderSebelumFitur3) _renderSebelumFitur3.apply(this, arguments);

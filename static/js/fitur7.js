@@ -1,15 +1,4 @@
-// ============================================================
-// FITUR 7 — v29: FOKUS ULANG KE PSIKOTES + JALUR SELEKSI
-//
-// 1. Identitas produk (nama netral, satu tempat untuk diubah)
-// 2. Jalur seleksi: Kedinasan / TNI / Polri / CPNS-PPPK
-// 3. Layar "Baterai Psikotes": seluruh alat tes dalam satu urutan
-// 4. Tutor Lapisan 0 (tanpa unduhan): menjelaskan ulang dari materi
-//    teraudit — tidak mengarang, karena AI tidak dipakai untuk fakta.
-// 5. Pintu Lapisan 1 (AI offline opsional) — disiapkan, belum aktif.
-// ============================================================
 
-// ---------- 1. IDENTITAS PRODUK (ubah di sini saja) ----------
 window.NAMA_APP = 'SiapPsikotes';
 window.SUB_APP = 'Latihan Tes IQ, Psikotes Kerja & Kepribadian — Kedinasan, TNI, Polri, CPNS';
 
@@ -21,7 +10,6 @@ window.terapkanIdentitas = function () {
   try { localStorage.setItem(kunci, NAMA_APP); } catch (e) {}
 };
 
-// ---------- 2. JALUR SELEKSI ----------
 window.JALUR = {
   kedinasan: {
     nama: 'Sekolah Kedinasan',
@@ -77,8 +65,6 @@ window.setJalur = function (k) {
   if (S.page === 'baterai') render(); else goHome();
 };
 
-// ---------- 3. BATERAI PSIKOTES ----------
-// Status disimpulkan dari riwayat yang SUDAH ada (tidak ada pencatatan baru).
 window.bateri = function () {
   var modul = [
     { id: 'iq', nama: 'Tes Intelegensi (IQ)', mengukur: 'Logika, matriks, deret, rotasi, verbal — inti tes IST/CFIT',
@@ -201,9 +187,6 @@ window.mulaiSimulasiJalur = function (kunci) {
   render();
 };
 
-// ---------- 4. TUTOR LAPISAN 0 (tanpa unduhan, tanpa mengarang) ----------
-// Semua jawaban tutor diambil dari pembahasan yang sudah diaudit. Tidak ada
-// pemanggilan model, jadi tidak ada risiko fakta karangan.
 
 function barisPembahasan(q) {
   return String(q.pembahasan || '').split('\n').map(function (x) { return x.trim(); }).filter(Boolean);
@@ -272,15 +255,6 @@ window.tutorGambar = function () {
     'Karena itu tes gambar tidak bisa dihafal — yang bisa disiapkan hanya ketenangan dan kelengkapan.');
 };
 
-// ---------- 5. KEPUTUSAN BATAS AI (dikunci di kode) ----------
-// Aturan pemilik produk, dan disimpan di sini supaya tidak dilanggar oleh perubahan berikutnya:
-//   1. AI di aplikasi ini HANYA untuk mengajar (menjelaskan materi yang sudah diaudit).
-//   2. TIDAK ADA AI online / API berbayar. Nol biaya per pertanyaan, tanpa akun, tanpa server.
-//   3. AI tidak boleh dipakai untuk hal lain: tidak untuk membuat fakta baru, tidak untuk menilai
-//      pengguna, tidak untuk mengarang soal yang langsung dipakai.
-// Cara menegakkannya: hanya model yang berjalan DI PERANGKAT (Lapisan 1) yang boleh dipakai, dan itu
-// pun hanya untuk menulis ulang pembahasan teraudit. Aplikasi ini tidak pernah memanggil layanan AI
-// lewat jaringan — dijaga oleh pemeriksa otomatis di tools/peraturan-mutu.py (butir P11).
 window.AI_KEBIJAKAN = {
   hanyaMengajar: true,
   hanyaOffline: true,
@@ -293,7 +267,6 @@ window.aiOnlineDilarang = function () {
   return AI_KEBIJAKAN.aiOnline === false;
 };
 
-// ---------- 5b. LAPISAN 1 (AI offline) — pintu disiapkan, belum aktif ----------
 window.aiOfflineStatus = function () {
   var ada = (typeof navigator !== 'undefined' && navigator.gpu) ? true : false;
   return { didukungWebGPU: ada, aktif: false, ukuranUnduhan: '±400 MB', model: 'model kecil di perangkat' };
@@ -319,7 +292,6 @@ window.panelAiOffline = function () {
     '</div>';
 };
 
-// ---------- 6. LAYAR BATERAI ----------
 window.renderBateraiPsi = function () {
   var j = jalurAktif();
   var jj = j && JALUR[j] ? JALUR[j] : null;
@@ -355,9 +327,6 @@ window.renderBateraiPsi = function () {
 };
 
 
-// ============================================================
-// 7. PEMASANGAN: halaman baterai, tutor di layar soal, navigasi
-// ============================================================
 var _renderSebelumFitur7 = window.render;
 window.render = function () {
   if (_renderSebelumFitur7) _renderSebelumFitur7.apply(this, arguments);
@@ -368,14 +337,12 @@ function sisipPanel7() {
   var m = document.getElementById('main');
   if (!m) return;
 
-  // halaman baterai: ganti isi #main
   if (S.page === 'baterai') {
     m.innerHTML = renderBateraiPsi();
     tandaiNavAktif7();
     return;
   }
 
-  // tutor di layar soal: hanya pada mode belajar dan setelah dijawab
   if (S.page === 'soal' && S.mode === 'learn') {
     var q = S.questions[S.idx];
     var sudahDijawab = S.answers && S.answers[S.idx] !== undefined;
@@ -387,7 +354,6 @@ function sisipPanel7() {
     }
   }
 
-  // label jalur aktif di beranda
   if (S.page === 'home') {
     var j = jalurAktif();
     if (j && JALUR[j] && !document.querySelector('.jalur-aktif-badge')) {

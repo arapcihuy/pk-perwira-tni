@@ -1,17 +1,4 @@
-// ============================================================
-// FITUR TAMBAHAN — v21
-// 1) Tema terang/gelap + ukuran huruf
-// 2) Bank soal salah + pengulangan berjadwal (1-3-7-14-30 hari)
-// 3) Kecepatan per soal
-// 4) Rekap hasil per kategori + rekomendasi
-// 5) Lanjutkan sesi yang tertutup
-// 6) Jalur belajar 28 hari + target harian
-// 7) Kode sinkron antar perangkat
-// 8) Ekspor soal salah (HTML siap cetak)
-// 9) Aksesibilitas
-// ============================================================
 
-// ---------- util tanggal (tanpa jam, biar jadwal ulang stabil) ----------
 function fKey(d) {
   return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
 }
@@ -26,9 +13,6 @@ function fSelisihHari(a) {   // selisih hari dari tanggal a sampai hari ini
   return Math.round((d2 - d1) / 86400000);
 }
 
-// ============================================================
-// 1. TEMA & UKURAN HURUF
-// ============================================================
 window.temaAktif = function() { return localStorage.getItem('tni_tema') || 'gelap'; };
 window.fontAktif = function() { return parseInt(localStorage.getItem('tni_font') || '100', 10) || 100; };
 
@@ -66,9 +50,6 @@ window.tombolTampilan = function() {
     '</div>';
 };
 
-// ============================================================
-// 2. BANK SOAL SALAH + PENGULANGAN BERJADWAL
-// ============================================================
 var INTERVAL_ULANG = [1, 3, 7, 14, 30];   // hari
 
 function bankSalah() {
@@ -88,8 +69,6 @@ window.catatSoalSalah = function(id, benar) {
     it.j = fTambahHari(1);
     it.t = fHariIni();
   } else {
-    // hanya soal yang PERNAH salah yang dijadwalkan ulang.
-    // Soal yang dari awal dijawab benar tidak perlu diulang.
     if (!it.s) { delete b[id]; simpanBankSalah(b); return; }
     it.b++;
     it.tahap = (it.tahap || 0) + 1;
@@ -157,7 +136,6 @@ window.hapusSatuSoalSalah = function(id) {
   render();
 };
 
-// panel beranda: apa yang harus dikerjakan hari ini
 window.panelHariIni = function() {
   var jml = jumlahUlang();
   if (jml > 0 && !katSiapSemua()) pastikanSemua();
@@ -195,9 +173,6 @@ window.panelHariIni = function() {
     '</div>';
 };
 
-// ============================================================
-// 3. CATATAN HARIAN (untuk target & jalur belajar)
-// ============================================================
 function harian() {
   var kosong = { tgl: fHariIni(), soal: 0, tryout: 0 };
   try {
@@ -213,15 +188,11 @@ window.tambahHarian = function(kunci, n) {
 };
 window.harianInfo = harian;
 
-// ============================================================
-// 4. KECEPATAN & REKAP HASIL
-// ============================================================
 window.catatWaktuSoal = function(idx, detik) {
   if (!S.dur) S.dur = {};
   S.dur[idx] = detik;
 };
 
-// dipanggil dari finishSession sebelum layar hasil dirender
 window.rekapHasil = function(res) {
   var n = S.questions.length;
   var perKat = {};
@@ -242,7 +213,6 @@ window.rekapHasil = function(res) {
   res.perKat = perKat;
   res.detikPerSoal = hitung ? Math.round(totalDetik / hitung) : 0;
   res.soalLambat = lambat.length;
-  // bank soal salah: satu item untuk tiap soal yang dijawab salah
   for (var j = 0; j < n; j++) {
     if (S.answers[j] !== undefined && S.answers[j] !== S.questions[j].jawaban) {
       catatSoalSalah(S.questions[j].id, false);
@@ -296,9 +266,6 @@ window.panelKecepatan = function(res) {
     '</div>';
 };
 
-// ============================================================
-// 5. LANJUTKAN SESI
-// ============================================================
 window.simpanSesiAktif = function() {
   if (S.page !== 'soal' || !S.questions.length) return;
   try {
@@ -366,9 +333,6 @@ window.panelLanjutSesi = function() {
     '</div></div>';
 };
 
-// ============================================================
-// 6. JALUR BELAJAR 28 HARI
-// ============================================================
 window.jalurInfo = function() {
   var mulai = localStorage.getItem('tni_jalur_mulai');
   if (!mulai) return null;
@@ -413,9 +377,6 @@ window.panelJalur = function() {
     '</div>';
 };
 
-// ============================================================
-// 7. KODE SINKRON ANTAR PERANGKAT
-// ============================================================
 var KUNCI_SINKRON = ['tni_prog', 'tni_wrong', 'tni_scores', 'tni_to_total', 'tni_harian',
                      'tni_iq_log', 'tni_iq_meta', 'tni_iq_nb', 'tni_iq_sesi', 'tni_jalur_mulai', 'tni_psi_progress'];
 
@@ -480,9 +441,6 @@ window.panelSinkron = function() {
     '</div>';
 };
 
-// ============================================================
-// 8. EKSPOR SOAL SALAH (HTML siap cetak / simpan)
-// ============================================================
 window.eksporSoalSalah = function() {
   var b = bankSalah();
   var ids = Object.keys(b);
@@ -527,9 +485,6 @@ window.eksporSoalSalah = function() {
   setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
 };
 
-// ============================================================
-// 9. PANEL PROGRESS TAMBAHAN
-// ============================================================
 window.panelBankSalah = function() {
   if (!katSiapSemua()) pastikanSemua();
   var daftar = daftarUlang();
@@ -558,9 +513,6 @@ window.panelBankSalah = function() {
     '</div></div>';
 };
 
-// ============================================================
-// 10. PINTASAN SIMULASI KRAEPELIN
-// ============================================================
 window.bukaKraepelinSim = function() {
   navTo('psikologi');
   setTimeout(function() {
@@ -568,11 +520,7 @@ window.bukaKraepelinSim = function() {
   }, 250);
 };
 
-// ============================================================
-// 11. AKSESIBILITAS
-// ============================================================
 function pasangA11y() {
-  // beri label pada tombol pilihan & tombol navigasi yang hanya bergambar
   document.querySelectorAll('.option').forEach(function(el, i) {
     var teks = (el.querySelector('.option-text') || el).textContent.trim().slice(0, 120);
     el.setAttribute('role', 'button');
@@ -589,16 +537,12 @@ function pasangA11y() {
   if (main && !main.hasAttribute('aria-live')) main.setAttribute('aria-live', 'polite');
 }
 
-// ============================================================
-// INIT
-// ============================================================
 terapkanTema();
 
-// tempelkan panel-panel tambahan setiap kali halaman dirender ulang
 var _renderSebelumFitur = window.render;
 window.render = function() {
   if (_renderSebelumFitur) _renderSebelumFitur.apply(this, arguments);
-  try { sisipPanel(); } catch (e) { /* jangan sampai fitur tambahan mematikan aplikasi */ }
+  try { sisipPanel(); } catch (e) {  }
 };
 
 window.buildKu = function() {
@@ -649,7 +593,6 @@ function sisipPanel() {
   pasangA11y();
 }
 
-// simpan sesi berkala saat sedang mengerjakan soal
 setInterval(function() {
   if (S.page === 'soal') simpanSesiAktif();
 }, 8000);

@@ -1,10 +1,4 @@
-// ============================================================
-// TES PSIKOLOGI TNI AU - Native-like PWA
-// Aplikasi lengkap dengan Kraepelin, Memory Span, Digit Span,
-// Aritmatika Lisan, dan Deret Angka
-// ============================================================
 
-// State management untuk tes psikologi
 var PSI = {
   page: 'psi-home',
   testType: null,
@@ -17,31 +11,25 @@ var PSI = {
   sessionId: 0,      // token untuk guard async closure (play kata/angka)
   timerInterval: null,
 
-  // Kraepelin specific
   kraepelinData: null,
   kraepelinCol: 0,
   kraepelinRow: 0,
   kraepelinAnswers: [],
 
-  // Memory Span specific
   memoryCatIdx: 0,
   memoryPhase: 'pick', // 'pick' | 'listen' | 'remember' | 'write'
 
-  // Digit Span specific
   digitPhase: 'listen',
 
-  // Progress tracking
   scores: {},
   history: []
 };
 
-// Load progress dari localStorage
 function loadPsiProgress() {
   try {
     var stored = localStorage.getItem('tni_psi_progress');
     if (!stored) return;
     var parsed = JSON.parse(stored);
-    // toleransi format: array (format asli) atau {history:[...]} (hasil import lama)
     if (Array.isArray(parsed)) PSI.history = parsed;
     else if (parsed && Array.isArray(parsed.history)) PSI.history = parsed.history;
     else PSI.history = [];
@@ -79,15 +67,10 @@ function escapeHtml(str) {
 function normalizeAnswer(str) {
   if (str === null || str === undefined) return '';
   var s = String(str).trim().toLowerCase();
-  // Hapus prefix "Rp" atau "Rp."
   s = s.replace(/^rp\.?\s*/i, '');
-  // Ganti pemisah waktu jika ada format jam (15.15 -> 15:15)
   if (/^\d{1,2}\.\d{2}$/.test(s)) s = s.replace('.', ':');
-  // Hapus titik ribuan (misal: 2.500 -> 2500, 40.000 -> 40000, 450.000 -> 450000)
   s = s.replace(/(\d+)\.(\d{3})\b/g, '$1$2');
-  // Normalisasi koma desimal ke titik (misal: 3,5 -> 3.5)
   s = s.replace(',', '.');
-  // Hapus satuan di akhir (misal: jam, menit, km, dtk, buah)
   s = s.replace(/\s*(jam|menit|mnt|dtk|detik|km|cm|m|orang|hari|buah|pensil|apel)$/i, '');
   return s.trim();
 }
@@ -97,14 +80,10 @@ function isAnswerMatch(userAns, correctAns) {
   var u = normalizeAnswer(userAns);
   var c = normalizeAnswer(correctAns);
   if (u === c) return true;
-  // Khusus durasi jam/menit (3.5 jam vs 3 jam 30 menit vs 210)
   if ((c === '3.5' || c === '3 jam 30 menit') && (u === '3.5' || u === '3 jam 30 menit' || u === '210' || u === '3:30')) return true;
   return false;
 }
 
-// ============================================================
-// RENDER FUNCTIONS
-// ============================================================
 
 function renderPsiHome() {
   if (typeof SOAL_PSIKOLOGI === 'undefined') {
@@ -154,7 +133,6 @@ function renderPsiHome() {
 
   html += '</div>';
 
-  // Progress History
   if (PSI.history.length > 0) {
     html += '<div style="margin-top:24px">' +
       '<div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:12px">Riwayat Latihan</div>';
@@ -178,7 +156,6 @@ function renderPsiHome() {
   return html;
 }
 
-// Start tes psikologi
 function startPsiTest(testKey) {
   PSI.testType = testKey;
   PSI.currentTest = SOAL_PSIKOLOGI[testKey];
@@ -200,16 +177,12 @@ function startPsiTest(testKey) {
   }
 }
 
-// Tombol kembali ke menu psikologi
 function psiBackHome() {
   psiTimerStop();
   PSI.page = 'psi-home';
   render();
 }
 
-// ============================================================
-// TES TERTULIS: ARITMATIKA LISAN & DERET ANGKA
-// ============================================================
 
 function startWrittenTest() {
   PSI.testList = PSI.currentTest.soal.slice();
@@ -236,7 +209,6 @@ function renderPsiTest() {
     '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">← Menu</button>' +
   '</div>';
 
-  // progress bar
   var pct = Math.round((PSI.testIdx / n) * 100);
   html += '<div class="progress-track" style="margin-bottom:16px"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
   html += '<div style="font-size:12px;color:var(--text3);margin-bottom:16px">Soal ' + (PSI.testIdx + 1) + ' / ' + n + '</div>';
@@ -285,9 +257,6 @@ window.nextWrittenQuestion = function() {
   }
 };
 
-// ============================================================
-// TES KRAEPELIN
-// ============================================================
 
 function startKraepelin() {
   PSI.kraepelinData = PSI.currentTest.generateSoal();
@@ -303,7 +272,6 @@ function startKraepelin() {
   render();
   startKraepelinTimer();
 
-  // Fokus ke input pertama
   setTimeout(function() {
     var first = document.getElementById('k_0_0');
     if (first) first.focus();
@@ -337,7 +305,6 @@ function startKraepelinTimer() {
 function renderKraepelin() {
   var html = '<div style="padding:16px;height:calc(100vh - 140px);overflow:hidden;display:flex;flex-direction:column">';
 
-  // Header
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">' +
     '<div style="display:flex;gap:8px;align-items:center">' +
       '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">←</button>' +
@@ -355,14 +322,12 @@ function renderKraepelin() {
     '</div>' +
   '</div>';
 
-  // Kraepelin Grid (scroll vertikal & horizontal)
   html += '<div style="flex:1;overflow:auto;background:var(--bg-elevated);border-radius:8px;padding:16px">';
   html += '<div style="display:flex;gap:24px">';
 
   for (var col = 0; col < PSI.kraepelinData.length; col++) {
     html += '<div style="display:flex;flex-direction:column;gap:4px">';
 
-    // Baris terakhir hanya angka (tidak ada pasangan untuk dijumlahkan)
     var lastRow = PSI.kraepelinData[col].length - 1;
     for (var row = 0; row < PSI.kraepelinData[col].length; row++) {
       var isActive = col === PSI.kraepelinCol && row === PSI.kraepelinRow;
@@ -393,7 +358,6 @@ function renderKraepelin() {
 
   html += '</div></div>';
 
-  // Instructions
   html += '<div style="margin-top:16px;padding:12px;background:var(--bg-elevated);border-radius:8px;font-size:12px;color:var(--text2)">' +
     '<strong style="color:var(--white)">Instruksi:</strong> Jumlahkan 2 angka berurutan (atas + bawah), tulis digit terakhir hasilnya. ' +
     'Tekan Enter untuk lanjut ke bawah, Tab untuk lanjut ke kolom berikutnya.' +
@@ -407,7 +371,6 @@ function renderKraepelin() {
 function handleKraepelinInput(e, col, row) {
   var value = e.target.value;
 
-  // Only allow digits
   if (!/^[0-9]$/.test(value) && value !== '') {
     e.target.value = '';
     return;
@@ -415,7 +378,6 @@ function handleKraepelinInput(e, col, row) {
 
   PSI.kraepelinAnswers[col][row] = value;
 
-  // Enter: move down
   if (e.key === 'Enter' && value !== '') {
     if (row < PSI.kraepelinData[col].length - 2) {
       PSI.kraepelinRow = row + 1;
@@ -425,7 +387,6 @@ function handleKraepelinInput(e, col, row) {
         if (nextInput) nextInput.focus();
       }, 10);
     } else {
-      // Move to next column
       if (col < PSI.kraepelinData.length - 1) {
         PSI.kraepelinCol = col + 1;
         PSI.kraepelinRow = 0;
@@ -437,7 +398,6 @@ function handleKraepelinInput(e, col, row) {
     }
   }
 
-  // Tab: move to next column
   if (e.key === 'Tab') {
     e.preventDefault();
     if (col < PSI.kraepelinData.length - 1) {
@@ -454,7 +414,6 @@ function handleKraepelinInput(e, col, row) {
 function finishKraepelin() {
   psiTimerStop();
 
-  // Calculate score & column statistics
   var correctAnswers = PSI.currentTest.hitungJawaban(PSI.kraepelinData);
   var totalCorrect = 0;
   var totalAnswered = 0;
@@ -465,7 +424,6 @@ function finishKraepelin() {
     var cCor = 0;
     for (var row = 0; row < PSI.kraepelinAnswers[col].length; row++) {
       var val = PSI.kraepelinAnswers[col][row];
-      // hitung hanya sel yang benar-benar diisi angka (sel yang dilewati = undefined)
       if (val !== undefined && val !== null && /^[0-9]$/.test(String(val))) {
         cAns++;
         totalAnswered++;
@@ -480,7 +438,6 @@ function finishKraepelin() {
 
   var score = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
 
-  // Analisa ritme grafik
   var rhythm = 'Stabil';
   if (colStats.length >= 3) {
     var firstHalf = 0;
@@ -518,9 +475,6 @@ function finishKraepelin() {
   render();
 }
 
-// ============================================================
-// TES MEMORY SPAN
-// ============================================================
 
 function startMemorySpan() {
   PSI.memoryCatIdx = 0;
@@ -560,11 +514,9 @@ function playMemoryWords() {
       index++;
       setTimeout(playNext, 1200);
     } else {
-      // Finished playing, start remember phase
       PSI.memoryPhase = 'remember';
       render();
 
-      // 30 detik mengingat, lalu pindah ke fase menulis
       setTimeout(function() {
         if (sid === PSI.sessionId && PSI.memoryPhase === 'remember') {
           PSI.memoryPhase = 'write';
@@ -580,14 +532,12 @@ function playMemoryWords() {
 function renderMemorySpan() {
   var html = '<div style="padding:16px;min-height:calc(100vh - 140px);display:flex;flex-direction:column">';
 
-  // Header
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">' +
     '<div style="font-size:18px;font-weight:700;color:var(--white)">' + ic('brain', 18) + ' Tes Daya Ingat</div>' +
     '<button class="btn btn-ghost btn-sm" onclick="psiBackHome()">← Menu</button>' +
   '</div>';
 
   if (PSI.memoryPhase === 'pick') {
-    // Pilih kategori
     html += '<div style="font-size:13px;color:var(--text3);margin-bottom:16px">Pilih kategori kata yang ingin dilatih:</div>';
     html += '<div class="grid-auto">';
     PSI.currentTest.soal.forEach(function(s, i) {
@@ -646,7 +596,6 @@ function submitMemoryAnswer() {
     if (i !== -1) { correct++; dikenal.push(kataAsli[i]); }
   });
 
-  // daftar kata yang terlewat -> dipakai untuk menampilkan pembahasan hasil
   var terlewat = kataAsli.filter(function (w) { return dikenal.indexOf(w) === -1; });
 
   var score = Math.min(100, Math.round((correct / correctWords.length) * 100));
@@ -674,9 +623,6 @@ function submitMemoryAnswer() {
   render();
 }
 
-// ============================================================
-// TES DIGIT SPAN
-// ============================================================
 
 function startDigitSpan() {
   PSI.testList = PSI.currentTest.soal.slice();
@@ -809,9 +755,6 @@ window.nextDigitQuestion = function() {
   }
 };
 
-// ============================================================
-// FINISH & RESULT (untuk tes sesi: digit, aritmatika, deret)
-// ============================================================
 
 function finishPsiTest() {
   var total = PSI.testList.length;
@@ -884,7 +827,6 @@ function renderKraepelinChart(stats, rhythm) {
     xLabels.push('<text x="' + x + '" y="' + (h - 8) + '" fill="#7a8c9e" font-size="10" text-anchor="middle">K' + (i+1) + '</text>');
   }
 
-  // Grid lines
   var gridLines = '';
   for (var g = 0; g <= maxVal; g += Math.max(5, Math.floor(maxVal / 4))) {
     var gy = Math.round(h - padB - g * scaleY);
@@ -1128,7 +1070,6 @@ function renderPsiResult() {
     html += renderKraepelinChart(PSI.scores.colStats, PSI.scores.rhythm);
   }
 
-  // ---- Pembahasan / pengajaran hasil ----
   var kotak = [];
 
   if (PSI.scores.dikenal) {
@@ -1189,11 +1130,7 @@ function renderPsiResult() {
   return html;
 }
 
-// ============================================================
-// INTEGRATION WITH MAIN APP
-// ============================================================
 
-// Render hanya halaman psikologi; semua halaman lain diserahkan ke app.js
 var _psiBaseRender = (typeof window !== 'undefined' && typeof window.render === 'function')
   ? window.render
   : (typeof render === 'function' ? render : function(){});
@@ -1247,7 +1184,6 @@ window.navTo = function(page) {
   _psiBaseNavTo(page);
 };
 
-// Load progress on init
 document.addEventListener('DOMContentLoaded', function() {
   loadPsiProgress();
 });

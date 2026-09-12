@@ -1,9 +1,3 @@
-// ============================================================
-// DATA LOADER — memuat bank soal per kategori secara bertahap
-// Dibuat supaya halaman pertama tampil cepat di HP: hanya daftar
-// kategori (kecil) yang dimuat di awal, data soal menyusul
-// otomatis di latar belakang.
-// ============================================================
 (function () {
   window.SOAL_DATABASE = window.SOAL_DATABASE || {};
   window.SOAL_PART = window.SOAL_PART || {};
@@ -11,7 +5,6 @@
   var memuat = {};
   var pakaiCadangan = false;
 
-  // versi aset dibaca dari tag script aplikasi supaya cache tetap konsisten
   function versiAset() {
     var s = document.querySelector('script[src*="data-loader.js"]');
     if (!s) return '21';
@@ -42,7 +35,6 @@
     return INDEX.total || 0;
   };
 
-  // getAllSoal hanya melihat kategori yang sudah termuat
   window.getAllSoal = function () {
     var all = [];
     Object.keys(SOAL_DATABASE).forEach(function (k) {
@@ -70,7 +62,6 @@
     });
   }
 
-  // cadangan: kalau ada file kategori yang gagal dimuat, ambil seluruh data sekaligus
   function muatCadangan() {
     if (pakaiCadangan) return Promise.resolve();
     pakaiCadangan = true;
@@ -96,13 +87,11 @@
     return Promise.all(window.daftarKategori().map(function (k) { return window.pastikanKategori(k); }));
   };
 
-  // tampilkan pesan singkat saat data sedang disiapkan
   window.htmlMemuat = function (pesan) {
     return '<div class="empty"><div class="empty-icon">' + icon('refresh', 40) + '</div><p>' +
       escapeHtml(pesan || 'Menyiapkan soal...') + '</p></div>';
   };
 
-  // setelah halaman tampil, siapkan seluruh kategori di latar belakang
   window.addEventListener('load', function () {
     setTimeout(function () {
       if (!katSiapSemua()) window.pastikanSemua();

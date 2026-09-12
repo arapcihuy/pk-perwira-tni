@@ -1,23 +1,8 @@
-// ============================================================
-// FITUR 11 — v35: PRODUK BERBAYAR (Laporan Lengkap) + KODE AKSES
-//
-// Kenapa ada: panel peninjau menandai bahwa "Laporan Lengkap Rp 39.000" masih
-// berupa RENCANA, belum ada wujudnya. Berkas ini membuatnya nyata:
-//   1. Laporan lengkap yang benar-benar bisa dibuka, dicetak, dan disimpan PDF.
-//   2. Mekanisme KODE AKSES tanpa server (sekali beli, bukan langganan),
-//      supaya bisa dijual lewat marketplace/QRIS lalu dibuka di aplikasi.
-//   3. Halaman "cara beli" + syarat & ketentuan singkat yang jujur.
-//
-// Batas yang dipegang: materi latihan TIDAK dikunci. Yang dibuka kode akses hanya
-// laporan yang memakai data pengguna sendiri.
-// ============================================================
 
-// Ganti jadi true kalau kanal pembayaran sudah siap.
 window.LAPORAN_BAYAR_AKTIF = false;
 window.HARGA_LAPORAN = 'Rp 39.000';
 window.TAUTAN_BELI = '';           // diisi pemilik: tautan marketplace/QRIS
 
-// ---------- 1. DATA PENDUKUNG LAPORAN (tabel statis, ditulis manual) ----------
 window.KERJA_COCOK = {
   E: { tinggi: 'Pekerjaan yang banyak berhubungan dengan orang: pemasaran, penjualan, pelayanan, pengajaran, humas.',
        rendah: 'Pekerjaan yang butuh fokus sendiri: analis data, penulis, pengembang, riset, akuntansi teknis.' },
@@ -57,7 +42,6 @@ window.RENCANA_14_HARI = function (lemah, lemahKategori) {
   return hari;
 };
 
-// ---------- 2. KUMPULKAN DATA LAPORAN ----------
 window.dataLaporan = function () {
   var b5 = b5Terakhir();
   var kesiapan = (typeof hitungKesiapan === 'function') ? hitungKesiapan() : null;
@@ -87,7 +71,6 @@ window.jumlahSalahTersimpan = function () {
   try { return Object.keys(bankSalah()).length; } catch (e) { return 0; }
 };
 
-// ---------- 3. LAPORAN LENGKAP (wujud produk) ----------
 window.isiLaporanLengkap = function () {
   var d = dataLaporan();
   var nama = d.profil.nama ? escapeHtml(d.profil.nama) : 'Pengguna';
@@ -97,7 +80,6 @@ window.isiLaporanLengkap = function () {
   b += '<div class="lap-head"><h1>Laporan Lengkap — SiapPsikotes</h1>' +
        '<div class="lap-sub">' + nama + ' · ' + hariIni + '</div></div>';
 
-  // 1. kesiapan
   b += '<h2>1. Kesiapan ujianmu</h2>';
   if (d.kesiapan) {
     b += '<p>Skor kesiapan saat ini <strong>' + (d.kesiapan.nilai || 0) + '</strong> dari 100, ' +
@@ -113,7 +95,6 @@ window.isiLaporanLengkap = function () {
     b += '<p>Belum cukup data. Kerjakan minimal satu simulasi dan 30 soal latihan supaya angkanya bermakna.</p>';
   }
 
-  // 2. kepribadian
   b += '<h2>2. Kepribadianmu (Big Five)</h2>';
   if (d.b5) {
     var skor = d.b5.skor;
@@ -136,7 +117,6 @@ window.isiLaporanLengkap = function () {
          'lalu buat laporan ini lagi.</p>';
   }
 
-  // 3. kelemahan
   b += '<h2>3. Bagian yang perlu kamu kejar</h2>';
   if (d.lemahTopik.length) {
     b += '<p>Topik dengan jawaban benar paling rendah: <strong>' + d.lemahTopik.map(escapeHtml).join(', ') + '</strong>.</p>';
@@ -148,20 +128,17 @@ window.isiLaporanLengkap = function () {
   }
   b += '<p>Jumlah soal yang sedang kamu ulang: <strong>' + window.jumlahSalahTersimpan() + '</strong> soal.</p>';
 
-  // 4. rencana 14 hari
   b += '<h2>4. Rencana latihan 14 hari</h2><table class="lap-tabel"><tr><th>Hari</th><th>Yang dikerjakan</th></tr>';
   RENCANA_14_HARI(d.lemahTopik, d.lemahKategori).forEach(function (r) {
     b += '<tr><td>' + r.h + '</td><td>' + escapeHtml(r.t) + '</td></tr>';
   });
   b += '</table>';
 
-  // 5. wawancara
   b += '<h2>5. Cara menjawab di wawancara</h2>';
   SKRIP_WAWANCARA.forEach(function (s) {
     b += '<p><strong>' + escapeHtml(s.t) + '</strong><br>' + escapeHtml(s.s) + '</p>';
   });
 
-  // 6. batas jujur
   b += '<h2>6. Batas laporan ini</h2><p>Laporan ini disusun dari data latihanmu sendiri di perangkat ini. ' +
        'Tes kepribadian memakai Mini-IPIP (IPIP, domain publik) dengan terjemahan sederhana yang belum ' +
        'divalidasi pada orang Indonesia, jadi hasilnya menggambarkan penilaianmu tentang dirimu sendiri — ' +
@@ -182,15 +159,9 @@ window.unduhLaporan = function () {
   if (typeof unduhBerkas === 'function') unduhBerkas('laporan-lengkap-' + new Date().toISOString().slice(0, 10) + '.html', isi, 'text/html');
 };
 
-// ---------- 4. KODE AKSES (tanpa server) ----------
-// Kode dibuat oleh tools/buat-kode.py. Pemeriksaan memakai sidik jari (checksum) atas
-// kunci rahasia yang disamarkan. CATATAN JUJUR: karena aplikasi berjalan di perangkat
-// pengguna, kunci ini bisa dibaca orang yang tekun. Untuk Rp 39.000 risiko ini diterima;
-// bila volume sudah besar, pindahkan pemeriksaan ke server.
 window.KUNCI_KODE = ['siap', 'psikotes', '2026', 'kode'].join('|');
 
 function sidikKode(data) {
-  // FNV-1a 32-bit: dipilih karena bisa disamakan PERSIS dengan alat pembuat kode (Python).
   var h = 2166136261;
   var s = String(data) + '#' + KUNCI_KODE;
   for (var i = 0; i < s.length; i++) {
@@ -231,8 +202,6 @@ window.laporanSudahDibuka = function () {
 };
 
 window.panelCaraBeli = function () {
-  // Selama pembayaran belum siap: jangan pasang harga, jangan menjanjikan pembelian.
-  // Yang dilakukan: menjelaskan manfaat + menangkap minat pengguna (tersimpan lokal).
   if (!LAPORAN_BAYAR_AKTIF) {
     var minat = (function () {
       try { return !!JSON.parse(localStorage.getItem('tni_minat_laporan') || 'null'); } catch (e) { return false; }
@@ -299,8 +268,6 @@ window.syaratRingkas = function () {
 };
 
 
-// ---------- 5. PEMASANGAN ----------
-// panelLaporanLengkap dari fitur8 diganti: sekarang menampilkan wujud produknya.
 window.panelLaporanLengkap = function () {
   if (laporanSudahDibuka()) {
     return '<div class="card"><div class="hari-head">' + ic('file', 16) +
@@ -340,7 +307,6 @@ function sisipPanel11() {
     m.innerHTML = renderLaporan();
     return;
   }
-  // tombol jalan pintas di halaman baterai
   if (S.page === 'baterai' && !m.querySelector('.jalan-laporan')) {
     var kotak = m.querySelector('.card:last-of-type');
     if (kotak) {

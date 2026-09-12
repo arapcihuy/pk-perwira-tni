@@ -1,16 +1,3 @@
-// ============================================================
-// FITUR 10 — v33: PANDUAN & LATIHAN TES GAMBAR
-//
-// Mengisi celah baterai psikotes: Wartegg (8 kotak), BAUM (pohon),
-// DAP (orang), HTP (rumah-pohon-orang).
-//
-// Kejujuran yang dipegang:
-//  - Tes gambar TIDAK ada jawaban benar/salah dan TIDAK bisa dihafal.
-//  - Yang bisa dilatih: mengenal prosesnya, melengkapi semua kotak,
-//    menjaga ketenangan, dan menghindari kesalahan umum.
-//  - Aplikasi ini TIDAK memberi skor dan TIDAK menilai gambar. Hasil
-//    gambar hanya untuk ditinjau sendiri (tersimpan di perangkat).
-// ============================================================
 
 window.GAMBAR_INFO = [
   { kode: 'wartegg', nama: 'Wartegg (8 kotak)',
@@ -106,7 +93,6 @@ window.renderGambar = function () {
     '</div>';
 };
 
-// ---- menggambar di kanvas (tetikus & sentuh) ----
 window.siapkanKanvas = function () {
   var c = document.getElementById('kanvasGambar');
   if (!c) return;
@@ -193,7 +179,6 @@ window.simpanGambar = function () {
     r.push({ tanggal: new Date().toISOString().slice(0, 10), mode: GAMBAR_LATIHAN.mode });
     localStorage.setItem('tni_gambar_riwayat', JSON.stringify(r.slice(-20)));
   } catch (e) {}
-  // unduhan memakai tautan data (tanpa perantara)
   var a = document.createElement('a');
   a.href = GAMBAR_LATIHAN.gambar;
   a.download = 'latihan-gambar-' + new Date().toISOString().slice(0, 10) + '.png';
@@ -232,7 +217,6 @@ window.statusGambar = function () {
 };
 
 
-// ---------- PEMASANGAN ----------
 var _renderSebelumFitur10 = window.render;
 window.render = function () {
   if (_renderSebelumFitur10) _renderSebelumFitur10.apply(this, arguments);
@@ -248,10 +232,8 @@ function sisipPanel10() {
   }
 }
 
-// pengganti pesan singkat lama: arahkan ke halaman panduan
 window.tutorGambar = function () { bukaLatihanGambar('wartegg'); };
 
-// modul tes gambar di Baterai Psikotes kini benar-benar bisa dibuka & berstatus
 var _bateriLama10 = window.bateri;
 window.bateri = function () {
   var daftar = _bateriLama10();

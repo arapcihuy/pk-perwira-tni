@@ -1,19 +1,4 @@
-// ============================================================
-// FITUR 8 — v30: PSIKOTES & TES IQ UNTUK UMUM (non-kedinasan)
-//
-// 1. Tes Kepribadian Big Five dari Mini-IPIP (20 butir, DOMAIN PUBLIK)
-//    Sumber: International Personality Item Pool (ipip.ori.org).
-//    Goldberg (1999) mengembangkan IPIP; Mini-IPIP divalidasi Donnellan dkk (2006)
-//    dengan reliabilitas internal tiap faktor 0,65-0,77.
-//    Karena domain publik, butir ini boleh dipakai, diterjemahkan, dan dijual.
-// 2. Jalur "Umum / Kerja" untuk pencari kerja yang menghadapi psikotes rekrutmen.
-// 3. Laporan Lengkap (siap dijual) — disiapkan tapi belum dibuka.
-//
-// Bahasa sengaja dibuat sederhana: pembaca awam harus paham tanpa kamus.
-// ============================================================
 
-// ---------- 1. BUTIR TES KEPRIBADIAN (Mini-IPIP, terjemahan sederhana) ----------
-// urut sesuai kunci resmi: [teks, faktor, arah]  arah +1 = makin setuju makin tinggi
 var IPIP_BUTIR = [
   ['Saya orang yang menghidupkan suasana saat kumpul-kumpul.', 'E', +1],
   ['Saya suka mengobrol dengan banyak orang berbeda di sebuah acara.', 'E', +1],
@@ -84,7 +69,6 @@ window.jawabB5Kembali = function () {
   if (B5.idx > 0) { B5.idx--; render(); }
 };
 
-// penilaian sesuai aturan resmi IPIP: butir "+" dinilai 1-5, butir "-" dibalik (5-1)
 window.hitungB5 = function () {
   var faktor = { E: 0, A: 0, C: 0, N: 0, O: 0 };
   var jumlah = { E: 0, A: 0, C: 0, N: 0, O: 0 };
@@ -94,7 +78,6 @@ window.hitungB5 = function () {
     faktor[b[1]] += (b[2] > 0) ? v : (6 - v);
     jumlah[b[1]]++;
   });
-  // rentang tiap faktor: 4-20 (4 butir x skala 1-5)
   var hasil = {};
   Object.keys(faktor).forEach(function (k) {
     hasil[k] = { skor: jumlah[k] ? faktor[k] : 0, maks: jumlah[k] * 5, persen: jumlah[k] ? Math.round((faktor[k] / (jumlah[k] * 5)) * 100) : 0 };
@@ -117,7 +100,6 @@ window.b5Terakhir = function () {
   } catch (e) { return null; }
 };
 
-// ---------- 2. TAMPILAN TES KEPRIBADIAN ----------
 window.renderBigFive = function () {
   if (B5.selesai) return laporanB5();
 
@@ -178,8 +160,6 @@ window.laporanB5 = function () {
     panelValiditas();
 };
 
-// ---------- 3. LAPORAN LENGKAP (siap dijual) ----------
-// Belum dibuka karena pembayaran belum dipasang. Saat siap: ubah LAPORAN_BAYAR_AKTIF jadi true.
 window.LAPORAN_BAYAR_AKTIF = false;
 window.HARGA_LAPORAN = 'Rp 39.000';
 
@@ -190,7 +170,6 @@ function laporanLengkapIsi(h) {
     '<div class="hari-sub">Laporan lengkapmu siap.</div></div>';
 }
 
-// ---------- 4. HALAMAN VALIDITAS & LISENSI (jujur dan terbuka) ----------
 window.panelValiditas = function () {
   return '<div class="card">' +
     '<div class="hari-head">' + ic('shield', 16) + ' <strong>Dasar dan batas tes ini</strong></div>' +
@@ -207,7 +186,6 @@ window.panelValiditas = function () {
     '</div>';
 };
 
-// ---------- 5. SEMUA LAPORAN (untuk ditinjau sendiri) ----------
 window.bukaSemuaLaporan = function () {
   var t = '';
   t += 'TES KEPRIBADIAN (Mini-IPIP) — 20 butir, domain publik\n';
@@ -227,11 +205,6 @@ window.bukaSemuaLaporan = function () {
 };
 
 
-// ============================================================
-// 6. PEMASANGAN — jalur Umum, halaman tes, dan sisipan di Baterai
-// ============================================================
-
-// jalur untuk pengguna umum / pencari kerja (bukan instansi tertentu)
 JALUR.umum = {
   nama: 'Umum / Dunia Kerja',
   singkat: 'Umum / Kerja',
@@ -246,7 +219,6 @@ JALUR.umum = {
   modul: ['b5', 'iq', 'kraepelin', 'gambar']
 };
 
-// tambahkan modul Big Five ke daftar Baterai Psikotes
 var _bateriLama = window.bateri;
 window.bateri = function () {
   var daftar = _bateriLama();
@@ -262,7 +234,6 @@ window.bateri = function () {
   return daftar;
 };
 
-// status modul Big Five dibaca dari riwayat hasil
 var _statusModulLama = window.statusModul;
 window.statusModul = function (m) {
   if (m && m.id === 'b5') {
@@ -283,13 +254,11 @@ function sisipPanel8() {
   var m = document.getElementById('main');
   if (!m) return;
 
-  // halaman tes kepribadian
   if (S.page === 'b5') {
     m.innerHTML = renderBigFive();
     return;
   }
 
-  // di halaman baterai: tambahkan tombol jalur Umum + tautan halaman umum
   if (S.page === 'baterai') {
     var kartu = m.querySelector('.card:last-of-type');
     if (kartu && !m.querySelector('.tautan-umum')) {
@@ -306,7 +275,6 @@ function sisipPanel8() {
     return;
   }
 
-  // di beranda: tawarkan jalur umum kepada pengunjung baru
   if (S.page === 'home' && !m.querySelector('.ajak-umum')) {
     var kotak = m.querySelector('.grid-3');
     if (kotak) {
