@@ -1306,3 +1306,10 @@ kbd {
   line-height:1.6; margin:8px 0; }
 .fokus-num { flex:0 0 20px; height:20px; border-radius:50%; background:var(--surface2);
   color:var(--text2); font-size:11px; display:flex; align-items:center; justify-content:center; font-weight:700; }
+
+
+/* FITUR 10 - Tes gambar: panduan & latihan */
+.kanvas { width:100%; max-width:720px; height:auto; background:#fff; border-radius:12px;
+  border:1px solid var(--border); touch-action:none; display:block; margin-top:6px; }
+.gambar-info { padding:12px 0; border-top:1px solid var(--border); }
+.gambar-info:first-child { border-top:none; }

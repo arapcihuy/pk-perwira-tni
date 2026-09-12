@@ -582,6 +582,46 @@ def main():
         cek(all(n in _sw for n in _ikon), 'seluruh berkas ikon terdaftar untuk mode offline',
             [n for n in _ikon if n not in _sw] or 'lengkap')
 
+        print('== W. Tes gambar (panduan + latihan kanvas) ==')
+        page.evaluate("() => bukaLatihanGambar('wartegg')")
+        w2 = page.evaluate("""() => {
+            const out = {};
+            out.halaman = S.page === 'gambar';
+            out.kanvas = !!document.getElementById('kanvasGambar');
+            out.jenisTes = document.querySelectorAll('.gambar-info').length;
+            out.checklist = document.querySelectorAll('.fokus-item').length;
+            out.batasJujur = document.body.textContent.indexOf('tidak menilai gambar') >= 0;
+            out.lokalSaja = document.body.textContent.indexOf('tidak dikirim ke mana pun') >= 0;
+            out.modulBaterai = Array.from(document.querySelectorAll('.baterai-nama'))
+                .some(x => x.textContent.indexOf('Tes Gambar') >= 0);
+            return out;
+        }""")
+        cek(w2['halaman'] and w2['kanvas'], 'halaman tes gambar & kanvas tersedia', w2)
+        cek(w2['jenisTes'] == 4 and w2['checklist'] >= 5, 'empat jenis tes dijelaskan + daftar periksa', w2)
+        cek(w2['batasJujur'] and w2['lokalSaja'], 'batas jujur dinyatakan (tidak dinilai, tidak dikirim)', w2)
+        # menggambar sungguhan: gulir kanvas ke layar dulu, lalu gerakkan tetikus
+        page.evaluate("() => document.getElementById('kanvasGambar').scrollIntoView({block:'center'})")
+        page.wait_for_timeout(200)
+        kotak = page.query_selector('#kanvasGambar').bounding_box()
+        page.mouse.move(kotak['x'] + 40, kotak['y'] + 40)
+        page.mouse.down()
+        for i in range(14):
+            page.mouse.move(kotak['x'] + 40 + i * 22, kotak['y'] + 40 + i * 14)
+        page.mouse.up()
+        w3 = page.evaluate("""() => {
+            const c = document.getElementById('kanvasGambar');
+            const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+            let gelap = 0;
+            for (let i = 0; i < d.length; i += 4) if (d[i] < 120) gelap++;
+            return { coretan: GAMBAR_LATIHAN.coretan, pikselTergambar: gelap };
+        }""")
+        cek(w3['coretan'] > 0 and w3['pikselTergambar'] > 100,
+            'menggambar di kanvas benar-benar terekam (uji tetikus sungguhan)', w3)
+        page.evaluate("() => simpanGambar()")
+        page.wait_for_timeout(500)
+        w4 = page.evaluate("() => ({ riwayat: statusGambar(), tersimpan: !!localStorage.getItem('tni_gambar_terakhir') })")
+        cek(w4['riwayat'] >= 1 and w4['tersimpan'], 'hasil latihan tersimpan di perangkat (masuk status baterai)', w4)
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};
