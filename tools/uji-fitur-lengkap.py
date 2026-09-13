@@ -1169,6 +1169,47 @@ def main():
         cek(al['duaCara'], 'QRIS dan transfer bisa tampil bersamaan', al)
         cek(al['jujurSaatKosong'], 'bila tujuan uang belum diisi: dinyatakan jujur, bukan layar kosong', al)
 
+        print('== AM. Pembayaran lewat QR dari tautan checkout platform ==')
+        am = page.evaluate("""() => {
+            const out = {};
+            try {
+                localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
+                localStorage.removeItem('tni_kode_akses');
+            } catch (e) {}
+            const asli = { aktif: BAYAR.aktif, qris: BAYAR.gambarQris, rek: BAYAR.rekening,
+                           tautan: BAYAR.tautanBayar, tampil: BAYAR.tampilkanRekening };
+            BAYAR.aktif = true;
+            BAYAR.tautanBayar = 'https://contoh-pembayaran.example/produk';
+            BAYAR.gambarQris = 'static/icons/icon-192.png';
+            BAYAR.tampilkanRekening = false;
+            render();
+            const t = document.body.innerText;
+            out.adaQr = !!document.querySelector('.qris-bingkai img');
+            out.adaTombolBuka = !!document.querySelector('[onclick*="bukaHalamanBayar"]');
+            out.dijelaskanCaraBayar = t.indexOf('virtual account') >= 0 && t.indexOf('e-wallet') >= 0;
+            out.rekeningDisembunyikan = t.indexOf('1370022256982') < 0;
+            out.nominalTampil = t.indexOf('Bayar tepat sejumlah') >= 0;
+            let dibuka = null;
+            window.open = (u) => { dibuka = u; return null; };
+            bukaHalamanBayar();
+            out.membukaTautan = !!dibuka && dibuka.indexOf('contoh-pembayaran.example') >= 0;
+
+            // kembali ke cara sebelumnya harus tetap utuh
+            BAYAR.tautanBayar = ''; BAYAR.gambarQris = ''; BAYAR.tampilkanRekening = true;
+            render();
+            out.pulihKeRekening = document.body.innerText.indexOf('1370022256982') >= 0;
+
+            BAYAR.aktif = asli.aktif; BAYAR.gambarQris = asli.qris; BAYAR.rekening = asli.rek;
+            BAYAR.tautanBayar = asli.tautan; BAYAR.tampilkanRekening = asli.tampil;
+            localStorage.setItem('tni_akses_pemilik', '1');
+            return out;
+        }""")
+        cek(am['adaQr'] and am['adaTombolBuka'] and am['dijelaskanCaraBayar'] and am['membukaTautan'],
+            'mode QR tautan: QR tampil, tombol membuka halaman pembayaran, cara bayar dijelaskan', am)
+        cek(am['rekeningDisembunyikan'] and am['nominalTampil'],
+            'mode QR tautan menyembunyikan nomor rekening & tetap menampilkan nominal', am)
+        cek(am['pulihKeRekening'], 'kembali ke cara sebelumnya tetap berfungsi (nomor rekening tampil lagi)', am)
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};

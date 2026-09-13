@@ -5,7 +5,8 @@ harga: 'Rp 39.000',
 hargaMusiman: 'Rp 79.000',
 metode: '',                // mis. 'QRIS' atau 'Transfer BRI 1234567890 a/n Nama'
 kontak: '',                // mis. 'WhatsApp 08xx-xxxx-xxxx' atau surel
-tautan: '',                // tautan marketplace bila ada (Shopee/Tokopedia)
+tautan: '',
+  tautanBayar: '',           // halaman checkout platform (QR ditampilkan dari tautan ini)                // tautan marketplace bila ada (Shopee/Tokopedia)
 gambarQris: '',           // diisi bila pemilik mengirim gambar QRIS (tools/pasang-bayar.py --qris)
 rekening: 'Bank Mandiri 1370022256982 a/n RASYID ACHMAD FAUZI',
   tampilkanRekening: true,

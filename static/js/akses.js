@@ -72,6 +72,12 @@ setTimeout(function () { location.reload(); }, 700);
 st.textContent = 'Kode tidak dikenali. Periksa penulisannya, atau kirim bukti pembayaran ke pemilik.';
 }
 };
+window.bukaHalamanBayar = function () {
+var u = (typeof BAYAR !== 'undefined' && BAYAR.tautanBayar) ? BAYAR.tautanBayar : '';
+if (!u) return;
+try { window.open(u, '_blank', 'noopener'); } catch (e) { location.href = u; }
+};
+
 window.salinRekening = function () {
 var teks = (typeof BAYAR !== 'undefined' && BAYAR.rekening) ? BAYAR.rekening : '';
 if (!teks) return;
@@ -171,9 +177,17 @@ ic('check', 14) + ' Beri tahu saya saat pembayaran dibuka</button></div>';
 var kb = kodeBayar();
 var cara = '';
 if (BAYAR.gambarQris) {
+var tautanAda = !!BAYAR.tautanBayar;
 cara += '<div class="qris-bingkai"><img src="' + BAYAR.gambarQris + '?v=' + (window.VERSI_ASET || '') + '" ' +
-'alt="Kode QRIS pembayaran SiapPsikotes" width="220" height="220" loading="lazy" decoding="async" ' +
-'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Gambar QRIS belum terpasang.</div>\'"></div>';
+'alt="' + (tautanAda ? 'QR pembayaran SiapPsikotes' : 'Kode QRIS pembayaran SiapPsikotes') + '" ' +
+'width="220" height="220" loading="lazy" decoding="async" ' +
+'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Gambar QR belum terpasang.</div>\'"></div>' +
+(tautanAda
+? '<div class="komer-sub" style="margin-top:8px">Pindai QR itu dengan kamera ponsel, atau tekan tombol di bawah. ' +
+'Halaman pembayaran aman akan terbuka: di sana tersedia QRIS, virtual account, dan e-wallet (GoPay, OVO, DANA, ShopeePay).</div>' +
+'<div class="komer-aksi"><button class="btn btn-primary btn-sm" onclick="bukaHalamanBayar()">' +
+ic('arrow-right', 14) + ' Buka halaman pembayaran</button></div>'
+: '');
 }
 if (BAYAR.rekening && BAYAR.tampilkanRekening !== false) {
 cara += '<div class="komer-sub" style="margin-top:10px">Atau transfer / e-wallet ke:</div>' +
