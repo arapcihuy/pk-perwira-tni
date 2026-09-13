@@ -40,15 +40,66 @@
   .langkah { padding-left: 20px; line-height: 1.8; }
   .langkah li { margin-bottom: 6px; }
 </style>
+<style>
+  /* --- percikan tampilan (satu keluarga dengan beranda) --- */
+  body { background:
+      radial-gradient(900px 420px at 12% -8%, rgba(234,179,8,.10), transparent 60%),
+      radial-gradient(700px 380px at 92% 4%, rgba(59,130,246,.07), transparent 60%),
+      #0b0f17; }
+  .page { position: relative; z-index: 1; }
+  .pita {
+    border: 1px solid rgba(234,179,8,.22);
+    background: linear-gradient(140deg, rgba(234,179,8,.14), rgba(234,179,8,.03) 55%, transparent);
+    border-radius: 20px; padding: 26px 24px 24px; margin: 18px 0 26px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.30);
+  }
+  .lencana {
+    display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .1em;
+    text-transform: uppercase; color: #0b0f17; background: linear-gradient(180deg,#f5c542,#e0a80f);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .pita h1 { margin: 0 0 10px; font-size: clamp(26px, 4.4vw, 34px); line-height: 1.18; }
+  .pita p { margin: 0; color: #94a3b8; }
+  .angka-strip {
+    display: flex; gap: 12px; flex-wrap: wrap; margin: 0 0 26px;
+  }
+  .angka-strip div {
+    flex: 1 1 150px; border: 1px solid rgba(148,163,184,.18); border-radius: 14px;
+    background: rgba(22,27,38,.72); padding: 14px 16px;
+  }
+  .angka-strip b { display: block; font-size: 24px; color: #eab308; letter-spacing: -.5px; }
+  .angka-strip span { font-size: 12.5px; color: #94a3b8; }
+  h1, h2 { letter-spacing: -.4px; }
+  h2 { margin-top: 34px; padding-top: 22px; border-top: 1px solid rgba(148,163,184,.14); }
+  h2:first-of-type { border-top: 0; padding-top: 0; }
+  details { border: 1px solid rgba(148,163,184,.16); border-radius: 12px; padding: 12px 15px;
+    margin: 10px 0; background: rgba(22,27,38,.5); }
+  details summary { cursor: pointer; font-weight: 700; }
+  details[open] { border-color: rgba(234,179,8,.28); }
+  .qris-kotak { box-shadow: 0 14px 34px rgba(0,0,0,.34); border: 1px solid rgba(234,179,8,.22); }
+  .langkah li::marker { color: #eab308; font-weight: 800; }
+  .tombol { box-shadow: 0 10px 24px rgba(234,179,8,.20); }
+  a { transition: opacity .18s ease; }
+  a:hover { opacity: .86; }
+</style>
 </head>
 <body>
 <div class="page">
 
   <div class="nav"><a href="../beli/">Beli</a> &nbsp;·&nbsp; <a href="../mutu/">Mutu</a> &nbsp;·&nbsp; <a href="../">&larr; Kembali ke aplikasi</a></div>
 
-  <h1>Beli akses penuh</h1>
-  <p class="catatan">Satu pembayaran <strong>Rp 39.000</strong> membuka semuanya: 1.225 soal, seluruh modul tes,
-    pembahasan langkah demi langkah, dan Laporan Lengkap. Bukan langganan, tanpa perpanjangan otomatis.</p>
+  <div class="pita">
+    <span class="lencana">Langkah terakhir</span>
+    <h1>Beli akses penuh - Rp 39.000 sekali bayar</h1>
+    <p>Satu pembayaran membuka 1.225 soal beserta pembahasannya, semua modul tes, dan Laporan Lengkap.
+      Bukan langganan, tanpa perpanjangan otomatis.</p>
+  </div>
+  <div class="angka-strip">
+    <div><b>1.225</b><span>soal + pembahasan</span></div>
+    <div><b>9</b><span>modul psikotes &amp; IQ</span></div>
+    <div><b>Rp 39.000</b><span>sekali bayar</span></div>
+    <div><b>QRIS</b><span>semua bank &amp; e-wallet</span></div>
+  </div>
 
   <div class="beli-dua">
     <div>
