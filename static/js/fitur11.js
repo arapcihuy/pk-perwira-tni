@@ -6,8 +6,8 @@ hargaMusiman: 'Rp 79.000',
 metode: '',                // mis. 'QRIS' atau 'Transfer BRI 1234567890 a/n Nama'
 kontak: '',                // mis. 'WhatsApp 08xx-xxxx-xxxx' atau surel
 tautan: '',
-tautanBayar: '',           // halaman checkout platform (QR ditampilkan dari tautan ini)                // tautan marketplace bila ada (Shopee/Tokopedia)
-gambarQris: '',           // diisi bila pemilik mengirim gambar QRIS (tools/pasang-bayar.py --qris)
+catatanTautan: 'Pindai QR ini dengan aplikasi DANA (khusus pengguna DANA). Belum punya DANA? Silakan transfer ke rekening di bawah - keduanya sama-sama sah, dan pembayaranmu dicocokkan lewat kode rujukan.', tautanBayar: 'https://link.dana.id/minta?full_url=https://qr.dana.id/v1/281012012020021139784108',           // halaman checkout platform (QR ditampilkan dari tautan ini)                // tautan marketplace bila ada (Shopee/Tokopedia)
+gambarQris: 'static/img/qr-bayar.png',           // diisi bila pemilik mengirim gambar QRIS (tools/pasang-bayar.py --qris)
 rekening: 'Bank Mandiri 1370022256982 a/n RASYID ACHMAD FAUZI',
 tampilkanRekening: true,
 whatsapp: '',              // nomor WhatsApp pemilik, format 62812xxxxxxx

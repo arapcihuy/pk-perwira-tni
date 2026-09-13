@@ -194,8 +194,10 @@ cara += '<div class="qris-bingkai"><img src="' + BAYAR.gambarQris + '?v=' + (win
 'width="220" height="220" loading="lazy" decoding="async" ' +
 'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Gambar QR belum terpasang.</div>\'"></div>' +
 (tautanAda
-? '<div class="komer-sub" style="margin-top:8px">Pindai QR itu dengan kamera ponsel, atau tekan tombol di bawah. ' +
-'Halaman pembayaran aman akan terbuka: di sana tersedia QRIS, virtual account, dan e-wallet (GoPay, OVO, DANA, ShopeePay).</div>' +
+? '<div class="komer-sub" style="margin-top:8px">' + (BAYAR.catatanTautan
+  ? escapeHtml(BAYAR.catatanTautan)
+  : 'Pindai QR itu dengan kamera ponsel, atau tekan tombol di bawah. Halaman pembayaran akan terbuka: ' +
+    'di sana tersedia QRIS, virtual account, dan e-wallet (GoPay, OVO, DANA, ShopeePay).') + '</div>' +
 '<div class="komer-aksi"><button class="btn btn-primary btn-sm" onclick="bukaHalamanBayar()">' +
 ic('arrow-right', 14) + ' Buka halaman pembayaran</button></div>'
 : '');
