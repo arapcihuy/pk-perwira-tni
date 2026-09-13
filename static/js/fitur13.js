@@ -61,7 +61,7 @@ if (salah) baris.push('Soal yang sedang diulang: ' + salah + ' soal.');
 if (!baris.length) baris.push('Saya baru mulai latihan psikotes & tes IQ.');
 var kepala = p.nama ? ('Hasil latihan saya — ' + p.nama) : 'Hasil latihan saya';
 return kepala + '\n' + baris.join('\n') +
-'\n\nLatihan gratis, tanpa akun, bisa offline: https://arapcihuy.github.io/pk-perwira-tni/' +
+'\n\nLatihan psikotes berpembahasan, tanpa akun, bisa offline: https://arapcihuy.github.io/pk-perwira-tni/' +
 '\n(Latihan, bukan tes resmi — hasil tidak menjamin kelulusan seleksi mana pun.)';
 };
 window.salinHasil = function () {
@@ -130,7 +130,7 @@ y += 90;
 }
 x.fillStyle = '#9aa7b4';
 x.font = '30px -apple-system, Segoe UI, Roboto, sans-serif';
-x.fillText('Latihan gratis · tanpa akun · bisa offline', 72, (H - 130));
+x.fillText('Latihan psikotes · tanpa akun · bisa offline', 72, (H - 130));
 x.fillStyle = '#6b7783';
 x.font = '26px -apple-system, Segoe UI, Roboto, sans-serif';
 x.fillText('arapcihuy.github.io/pk-perwira-tni', 72, (H - 86));

@@ -250,7 +250,7 @@ w2.className = 'ajak-umum';
 w2.innerHTML = '<div class="card"><div class="hari-head">' + ic('brain', 16) +
 ' <strong>Untuk umum: latihan psikotes kerja &amp; tes IQ</strong></div>' +
 '<div class="hari-sub">Tes IQ, kecepatan kerja (Kraepelin), kepribadian Big Five, dan tes gambar — ' +
-'gratis, tanpa akun, bisa offline.</div>' +
+'tanpa akun, bisa offline.</div>' +
 '<button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="setJalur(\'umum\')">' +
 ic('arrow-right', 14) + ' Mulai latihan umum</button></div>';
 kotak.insertAdjacentElement('afterend', w2);

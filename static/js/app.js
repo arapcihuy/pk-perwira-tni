@@ -151,7 +151,7 @@ return '<div class="card" style="cursor:pointer;padding:18px" onclick="startCat(
 }).join('');
 return '<div style="margin-bottom:20px">' +
 '<div style="font-size:24px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-0.4px">Selamat Datang</div>' +
-'<div style="font-size:13px;color:var(--text2)">Latihan psikotes kerja, tes IQ & kepribadian — gratis, offline, tanpa akun.</div>' +
+'<div style="font-size:13px;color:var(--text2)">Latihan psikotes kerja, tes IQ & kepribadian — sekali bayar, offline, tanpa akun.</div>' +
 '</div>' +
 '<div class="grid-3" style="margin-bottom:20px">' +
 '<div class="card card-gold card-sm">' +

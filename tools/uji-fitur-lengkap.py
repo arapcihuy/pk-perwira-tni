@@ -71,6 +71,8 @@ def main():
             return 2
 
         page = browser.new_page(viewport={'width': 1200, 'height': 900})
+        # Gerbang akses (v57): uji lama harus berjalan sebagai PEMILIK, bukan sebagai pengunjung terkunci.
+        page.add_init_script("try{localStorage.setItem('tni_akses_pemilik','1');}catch(e){}")
         page.on('pageerror', lambda e: kesalahan.append('pageerror: %s' % e))
         page.on('console', lambda m: kesalahan.append('console: %s' % m.text)
                 if m.type == 'error' and 'favicon' not in m.text.lower() else None)
@@ -91,7 +93,7 @@ def main():
         # ---- A. Beranda ----
         print('== A. Beranda ==')
         a = page.evaluate("""() => {
-            localStorage.clear(); goHome();
+            localStorage.clear(); localStorage.setItem('tni_akses_pemilik','1'); goHome();
             return {
                 total: totalSoal(),
                 statPill: document.getElementById('hStatSoal').textContent,
@@ -648,8 +650,8 @@ def main():
                                     || document.body.textContent.indexOf('Sudah tercatat') >= 0;
             out.adaKolomKode = !!document.getElementById('kodeAkses');
             out.syaratAda = document.body.textContent.indexOf('Syarat') >= 0;
-            out.materiTidakDikunci = document.body.textContent.indexOf('Materi latihan dan semua tes tetap') >= 0
-                                     || document.body.textContent.indexOf('Materi latihan tetap gratis') >= 0;
+            out.materiTidakDikunci = document.body.textContent.indexOf('Satu pembayaran membuka semuanya') >= 0
+                                     || document.body.textContent.indexOf('Materi latihan dan semua tes tetap') >= 0;
             document.getElementById('kodeAkses').value = kode[0];
             bukaLaporanDenganKode();
             out.terbuka = laporanSudahDibuka();
@@ -804,7 +806,7 @@ def main():
             out.sekaliBayar = document.body.textContent.indexOf('sekali bayar') >= 0;
             out.adaKolomKodeAkses = !!document.getElementById('kodeAkses');
             out.statusJujur = document.body.textContent.indexOf('kanal pembayaran sedang disiapkan') >= 0;
-            out.materiGratis = document.body.textContent.indexOf('Materi latihan tetap gratis selamanya') >= 0;
+            out.aksesBerbayar = document.body.textContent.indexOf('Satu pembayaran membuka semuanya') >= 0;
             return out;
         }""")
         cek(ab['halaman'] and ab['judul'], 'halaman Ruang Belajar saya tampil', ab)
@@ -813,8 +815,8 @@ def main():
         cek(ab['adaKode'] and ab['adaKolomTempel'] and ab['adaTombolSalin'] and ab['adaTombolCadangan'],
             'kode ruang belajar bisa disalin, ditempel, dan dicadangkan', ab)
         cek(ab['penjelasanTanpaServer'], 'dinyatakan jelas bahwa data tidak keluar dari perangkat', ab)
-        cek(ab['hargaTampil'] and ab['sekaliBayar'] and ab['materiGratis'],
-            'harga Rp 39.000 tampil & materi latihan dinyatakan tetap gratis', ab)
+        cek(ab['hargaTampil'] and ab['sekaliBayar'] and ab['aksesBerbayar'],
+            'harga Rp 39.000 tampil & dinyatakan satu pembayaran membuka semuanya', ab)
         cek(ab['adaKolomKodeAkses'] and ab['statusJujur'],
             'kolom kode akses tersedia & status pembayaran dinyatakan jujur', ab)
 
@@ -822,8 +824,8 @@ def main():
         _landing = open(os.path.join(ROOT, 'psikotes', 'index.html'), encoding='utf-8').read()
         cek('Rp 39.000' in _landing and 'sekali bayar' in _landing, 'harga tampil di halaman arahan', 'Rp 39.000')
         cek('Cara membelinya' in _landing and 'kode akses' in _landing, 'langkah cara membeli dijelaskan', 'ada')
-        cek('Latihan — gratis selamanya' in _landing or 'gratis selamanya' in _landing,
-            'bagian gratis dinyatakan tegas di halaman arahan', 'ada')
+        cek('gratis selamanya' not in _landing and 'Rp 39.000' in _landing,
+            'halaman arahan tidak lagi menjanjikan gratis & harga tercantum', 'ada')
 
         print('== AD. Masuk dengan Google (opsional, belum aktif) ==')
         ad = page.evaluate("""() => {
@@ -986,6 +988,72 @@ def main():
                 print('  LEWAT | pustaka pemindai QR belum ada; uji pindai gambar dilewati')
             except Exception as _e:
                 print('  LEWAT | pemindai QR bermasalah (%s); uji pindai dilewati' % type(_e).__name__)
+
+        print('== AJ. Gerbang akses: semua berbayar + pengecualian pemilik ==')
+        aj = page.evaluate("""() => {
+            const out = {};
+            out.aktif = AKSES.aktifGerbang === true;
+            out.pemilikTerdaftar = AKSES.pemilik.indexOf('rasyidahmad180@gmail.com') >= 0;
+            out.adaKodePengembang = AKSES.kodePengembang.length > 8;
+
+            // sebagai PEMILIK (tanda lokal) -> terbuka
+            localStorage.setItem('tni_akses_pemilik', '1');
+            out.peranPemilik = peranAkses();
+            out.pemilikBisaMasuk = punyaAkses();
+
+            // sebagai pengunjung biasa -> terkunci dan materi tidak bisa dimulai
+            localStorage.removeItem('tni_akses_pemilik');
+            localStorage.removeItem('tni_akses');
+            localStorage.removeItem('tni_kode_akses');
+            out.peranTerkunci = peranAkses();
+            out.pengunjungTidakBisaMasuk = punyaAkses() === false;
+
+            navTo('cat');
+            render();
+            out.halamanSaatTerkunci = S.page;
+            out.gerbangTampil = document.body.textContent.indexOf('seluruh materi terbuka setelah membeli') >= 0
+                || document.body.textContent.indexOf('Seluruh materi terbuka setelah membeli') >= 0
+                || document.body.textContent.indexOf('tidak ada lagi akses gratis') >= 0;
+            out.adaKolomKode = !!document.getElementById('kodeAksesGerbang');
+            out.adaHarga = document.body.textContent.indexOf('Rp 39.000') >= 0;
+            const sebelum = S.questions ? S.questions.length : 0;
+            startCat('tkw', 'learn');
+            out.materiTidakMulai = (S.questions ? S.questions.length : 0) === sebelum;
+
+            // pemilik masuk lewat akun Google-nya
+            localStorage.setItem('tni_google_akun', JSON.stringify({ email: 'rasyidahmad180@gmail.com', nama: 'Pemilik' }));
+            out.pemilikGoogleDikenali = adalahPemilik() && punyaAkses();
+            localStorage.removeItem('tni_google_akun');
+
+            // kode pengembang membuka pemilik
+            const el = document.getElementById('kodeAksesGerbang');
+            if (el) el.value = AKSES.kodePengembang;
+            terapkanKodeAkses();
+            out.kodePengembangMembuka = localStorage.getItem('tni_akses_pemilik') === '1';
+
+            // kode asal-asalan TIDAK membuka
+            localStorage.removeItem('tni_akses_pemilik');
+            const el2 = document.getElementById('kodeAksesGerbang');
+            if (el2) el2.value = 'SPASALASALAN0000';
+            terapkanKodeAkses();
+            out.kodePalsuDitolak = localStorage.getItem('tni_akses_pemilik') !== '1'
+                && punyaAkses() === false;
+
+            // pulihkan status PEMILIK supaya uji berikutnya berjalan normal
+            localStorage.setItem('tni_akses_pemilik', '1');
+            return out;
+        }""")
+        cek(aj['aktif'] and aj['pemilikTerdaftar'] and aj['adaKodePengembang'],
+            'gerbang aktif & akun pemilik terdaftar', aj)
+        cek(aj['peranPemilik'] in ('pemilik', 'pemilik-lokal') and aj['pemilikBisaMasuk'],
+            'pemilik selalu bisa masuk', aj)
+        cek(aj['peranTerkunci'] == 'terkunci' and aj['pengunjungTidakBisaMasuk'] and aj['gerbangTampil']
+            and aj['adaKolomKode'] and aj['adaHarga'],
+            'pengunjung terkunci: layar gerbang, harga, dan kolom kode tampil', aj)
+        cek(aj['materiTidakMulai'], 'materi tidak bisa dimulai sebelum membeli', aj)
+        cek(aj['pemilikGoogleDikenali'], 'akun Google pemilik dikenali otomatis', aj)
+        cek(aj['kodePengembangMembuka'] and aj['kodePalsuDitolak'],
+            'kode pengembang membuka; kode palsu ditolak', aj)
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {

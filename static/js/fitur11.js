@@ -251,7 +251,7 @@ var isi = '<div class="hari-head">' + ic('file', 16) + ' <strong>Laporan Lengkap
 'pekerjaan yang cocok, bagian yang perlu dikejar, rencana latihan 14 hari, dan cara menjawab di wawancara. ' +
 'Bisa dicetak atau disimpan sebagai PDF.</div>' +
 '<div class="bayar-daftar">' +
-'<div>' + ic('check', 13) + ' <strong>Materi latihan tetap gratis selamanya</strong> — yang dibayar hanya laporan ini</div>' +
+'<div>' + ic('check', 13) + ' <strong>Satu pembayaran membuka semuanya</strong> — seluruh soal, pembahasan, dan laporan ini</div>' +
 '<div>' + ic('check', 13) + ' Sekali bayar, tanpa langganan, tanpa akun</div>' +
 '<div>' + ic('check', 13) + ' Dibuka dengan kode akses, bisa dipakai di perangkat lain</div>' +
 '</div>';
