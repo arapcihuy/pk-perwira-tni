@@ -151,108 +151,60 @@ sub: 'Sejak sekarang tidak ada lagi akses gratis. Satu pembayaran <strong>' + AK
 'dan Laporan Lengkap. Bukan langganan, tanpa perpanjangan otomatis.' };
 }
 window.renderGerbang = function () {
-var peran = peranAkses();
-var k = kepalaGerbang(peran);
-var akun = bacaAkunGoogle();
-var googleSiap = (typeof window.googleSiap === 'function') && window.googleSiap();
-var masuk = '<div class="komer-bagian">' +
-'<div class="komer-nomor">1</div>' +
-'<div class="komer-isi">' +
-'<h3>1. Masuk dengan Google <span style="font-weight:400;color:var(--muted)">(disarankan, bisa dilewati)</span></h3>' +
-(googleSiap
-? (akun
-? '<p class="komer-sub">Tersambung sebagai <strong>' + escapeHtml(akun.nama || akun.email) + '</strong>. ' +
-'Bahan belajarmu bisa disalin ke Google Drive milikmu.</p>' +
-'<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="keluarGoogle()">Keluar dari Google</button></div>'
-: '<p class="komer-sub">Masuk sekali klik supaya <strong>latihanmu tersimpan ke akunmu</strong>: bisa dilanjutkan ' +
-'dari HP lain, dan <strong>kode akses yang kamu beli tidak hilang</strong> walau ganti perangkat. ' +
-'Salinannya disimpan di Google Drive milikmu sendiri, bukan di server kami. Tidak mau masuk? Boleh dilewati - ' +
-'latihan tetap bisa dipakai di perangkat ini.</p>' +
-'<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="masukkanGoogle()">' +
-ic('user', 14) + ' Masuk dengan Google</button>' +
-'<button class="btn btn-ghost btn-sm" onclick="pulihkanAksesDariAkun()">Pulihkan aksesku</button></div>')
-: '<p class="komer-sub">Belum diaktifkan pemilik. Tanpa masuk pun kamu tetap bisa membeli dan memakai ' +
-'aplikasi ini di perangkat ini.</p>') +
-'</div></div>';
-var bayar = '<div class="komer-bagian">' +
-'<div class="komer-nomor">2</div>' +
-'<div class="komer-isi">' +
-'<h3>Bayar ' + AKSES.harga + ' — sekali bayar</h3>' +
-(function () {
-if (typeof BAYAR === 'undefined' || !BAYAR.aktif) {
-return '<p class="komer-sub"><strong>Kanal pembayaran sedang disiapkan.</strong> Harga sudah kami cantumkan ' +
-'supaya tidak ada kejutan. Kalau kamu sudah punya kode akses, langsung pakai bagian 3.</p>' +
-'<div class="komer-aksi"><button class="btn btn-ghost btn-sm" onclick="catatMinatLaporan()">' +
-ic('check', 14) + ' Beri tahu saya saat pembayaran dibuka</button></div>';
-}
-var kb = kodeBayar();
-var cara = '';
-if (BAYAR.gambarQris) {
-var tautanAda = !!BAYAR.tautanBayar;
-if (!tautanAda && BAYAR.catatanQris) {
-cara += '<div class="komer-sub" style="margin-top:8px">' + escapeHtml(BAYAR.catatanQris) + '</div>';
-}
-cara += '<div class="qris-bingkai"><img src="' + BAYAR.gambarQris + '?v=' + (window.VERSI_ASET || '') + '" ' +
-'alt="' + (tautanAda ? 'QR pembayaran SiapPsikotes' : 'Kode QRIS pembayaran SiapPsikotes') + '" ' +
-'width="220" height="220" loading="lazy" decoding="async" ' +
-'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Gambar QR belum terpasang.</div>\'"></div>' +
-(tautanAda
-? '<div class="komer-sub" style="margin-top:8px">' + (BAYAR.catatanTautan
-  ? escapeHtml(BAYAR.catatanTautan)
-  : 'Pindai QR itu dengan kamera ponsel, atau tekan tombol di bawah. Halaman pembayaran akan terbuka: ' +
-    'di sana tersedia QRIS, virtual account, dan e-wallet (GoPay, OVO, DANA, ShopeePay).') + '</div>' +
-'<div class="komer-aksi"><button class="btn btn-primary btn-sm" onclick="bukaHalamanBayar()">' +
-ic('arrow-right', 14) + ' Buka halaman pembayaran</button></div>'
-: '');
-}
-if (BAYAR.rekening && BAYAR.tampilkanRekening !== false) {
-cara += '<div class="komer-sub" style="margin-top:10px">Atau transfer / e-wallet ke:</div>' +
-'<div class="qris-nominal"><strong style="font-size:19px">' + escapeHtml(BAYAR.rekening) + '</strong></div>' +
-'<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="salinRekening()">' +
-ic('copy', 14) + ' Salin tujuan pembayaran</button></div>';
-}
-if (!cara) cara = '<p class="komer-sub">Tujuan pembayaran belum diisi pemilik. Bila kode QRIS sedang disiapkan, coba beberapa saat lagi atau hubungi pemilik bila kamu sudah membayar.</p>';
-return cara +
-'<div class="qris-nominal" style="margin-top:12px"><span>Bayar tepat sejumlah</span>' +
-'<strong>' + rupiahKomersial(kb.nominal) + '</strong>' +
-'<span class="komer-sub">Kode rujukanmu: <strong>' + kb.rujukan + '</strong>. Tulis kode ini saat mengirim bukti ' +
-'supaya laporanmu cepat dicocokkan.' + ((BAYAR.rekening && BAYAR.tampilkanRekening !== false) ? ' Nominal unik ini yang memudahkan pemilik mencocokkan pembayaranmu.' : '') + '</span></div>' +
-(BAYAR.whatsapp || BAYAR.surel
-? '<div class="komer-aksi"><button class="btn btn-primary btn-sm" onclick="kirimBuktiBayar()">' +
-ic('send', 14) + ' Kirim bukti pembayaran</button></div>'
-: '<p class="komer-sub">Kontak pengiriman bukti belum diisi pemilik.</p>');
-})() +
-'</div></div>';
-var buka = '<div class="komer-bagian">' +
-'<div class="komer-nomor">3</div>' +
-'<div class="komer-isi">' +
-'<h3>Buka dengan kode akses</h3>' +
-'<p class="komer-sub">Setelah membayar dan mengirim bukti, kamu menerima kode akses. Tempel di sini.</p>' +
-'<input id="kodeAksesGerbang" placeholder="Contoh: SPXXXXXXXXXXXX" autocomplete="off" spellcheck="false">' +
-'<div class="komer-aksi"><button class="btn btn-primary" onclick="terapkanKodeAkses()">' +
-ic('hash', 14) + ' Buka aplikasi</button></div>' +
-'<div id="statusGerbang" class="komer-status"></div>' +
-'</div></div>';
-return '<div class="komer-kartu">' +
-'<div class="komer-kepala">' +
-'<div class="komer-ikon">' + ic('shield', 26) + '</div>' +
-'<h2>' + k.judul + '</h2>' +
-'<p class="komer-sub">' + k.sub + '</p>' +
-'</div>' +
-'<div class="komer-daftar">' +
-'<div>' + ic('check', 13) + ' 1.225 soal dalam 9 modul, dengan pembahasan langkah demi langkah</div>' +
-'<div>' + ic('check', 13) + ' Tes IQ, kecepatan kerja, kepribadian, tes gambar, latihan wawancara</div>' +
-'<div>' + ic('check', 13) + ' Laporan Lengkap: kesiapan, kecocokan kerja, rencana latihan 14 hari</div>' +
-'<div>' + ic('check', 13) + ' Bisa dipakai tanpa internet setelah dibuka, tanpa akun</div>' +
-'</div>' +
-masuk + bayar + buka +
-'<div class="komer-kaki">' +
-'<button class="btn btn-ghost btn-sm" onclick="window.open(\'psikotes/\',\'_blank\')">Penjelasan & harga</button>' +
-'<button class="btn btn-ghost btn-sm" onclick="window.open(\'syarat/\',\'_blank\')">Syarat</button>' +
-'<button class="btn btn-ghost btn-sm" onclick="window.open(\'privasi/\',\'_blank\')">Privasi</button>' +
-'</div>' +
-'</div>';
+  var peran = peranAkses();
+  var akun = bacaAkunGoogle();
+  var googleSiap = (typeof window.googleSiap === 'function') && window.googleSiap();
+  var pesan = '';
+  try { pesan = localStorage.getItem('tni_gerbang_pesan') || ''; } catch (e) {}
+
+  var masuk = googleSiap
+    ? (akun
+        ? '<p class="komer-sub">Tersambung sebagai <strong>' + escapeHtml(akun.nama || akun.surel || akun.email) + '</strong>. ' +
+          'Bahan belajarmu tersimpan di akunmu dan bisa dilanjutkan dari perangkat lain.</p>' +
+          '<div class="komer-aksi"><button class="btn btn-secondary" onclick="keluarGoogle()">Keluar dari Google</button></div>'
+        : '<button class="btn btn-primary" style="width:100%" onclick="masukkanGoogle()">' + ic('user', 16) + ' Masuk dengan Google</button>' +
+          '<p class="komer-sub" style="margin-top:10px">Sekali klik, tanpa kata sandi. Latihanmu tersimpan ke akunmu ' +
+          'sehingga bisa dilanjutkan dari HP lain dan kode aksesmu tidak hilang.</p>')
+    : '<p class="komer-sub">Masuk dengan Google belum diaktifkan pemilik.</p>';
+
+  var belum = '<div class="komer-bagian" style="border-top:1px solid var(--line)">' +
+    '<div class="komer-nomor">?</div>' +
+    '<div class="komer-isi"><h3>Belum punya akses?</h3>' +
+    '<p class="komer-sub">Harga, isi paket, QRIS, dan cara membelinya ada di halaman penjelasan.</p>' +
+    '<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="window.open(\'psikotes/#harga\',\'_blank\')">' +
+    ic('arrow-right', 14) + ' Lihat harga & cara beli</button></div></div></div>';
+
+  var kode = '<div class="komer-bagian" style="border-top:1px solid var(--line)">' +
+    '<div class="komer-nomor">K</div>' +
+    '<div class="komer-isi"><h3>Sudah punya kode akses?</h3>' +
+    '<p class="komer-sub">Tempel kode yang kamu terima setelah membayar.</p>' +
+    '<input id="kodeAksesGerbang" placeholder="Contoh: SPXXXXXXXXXXXX" autocomplete="off" spellcheck="false">' +
+    '<div class="komer-aksi"><button class="btn btn-primary btn-sm" onclick="terapkanKodeAkses()">' + ic('hash', 14) + ' Buka</button></div>' +
+    '<div id="statusGerbang" class="komer-status">' + escapeHtml(pesan) + '</div></div></div>';
+
+  var judul = akun ? 'Akun ini belum punya akses' : 'Masuk untuk mulai belajar';
+  var sub = akun
+    ? 'Kamu sudah masuk sebagai <strong>' + escapeHtml(akun.email) + '</strong>, tetapi akun ini belum membeli akses penuh.'
+    : 'Satu akun untuk semua perangkatmu. Belum membeli? Lihat harga &amp; cara beli di halaman penjelasan.';
+
+  return '<div class="komer-kartu">' +
+      '<div class="komer-kepala">' +
+        '<div class="komer-ikon">' + ic('user', 26) + '</div>' +
+        '<h2>' + judul + '</h2>' +
+        '<p class="komer-sub">' + sub + '</p>' +
+      '</div>' +
+      '<div class="komer-bagian" style="border-top:1px solid var(--line)">' +
+        '<div class="komer-nomor">1</div>' +
+        '<div class="komer-isi"><h3>Masuk dengan Google</h3>' + masuk + '</div>' +
+      '</div>' +
+      belum + kode +
+      '<div class="komer-kaki">' +
+        '<button class="btn btn-ghost btn-sm" onclick="window.open(\'syarat/\',\'_blank\')">Syarat</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="window.open(\'privasi/\',\'_blank\')">Privasi</button>' +
+      '</div>' +
+    '</div>';
 };
+
 window.kartuPembelian = function () {
 var b = pembelianSaya();
 var peran = peranAkses();

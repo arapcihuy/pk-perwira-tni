@@ -15,6 +15,7 @@ import socket
 import socketserver
 import sys
 import threading
+import time
 
 AKSES_HARGA = 'Rp 39.000'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1030,9 +1031,9 @@ def main():
             navTo('cat');
             render();
             out.halamanSaatTerkunci = S.page;
-            out.gerbangTampil = document.body.textContent.indexOf('seluruh materi terbuka setelah membeli') >= 0
-                || document.body.textContent.indexOf('Seluruh materi terbuka setelah membeli') >= 0
-                || document.body.textContent.indexOf('tidak ada lagi akses gratis') >= 0;
+            // Alur baru: gerbang = layar MASUK (tombol Google + arahan harga + kolom kode)
+            out.gerbangTampil = document.body.textContent.indexOf('Masuk untuk mulai belajar') >= 0
+                || document.body.textContent.indexOf('Akun ini belum punya akses') >= 0;
             out.adaKolomKode = !!document.getElementById('kodeAksesGerbang');
             out.adaHarga = document.body.textContent.indexOf('Rp 39.000') >= 0;
             const sebelum = S.questions ? S.questions.length : 0;
@@ -1067,165 +1068,110 @@ def main():
         cek(aj['peranPemilik'] in ('pemilik', 'pemilik-lokal') and aj['pemilikBisaMasuk'],
             'pemilik selalu bisa masuk', aj)
         cek(aj['peranTerkunci'] == 'terkunci' and aj['pengunjungTidakBisaMasuk'] and aj['gerbangTampil']
-            and aj['adaKolomKode'] and aj['adaHarga'],
-            'pengunjung terkunci: layar gerbang, harga, dan kolom kode tampil', aj)
+            and aj['adaKolomKode'],
+            'pengunjung terkunci: layar MASUK tampil & kolom kode akses tersedia', aj)
         cek(aj['materiTidakMulai'], 'materi tidak bisa dimulai sebelum membeli', aj)
         cek(aj['pemilikGoogleDikenali'], 'akun Google pemilik dikenali otomatis', aj)
         cek(aj['kodePengembangMembuka'] and aj['kodePalsuDitolak'],
             'kode pengembang membuka; kode palsu ditolak', aj)
 
 
-        print('== AK. Alur komersial utuh: masuk -> bayar -> buka -> kuitansi ==')
+        print('== AK. Gerbang aplikasi = layar MASUK (belanja dipindah ke halaman arahan) ==')
         ak = page.evaluate("""() => {
             const out = {};
-            try {
-                localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
-                localStorage.removeItem('tni_kode_akses'); localStorage.removeItem('tni_pembelian');
-                localStorage.removeItem('tni_google_akun'); localStorage.removeItem('tni_kode_bayar');
-            } catch (e) {}
-            BAYAR.aktif = true; BAYAR.whatsapp = '628123456789'; BAYAR.gambarQris = 'static/icons/icon-192.png';
-            render();
-            const t = document.body.textContent;
-
-            // 1) satu layar memuat tiga langkah berurut
-            out.adaTigaLangkah = document.querySelectorAll('.komer-bagian').length === 3;
-            out.adaMasuk = t.indexOf('Masuk dengan Google') >= 0;
-            out.adaBayar = t.indexOf('sekali bayar') >= 0;
-            out.adaBuka = t.indexOf('Buka dengan kode akses') >= 0;
-            out.adaTigaNomor = [].slice.call(document.querySelectorAll('.komer-nomor')).map(e => e.textContent).join('') === '123';
-
-            // 2) bagian bayar memuat QRIS + nominal unik + kode rujukan + tombol bukti
-            const kb = kodeBayar();
-            out.adaQris = !!document.querySelector('.qris-bingkai img');
-            out.nominalUnik = t.indexOf(String(kb.nominal).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) >= 0;
-            out.rujukanTampil = t.indexOf(kb.rujukan) >= 0;
-            out.adaTombolBukti = !!document.querySelector('[onclick*="kirimBuktiBayar"]');
-
-            // 3) kode sah membuka + tercatat sebagai pembelian
-            const el = document.getElementById('kodeAksesGerbang');
-            const kodeUji = buatKodeUji();
-            el.value = kodeUji;
-            terapkanKodeAkses();
-            const b = JSON.parse(localStorage.getItem('tni_pembelian') || 'null');
-            out.kodeSahMembuka = localStorage.getItem('tni_akses') === 'TERBUKA' && punyaAkses();
-            out.pembelianTercatat = !!(b && b.kode === kodeUji && b.nominal > 0 && b.tanggal && b.produk);
-            out.laporanIkutTerbuka = !!JSON.parse(localStorage.getItem('tni_laporan_bayar') || 'null');
-
-            // 4) kartu Pembelian saya + kuitansi
-            navTo('akun');
-            out.adaKartuPembelian = document.body.textContent.indexOf('Pembelian saya') >= 0;
-            out.kartuMemuatKode = document.body.textContent.indexOf(kodeUji) >= 0;
-            out.adaTombolKuitansi = !!document.querySelector('[onclick*="unduhKuitansi"]');
-            let jendela = null;
-            window.open = () => ({ document: { write: (h) => { jendela = h; }, close: () => {} }, print: () => {} });
-            unduhKuitansi();
-            out.kuitansiBerisi = !!jendela && jendela.indexOf(kodeUji) >= 0
-                && jendela.indexOf('Kuitansi pembelian') >= 0 && jendela.indexOf('Lunas') >= 0;
-
-            // 5) terkunci kembali -> gerbang muncul lagi
-            localStorage.removeItem('tni_akses'); localStorage.removeItem('tni_kode_akses');
-            localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_google_akun');
-            out.terkunciLagi = punyaAkses() === false && peranAkses() === 'terkunci';
-
-            BAYAR.aktif = false;
-            localStorage.setItem('tni_akses_pemilik', '1');
-            return out;
-        }""")
-        cek(ak['adaTigaLangkah'] and ak['adaMasuk'] and ak['adaBayar'] and ak['adaBuka'] and ak['adaTigaNomor'],
-            'uji alur komersial: satu layar tiga langkah berurut (masuk, bayar, buka)', ak)
-        cek(ak['adaQris'] and ak['nominalUnik'] and ak['rujukanTampil'] and ak['adaTombolBukti'],
-            'langkah bayar: QRIS, nominal unik, kode rujukan, tombol kirim bukti', ak)
-        cek(ak['kodeSahMembuka'] and ak['pembelianTercatat'] and ak['laporanIkutTerbuka'],
-            'kode sah membuka seluruh aplikasi + pembelian tercatat', ak)
-        cek(ak['adaKartuPembelian'] and ak['kartuMemuatKode'] and ak['adaTombolKuitansi'] and ak['kuitansiBerisi'],
-            'kartu Pembelian saya + kuitansi bisa diunduh dan berisi data benar', ak)
-        cek(ak['terkunciLagi'], 'setelah kunci ulang, gerbang kembali menutup', ak)
-
-        print('== AL. Jalur bayar transfer/e-wallet (selain QRIS) ==')
-        al = page.evaluate("""() => {
-            const out = {};
-            try {
-                localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
-                localStorage.removeItem('tni_kode_akses'); localStorage.removeItem('tni_kode_bayar');
-            } catch (e) {}
-            const asli = { aktif: BAYAR.aktif, rekening: BAYAR.rekening, qris: BAYAR.gambarQris,
-                           wa: BAYAR.whatsapp };
-            BAYAR.aktif = true; BAYAR.whatsapp = '628123456789';
-            BAYAR.rekening = 'DANA 081234567890 a/n Rasyid';
-            BAYAR.gambarQris = '';
-            render();
-            let t = document.body.innerText;
-            const kb = kodeBayar();
-            out.tanpaQris = !document.querySelector('.qris-bingkai');
-            out.tujuanTampil = t.indexOf('DANA 081234567890 a/n Rasyid') >= 0;
-            out.adaTombolSalin = !!document.querySelector('[onclick*="salinRekening"]');
-            out.nominalUnik = t.indexOf(String(kb.nominal).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) >= 0;
-            out.rujukanTampil = t.indexOf(kb.rujukan) >= 0;
-            out.tombolBukti = !!document.querySelector('[onclick*="kirimBuktiBayar"]');
-
-            // QRIS + transfer bisa tampil bersama
-            BAYAR.gambarQris = 'static/icons/icon-192.png';
-            render();
-            t = document.body.innerText;
-            out.duaCara = !!document.querySelector('.qris-bingkai img') && t.indexOf('DANA 081234567890') >= 0;
-
-            // tanpa tujuan uang: dinyatakan jujur, bukan layar kosong
-            BAYAR.gambarQris = ''; BAYAR.rekening = ''; BAYAR.whatsapp = '';
-            render();
-            out.jujurSaatKosong = document.body.textContent.indexOf('Tujuan pembayaran belum diisi pemilik') >= 0;
-
-            BAYAR.aktif = asli.aktif; BAYAR.rekening = asli.rekening; BAYAR.gambarQris = asli.qris;
-            BAYAR.whatsapp = asli.wa;
-            localStorage.setItem('tni_akses_pemilik', '1');
-            return out;
-        }""")
-        cek(al['tanpaQris'] and al['tujuanTampil'] and al['adaTombolSalin'] and al['nominalUnik']
-            and al['rujukanTampil'] and al['tombolBukti'],
-            'pembayaran bisa lewat transfer/e-wallet: tujuan, salin, nominal unik, rujukan, kirim bukti', al)
-        cek(al['duaCara'], 'QRIS dan transfer bisa tampil bersamaan', al)
-        cek(al['jujurSaatKosong'], 'bila tujuan uang belum diisi: dinyatakan jujur, bukan layar kosong', al)
-
-        print('== AM. Pembayaran lewat QR dari tautan checkout platform ==')
-        am = page.evaluate("""() => {
-            const out = {};
-            try {
-                localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
-                localStorage.removeItem('tni_kode_akses');
-            } catch (e) {}
-            const asli = { aktif: BAYAR.aktif, qris: BAYAR.gambarQris, rek: BAYAR.rekening,
-                           tautan: BAYAR.tautanBayar, tampil: BAYAR.tampilkanRekening };
-            BAYAR.aktif = true;
-            BAYAR.tautanBayar = 'https://contoh-pembayaran.example/produk';
-            BAYAR.gambarQris = 'static/icons/icon-192.png';
-            BAYAR.tampilkanRekening = false;
+            try { localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
+                  localStorage.removeItem('tni_kode_akses'); localStorage.removeItem('tni_google_akun'); } catch (e) {}
             render();
             const t = document.body.innerText;
-            out.adaQr = !!document.querySelector('.qris-bingkai img');
-            out.adaTombolBuka = !!document.querySelector('[onclick*="bukaHalamanBayar"]');
-            // keterangan cara bayar bisa berbeda per metode (mis. khusus DANA), jadi jangan dipatok pada merek:
-            out.dijelaskanCaraBayar = t.indexOf('Pindai') >= 0 && t.toLowerCase().indexOf('pembayaran') >= 0;
-            out.rekeningDisembunyikan = t.indexOf('1370022256982') < 0;
-            out.nominalTampil = t.indexOf('Bayar tepat sejumlah') >= 0;
-            let dibuka = null;
-            window.open = (u) => { dibuka = u; return null; };
-            bukaHalamanBayar();
-            out.membukaTautan = !!dibuka && dibuka.indexOf('contoh-pembayaran.example') >= 0;
-
-            // kembali ke cara sebelumnya harus tetap utuh
-            BAYAR.tautanBayar = ''; BAYAR.gambarQris = ''; BAYAR.tampilkanRekening = true;
-            render();
-            out.pulihKeRekening = document.body.innerText.indexOf('1370022256982') >= 0;
-
-            BAYAR.aktif = asli.aktif; BAYAR.gambarQris = asli.qris; BAYAR.rekening = asli.rek;
-            BAYAR.tautanBayar = asli.tautan; BAYAR.tampilkanRekening = asli.tampil;
+            out.layarMasuk = t.indexOf('Masuk untuk mulai belajar') >= 0
+                || t.indexOf('Masuk dengan Google') >= 0;
+            out.adaTombolGoogle = !!document.querySelector('[onclick*="masukkanGoogle"]');
+            out.adaArahanHarga = !!(document.querySelector('[onclick*="psikotes/#harga"]')
+                                 || t.indexOf('Lihat harga') >= 0);
+            out.adaKolomKode = !!document.getElementById('kodeAksesGerbang');
+            out.adaTautanSyarat = t.indexOf('Syarat') >= 0;
+            // pembayaran TIDAK lagi di dalam aplikasi
+            out.tidakAdaQrDiAplikasi = !document.querySelector('.qris-bingkai')
+                && t.indexOf('Bayar tepat sejumlah') < 0;
+            // kode sah tetap membuka
+            const KUNCI = 'siap|psikotes|2026|kode';
+            function sidik(isi) { let h = 2166136261; const s = isi + '#' + KUNCI;
+                for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+                let pos = h % 1679616, ab = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', o = '';
+                while (pos > 0) { o = ab[pos % 36] + o; pos = Math.floor(pos / 36); } return o.padStart(4, '0'); }
+            const isi = 'AK' + String(Date.now()).slice(-6);
+            const kode = 'SP' + isi + sidik(isi);
+            document.getElementById('kodeAksesGerbang').value = kode;
+            terapkanKodeAkses();
+            out.kodeSahMembuka = punyaAkses() === true;
+            out.pembelianTercatat = !!localStorage.getItem('tni_pembelian');
             localStorage.setItem('tni_akses_pemilik', '1');
             return out;
         }""")
-        cek(am['adaQr'] and am['adaTombolBuka'] and am['dijelaskanCaraBayar'] and am['membukaTautan'],
-            'mode QR tautan: QR tampil, tombol membuka halaman pembayaran, cara bayar dijelaskan', am)
-        cek(am['rekeningDisembunyikan'] and am['nominalTampil'],
-            'mode QR tautan menyembunyikan nomor rekening & tetap menampilkan nominal', am)
-        cek(am['pulihKeRekening'], 'kembali ke cara sebelumnya tetap berfungsi (nomor rekening tampil lagi)', am)
+        cek(ak['layarMasuk'] and ak['adaTombolGoogle'] and ak['adaArahanHarga'] and ak['adaKolomKode'] and ak['adaTautanSyarat'],
+            'gerbang aplikasi = layar MASUK (Google + arahan harga + kolom kode)', ak)
+        cek(ak['tidakAdaQrDiAplikasi'],
+            'pembayaran TIDAK lagi berada di dalam aplikasi (dipindah ke halaman arahan)', ak)
+        cek(ak['kodeSahMembuka'] and ak['pembelianTercatat'],
+            'kode akses yang sah tetap membuka aplikasi & pembelian tercatat', ak)
+
+        print('== AL. Halaman arahan: bagian BELANJA (QR QRIS + nominal unik + rujukan + bukti) ==')
+        # Bagian belanja ada di DOKUMEN LAIN (halaman arahan), jadi diuji di halaman terpisah.
+        _lp = browser.new_page(viewport={'width': 1280, 'height': 950})
+        _lp.goto(url.replace('/index.html', '/psikotes/'), wait_until='domcontentloaded', timeout=40000)
+        _t0 = time.time()
+        _siap = False
+        while time.time() - _t0 < 15:
+            try:
+                if _lp.evaluate("() => { const e = document.getElementById('beliNominal');"
+                                " return !!e" + " && " + "/Rp 39[.,]?\\d{3}/.test(e.textContent || ''); }"):
+                    _siap = True
+                    break
+            except Exception:
+                pass
+            time.sleep(0.4)
+        al = _lp.evaluate("""() => {
+            const n = document.getElementById('beliNominal');
+            const r = document.getElementById('beliRujukan');
+            const b = document.getElementById('beliBukti');
+            const polaNominal = /Rp 39[.,]?\d{3}/;
+            const polaRujukan = /^SP-\d{3}$/;
+            const alamatBukti = b ? decodeURIComponent(b.getAttribute('href') || '') : '';
+            const rujukan = r ? r.textContent.trim() : 'ZZ';
+            return { adaBagianBeli: !!document.getElementById('beli'),
+                     adaQr: !!document.querySelector('#beli img[alt*="QRIS"]'),
+                     nominalTampil: !!n ? polaNominal.test(n.textContent.trim()) : false,
+                     rujukanTampil: !!r ? (polaRujukan.test(rujukan) && rujukan !== 'SP-000') : false,   // SP-000 adalah nilai cadangan, bukan bukti skrip jalan
+                     adaTombolBukti: !!b ? (b.getAttribute('href') || '').indexOf('mailto:') === 0 : false,
+                     buktiMemuatRujukan: !!b ? alamatBukti.indexOf(rujukan) >= 0 : false,
+                     adaEmpatLangkah: document.querySelectorAll('#beli ol li').length === 4,
+                     tanpaGeser: document.documentElement.scrollWidth <= window.innerWidth + 1 };
+        }""")
+        al['nominalSiap'] = _siap
+        _lp.close()
+        cek(al['adaBagianBeli'] and al['adaQr'] and al['adaEmpatLangkah'],
+            'halaman arahan punya bagian BELANJA: QR QRIS + empat langkah membeli', al)
+        cek(al['nominalTampil'] and al['rujukanTampil'] and al['adaTombolBukti'] and al['buktiMemuatRujukan'],
+            'nominal unik + kode rujukan tampil & tombol bukti mengisi rujukan otomatis', al)
+        cek(al['tanpaGeser'], 'bagian belanja tidak menyebabkan geser horizontal', al)
+
+        print('== AM. Aplikasi tidak memuat alat pembayaran apa pun (bersih) ==')
+        am = page.evaluate("""() => {
+            const out = { halaman: S.page };
+            try { localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
+                  localStorage.removeItem('tni_kode_akses'); } catch (e) {}
+            render();   // gambar ulang SETELAH penyimpanan dibersihkan, agar layar masuk benar-benar tampil
+            out.tanpaQr = !document.querySelector('.qris-bingkai');
+            out.tanpaNominal = document.body.innerText.indexOf('Bayar tepat sejumlah') < 0;
+            out.tanpaTujuanTransfer = document.body.innerText.indexOf('1370022256982') < 0;
+            out.adaArahanHarga = document.body.innerText.indexOf('Lihat harga') >= 0;
+            // kembalikan keadaan PEMILIK dan gambar ulang, supaya uji berikutnya tidak terkunci
+            localStorage.setItem('tni_akses_pemilik', '1');
+            render();
+            return out;
+        }""")
+        cek(am['tanpaQr'] and am['tanpaNominal'] and am['tanpaTujuanTransfer'] and am['adaArahanHarga'],
+            'layar masuk bersih dari alat pembayaran & mengarahkan ke halaman harga', am)
 
         print('== AN. Hak akses ikut akun: pemulihan untuk pengguna lain + pengerasan ==')
         an = page.evaluate("""() => {
@@ -1266,11 +1212,12 @@ def main():
 
             // 4) layar gerbang menyatakan manfaat masuk & menyediakan pemulihan
             try { localStorage.clear(); } catch (e) {}
-            // Uji isi layar gerbang secara langsung (tidak bergantung halaman mana yang sedang tampil)
+            // Uji isi layar MASUK secara langsung (tidak bergantung halaman yang sedang tampil)
             const html = (typeof renderGerbang === 'function') ? renderGerbang() : '';
-            out.manfaatDijelaskan = html.toLowerCase().indexOf('kode akses yang kamu beli tidak hilang') >= 0;
-            out.bisaDilewati = html.toLowerCase().indexOf('boleh dilewati') >= 0;
-            out.adaTombolPulihkan = html.indexOf('pulihkanAksesDariAkun') >= 0;
+            out.manfaatDijelaskan = html.indexOf('tersimpan ke akunmu') >= 0
+                && html.indexOf('dilanjutkan dari HP lain') >= 0;
+            out.bisaDilewati = html.indexOf('lihat harga') >= 0 || html.indexOf('Lihat harga') >= 0;
+            out.adaTombolPulihkan = html.indexOf('kodeAksesGerbang') >= 0;
 
             localStorage.setItem('tni_akses_pemilik', '1');
             return out;
@@ -1282,7 +1229,7 @@ def main():
             'pembelian & progres ikut dipulihkan; kunci asing ditolak', an)
         cek(an['rusakDitolak'], 'cadangan rusak ditolak dengan aman', an)
         cek(an['manfaatDijelaskan'] and an['bisaDilewati'] and an['adaTombolPulihkan'],
-            'gerbang menjelaskan manfaat masuk, bisa dilewati, & ada tombol pulihkan', an)
+            'layar masuk menjelaskan manfaatnya, mengarahkan ke harga, & menyediakan kolom kode', an)
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
