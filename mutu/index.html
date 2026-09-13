@@ -59,7 +59,7 @@
   .merek { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-.2px;
     color:var(--text); text-decoration:none; }
   .merek img { width:30px; height:30px; border-radius:8px; display:block; }
-  .kepala nav { display:flex; align-items:center; gap:18px; font-size:14.5px; }
+  .kepala nav { display:flex; align-items:center; gap:22px; font-size:14.5px; }
   .kepala nav a { text-decoration:none; }
   .kepala nav a:not(.tombol) { color:var(--muted); }
   .kepala nav a:not(.tombol):hover { color:var(--text); }
@@ -88,8 +88,8 @@
     background:linear-gradient(180deg,var(--gold),var(--gold-dark)); color:#1a1405;
     box-shadow:0 10px 24px rgba(201,162,39,.22); transition:filter .18s ease, transform .18s ease; }
   .tombol:hover { filter:brightness(1.06); transform:translateY(-1px); color:#1a1405; }
-  .tombol.sekunder { background:var(--surface2); color:var(--text); border-color:var(--line2);
-    box-shadow:none; font-weight:600; }
+  .tombol.sekunder { background:#1e2a3d; color:var(--text); border-color:rgba(255,255,255,.28);
+    box-shadow:0 6px 16px rgba(0,0,0,.22); font-weight:600; }
   .tombol.sekunder:hover { border-color:var(--gold); color:var(--gold); }
   .tombol.kecil { min-height:38px; padding:8px 14px; font-size:14px; border-radius:10px; }
 
@@ -131,7 +131,7 @@
     overflow-wrap:anywhere; }
   tbody tr:last-child td { border-bottom:0; }
   tbody tr:hover td { background:rgba(255,255,255,.025); }
-  td.nomor { width:56px; }
+  td.nomor, th.nomor { width:56px; }
   td.nomor span { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;
     border-radius:9px; background:rgba(230,197,82,.13); border:1px solid rgba(230,197,82,.3);
     color:var(--gold); font-weight:800; font-size:13.5px; }
@@ -174,6 +174,19 @@
     h2 { margin-top:36px; padding-top:24px; }
     tbody td, thead th { padding:11px 12px; }
   }
+  @media (max-width:560px) {
+    /* tabel 2 kolom di layar sempit: tiap baris jadi kartu supaya kata tidak terpotong */
+    table.hasil thead { display:none; }
+    table.hasil tbody tr { display:block; padding:12px 14px 14px; border-bottom:1px solid var(--line); }
+    table.hasil tbody tr:last-child { border-bottom:0; }
+    table.hasil tbody td { display:block; width:auto; border:0; padding:2px 0; overflow-wrap:break-word; }
+    table.hasil tbody td:first-child { font-weight:700; color:var(--text); }
+    table.hasil tbody td:first-child::before { display:none; }
+    table.hasil tbody td::before { content:attr(data-label); display:block; margin:6px 0 1px;
+      font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+    table.hasil tbody tr:hover td { background:transparent; }
+    caption { padding-bottom:2px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior:auto; }
     * { transition:none !important; }
@@ -209,8 +222,8 @@
   <section class="pita">
     <span class="lencana">Mutu &amp; Bukti</span>
     <h1>Bagaimana kami memastikan soalnya benar</h1>
-    <p class="dek">Setiap soal diperiksa mesin, bukan dibaca sekilas. Halaman ini menunjukkan apa yang diperiksa,
-      apa hasilnya, dan di mana batasnya &mdash; supaya kamu bisa menilai sendiri, bukan sekadar percaya.</p>
+    <p class="dek">Bukti, bukan klaim. Kami membuka pemeriksaannya: apa yang diperiksa mesin,
+      berapa temuan yang pernah muncul, dan di mana batas jujurnya.</p>
     <div class="aksi">
       <a class="tombol" href="#hasil">Lihat hasil pemeriksaan</a>
       <a class="tombol sekunder" href="../beli/">Harga &amp; cara membeli</a>
@@ -232,7 +245,7 @@
   <div class="tabel-bingkai">
     <table>
       <caption>Sebelas peraturan mutu soal yang diperiksa mesin di setiap perubahan</caption>
-      <thead><tr><th scope="col">#</th><th scope="col">Peraturan</th></tr></thead>
+      <thead><tr><th scope="col" class="nomor">#</th><th scope="col">Peraturan</th></tr></thead>
       <tbody>
         <tr><td class="nomor"><span>1</span></td><td>Setiap soal punya label topik</td></tr>
         <tr><td class="nomor"><span>2</span></td><td>Tidak ada dua opsi berteks sama</td></tr>
