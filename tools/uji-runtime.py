@@ -43,7 +43,11 @@ def port_bebas():
 
 def jalankan_server(port):
     handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=ROOT)
-    httpd = socketserver.TCPServer(('127.0.0.1', port), handler)
+    # Peladen berulir: tanpa ini, banyak permintaan berkas harus mengantre satu per satu
+    # sehingga pengujian lambat dan bisa timeout (bukan karena aplikasinya).
+    class _PeladenBerulir(http.server.ThreadingHTTPServer):
+        daemon_threads = True
+    httpd = _PeladenBerulir(('127.0.0.1', port), handler)
     httpd.allow_reuse_address = True
     t = threading.Thread(target=httpd.serve_forever, daemon=True)
     t.start()

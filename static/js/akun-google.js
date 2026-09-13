@@ -61,16 +61,14 @@ __gToken = jawab.access_token;
 var a = uraiTokenGoogle(jawab.id_token || '');
 __gAkun = a || { email: '(tanpa surel)', nama: '', foto: '', sub: '' };
 simpanAkun(__gAkun);
+try { if (typeof dbMasuk === 'function') dbMasuk(jawab.id_token || ''); } catch (e) {}
 render();
 if (AKUN_GOOGLE.driveSync) {
-// Pengguna lain yang masuk di perangkat baru: bila ada cadangan berisi kode akses sah,
-// pulihkan akses & progresnya OTOMATIS (tidak perlu minta kode lagi). Bila cadangan kosong,
-// keadaan perangkat ini yang diunggah.
 var sudahPunya = (typeof punyaAkses === 'function') && punyaAkses();
 if (!sudahPunya && typeof googleAmbilDariDrive === 'function') {
-  googleAmbilDariDrive(true);
+googleAmbilDariDrive(true);
 } else {
-  googleKirimKeDrive(true);
+googleKirimKeDrive(true);
 }
 }
 } else {
@@ -139,8 +137,6 @@ return false;
 });
 };
 window.terapkanBundel = function (bundel, senyap) {
-// Menerapkan cadangan langsung ke penyimpanan, tanpa bergantung pada tampilan.
-// Pemeriksaannya sama seperti pakaiKodeSinkron: hanya kunci yang dikenal, hanya nilai teks, ada batas ukuran.
 var paket = null;
 try { paket = JSON.parse(decodeURIComponent(escape(atob(String(bundel).trim())))); } catch (e) { paket = null; }
 if (!paket || paket.v !== 1 || typeof paket.data !== 'object' || paket.data === null) {
@@ -162,7 +158,6 @@ try { localStorage.setItem(k, v); n++; } catch (e) {}
 });
 return { ok: n > 0, jumlah: n };
 };
-
 window.googleAmbilDariDrive = function () {
 if (!googleMasuk()) { alert('Masuk dengan Google dulu.'); return; }
 cariBerkasCadangan().then(function (ada) {

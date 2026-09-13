@@ -964,6 +964,7 @@ var _psiBaseRender = (typeof window !== 'undefined' && typeof window.render === 
 ? window.render
 : (typeof render === 'function' ? render : function(){});
 window.render = function() {
+
 var m = document.getElementById('main');
 if (!m) return;
 document.querySelectorAll('.nav-btn').forEach(function(b) {

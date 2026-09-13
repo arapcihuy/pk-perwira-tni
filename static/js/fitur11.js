@@ -6,11 +6,11 @@ hargaMusiman: 'Rp 79.000',
 metode: '',                // mis. 'QRIS' atau 'Transfer BRI 1234567890 a/n Nama'
 kontak: '',                // mis. 'WhatsApp 08xx-xxxx-xxxx' atau surel
 tautan: '',
-  tautanBayar: '',           // halaman checkout platform (QR ditampilkan dari tautan ini)                // tautan marketplace bila ada (Shopee/Tokopedia)
+tautanBayar: '',           // halaman checkout platform (QR ditampilkan dari tautan ini)                // tautan marketplace bila ada (Shopee/Tokopedia)
 gambarQris: '',           // diisi bila pemilik mengirim gambar QRIS (tools/pasang-bayar.py --qris)
 rekening: 'Bank Mandiri 1370022256982 a/n RASYID ACHMAD FAUZI',
-  tampilkanRekening: true,
-  whatsapp: '',              // nomor WhatsApp pemilik, format 62812xxxxxxx
+tampilkanRekening: true,
+whatsapp: '',              // nomor WhatsApp pemilik, format 62812xxxxxxx
 surel: 'rasyidahmad180@gmail.com',   // surel penerima bukti
 instruksi: []              // langkah bayar; bila kosong dipakai langkah baku di bawah
 };
@@ -247,24 +247,20 @@ st.textContent = [
 document.head.appendChild(st);
 })();
 window.panelCaraBeli = function () {
-// Alur pembelian tunggal ada di gerbang akses (static/js/akses.js). Halaman ini hanya
-// muncul dalam keadaan luar biasa (laporan terkunci padahal aplikasi terbuka), jadi cukup
-// memberi jalan keluar yang jelas - tanpa mengulang alur QRIS di dua tempat.
 return '<div class="card bayar">' +
-  '<div class="hari-head">' + ic('shield', 16) + ' <strong>Laporan belum terbuka di perangkat ini</strong></div>' +
-  '<div class="hari-sub">Akses penuh dibuka lewat kode akses dari pembelian. Buka halaman utama untuk ' +
-  'melanjutkan pembelian atau memasukkan kodemu.</div>' +
-  '<div class="aksi-bar" style="margin-top:10px">' +
-    '<button class="btn btn-primary btn-sm" onclick="navTo(\'home\'); render();">' +
-      ic('arrow-right', 14) + ' Buka halaman utama</button>' +
-  '</div>' +
-  '<div class="hari-sub" style="margin-top:12px">Sudah punya kode? Tempel di bawah.</div>' +
-  '<input class="profil-input" id="kodeAkses" placeholder="Contoh: SPXXXXXXXXXXXX" autocomplete="off" spellcheck="false" style="margin-top:6px">' +
-  '<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="bukaLaporanDenganKode()">' +
-    ic('hash', 14) + ' Buka laporan</button>' +
-  '</div>';
+'<div class="hari-head">' + ic('shield', 16) + ' <strong>Laporan belum terbuka di perangkat ini</strong></div>' +
+'<div class="hari-sub">Akses penuh dibuka lewat kode akses dari pembelian. Buka halaman utama untuk ' +
+'melanjutkan pembelian atau memasukkan kodemu.</div>' +
+'<div class="aksi-bar" style="margin-top:10px">' +
+'<button class="btn btn-primary btn-sm" onclick="navTo(\'home\'); render();">' +
+ic('arrow-right', 14) + ' Buka halaman utama</button>' +
+'</div>' +
+'<div class="hari-sub" style="margin-top:12px">Sudah punya kode? Tempel di bawah.</div>' +
+'<input class="profil-input" id="kodeAkses" placeholder="Contoh: SPXXXXXXXXXXXX" autocomplete="off" spellcheck="false" style="margin-top:6px">' +
+'<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="bukaLaporanDenganKode()">' +
+ic('hash', 14) + ' Buka laporan</button>' +
+'</div>';
 };
-
 window.catatMinatLaporan = function () {
 try {
 localStorage.setItem('tni_minat_laporan', JSON.stringify({ tanggal: new Date().toISOString().slice(0, 10) }));

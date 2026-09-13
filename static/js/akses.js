@@ -21,9 +21,6 @@ if (adalahPemilik()) return true;
 try {
 if (localStorage.getItem('tni_akses_pemilik') === '1') return true;
 } catch (e) {}
-// Hak akses ditentukan oleh KODE YANG SAH, bukan oleh penanda apa pun di penyimpanan.
-// Dengan begitu tidak ada jalan pintas "setel satu nilai lalu terbuka", dan kode yang
-// dipulihkan dari akun Google ikut diverifikasi ulang di sini.
 var kode = '';
 try { kode = localStorage.getItem('tni_kode_akses') || ''; } catch (e) {}
 if (kode && typeof periksaKode === 'function') {
@@ -69,7 +66,6 @@ tanggal: new Date().toISOString(), produk: 'Akses penuh SiapPsikotes + Laporan L
 }));
 } catch (e) {}
 if (st) st.textContent = 'Kode sah. Membuka seluruh aplikasi...';
-// simpan ke akun Google (bila sudah masuk) supaya saat pindah HP akses ini ikut terbawa
 try { if (typeof googleMasuk === 'function' && googleMasuk() && typeof googleKirimKeDrive === 'function') googleKirimKeDrive(false); } catch (e) {}
 setTimeout(function () { location.reload(); }, 700);
 } else if (st) {
@@ -81,7 +77,6 @@ var u = (typeof BAYAR !== 'undefined' && BAYAR.tautanBayar) ? BAYAR.tautanBayar 
 if (!u) return;
 try { window.open(u, '_blank', 'noopener'); } catch (e) { location.href = u; }
 };
-
 window.salinRekening = function () {
 var teks = (typeof BAYAR !== 'undefined' && BAYAR.rekening) ? BAYAR.rekening : '';
 if (!teks) return;
@@ -92,7 +87,6 @@ if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.
 } catch (e) {}
 beres();
 };
-
 window.pulihkanAksesDariAkun = function () {
 if (typeof googleMasuk !== 'function' || !googleMasuk()) {
 alert('Masuk dengan Google dulu, lalu tekan lagi untuk memulihkan.');
@@ -103,7 +97,6 @@ if (st) st.textContent = 'Memeriksa cadangan di Google Drive-mu...';
 if (typeof googleAmbilDariDrive !== 'function') return;
 try { googleAmbilDariDrive(); } catch (e) {}
 };
-
 window.tutupGerbangUlang = function () {
 if (!confirm('Kunci kembali aplikasinya di perangkat ini? Kamu perlu kode akses lagi untuk masuk.')) return;
 try {
