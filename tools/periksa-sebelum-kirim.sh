@@ -24,21 +24,21 @@ cd "$AKAR" || exit 1
 PY=/usr/bin/python3
 GAGAL=0
 
-echo "=== 1/6 PERATURAN MUTU SOAL (11 butir) ==="
+echo "=== 1/7 PERATURAN MUTU SOAL (11 butir) ==="
 if ! $PY tools/peraturan-mutu.py; then
   echo ">>> GAGAL: peraturan mutu soal tidak dipatuhi"
   GAGAL=1
 fi
 
 echo
-echo "=== 2/6 VERIFIKASI BANK SOAL ==="
+echo "=== 2/7 VERIFIKASI BANK SOAL ==="
 if ! $PY tools/verifikasi-soal.py; then
   echo ">>> GAGAL: verifikasi bank soal tidak lulus"
   GAGAL=1
 fi
 
 echo
-echo "=== 3/6 SINTAKS JAVASCRIPT ==="
+echo "=== 3/7 SINTAKS JAVASCRIPT ==="
 if command -v node > /dev/null 2>&1; then
   for f in static/js/*.js data/*.js sw.js; do
     [ -f "$f" ] || continue
@@ -54,7 +54,7 @@ else
 fi
 
 echo
-echo "=== 4/6 MEREK & IDENTITAS ==="
+echo "=== 4/7 MEREK & IDENTITAS ==="
 MEREK_GAGAL=0
 for f in index.html manifest.json sw.js static/js/*.js data/*.js; do
   [ -f "$f" ] || continue
@@ -70,7 +70,7 @@ else
 fi
 
 echo
-echo "=== 5/6 PENYANGKALAN AFILIASI ==="
+echo "=== 5/7 PENYANGKALAN AFILIASI ==="
 SANGKAL_GAGAL=0
 for f in index.html psikotes/index.html mutu/index.html syarat/index.html privasi/index.html; do
   [ -f "$f" ] || continue
