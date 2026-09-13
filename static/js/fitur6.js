@@ -1,5 +1,7 @@
 
 var TAUTAN_LAIN = [
+  { t: 'Tips & alur belajar', k: 'tips', f: "navTo('tips')", ic: 'bulb' },
+  { t: 'Latihan IQ', k: 'iq', f: "navTo('iq')", ic: 'brain' },
   { t: 'Halaman psikotes (bagikan ke teman)', k: 'psikotes', f: "window.open('psikotes/','_blank')", ic: 'globe' },
   { t: 'Ringkasan Hafalan', k: 'ringkasan', f: 'bukaRingkasan()', ic: 'bulb' },
   { t: 'Hafalan Cepat (kartu)', k: 'hafalan', f: 'bukaHafalan()', ic: 'layers' },

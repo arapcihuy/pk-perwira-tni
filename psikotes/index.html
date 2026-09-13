@@ -149,6 +149,64 @@
   footer p { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
   footer strong { color: var(--text); }
   .tautan-kaki { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; }
+
+  /* ---------- kedalaman & gerak ---------- */
+  .bercahaya { position: relative; overflow: hidden; }
+  .bercahaya::before {
+    content: ""; position: absolute; inset: -30% -10% auto -10%; height: 78%; pointer-events: none;
+    background:
+      radial-gradient(46% 52% at 22% 28%, rgba(230,197,82,.20), transparent 68%),
+      radial-gradient(42% 46% at 84% 6%, rgba(90,169,255,.16), transparent 70%);
+    filter: blur(6px);
+  }
+  h1 .sorot {
+    background: linear-gradient(180deg, #f7e394 0%, var(--gold) 60%, var(--gold-dark) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .ponsel { position: relative; }
+  .lencana {
+    position: absolute; background: var(--surface); border: 1px solid var(--line2);
+    border-radius: 14px; padding: 10px 14px; box-shadow: 0 14px 34px rgba(0,0,0,.5); backdrop-filter: blur(8px);
+  }
+  .lencana b { display: block; font-size: 19px; color: var(--gold); letter-spacing: -.3px; }
+  .lencana span { font-size: 12px; color: var(--muted); }
+  .lencana.satu { top: 12%; left: -6%; }
+  .lencana.dua { bottom: 14%; right: -6%; }
+  @media (max-width: 900px) { .lencana.satu { left: 0; } .lencana.dua { right: 0; } }
+
+  .cocok { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 26px 0 0; }
+  .cocok span.label { font-size: 13.5px; color: var(--muted); }
+  .cocok b {
+    font-size: 13.5px; font-weight: 600; color: var(--text);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 9px; padding: 6px 12px;
+  }
+
+  .kartu { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .kartu:hover { transform: translateY(-3px); border-color: var(--line2); box-shadow: 0 16px 34px rgba(0,0,0,.34); }
+
+  .langkah { display: grid; gap: 16px; }
+  @media (min-width: 780px) { .langkah { grid-template-columns: repeat(3, 1fr); } }
+  .langkah .kartu { position: relative; padding-top: 26px; }
+  .langkah .no {
+    position: absolute; top: -14px; left: 20px; width: 30px; height: 30px; border-radius: 9px;
+    background: linear-gradient(180deg, var(--gold2), var(--gold)); color: #1a1405;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;
+  }
+
+  .banding { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 15.5px; }
+  .banding th, .banding td { text-align: left; padding: 13px 14px; border-bottom: 1px solid var(--line); }
+  .banding thead th { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .banding tbody th { font-weight: 600; }
+  .banding td.ya { color: var(--ok); font-weight: 600; }
+  .banding td.tidak { color: var(--muted); }
+  .banding tr:last-child th, .banding tr:last-child td { border-bottom: none; }
+
+  .eyebrow { font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin: 0 0 10px; }
+
+  /* muncul saat digulir (dihormati: prefers-reduced-motion) */
+  .muncul { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+  .muncul.tampil { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .muncul { opacity: 1; transform: none; transition: none; } .kartu:hover { transform: none; } }
 </style>
 </head>
 <body>
@@ -169,9 +227,9 @@
 </header>
 
 <main>
-<div class="wrap hero">
+<div class="wrap hero bercahaya">
   <div>
-    <h1>Latihan psikotes kerja &amp; tes IQ, gratis dan tanpa akun</h1>
+    <h1>Latihan psikotes kerja &amp; tes IQ, <span class="sorot">gratis</span> dan tanpa akun</h1>
     <p class="lead">Kerjakan soal psikotes, latih kecepatan kerja, dan kenali kepribadianmu — lengkap dengan cara
       mengerjakan tiap soal. Semua bisa diulang sesering yang kamu mau, langsung di browser.</p>
     <a class="tombol" href="../">Mulai latihan sekarang — gratis, tanpa akun</a>
@@ -181,10 +239,16 @@
       <span>Bisa offline</span>
       <span>Ada pembahasan tiap soal</span>
     </div>
+    <div class="cocok">
+      <span class="label">Latihan untuk</span>
+      <b>Dunia kerja</b><b>Kedinasan</b><b>TNI</b><b>Polri</b><b>CPNS &amp; PPPK</b>
+    </div>
   </div>
   <div class="ponsel">
+    <div class="lencana satu"><b>1.225</b><span>soal teraudit</span></div>
+    <div class="lencana dua"><b>0</b><span>pelanggaran mutu</span></div>
     <div class="bingkai">
-      <img src="img/layar-hero.png" width="360" height="500" alt="Tampilan aplikasi SiapPsikotes: memilih jalur seleksi dan daftar modul baterai psikotes">
+      <img src="img/layar-hero.webp" width="1170" height="1620" fetchpriority="high" alt="Tampilan aplikasi SiapPsikotes: memilih jalur seleksi dan daftar modul baterai psikotes">
     </div>
   </div>
 </div>
@@ -249,7 +313,7 @@
         <li>Bukan diagnosis psikologi dan bukan penentu kelulusan — hasilnya untuk mengenali dirimu.</li>
       </ul>
     </div>
-    <img src="img/layar-hasil.png" width="360" height="420" alt="Contoh hasil tes kepribadian: lima sifat dengan persentase dan penjelasan singkat">
+    <img src="img/layar-hasil.webp" width="1134" height="1320" loading="lazy" decoding="async" alt="Contoh hasil tes kepribadian: lima sifat dengan persentase dan penjelasan singkat">
   </div>
 </section>
 
@@ -266,7 +330,105 @@
       </ul>
       <p><a href="../mutu/">Lihat apa saja yang kami periksa dan hasilnya →</a></p>
     </div>
-    <img src="img/layar-belajar.png" width="360" height="420" alt="Contoh layar soal dengan pembahasan jawaban, langkah pengerjaan, dan kiat mengingat">
+    <img src="img/layar-belajar.webp" width="1170" height="1440" loading="lazy" decoding="async" alt="Contoh layar soal dengan pembahasan jawaban, langkah pengerjaan, dan kiat mengingat">
+  </div>
+</section>
+
+
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Cara mulai</p>
+    <h2>Mulai dalam tiga langkah</h2>
+    <p class="sub">Tidak perlu menyiapkan apa pun — tidak ada pendaftaran yang menghadang di depan.</p>
+    <div class="langkah">
+      <div class="kartu"><div class="no">1</div>
+        <h3>Pilih jalurmu</h3>
+        <p>Dunia kerja, Kedinasan, TNI, Polri, atau CPNS/PPPK. Latihan langsung menyesuaikan kebutuhanmu.</p>
+      </div>
+      <div class="kartu"><div class="no">2</div>
+        <h3>Kerjakan satu sesi</h3>
+        <p>Mulai dari lima menit atau satu simulasi penuh. Boleh berhenti di tengah dan lanjut lagi nanti.</p>
+      </div>
+      <div class="kartu"><div class="no">3</div>
+        <h3>Perbaiki yang keliru</h3>
+        <p>Soal yang salah masuk daftar ulangan otomatis, dan ada tombol untuk melatih topik terlemahmu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="wrap">
+    <p class="eyebrow">Perbandingan</p>
+    <h2>Apa bedanya dengan latihan psikotes biasa di internet</h2>
+    <div style="overflow-x:auto">
+      <table class="banding">
+        <thead><tr><th>Hal</th><th>SiapPsikotes</th><th>Latihan kebanyakan</th></tr></thead>
+        <tbody>
+          <tr><th>Biaya</th><td class="ya">Gratis, bisa diulang tanpa batas</td><td class="tidak">Sering dikunci atau berlangganan</td></tr>
+          <tr><th>Akun</th><td class="ya">Tidak perlu akun atau surel</td><td class="tidak">Wajib daftar dulu</td></tr>
+          <tr><th>Tanpa internet</th><td class="ya">Tetap jalan setelah dibuka sekali</td><td class="tidak">Harus online</td></tr>
+          <tr><th>Mutu soal</th><td class="ya">11 peraturan diperiksa mesin, hasilnya dibuka publik</td><td class="tidak">Tidak ada pemeriksaan yang bisa dilihat</td></tr>
+          <tr><th>Pembahasan</th><td class="ya">Ada langkah pengerjaan + kiat ingat di tiap soal</td><td class="tidak">Sering hanya kunci jawaban</td></tr>
+          <tr><th>Soal keliru</th><td class="ya">Bisa dilaporkan dari dalam aplikasi, masuk daftar perbaikan</td><td class="tidak">Tidak ada jalur koreksi</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="wrap">
+    <h2>Kenapa bisa dipercaya</h2>
+    <p class="sub">Kami membuka cara kerja pemeriksaannya, termasuk temuan yang merugikan kami sendiri.
+      Kalau kamu menemukan soal yang keliru, itu langsung masuk daftar perbaikan.</p>
+    <div class="kartu-grid tiga">
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg></div>
+        <h3>11 peraturan diperiksa mesin</h3>
+        <p>Kunci jawaban, kesamaan opsi, sampai sebaran posisi kunci diperiksa otomatis. Satu pelanggaran
+          menggagalkan rilis.</p>
+      </div>
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.9 4.9l2.8 2.8"/><path d="M16.3 16.3l2.8 2.8"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h3>Soal hitung dihitung ulang</h3>
+        <p>137 soal hitung diverifikasi mesin, dan 34 soal bergambar jawabannya dihitung ulang dari
+          gambarnya sendiri — bukan disalin dari catatan penyusun.</p>
+      </div>
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg></div>
+        <h3>Terbuka soal hasil pemeriksaan</h3>
+        <p>Saat bank soal kami diperiksa, ditemukan 135 pelanggaran pada soal yang dianggap sudah beres —
+          termasuk 2 soal yang kuncinya tertulis di pertanyaannya. Kami perbaiki dan publikasikan.</p>
+      </div>
+    </div>
+    <p style="margin-top:18px"><a href="../mutu/">Baca rinciannya di halaman mutu →</a></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Kenapa gratis, dan apa yang nanti berbayar</h2>
+    <p class="sub">Kami tidak menyembunyikan modelnya. Biar jelas sejak awal, bukan setelah kamu terlanjur berlatih:</p>
+    <div class="kartu-grid dua">
+      <div class="kartu">
+        <h3>Gratis selamanya</h3>
+        <ul class="tanda">
+          <li>Seluruh 1.225 soal dan pembahasannya</li>
+          <li>Semua tes: IQ, kecepatan kerja, kepribadian, tes gambar, wawancara</li>
+          <li>Bisa diulang tanpa batas, tanpa akun, bisa offline</li>
+        </ul>
+      </div>
+      <div class="kartu">
+        <h3>Rencananya berbayar sekali (belum dibuka)</h3>
+        <ul class="tanda">
+          <li>Laporan Lengkap: ringkasan kesiapan, kepribadian, rencana latihan 14 hari, cara menjawab wawancara</li>
+          <li>Sekali bayar, bukan langganan — belum dibuka karena kanal pembayaran sedang disiapkan</li>
+          <li>Yang gratis tidak akan ditarik kembali</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -326,5 +488,23 @@
   </div>
 </footer>
 
+<script>
+  /* Animasi halus saat bagian masuk layar. Tanpa ini pun halaman tetap tampil normal. */
+  (function () {
+    var bagian = document.querySelectorAll('section, .angka');
+    // Tanpa dukungan atau saat pengguna memilih "kurangi gerakan": tampilkan semua langsung.
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    bagian.forEach(function (b) { b.classList.add('muncul'); });
+    var io = new IntersectionObserver(function (daftar) {
+      daftar.forEach(function (d) { if (d.isIntersecting) { d.target.classList.add('tampil'); io.unobserve(d.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    bagian.forEach(function (b) { io.observe(b); });
+    // JARING PENGAMAN: apa pun yang terjadi, semua bagian wajib tampil setelah 1,2 detik.
+    // Animasi tidak boleh membuat isi halaman tidak terlihat.
+    setTimeout(function () {
+      document.querySelectorAll('.muncul').forEach(function (b) { b.classList.add('tampil'); });
+    }, 1200);
+  })();
+</script>
 </body>
 </html>
