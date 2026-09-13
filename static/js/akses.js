@@ -294,7 +294,9 @@ st.textContent = [
 '.komer-aksi{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}',
 '.komer-isi input{width:100%;margin-top:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--line2);background:var(--bg2);color:var(--text);font-size:15px;font-family:inherit}',
 '.komer-status{min-height:18px;margin-top:8px;font-size:13.5px;color:var(--gold)}',
-'.komer-kaki{margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}'
+'.komer-kaki{margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}',
+// semua tombol di layar gerbang ditinggikan minimal 40 titik supaya nyaman disentuh
+'.komer-kartu button,.komer-kartu a.btn{min-height:40px}'
 ].join('');
 document.head.appendChild(st);
 })();
