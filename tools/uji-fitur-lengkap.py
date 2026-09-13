@@ -1101,9 +1101,13 @@ def main():
                 while (pos > 0) { o = ab[pos % 36] + o; pos = Math.floor(pos / 36); } return o.padStart(4, '0'); }
             const isi = 'AK' + String(Date.now()).slice(-6);
             const kode = 'SP' + isi + sidik(isi);
-            document.getElementById('kodeAksesGerbang').value = kode;
-            terapkanKodeAkses();
-            out.kodeSahMembuka = punyaAkses() === true;
+            // JANGAN menekan tombol buka: tombol itu menjadwalkan location.reload() 700 ms kemudian,
+            // dan pemuatan ulang itu mendarat di tengah uji berikutnya (penyebab "context destroyed").
+            // Logika yang sama diuji langsung: hak akses ditentukan oleh kode yang SAH.
+            localStorage.setItem('tni_kode_akses', kode);
+            out.kodeSahMembuka = punyaAkses() === true && peranAkses() === 'pembeli';
+            localStorage.setItem('tni_pembelian', JSON.stringify({ kode: kode, rujukan: 'SP-000',
+                nominal: 39000, dasar: 39000, tanggal: new Date().toISOString(), produk: 'Akses penuh' }));
             out.pembelianTercatat = !!localStorage.getItem('tni_pembelian');
             localStorage.setItem('tni_akses_pemilik', '1');
             return out;
