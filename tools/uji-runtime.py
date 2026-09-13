@@ -77,6 +77,8 @@ def main():
             httpd.shutdown()
             return 2
         page = browser.new_page(viewport={'width': 1200, 'height': 900})
+        # Gerbang akses (v57): uji berjalan sebagai PEMILIK supaya tidak terkunci.
+        page.add_init_script("try{localStorage.setItem('tni_akses_pemilik','1');}catch(e){}")
         page.on('pageerror', lambda e: kesalahan.append('pageerror: %s' % e))
         page.on('console', lambda m: kesalahan.append('console: %s' % m.text)
                 if m.type == 'error' and 'favicon' not in m.text.lower() else None)
@@ -319,6 +321,10 @@ def main():
                 pass
 
         halaman2 = browser.new_page(viewport={'width': 1200, 'height': 900})
+
+        # Gerbang akses (v57): uji berjalan sebagai PEMILIK supaya tidak terkunci.
+
+        halaman2.add_init_script("try{localStorage.setItem('tni_akses_pemilik','1');}catch(e){}")
         halaman2.on('response', catat_ukuran)
         halaman2.goto(url + '?anggaran=1', wait_until='load', timeout=30000)
         halaman2.wait_for_function('() => window.DATA_SOAL_INDEX && window.DATA_SOAL_INDEX.total > 0', timeout=20000)
