@@ -909,6 +909,71 @@ def main():
         cek(af['panggilanTambahan'] == 0 and af['tidakAdaSkripGoogle'],
             'saat nonaktif: nol permintaan jaringan & skrip Google tidak dimuat', af)
 
+        print('== AG. Bayar QRIS: nominal unik, kode rujukan, kirim bukti ==')
+        ag = page.evaluate("""() => {
+            const out = {};
+            try { localStorage.removeItem('tni_kode_bayar'); localStorage.removeItem('tni_laporan_bayar'); } catch (e) {}
+            BAYAR.aktif = true;
+            BAYAR.whatsapp = '628123456789';
+            BAYAR.gambarQris = 'static/icons/icon-192.png';
+
+            const kb1 = kodeBayar();
+            const kb2 = kodeBayar();
+            out.rujukanBenar = /^SP-[0-9]{3}$/.test(kb1.rujukan);
+            out.nominalBenar = kb1.nominal >= 39100 && kb1.nominal <= 39999 && kb1.dasar === 39000;
+            out.tetapSama = kb1.rujukan === kb2.rujukan && kb1.nominal === kb2.nominal;
+
+            navTo('laporan');
+            const teks = document.body.textContent;
+            const img = document.querySelector('.qris-bingkai img');
+            out.adaGambarQris = !!img && img.getAttribute('src').indexOf('icon-192.png') >= 0;
+            out.adaSebutanQris = teks.indexOf('Bayar lewat QRIS') >= 0;
+            out.nominalTampil = teks.indexOf(String(kb1.nominal).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) >= 0;
+            out.rujukanTampil = teks.indexOf(kb1.rujukan) >= 0;
+            out.dijelaskanCaranya = teks.indexOf('aplikasi bank atau e-wallet apa pun') >= 0;
+
+            // tombol kirim bukti harus membuka WhatsApp berisi kode rujukan otomatis
+            let dibuka = null;
+            window.open = (u) => { dibuka = u; return null; };
+            kirimBuktiBayar();
+            out.buktiKeWhatsapp = !!dibuka && dibuka.indexOf('wa.me/628123456789') >= 0;
+            out.buktiMemuatRujukan = !!dibuka && decodeURIComponent(dibuka).indexOf(kb1.rujukan) >= 0;
+            const bersih = decodeURIComponent(dibuka || '').replace(/[^0-9]/g, '');
+            out.buktiMemuatNominal = bersih.indexOf(String(kb1.nominal)) >= 0;
+
+            // setelah kode akses dipakai, panel harga hilang
+            BAYAR.aktif = false;
+            return out;
+        }""")
+        cek(ag['rujukanBenar'] and ag['nominalBenar'] and ag['tetapSama'],
+            'nominal unik & kode rujukan stabil (39.000 + 3 angka)', ag)
+        cek(ag['adaGambarQris'] and ag['adaSebutanQris'] and ag['nominalTampil'] and ag['rujukanTampil'] and ag['dijelaskanCaranya'],
+            'panel QRIS tampil: gambar, nominal, kode rujukan, dan cara bayar', ag)
+        cek(ag['buktiKeWhatsapp'] and ag['buktiMemuatRujukan'] and ag['buktiMemuatNominal'],
+            'kirim bukti otomatis mengisi kode rujukan & nominal ke WhatsApp pemilik', ag)
+
+        print('== AH. Berkas QRIS: dibangkitkan dari NMID & dipindai ulang ==')
+        import subprocess, tempfile, json as _json
+        _uji = subprocess.run(['/usr/bin/python3', os.path.join(ROOT, 'tools', 'buat-qris.py'), '--uji'],
+                              capture_output=True, text=True)
+        cek('LULUS' in _uji.stdout and _uji.stdout.count('GAGAL') == 0,
+            'pemeriksaan diri QRIS lulus (checksum standar + bolak-balik)', _uji.stdout.strip().splitlines()[:2])
+        _tmp = tempfile.mkdtemp()
+        _png = os.path.join(_tmp, 'uji-qris.png')
+        _b = subprocess.run(['./.tools-venv/bin/python', os.path.join(ROOT, 'tools', 'buat-qris.py'),
+                             '--nmid', 'ID1024000000000000000', '--nama', 'SiapPsikotes', '--kota', 'Bantul',
+                             '--jumlah', '39147', '--keluar', _png], capture_output=True, text=True, cwd=ROOT)
+        cek(os.path.exists(_png) and os.path.getsize(_png) > 500,
+            'gambar QR berhasil dibuat dari NMID', os.path.getsize(_png) if os.path.exists(_png) else 'tidak ada')
+        try:
+            import cv2, numpy as _np
+            _gambar = cv2.imread(_png)
+            _isi, __, _ = cv2.QRCodeDetector().detectAndDecode(_gambar)
+            cek(_isi.startswith('000201') and '39147' in _isi,
+                'gambar QR terbukti bisa dipindai & nominal ikut terbaca', _isi[:40] + '...')
+        except ImportError:
+            print('  LEWAT | pustaka pemindai QR belum ada; uji pindai gambar dilewati')
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};

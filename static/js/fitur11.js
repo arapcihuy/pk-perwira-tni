@@ -7,6 +7,9 @@ window.BAYAR = {
   metode: '',                // mis. 'QRIS' atau 'Transfer BRI 1234567890 a/n Nama'
   kontak: '',                // mis. 'WhatsApp 08xx-xxxx-xxxx' atau surel
   tautan: '',                // tautan marketplace bila ada (Shopee/Tokopedia)
+  gambarQris: 'static/img/qris-bayar.png',  // berkas QRIS milikmu (lihat tools/buat-qris.sh)
+  whatsapp: '',              // nomor WhatsApp pemilik, format 62812xxxxxxx (untuk kirim bukti)
+  surel: '',                 // atau alamat surel penerima bukti
   instruksi: []              // langkah bayar; bila kosong dipakai langkah baku di bawah
 };
 
@@ -196,6 +199,27 @@ window.periksaKode = function (kode) {
   return { sah: false, alasan: 'Kode tidak cocok. Periksa kembali huruf dan angkanya.' };
 };
 
+window.kirimBuktiBayar = function () {
+  var kb = kodeBayar();
+  var pesan = 'Halo, saya ingin membeli Laporan Lengkap SiapPsikotes.\n' +
+    'Kode rujukan: ' + kb.rujukan + '\n' +
+    'Nominal dibayar: ' + rupiah(kb.nominal) + '\n' +
+    'Bukti pembayaran saya lampirkan di bawah ini. Mohon kirim kode aksesnya. Terima kasih.';
+  try {
+    if (BAYAR.whatsapp) {
+      window.open('https://wa.me/' + String(BAYAR.whatsapp).replace(/[^0-9]/g, '') +
+        '?text=' + encodeURIComponent(pesan), '_blank');
+      return;
+    }
+    if (BAYAR.surel) {
+      window.open('mailto:' + BAYAR.surel + '?subject=' + encodeURIComponent('Bukti pembayaran ' + kb.rujukan) +
+        '&body=' + encodeURIComponent(pesan), '_blank');
+      return;
+    }
+  } catch (e) {}
+  alert('Kontak pengiriman bukti belum diisi pemilik.');
+};
+
 window.bukaLaporanDenganKode = function () {
   var el = document.getElementById('kodeAkses');
   var hasil = periksaKode(el ? el.value : '');
@@ -211,6 +235,43 @@ window.bukaLaporanDenganKode = function () {
 window.laporanSudahDibuka = function () {
   try { return !!JSON.parse(localStorage.getItem('tni_laporan_bayar') || 'null'); } catch (e) { return false; }
 };
+
+// Nominal unik: 39.000 + 3 angka acak -> memudahkan pemilik mencocokkan pembayaran masuk
+// dengan pembeli TANPA server. Kode rujukan disimpan di perangkat pembeli.
+window.kodeBayar = function () {
+  var ada = null;
+  try { ada = JSON.parse(localStorage.getItem('tni_kode_bayar') || 'null'); } catch (e) {}
+  if (!ada || !ada.angka) {
+    ada = { angka: String(Math.floor(Math.random() * 900) + 100), waktu: new Date().toISOString() };
+    try { localStorage.setItem('tni_kode_bayar', JSON.stringify(ada)); } catch (e) {}
+  }
+  var dasar = 39000;
+  var m = String(BAYAR.harga || 'Rp 39.000').match(/[\d.]+/g);
+  if (m) {
+    var angkaHarga = parseInt(String(m[0]).replace(/\./g, ''), 10);
+    if (angkaHarga > 1000) dasar = angkaHarga;
+  }
+  return { rujukan: 'SP-' + ada.angka, nominal: dasar + parseInt(ada.angka, 10), dasar: dasar };
+};
+
+function rupiah(n) { return 'Rp ' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+// Gaya tampilan QRIS disuntikkan sekali saja.
+(function () {
+  if (document.getElementById('gaya-qris')) return;
+  var st = document.createElement('style');
+  st.id = 'gaya-qris';
+  st.textContent = [
+    '.qris-blok{margin-top:14px}',
+    '.qris-bingkai{margin-top:10px;display:flex;justify-content:center;background:#fff;border-radius:16px;padding:14px;max-width:272px}',
+    '.qris-bingkai img{width:240px;height:240px;display:block}',
+    '.qris-kosong{width:240px;height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#0e1626;font-weight:600;font-size:14px;gap:6px}',
+    '.qris-nominal{margin-top:12px;display:flex;flex-direction:column;gap:2px}',
+    '.qris-nominal strong{font-size:26px;color:var(--gold)}',
+    '.qris-nominal span{font-size:13px;color:var(--muted)}'
+  ].join('');
+  document.head.appendChild(st);
+})();
 
 window.panelCaraBeli = function () {
   var harga = BAYAR.harga;
@@ -236,9 +297,29 @@ window.panelCaraBeli = function () {
       langkah.map(function (t, i) {
         return '<div class="fokus-item"><span class="fokus-num">' + (i + 1) + '</span>' + escapeHtml(t) + '</div>';
       }).join('');
+    // ---- QRIS: nominal unik + gambar QR + kirim bukti tanpa server ----
+    var kb = kodeBayar();
+    isi += '<div class="qris-blok">' +
+      '<div class="hari-sub" style="margin-top:16px"><strong>Bayar lewat QRIS</strong> — scan dengan aplikasi ' +
+      'bank atau e-wallet apa pun (GoPay, OVO, DANA, ShopeePay, mobile banking).</div>' +
+      '<div class="qris-bingkai">' +
+        '<img src="' + BAYAR.gambarQris + '?v=' + (window.VERSI_ASET || '') + '" alt="Kode QRIS pembayaran SiapPsikotes" ' +
+          'width="240" height="240" loading="lazy" decoding="async" ' +
+          'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Kode QRIS belum diisi pemilik.<br>' +
+            '<span class=&quot;hari-sub&quot;>Lihat panduan: tools/buat-qris.sh</span></div>\'">' +
+      '</div>' +
+      '<div class="qris-nominal"><span>Bayar tepat sejumlah</span><strong>' + rupiah(kb.nominal) + '</strong>' +
+        '<span class="hari-sub">3 angka terakhir (' + kb.rujukan + ') adalah kode rujukanmu. ' +
+        'Tulis kode ini saat mengirim bukti supaya laporanmu cepat dicocokkan.</span></div>' +
+      (BAYAR.whatsapp || BAYAR.surel
+        ? '<button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="kirimBuktiBayar()">' +
+          ic('send', 14) + ' Kirim bukti pembayaran</button>'
+        : '<div class="hari-sub" style="margin-top:10px">Kontak pengiriman bukti belum diisi pemilik.</div>') +
+      '</div>';
+
     if (BAYAR.tautan) {
-      isi += '<a class="btn btn-primary btn-sm" style="margin-top:12px" href="' + BAYAR.tautan +
-        '" target="_blank" rel="noopener">' + ic('arrow-right', 14) + ' Beli sekarang ' + harga + '</a>';
+      isi += '<a class="btn btn-secondary btn-sm" style="margin-top:12px" href="' + BAYAR.tautan +
+        '" target="_blank" rel="noopener">' + ic('arrow-right', 14) + ' Beli lewat tautan lain</a>';
     }
     if (BAYAR.kontak) {
       isi += '<div class="hari-sub" style="margin-top:8px">Pertanyaan atau kirim bukti: <strong>' +
