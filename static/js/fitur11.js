@@ -6,10 +6,12 @@ hargaMusiman: 'Rp 79.000',
 metode: '',                // mis. 'QRIS' atau 'Transfer BRI 1234567890 a/n Nama'
 kontak: '',                // mis. 'WhatsApp 08xx-xxxx-xxxx' atau surel
 tautan: '',
-catatanTautan: '', tautanBayar: '',           // halaman checkout platform (QR ditampilkan dari tautan ini)                // tautan marketplace bila ada (Shopee/Tokopedia)
-gambarQris: '',           // diisi bila pemilik mengirim gambar QRIS (tools/pasang-bayar.py --qris)
+catatanTautan: '',
+catatanQris: 'Pindai dengan aplikasi bank atau e-wallet apa pun (GoPay, OVO, DANA, ShopeePay, m-banking). Nominal yang harus dibayar tertera di bawah.',
+tautanBayar: '',           // halaman checkout platform (QR ditampilkan dari tautan ini)                // tautan marketplace bila ada (Shopee/Tokopedia)
+gambarQris: 'static/img/qris-bayar.png',           // diisi bila pemilik mengirim gambar QRIS (tools/pasang-bayar.py --qris)
 rekening: 'Bank Mandiri 1370022256982 a/n RASYID ACHMAD FAUZI',
-tampilkanRekening: true,
+tampilkanRekening: false,
 whatsapp: '',              // nomor WhatsApp pemilik, format 62812xxxxxxx
 surel: 'rasyidahmad180@gmail.com',   // surel penerima bukti
 instruksi: []              // langkah bayar; bila kosong dipakai langkah baku di bawah

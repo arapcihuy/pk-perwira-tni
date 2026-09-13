@@ -189,6 +189,9 @@ var kb = kodeBayar();
 var cara = '';
 if (BAYAR.gambarQris) {
 var tautanAda = !!BAYAR.tautanBayar;
+if (!tautanAda && BAYAR.catatanQris) {
+cara += '<div class="komer-sub" style="margin-top:8px">' + escapeHtml(BAYAR.catatanQris) + '</div>';
+}
 cara += '<div class="qris-bingkai"><img src="' + BAYAR.gambarQris + '?v=' + (window.VERSI_ASET || '') + '" ' +
 'alt="' + (tautanAda ? 'QR pembayaran SiapPsikotes' : 'Kode QRIS pembayaran SiapPsikotes') + '" ' +
 'width="220" height="220" loading="lazy" decoding="async" ' +
