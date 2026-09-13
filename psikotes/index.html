@@ -4,237 +4,327 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Latihan Psikotes Kerja &amp; Tes IQ Online Gratis - SiapPsikotes</title>
-<meta name="description" content="Latihan psikotes kerja, tes IQ online, dan tes kepribadian gratis dalam satu aplikasi web. Tanpa akun, bisa dipakai offline, langsung di browser.">
+<meta name="description" content="Latihan psikotes kerja dan tes IQ online gratis, lengkap dengan tes kepribadian dan pembahasan tiap soal. Tanpa akun, bisa offline.">
 <link rel="canonical" href="https://arapcihuy.github.io/pk-perwira-tni/psikotes/">
+<meta property="og:title" content="Latihan Psikotes Kerja &amp; Tes IQ Online Gratis">
+<meta property="og:description" content="Latihan psikotes kerja, tes IQ, dan tes kepribadian. Gratis, tanpa akun, bisa offline.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://arapcihuy.github.io/pk-perwira-tni/psikotes/">
+<meta property="og:image" content="https://arapcihuy.github.io/pk-perwira-tni/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="../static/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../static/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../static/icons/apple-touch-icon-180.png">
+<link rel="manifest" href="../manifest.json">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"Apakah aplikasinya benar-benar gratis?","acceptedAnswer":{"@type":"Answer","text":"Ya. Semua latihan, tes IQ, dan tes kepribadian gratis dan bisa diulang sesering yang kamu mau. Tidak ada langganan dan tidak ada kewajiban membeli."}},
+ {"@type":"Question","name":"Apakah saya perlu membuat akun?","acceptedAnswer":{"@type":"Answer","text":"Tidak. Tidak ada pendaftaran, tidak ada surel, dan tidak ada kata sandi. Hasil latihanmu tersimpan di perangkatmu sendiri."}},
+ {"@type":"Question","name":"Bisa dipakai tanpa internet?","acceptedAnswer":{"@type":"Answer","text":"Bisa. Setelah halaman tersimpan di perangkat, latihan tetap berjalan saat internet mati."}},
+ {"@type":"Question","name":"Apakah ini tes IQ atau tes psikologi resmi?","acceptedAnswer":{"@type":"Answer","text":"Bukan. Ini alat latihan. Kami tidak memakai tes berlisensi seperti Raven, WAIS, atau Wartegg, dan hasil latihan tidak bisa dipakai sebagai hasil tes resmi maupun jaminan kelulusan seleksi."}},
+ {"@type":"Question","name":"Tes kepribadian memakai apa?","acceptedAnswer":{"@type":"Answer","text":"Memakai 20 pernyataan Mini-IPIP dari International Personality Item Pool yang berstatus domain publik, dengan aturan penilaian resminya. Hasilnya menggambarkan lima sifat besar, bukan diagnosis psikologi."}}
+]}
+</script>
 <style>
   :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --accent: #38bdf8;
-    --accent2: #22c55e;
+    --bg: #0a0f18;
+    --bg2: #0d1421;
+    --surface: #121a28;
+    --surface2: #172133;
+    --line: rgba(255,255,255,.09);
+    --line2: rgba(255,255,255,.16);
+    --text: #eaf1f8;
+    --muted: #a7b6c8;
+    --gold: #e6c552;
+    --gold-dark: #c9a227;
+    --blue: #5aa9ff;
+    --ok: #3ecf7a;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.65;
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 18px 64px; }
-  header { padding: 32px 0 8px; }
-  h1 { font-size: 1.9rem; line-height: 1.3; margin: 0 0 16px; color: #fff; }
-  h2 { font-size: 1.35rem; margin: 40px 0 12px; color: var(--accent); }
-  h3 { font-size: 1.05rem; margin: 20px 0 6px; color: #fff; }
-  p { margin: 0 0 14px; }
-  ul { padding-left: 22px; margin: 0 0 14px; }
-  li { margin-bottom: 8px; }
-  .lead { font-size: 1.1rem; color: var(--text); }
-  .card {
-    background: var(--card);
-    border: 1px solid #334155;
-    border-radius: 12px;
-    padding: 18px 20px;
-    margin: 18px 0;
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); }
+
+  /* ---------- kepala ---------- */
+  header { border-bottom: 1px solid var(--line); background: rgba(10,15,24,.85); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); }
+  .kepala { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; }
+  .merek { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.2px; }
+  .merek img { width: 30px; height: 30px; border-radius: 8px; }
+  .kepala nav { display: flex; align-items: center; gap: 18px; font-size: 14.5px; }
+  @media (max-width: 700px) {
+    /* layar sempit: cukup tombol "Buka aplikasi" yang tampil, tautan bagian disembunyikan
+       supaya kepala halaman tidak melewati lebar layar (penyebab geser horizontal) */
+    .kepala nav a:not(.tombol) { display: none; }
+    .merek span { font-size: 15px; }
+    .kepala { padding: 12px 0; }
+    .hero { padding: 36px 0 34px; }
+    .angka-grid { grid-template-columns: repeat(2, 1fr); }
   }
-  .note { color: var(--muted); font-size: 0.92rem; }
-  .cta {
-    display: block;
-    text-align: center;
-    background: var(--accent2);
-    color: #052e16;
-    font-weight: 700;
-    text-decoration: none;
-    padding: 16px 20px;
-    border-radius: 12px;
-    margin: 28px 0 10px;
-    font-size: 1.15rem;
+  .kepala nav a { color: var(--muted); text-decoration: none; }
+  .kepala nav a:hover { color: var(--text); }
+
+  /* ---------- hero ---------- */
+  .hero { display: grid; gap: 40px; align-items: center; padding: 44px 0 38px; }
+  @media (min-width: 900px) { .hero { grid-template-columns: 1.1fr .9fr; padding: 52px 0 46px; } }
+  h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; letter-spacing: -1px; margin: 0 0 18px; }
+  .hero p.lead { font-size: clamp(16.5px, 2vw, 19px); color: var(--muted); margin: 0 0 26px; max-width: 34em; }
+  .pil { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+  .pil span {
+    font-size: 13.5px; color: var(--muted); border: 1px solid var(--line2);
+    background: var(--surface); border-radius: 999px; padding: 6px 13px;
   }
-  .cta:hover { filter: brightness(1.08); }
-  .cta-sub { text-align: center; color: var(--muted); font-size: 0.92rem; }
-  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
-  .badge {
-    background: #0b2536;
-    border: 1px solid #1e4b63;
-    color: var(--accent);
-    border-radius: 999px;
-    padding: 4px 12px;
-    font-size: 0.85rem;
+  .tombol {
+    display: inline-flex; align-items: center; gap: 9px; text-decoration: none;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: #1a1405; font-weight: 700; font-size: 16.5px;
+    padding: 14px 24px; border-radius: 12px; border: none;
+    box-shadow: 0 10px 26px rgba(201,162,39,.26);
   }
-  .faq q { font-style: italic; color: #cbd5e1; }
-  footer {
-    margin-top: 48px;
-    padding-top: 20px;
-    border-top: 1px solid #334155;
-    color: var(--muted);
-    font-size: 0.88rem;
+  .tombol:hover { filter: brightness(1.06); }
+  .tombol.sekunder { background: var(--surface2); color: var(--text); box-shadow: none; border: 1px solid var(--line2); font-weight: 600; }
+  .catatan-kecil { font-size: 14px; color: var(--muted); margin-top: 14px; }
+
+  /* kerangka ponsel untuk tangkapan layar */
+  .ponsel { justify-self: center; align-self: center; width: 100%; max-width: 340px; }
+  .ponsel .bingkai {
+    background: var(--bg2); border: 1px solid var(--line2); border-radius: 34px;
+    padding: 12px; box-shadow: 0 30px 70px rgba(0,0,0,.55), 0 0 0 6px rgba(255,255,255,.02);
   }
-  footer p { margin: 0 0 8px; }
+  .ponsel img { width: 100%; display: block; border-radius: 24px; }
+
+  /* ---------- angka ---------- */
+  .angka { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg2); }
+  .angka-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 26px 0; }
+  @media (min-width: 780px) { .angka-grid { grid-template-columns: repeat(4, 1fr); } }
+  .angka b { display: block; font-size: 26px; color: var(--gold); letter-spacing: -.5px; }
+  .angka span { font-size: 14.5px; color: var(--muted); }
+
+  /* ---------- bagian ---------- */
+  section { padding: 56px 0; }
+  h2 { font-size: clamp(23px, 3vw, 31px); letter-spacing: -.6px; margin: 0 0 12px; }
+  h3 { font-size: 18px; margin: 0 0 8px; }
+  .sub { color: var(--muted); margin: 0 0 30px; max-width: 46em; }
+  .kartu-grid { display: grid; gap: 16px; }
+  @media (min-width: 700px) { .kartu-grid.dua { grid-template-columns: repeat(2, 1fr); } .kartu-grid.tiga { grid-template-columns: repeat(3, 1fr); } }
+  .kartu { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .kartu p { margin: 0; color: var(--muted); font-size: 15.5px; }
+  .ikon {
+    width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center;
+    background: rgba(230,197,82,.12); border: 1px solid rgba(230,197,82,.28); margin-bottom: 14px;
+  }
+  .ikon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .dua-kolom { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 900px) {
+    .dua-kolom { grid-template-columns: 1fr 1fr; gap: 56px; }
+    .dua-kolom.pantul > .teks { order: 2; }
+  }
+  .dua-kolom img { width: 100%; max-width: 380px; display: block; border-radius: 22px;
+    border: 1px solid var(--line2); box-shadow: 0 20px 50px rgba(0,0,0,.45); justify-self: center; }
+  ul.tanda { list-style: none; padding: 0; margin: 0; }
+  ul.tanda li { position: relative; padding-left: 28px; margin: 10px 0; color: var(--muted); }
+  ul.tanda li::before {
+    content: ""; position: absolute; left: 0; top: 9px; width: 15px; height: 15px;
+    background: rgba(62,207,122,.16); border: 1px solid rgba(62,207,122,.5); border-radius: 5px;
+  }
+  ul.tanda li::after {
+    content: ""; position: absolute; left: 5px; top: 13px; width: 5px; height: 8px;
+    border-right: 2px solid var(--ok); border-bottom: 2px solid var(--ok); transform: rotate(42deg);
+  }
+
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; margin: 10px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  details p { color: var(--muted); margin: 10px 0 0; }
+
+  .penutup { text-align: center; padding: 64px 0; }
+  .penutup h2 { margin-bottom: 8px; }
+  .penutup .pil { justify-content: center; }
+
+  footer { border-top: 1px solid var(--line); background: var(--bg2); padding: 34px 0 44px; }
+  footer p { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
+  footer strong { color: var(--text); }
+  .tautan-kaki { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; }
 </style>
-  <link rel="icon" type="image/png" sizes="32x32" href="../static/icons/favicon-32.png?v=b142115">
-  <link rel="icon" type="image/png" sizes="192x192" href="../static/icons/icon-192.png?v=b142115">
-  <link rel="apple-touch-icon" sizes="180x180" href="../static/icons/apple-touch-icon-180.png?v=b142115">
-  <link rel="manifest" href="../manifest.json">
-  <meta property="og:image" content="https://arapcihuy.github.io/pk-perwira-tni/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-<div class="wrap">
 
 <header>
-  <h1>Tes IQ Online &amp; Latihan Psikotes Kerja Gratis di SiapPsikotes</h1>
-  <p class="lead">SiapPsikotes adalah aplikasi web gratis untuk latihan psikotes kerja, tes IQ, dan tes kepribadian. Semua bisa dipakai lewat browser, tanpa akun, dan tetap jalan saat internet mati. Kamu bisa berlatih kapan saja, mengulang sesering yang kamu mau, dan melihat penjelasan tiap jawaban.</p>
-    <p><a class="cta" href="https://arapcihuy.github.io/pk-perwira-tni/">Mulai latihan sekarang &mdash; gratis, tanpa akun</a></p>
-  <div class="badges">
-    <span class="badge">Gratis</span>
-    <span class="badge">Tanpa akun</span>
-    <span class="badge">Bisa offline</span>
-    <span class="badge">Langsung di browser</span>
+  <div class="wrap kepala">
+    <div class="merek">
+      <img src="../static/icons/icon-192.png" alt="">
+      <span>SiapPsikotes</span>
+    </div>
+    <nav>
+      <a href="#fitur">Fitur</a>
+      <a href="#kepribadian">Kepribadian</a>
+      <a href="../mutu/">Mutu</a>
+      <a class="tombol sekunder" style="padding:8px 14px;font-size:14px" href="../">Buka aplikasi</a>
+    </nav>
   </div>
 </header>
 
-<section>
-  <h2>Apa yang bisa kamu lakukan di sini</h2>
-  <ul>
-    <li><strong>Latihan psikotes kerja</strong> dengan soal yang bisa dikerjakan berulang, lengkap dengan cara penyelesaiannya.</li>
-    <li><strong>Latihan tes IQ online</strong> berisi soal matriks, deret angka, rotasi, verbal, dan rentang angka.</li>
-    <li><strong>Tes kepribadian</strong> untuk melihat gambaran lima sifat utama dirimu, dengan penjelasan bahasa sederhana.</li>
-    <li><strong>Latihan tanpa batas waktu</strong> &mdash; kamu bisa mulai, berhenti, lalu lanjut lagi nanti.</li>
-    <li><strong>Pakai tanpa akun</strong> &mdash; tidak perlu daftar, tidak perlu email, tidak perlu login.</li>
-    <li><strong>Bisa dipakai offline</strong> setelah halaman tersimpan di perangkatmu.</li>
-  </ul>
+<main>
+<div class="wrap hero">
+  <div>
+    <h1>Latihan psikotes kerja &amp; tes IQ, gratis dan tanpa akun</h1>
+    <p class="lead">Kerjakan soal psikotes, latih kecepatan kerja, dan kenali kepribadianmu — lengkap dengan cara
+      mengerjakan tiap soal. Semua bisa diulang sesering yang kamu mau, langsung di browser.</p>
+    <a class="tombol" href="../">Mulai latihan sekarang — gratis, tanpa akun</a>
+    <div class="pil" style="margin:18px 0 0">
+      <span>Gratis</span>
+      <span>Tanpa akun</span>
+      <span>Bisa offline</span>
+      <span>Ada pembahasan tiap soal</span>
+    </div>
+  </div>
+  <div class="ponsel">
+    <div class="bingkai">
+      <img src="img/layar-hero.png" width="360" height="500" alt="Tampilan aplikasi SiapPsikotes: memilih jalur seleksi dan daftar modul baterai psikotes">
+    </div>
+  </div>
+</div>
+
+<div class="angka">
+  <div class="wrap angka-grid">
+    <div><b>1.225</b><span>soal siap latihan</span></div>
+    <div><b>11</b><span>peraturan mutu soal</span></div>
+    <div><b>5</b><span>jalur seleksi</span></div>
+    <div><b>9</b><span>modul psikotes &amp; IQ</span></div>
+  </div>
+</div>
+
+<section id="fitur">
+  <div class="wrap">
+    <h2>Yang bisa kamu lakukan di sini</h2>
+    <p class="sub">Semuanya gratis dan bisa diulang. Tidak ada bagian yang dikunci.</p>
+    <div class="kartu-grid tiga">
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+        <h3>Tes IQ &amp; logika</h3>
+        <p>Matriks, deret angka, rotasi, verbal, dan rentang angka — jenis soal yang paling sering muncul.</p>
+      </div>
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg></div>
+        <h3>Kecepatan kerja</h3>
+        <p>Kraepelin/Pauli: menjumlahkan angka berderet dengan waktu. Bisa dimainkan berulang, ada analisis ritme.</p>
+      </div>
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v1a3 3 0 0 0 0 6v2a4 4 0 0 0 8 0v-2a3 3 0 0 0 0-6V7a4 4 0 0 0-4-4z"/></svg></div>
+        <h3>Tes kepribadian</h3>
+        <p>20 pernyataan untuk melihat lima sifat utama dirimu, dijelaskan dengan bahasa sehari-hari.</p>
+      </div>
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h10"/></svg></div>
+        <h3>Bank soal &amp; pembahasan</h3>
+        <p>Cari soal berdasarkan topik, lihat cara mengerjakannya, dan ulangi soal yang pernah keliru.</p>
+      </div>
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 9l7-7 7 7"/><path d="M5 15l7 7 7-7"/></svg></div>
+        <h3>Jalur sesuai kebutuhan</h3>
+        <p>Pilih jalur Umum/Kerja, Kedinasan, TNI, Polri, atau CPNS-PPPK — latihan menyesuaikan.</p>
+      </div>
+      <div class="kartu">
+        <div class="ikon"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 4 21 10 15 10"/></svg></div>
+        <h3>Bisa offline</h3>
+        <p>Setelah dibuka sekali, latihan tetap jalan walau tidak ada internet. Praktis di perjalanan.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>Tes kepribadian</h2>
-  <p>Bagian kepribadian memakai pendekatan <strong>Big Five</strong>, yaitu lima sifat besar yang biasa dipakai untuk menggambarkan kepribadian seseorang. Lima sifat itu:</p>
-  <ul>
-    <li><strong>Keterbukaan</strong> (seberapa terbuka kamu pada ide dan pengalaman baru),</li>
-    <li><strong>Kehati-hatian</strong> (seberapa teratur, disiplin, dan teliti kamu),</li>
-    <li><strong>Ekstraversi</strong> (seberapa senang kamu bergaul dan mencari keramaian),</li>
-    <li><strong>Keramahan</strong> (seberapa mudah kamu bekerja sama dan peduli pada orang lain),</li>
-    <li><strong>Kestabilan emosi</strong> (seberapa tenang kamu menghadapi tekanan).</li>
-  </ul>
-  <p>Isi kepribadiannya memakai <strong>Mini-IPIP</strong>, yaitu 20 butir pernyataan dari <em>International Personality Item Pool</em> (IPIP). IPIP berstatus <strong>domain publik</strong>, jadi bebas dipakai termasuk untuk keperluan komersial. IPIP dikembangkan oleh Goldberg (1999), dan Mini-IPIP divalidasi oleh Donnellan dkk (2006) dengan reliabilitas internal tiap faktor antara 0,65 dan 0,77.</p>
-  <div class="card">
-    <p class="note"><strong>Catatan jujur:</strong> hasil tes kepribadian di sini <strong>bukan diagnosis</strong> dan bukan penilaian resmi. Anggap saja cermin awal untuk mengenal diri, bukan vonis tentang siapa kamu. Kalau ada hal yang mengganggu, bicarakan dengan orang yang kamu percaya.</p>
+<section id="kepribadian" style="background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="wrap dua-kolom">
+    <div class="teks">
+      <h2>Tes kepribadian lima sifat (Big Five)</h2>
+      <p class="sub">Dua puluh pernyataan singkat, sekitar empat menit. Hasilnya lima sifat besar dengan
+        penjelasan sederhana: apa artinya untuk cara kerjamu, dan bagaimana menyampaikannya saat wawancara.</p>
+      <ul class="tanda">
+        <li>Memakai Mini-IPIP dari International Personality Item Pool — instrumen <strong>domain publik</strong>, boleh dipakai siapa pun.</li>
+        <li>Tidak menghafal jawaban "yang bagus": yang dilihat adalah konsistensi jawabanmu.</li>
+        <li>Bukan diagnosis psikologi dan bukan penentu kelulusan — hasilnya untuk mengenali dirimu.</li>
+      </ul>
+    </div>
+    <img src="img/layar-hasil.png" width="360" height="420" alt="Contoh hasil tes kepribadian: lima sifat dengan persentase dan penjelasan singkat">
   </div>
 </section>
 
 <section>
-  <h2>Latihan IQ</h2>
-  <p>Latihan tes IQ di sini melatih pola pikir yang paling sering dipakai di soal seleksi. Jenis soalnya:</p>
-  <ul>
-    <li><strong>Matriks</strong> &mdash; melengkapi gambar atau pola yang hilang.</li>
-    <li><strong>Deret angka</strong> &mdash; mencari lanjutan dari urutan bilangan.</li>
-    <li><strong>Rotasi</strong> &mdash; membayangkan bentuk yang diputar atau dibalik.</li>
-    <li><strong>Verbal</strong> &mdash; mencari hubungan kata dan makna.</li>
-    <li><strong>Rentang angka</strong> &mdash; memperkirakan dan membandingkan besaran angka.</li>
-  </ul>
-  <p>Semua soal dibuat sendiri oleh penyusun. Kami <strong>tidak memakai tes berlisensi</strong> seperti Raven, WAIS, CFIT/CFST, IST, PAPI Kostick, MMPI, atau Wartegg. Jadi ini murni bahan latihan, bukan salinan atau tiruan tes berlisensi mana pun.</p>
+  <div class="wrap dua-kolom pantul">
+    <div class="teks">
+      <h2>Bukan cuma nilai — ada cara mengerjakannya</h2>
+      <p class="sub">Setiap soal punya pembahasan tiga baris: jawabannya, langkah mengerjakannya, dan kiat
+        mengingatnya. Kalau kamu masih belum paham, ada tombol untuk melatih topik yang sama dengan soal lain.</p>
+      <ul class="tanda">
+        <li>Soal hitung diverifikasi mesin: jawabannya dihitung ulang, bukan sekadar disalin.</li>
+        <li>Soal hafalan diperiksa dua gelombang oleh pemeriksa terpisah.</li>
+        <li>Menemukan soal yang keliru? Laporkan dari dalam aplikasi — akan diperiksa.</li>
+      </ul>
+      <p><a href="../mutu/">Lihat apa saja yang kami periksa dan hasilnya →</a></p>
+    </div>
+    <img src="img/layar-belajar.png" width="360" height="420" alt="Contoh layar soal dengan pembahasan jawaban, langkah pengerjaan, dan kiat mengingat">
+  </div>
 </section>
 
-<section>
-  <h2>Cocok untuk siapa</h2>
-  <ul>
-    <li><strong>Pencari kerja</strong> yang sedang menyiapkan psikotes rekrutmen.</li>
-    <li><strong>Pelamar sekolah kedinasan</strong> yang ingin membiasakan diri dengan bentuk soal.</li>
-    <li><strong>Pelamar TNI/Polri</strong> yang ingin berlatih sebelum tahap seleksi.</li>
-    <li><strong>Siapa pun</strong> yang sekadar ingin melatih logika dan mengenal kepribadian sendiri.</li>
-  </ul>
-  <p class="note">Latihan di sini bertujuan melatih kebiasaan dan kecepatan berpikir. Hasil latihan tidak menjamin kelulusan seleksi mana pun &mdash; keputusan seleksi tetap ada di tangan penyelenggara.</p>
+<section style="background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="wrap">
+    <h2>Pertanyaan yang sering ditanya</h2>
+    <details open>
+      <summary>Apakah benar-benar gratis?</summary>
+      <p>Ya. Semua latihan, tes IQ, dan tes kepribadian gratis dan bisa diulang sesering yang kamu mau.
+        Tidak ada langganan dan tidak ada kewajiban membeli.</p>
+    </details>
+    <details>
+      <summary>Harus daftar atau bikin akun?</summary>
+      <p>Tidak. Tidak ada pendaftaran, tidak ada surel, tidak ada kata sandi. Hasil latihanmu tersimpan
+        di perangkatmu sendiri dan bisa kamu hapus kapan saja.</p>
+    </details>
+    <details>
+      <summary>Bisa dipakai tanpa internet?</summary>
+      <p>Bisa. Setelah halaman tersimpan di perangkat, latihan tetap berjalan walau internet mati.</p>
+    </details>
+    <details>
+      <summary>Apakah ini tes IQ resmi?</summary>
+      <p>Bukan. Ini alat latihan. Kami tidak memakai tes berlisensi seperti Raven, WAIS, CFIT, IST, atau Wartegg,
+        dan hasil latihan tidak bisa dipakai sebagai hasil tes resmi maupun jaminan kelulusan seleksi.</p>
+    </details>
+    <details>
+      <summary>Tes kepribadiannya pakai instrumen apa?</summary>
+      <p>Dua puluh butir Mini-IPIP dari International Personality Item Pool (IPIP) yang berstatus domain publik,
+        dengan aturan penilaian resminya. Hasilnya menggambarkan lima sifat besar, bukan diagnosis psikologi.</p>
+    </details>
+  </div>
 </section>
 
-<section>
-  <h2>Kenapa gratis</h2>
-  <p>Kami ingin latihan psikotes bisa diakses semua orang dulu, tanpa biaya dan tanpa hambatan daftar. Jadi fitur intinya &mdash; latihan soal, tes kepribadian, dan penjelasan jawaban &mdash; kami buka gratis.</p>
-  <p>Ke depan, kami berencana menawarkan <strong>laporan lengkap berbayar</strong> sebagai sumber pemasukan, misalnya rangkuman hasil yang lebih rinci. Fitur inti yang sekarang kamu pakai akan tetap gratis.</p>
-</section>
-
-<section class="faq">
-  <h2>Pertanyaan yang sering muncul</h2>
-
-  <h3>Apakah hasilnya skor IQ saya yang sebenarnya?</h3>
-  <p>Tidak. Ini latihan, bukan tes IQ resmi. Kami tidak menerbitkan skor IQ bersertifikat. Angka hasil di sini hanya untuk melihat perkembangan latihanmu sendiri.</p>
-
-  <h3>Apakah saya harus daftar akun?</h3>
-  <p>Tidak perlu. Aplikasi berjalan tanpa akun, tanpa email, dan tanpa login. Kamu bisa langsung membuka dan mulai berlatih.</p>
-
-  <h3>Bisa dipakai tanpa internet?</h3>
-  <p>Bisa. Setelah halaman tersimpan di perangkatmu, latihan tetap jalan saat koneksi mati. Semua penjelasan jawaban sudah tersedia di dalam aplikasi, bukan diambil dari AI online.</p>
-
-  <h3>Apakah ini dipakai untuk meloloskan saya di seleksi?</h3>
-  <p>Tidak ada jaminan seperti itu. Latihan membantu kamu lebih siap dan lebih cepat, tetapi hasil seleksi sepenuhnya ditentukan penyelenggara seleksi.</p>
-
-  <h3>Apakah tes kepribadian ini diagnosis psikologi?</h3>
-  <p>Bukan. Ini gambaran awal lima sifat kepribadian dengan instrumen domain publik Mini-IPIP, bukan diagnosis dan bukan penilaian resmi.</p>
-</section>
-
-<section>
-  <h2>Mulai sekarang</h2>
-  <p>Buka aplikasinya, kerjakan beberapa soal, lihat penjelasannya. Kamu bisa mulai dari tes IQ gratis, latihan psikotes kerja, atau tes kepribadian &mdash; pilih mana dulu, semuanya tidak dipungut biaya.</p>
-  <a class="cta" href="https://arapcihuy.github.io/pk-perwira-tni/">Buka SiapPsikotes &mdash; gratis</a>
-  <p class="cta-sub">Tanpa akun &middot; Bisa offline &middot; Langsung di browser</p>
-</section>
-
-<footer>
-  <p><strong>Catatan:</strong> SiapPsikotes bukan produk resmi instansi atau lembaga pemerintah mana pun, dan tidak berafiliasi dengan penyelenggara seleksi mana pun.</p>
-  <p>Instrumen kepribadian memakai Mini-IPIP dari International Personality Item Pool (IPIP), berstatus domain publik. IPIP dikembangkan Goldberg (1999); Mini-IPIP divalidasi Donnellan dkk (2006).</p>
-  <p>Terakhir diperbarui: 13 September 2026.</p>
-</footer>
-
+<div class="wrap penutup">
+  <h2>Mulai dari satu sesi, lima menit saja</h2>
+  <p class="sub" style="margin-left:auto;margin-right:auto">Tidak perlu menyiapkan apa pun. Kalau kamu sedang menyiapkan
+    psikotes kerja atau tes IQ, mulai hari ini lebih baik daripada mulai nanti.</p>
+  <a class="tombol" href="../">Buka SiapPsikotes — gratis</a>
+  <p class="catatan-kecil">Tanpa akun · bisa offline · ada pembahasan tiap soal</p>
 </div>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Apakah hasilnya skor IQ saya yang sebenarnya?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Tidak. Ini latihan, bukan tes IQ resmi. Kami tidak menerbitkan skor IQ bersertifikat. Angka hasil di sini hanya untuk melihat perkembangan latihanmu sendiri."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Apakah saya harus daftar akun?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Tidak perlu. Aplikasi berjalan tanpa akun, tanpa email, dan tanpa login. Kamu bisa langsung membuka dan mulai berlatih."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Bisa dipakai tanpa internet?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Bisa. Setelah halaman tersimpan di perangkatmu, latihan tetap jalan saat koneksi mati. Semua penjelasan jawaban sudah tersedia di dalam aplikasi, bukan diambil dari AI online."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Apakah ini dipakai untuk meloloskan saya di seleksi?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Tidak ada jaminan seperti itu. Latihan membantu kamu lebih siap dan lebih cepat, tetapi hasil seleksi sepenuhnya ditentukan penyelenggara seleksi."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Apakah tes kepribadian ini diagnosis psikologi?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Bukan. Ini gambaran awal lima sifat kepribadian dengan instrumen domain publik Mini-IPIP, bukan diagnosis dan bukan penilaian resmi."
-      }
-    }
-  ]
-}
-</script>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>SiapPsikotes</strong> — latihan psikotes kerja, tes IQ, dan tes kepribadian.
+      <strong>Bukan produk resmi instansi mana pun</strong> dan tidak berafiliasi dengan lembaga pemerintah.
+      Seluruh soal adalah karya penyusun kami sendiri.</p>
+    <p>Latihan ini tidak menjamin kelulusan seleksi mana pun. Keputusan seleksi tetap ada di tangan penyelenggara.</p>
+    <div class="tautan-kaki">
+      <a href="../">Buka aplikasi</a>
+      <a href="../mutu/">Mutu &amp; bukti pemeriksaan</a>
+      <a href="../syarat/">Syarat &amp; ketentuan</a>
+      <a href="../privasi/">Kebijakan privasi</a>
+    </div>
+    <p style="margin-top:14px">Halaman ini terakhir diperbarui: 13 September 2026</p>
+  </div>
+</footer>
 
 </body>
 </html>
