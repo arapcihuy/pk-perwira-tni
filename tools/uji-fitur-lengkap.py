@@ -627,6 +627,7 @@ def main():
         cek(w4['riwayat'] >= 1 and w4['tersimpan'], 'hasil latihan tersimpan di perangkat (masuk status baterai)', w4)
 
         print('== X. Produk berbayar: kode akses & laporan lengkap ==')
+        page.evaluate("() => { try { localStorage.removeItem('tni_laporan_bayar'); } catch (e) {} }")
         # kode dibuat oleh alat Python, dipakai untuk menguji pemeriksa di JavaScript
         import subprocess as _sub
         _sub.run(['/usr/bin/python3', os.path.join(ROOT, 'tools', 'buat-kode.py'),
@@ -641,7 +642,7 @@ def main():
                                 && !periksaKode('').sah && !periksaKode('SP UJI 01 XXXX').sah;
             out.sebelumnyaTerkunci = !laporanSudahDibuka();
             navTo('laporan');
-            out.tanpaHargaSaatBelumSiap = document.body.textContent.indexOf('Rp 39.000') < 0;
+            out.hargaDitampilkan = document.body.textContent.indexOf('Rp 39.000') >= 0;
             out.adaLaporanSedangDisiapkan = document.body.textContent.indexOf('sedang disiapkan') >= 0;
             out.adaPenangkapMinat = document.body.textContent.indexOf('Saya tertarik') >= 0
                                     || document.body.textContent.indexOf('Sudah tercatat') >= 0;
@@ -669,8 +670,8 @@ def main():
         cek(all(x2['sah']) and not x2['adaKodeGagal'] if 'adaKodeGagal' in x2 else all(x2['sah']),
             'semua kode buatan Python sah di aplikasi (uji silang dua bahasa)', x2['sah'])
         cek(x2['ngawurDitolak'], 'kode ngawur/format salah ditolak', x2['ngawurDitolak'])
-        cek(x2['sebelumnyaTerkunci'] and x2['tanpaHargaSaatBelumSiap'] and x2['adaLaporanSedangDisiapkan'],
-            'belum dibuka: laporan terkunci, harga tidak dipasang sebelum pembayaran siap', x2)
+        cek(x2['sebelumnyaTerkunci'] and x2['hargaDitampilkan'] and x2['adaLaporanSedangDisiapkan'],
+            'belum dibuka: laporan terkunci, harga DITAMPILKAN, status pembayaran jujur', x2)
         cek(x2['adaPenangkapMinat'] and x2['adaKolomKode'],
             'minat pengguna bisa dicatat & kolom kode akses tersedia (bisa jual manual)', x2)
         cek(x2['syaratAda'] and x2['materiTidakDikunci'],
@@ -771,6 +772,58 @@ def main():
         }""")
         cek(a3 and a3['nama'].endswith('.png') and a3['panjang'] > 50000,
             'kartu hasil benar-benar terbentuk sebagai gambar PNG', a3)
+
+        print('== AB. Ruang belajar saya & harga/pembayaran ==')
+        ab = page.evaluate("""() => {
+            const out = {};
+            // buat bahan belajar dulu supaya daftarnya terisi
+            startCat('tkw', 'learn');
+            S.idx = 0; S.tSoalIdx = -1; render();
+            pickAnswer((S.questions[0].jawaban + 1) % 4);
+            simpanProfil('Uji Ruang', fTambahHari(20), 'TIU');
+            navTo('akun');
+            out.halaman = S.page === 'akun';
+            out.judul = document.body.textContent.indexOf('Ruang belajar saya') >= 0;
+            out.jumlahJenisBahan = ringkasBahanBelajar().length;
+            const kk = document.getElementById('kodeku');
+            out.adaKode = !!kk && kk.value.length > 20;
+            out.adaKolomTempel = !!document.getElementById('kodeSinkron');
+            out.adaTombolSalin = !!document.querySelector('[onclick*="salinKode"]');
+            out.adaTombolCadangan = !!document.querySelector('[onclick*="salinBerkas"]');
+            out.penjelasanTanpaServer = document.body.textContent.indexOf('tidak ada data pribadimu yang keluar') >= 0;
+            out.adaTombolHapus = !!document.querySelector('[onclick*="hapusBahan"]') || !!document.querySelector('[onclick*="hapusSemuaBahan"]');
+            // hapus satu jenis bahan (dengan dialog disetujui)
+            window.confirm = () => true;
+            const sebelum = ringkasBahanBelajar().length;
+            if (ringkasBahanBelajar().length) hapusBahan(ringkasBahanBelajar()[0].kunci, 'uji');
+            out.hapusBerkurang = ringkasBahanBelajar().length < sebelum;
+            // panel harga di halaman laporan (bersihkan dulu status terbuka dari uji sebelumnya)
+            try { localStorage.removeItem('tni_laporan_bayar'); } catch (e) {}
+            navTo('laporan');
+            out.hargaTampil = document.body.textContent.indexOf('Rp 39.000') >= 0;
+            out.sekaliBayar = document.body.textContent.indexOf('sekali bayar') >= 0;
+            out.adaKolomKodeAkses = !!document.getElementById('kodeAkses');
+            out.statusJujur = document.body.textContent.indexOf('kanal pembayaran sedang disiapkan') >= 0;
+            out.materiGratis = document.body.textContent.indexOf('Materi latihan tetap gratis selamanya') >= 0;
+            return out;
+        }""")
+        cek(ab['halaman'] and ab['judul'], 'halaman Ruang Belajar saya tampil', ab)
+        cek(ab['jumlahJenisBahan'] >= 3 and ab['adaTombolHapus'] and ab['hapusBerkurang'],
+            'bahan belajar terdaftar & bisa dihapus pengguna', ab)
+        cek(ab['adaKode'] and ab['adaKolomTempel'] and ab['adaTombolSalin'] and ab['adaTombolCadangan'],
+            'kode ruang belajar bisa disalin, ditempel, dan dicadangkan', ab)
+        cek(ab['penjelasanTanpaServer'], 'dinyatakan jelas bahwa data tidak keluar dari perangkat', ab)
+        cek(ab['hargaTampil'] and ab['sekaliBayar'] and ab['materiGratis'],
+            'harga Rp 39.000 tampil & materi latihan dinyatakan tetap gratis', ab)
+        cek(ab['adaKolomKodeAkses'] and ab['statusJujur'],
+            'kolom kode akses tersedia & status pembayaran dinyatakan jujur', ab)
+
+        print('== AC. Halaman arahan menampilkan harga ==')
+        _landing = open(os.path.join(ROOT, 'psikotes', 'index.html'), encoding='utf-8').read()
+        cek('Rp 39.000' in _landing and 'sekali bayar' in _landing, 'harga tampil di halaman arahan', 'Rp 39.000')
+        cek('Cara membelinya' in _landing and 'kode akses' in _landing, 'langkah cara membeli dijelaskan', 'ada')
+        cek('Latihan — gratis selamanya' in _landing or 'gratis selamanya' in _landing,
+            'bagian gratis dinyatakan tegas di halaman arahan', 'ada')
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {

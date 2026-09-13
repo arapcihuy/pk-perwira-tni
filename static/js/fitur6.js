@@ -1,5 +1,6 @@
 
 var TAUTAN_LAIN = [
+  { t: 'Ruang belajar saya', k: 'akun', f: "navTo('akun')", ic: 'user' },
   { t: 'Tips & alur belajar', k: 'tips', f: "navTo('tips')", ic: 'bulb' },
   { t: 'Latihan IQ', k: 'iq', f: "navTo('iq')", ic: 'brain' },
   { t: 'Halaman psikotes (bagikan ke teman)', k: 'psikotes', f: "window.open('psikotes/','_blank')", ic: 'globe' },

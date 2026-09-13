@@ -1,4 +1,15 @@
 
+// Pengaturan penjualan. PEMILIK mengisi bagian ini; sisanya sudah otomatis.
+window.BAYAR = {
+  aktif: false,              // ubah jadi true setelah detail pembayaran diisi
+  harga: 'Rp 39.000',
+  hargaMusiman: 'Rp 79.000',
+  metode: '',                // mis. 'QRIS' atau 'Transfer BRI 1234567890 a/n Nama'
+  kontak: '',                // mis. 'WhatsApp 08xx-xxxx-xxxx' atau surel
+  tautan: '',                // tautan marketplace bila ada (Shopee/Tokopedia)
+  instruksi: []              // langkah bayar; bila kosong dipakai langkah baku di bawah
+};
+
 window.LAPORAN_BAYAR_AKTIF = false;
 window.HARGA_LAPORAN = 'Rp 39.000';
 window.TAUTAN_BELI = '';           // diisi pemilik: tautan marketplace/QRIS
@@ -202,48 +213,59 @@ window.laporanSudahDibuka = function () {
 };
 
 window.panelCaraBeli = function () {
-  if (!LAPORAN_BAYAR_AKTIF) {
-    var minat = (function () {
-      try { return !!JSON.parse(localStorage.getItem('tni_minat_laporan') || 'null'); } catch (e) { return false; }
-    })();
-    return '<div class="card">' +
-      '<div class="hari-head">' + ic('file', 16) + ' <strong>Laporan Lengkap</strong>' +
-        '<span class="hari-tgl">sedang disiapkan</span></div>' +
-      '<div class="hari-sub">Isinya: kesiapan ujianmu, kepribadian Big Five dengan bahasa sehari-hari, ' +
-      'pekerjaan yang cocok, bagian yang perlu dikejar, rencana latihan 14 hari, dan cara menjawab di wawancara. ' +
-      'Bisa dicetak atau disimpan sebagai PDF.</div>' +
-      '<div class="bayar-daftar">' +
-        '<div>' + ic('check', 13) + ' Materi latihan dan semua tes tetap <strong>gratis selamanya</strong></div>' +
-        '<div>' + ic('check', 13) + ' Tidak perlu akun, tidak ada data yang dikirim ke server</div>' +
-      '</div>' +
+  var harga = BAYAR.harga;
+  var isi = '<div class="hari-head">' + ic('file', 16) + ' <strong>Laporan Lengkap — ' + harga +
+    ' sekali bayar</strong><span class="hari-tgl">bukan langganan</span></div>' +
+    '<div class="hari-sub">Isinya: kesiapan ujianmu, kepribadian Big Five dalam bahasa sehari-hari, ' +
+    'pekerjaan yang cocok, bagian yang perlu dikejar, rencana latihan 14 hari, dan cara menjawab di wawancara. ' +
+    'Bisa dicetak atau disimpan sebagai PDF.</div>' +
+    '<div class="bayar-daftar">' +
+      '<div>' + ic('check', 13) + ' <strong>Materi latihan tetap gratis selamanya</strong> — yang dibayar hanya laporan ini</div>' +
+      '<div>' + ic('check', 13) + ' Sekali bayar, tanpa langganan, tanpa akun</div>' +
+      '<div>' + ic('check', 13) + ' Dibuka dengan kode akses, bisa dipakai di perangkat lain</div>' +
+    '</div>';
+
+  if (BAYAR.aktif) {
+    var langkah = BAYAR.instruksi && BAYAR.instruksi.length ? BAYAR.instruksi : [
+      'Bayar ' + harga + (BAYAR.metode ? ' lewat ' + BAYAR.metode : ''),
+      'Kirim bukti pembayaran' + (BAYAR.kontak ? ' ke ' + BAYAR.kontak : ''),
+      'Kamu menerima kode akses',
+      'Tempel kode itu di bawah untuk membuka laporan'
+    ];
+    isi += '<div class="hari-sub" style="margin-top:14px"><strong>Cara membeli:</strong></div>' +
+      langkah.map(function (t, i) {
+        return '<div class="fokus-item"><span class="fokus-num">' + (i + 1) + '</span>' + escapeHtml(t) + '</div>';
+      }).join('');
+    if (BAYAR.tautan) {
+      isi += '<a class="btn btn-primary btn-sm" style="margin-top:12px" href="' + BAYAR.tautan +
+        '" target="_blank" rel="noopener">' + ic('arrow-right', 14) + ' Beli sekarang ' + harga + '</a>';
+    }
+    if (BAYAR.kontak) {
+      isi += '<div class="hari-sub" style="margin-top:8px">Pertanyaan atau kirim bukti: <strong>' +
+        escapeHtml(BAYAR.kontak) + '</strong></div>';
+    }
+  } else {
+    var minat = false;
+    try { minat = !!JSON.parse(localStorage.getItem('tni_minat_laporan') || 'null'); } catch (e) {}
+    isi += '<div class="hari-sub" style="margin-top:14px"><strong>Status: kanal pembayaran sedang disiapkan.</strong> ' +
+      'Harganya sudah kami cantumkan di atas supaya tidak ada kejutan. Kalau kamu sudah punya kode akses ' +
+      '(dari pembelian sebelumnya), langsung tempel di bawah.</div>' +
       (minat
-        ? '<div class="hari-sub" style="margin-top:12px"><strong>Sudah tercatat.</strong> Minatmu tersimpan di ' +
-          'perangkat ini, dan halaman ini akan menampilkan cara membuka laporan begitu siap. Terima kasih.</div>'
-        : '<button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="catatMinatLaporan()">' +
-          ic('check', 14) + ' Saya tertarik dengan laporan ini</button>') +
-      '<div class="hari-sub" style="margin-top:14px"><strong>Sudah punya kode akses?</strong> ' +
-      'Tempel di sini untuk membuka laporanmu.</div>' +
-      '<input class="profil-input" id="kodeAkses" placeholder="Contoh: SPXXXXXXXXXXXX" style="margin-top:6px" ' +
-        'autocomplete="off" spellcheck="false">' +
-      '<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="bukaLaporanDenganKode()">' +
-        ic('key', 14) + ' Buka laporan</button>' +
-      '</div>';
+        ? '<div class="hari-sub" style="margin-top:10px"><strong>Sudah tercatat.</strong> Minatmu tersimpan di perangkat ini; ' +
+          'begitu pembayaran dibuka, halaman ini akan menampilkan caranya.</div>'
+        : '<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="catatMinatLaporan()">' +
+          ic('check', 14) + ' Saya tertarik, beri tahu saat dibuka</button>');
   }
-  var tautan = TAUTAN_BELI
-    ? '<a class="btn btn-primary btn-sm" href="' + TAUTAN_BELI + '" target="_blank" rel="noopener">Beli sekarang ' + HARGA_LAPORAN + '</a>'
-    : '<div class="hari-sub"><em>Tautan pembelian belum diisi pemilik produk.</em></div>';
-  return '<div class="card bayar">' +
-    '<div class="hari-head">' + ic('file', 16) + ' <strong>Laporan Lengkap — ' + HARGA_LAPORAN + ' sekali bayar</strong>' +
-      '<span class="hari-tgl">bukan langganan</span></div>' +
-    '<div class="hari-sub">Kesiapan ujianmu, kepribadian Big Five, pekerjaan yang cocok, bagian yang perlu ' +
-    'dikejar, rencana latihan 14 hari, dan cara menjawab di wawancara. Bisa dicetak atau disimpan PDF.</div>' +
-    '<div style="margin-top:12px">' + tautan + '</div>' +
-    '<div class="hari-sub" style="margin-top:14px"><strong>Sudah punya kode akses?</strong></div>' +
+
+  isi += '<div class="hari-sub" style="margin-top:16px"><strong>Sudah punya kode akses?</strong> ' +
+    'Tempel di sini untuk membuka laporanmu.</div>' +
     '<input class="profil-input" id="kodeAkses" placeholder="Contoh: SPXXXXXXXXXXXX" style="margin-top:6px" ' +
       'autocomplete="off" spellcheck="false">' +
     '<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="bukaLaporanDenganKode()">' +
       ic('key', 14) + ' Buka laporan</button>' +
     '</div>';
+
+  return '<div class="card bayar">' + isi + '</div>';
 };
 
 window.catatMinatLaporan = function () {
