@@ -831,7 +831,9 @@ def main():
         print('== AC. Halaman arahan menampilkan harga ==')
         _landing = open(os.path.join(ROOT, 'psikotes', 'index.html'), encoding='utf-8').read()
         cek('Rp 39.000' in _landing and 'sekali bayar' in _landing, 'harga tampil di halaman arahan', 'Rp 39.000')
-        cek('Cara membelinya' in _landing and 'kode akses' in _landing, 'langkah cara membeli dijelaskan', 'ada')
+        _beli2 = open(os.path.join(ROOT, 'beli', 'index.html'), encoding='utf-8').read()
+        cek(('langkah' in _beli2 or '<li>' in _beli2) and 'kode akses' in _beli2,
+            'langkah cara membeli dijelaskan di halaman /beli/', 'ada')
         cek('gratis selamanya' not in _landing and 'Rp 39.000' in _landing,
             'halaman arahan tidak lagi menjanjikan gratis & harga tercantum', 'ada')
 
