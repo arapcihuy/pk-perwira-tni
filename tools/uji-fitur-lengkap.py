@@ -16,6 +16,7 @@ import socketserver
 import sys
 import threading
 
+AKSES_HARGA = 'Rp 39.000'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 gagal = []
 lulus = [0]
@@ -73,6 +74,7 @@ def main():
         page = browser.new_page(viewport={'width': 1200, 'height': 900})
         # Gerbang akses (v57): uji lama harus berjalan sebagai PEMILIK, bukan sebagai pengunjung terkunci.
         page.add_init_script("try{localStorage.setItem('tni_akses_pemilik','1');}catch(e){}")
+        page.add_init_script('window.buatKodeUji = function () { var KUNCI = "siap|psikotes|2026|kode"; function sidik(isi) {  var h = 2166136261, s = isi + "#" + KUNCI;  for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }  var pos = h % 1679616, abjad = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", hasil = "";  while (pos > 0) { hasil = abjad[pos % 36] + hasil; pos = Math.floor(pos / 36); }  while (hasil.length < 4) hasil = "0" + hasil;  return hasil; } var isi = "UJI" + String(Date.now()).slice(-6); return "SP" + isi + sidik(isi); };')
         page.on('pageerror', lambda e: kesalahan.append('pageerror: %s' % e))
         page.on('console', lambda m: kesalahan.append('console: %s' % m.text)
                 if m.type == 'error' and 'favicon' not in m.text.lower() else None)
@@ -518,8 +520,8 @@ def main():
         cek(s2['halamanTes'] and s2['jumlahPilihan'] == 5 and s2['pertanyaanBahasaSederhana'],
             'tes kepribadian jalan: 20 pernyataan, 5 pilihan, bahasa sederhana', s2)
         cek(s2['selesai'] and s2['tersimpan'] and s2['rentangBenar'], 'tes selesai, hasil tersimpan, skor dalam rentang sah', s2)
-        cek(s2['adaLaporan'] and s2['adaLaporanBayar'],
-            'laporan hasil + tawaran Laporan Lengkap (sekali bayar) tampil', s2)
+        cek(s2['adaLaporan'],
+            'laporan hasil tes tampil lengkap (tawaran pembelian diuji di gerbang)', s2)
         cek(s2['adaValiditas'] and s2['adaBatasJujur'],
             'dasar instrumen & batas jujur dinyatakan (Mini-IPIP domain publik, bukan diagnosis)', s2)
         cek(s2['simUmum']['jumlah'] >= 40 and s2['simUmum']['menit'] >= 30,
@@ -672,12 +674,11 @@ def main():
         cek(all(x2['sah']) and not x2['adaKodeGagal'] if 'adaKodeGagal' in x2 else all(x2['sah']),
             'semua kode buatan Python sah di aplikasi (uji silang dua bahasa)', x2['sah'])
         cek(x2['ngawurDitolak'], 'kode ngawur/format salah ditolak', x2['ngawurDitolak'])
-        cek(x2['sebelumnyaTerkunci'] and x2['hargaDitampilkan'] and x2['adaLaporanSedangDisiapkan'],
-            'belum dibuka: laporan terkunci, harga DITAMPILKAN, status pembayaran jujur', x2)
-        cek(x2['adaPenangkapMinat'] and x2['adaKolomKode'],
-            'minat pengguna bisa dicatat & kolom kode akses tersedia (bisa jual manual)', x2)
-        cek(x2['syaratAda'] and x2['materiTidakDikunci'],
-            'syarat layanan tampil & materi latihan dinyatakan tetap gratis', x2)
+        cek(x2['sebelumnyaTerkunci'] and x2['adaKolomKode'],
+            'laporan terkunci: alur pembelian tunggal ada di gerbang (kolom kode tersedia)', x2)
+        cek(x2['adaKolomKode'],
+            'kolom kode akses tetap tersedia (pemilik bisa menjual manual kapan saja)', x2)
+        cek(x2['syaratAda'], 'tautan syarat layanan tampil dari dalam aplikasi', x2)
         cek(x2['terbuka'], 'kode akses membuka laporan', x2['terbuka'])
         b = x2['bagian']
         cek(all(b.values()), 'laporan memuat 6 bagian wajib', b)
@@ -815,10 +816,12 @@ def main():
         cek(ab['adaKode'] and ab['adaKolomTempel'] and ab['adaTombolSalin'] and ab['adaTombolCadangan'],
             'kode ruang belajar bisa disalin, ditempel, dan dicadangkan', ab)
         cek(ab['penjelasanTanpaServer'], 'dinyatakan jelas bahwa data tidak keluar dari perangkat', ab)
-        cek(ab['hargaTampil'] and ab['sekaliBayar'] and ab['aksesBerbayar'],
-            'harga Rp 39.000 tampil & dinyatakan satu pembayaran membuka semuanya', ab)
-        cek(ab['adaKolomKodeAkses'] and ab['statusJujur'],
-            'kolom kode akses tersedia & status pembayaran dinyatakan jujur', ab)
+        _js = open(os.path.join(ROOT, 'static', 'js', 'app.js'), encoding='utf-8').read()
+        _akses = open(os.path.join(ROOT, 'static', 'js', 'akses.js'), encoding='utf-8').read()
+        cek('gratis' not in _js.lower() and 'sekali bayar' in _js.lower() and AKSES_HARGA in _akses,
+            'berkas aplikasi tidak lagi menjanjikan gratis & harga tercantum', 'sekali bayar' in _js.lower())
+        cek(ab['judul'] and ab['adaKode'],
+            'ruang belajar tetap berfungsi setelah alur pembelian dipindah ke gerbang', ab)
 
         print('== AC. Halaman arahan menampilkan harga ==')
         _landing = open(os.path.join(ROOT, 'psikotes', 'index.html'), encoding='utf-8').read()
@@ -949,8 +952,8 @@ def main():
         }""")
         cek(ag['rujukanBenar'] and ag['nominalBenar'] and ag['tetapSama'],
             'nominal unik & kode rujukan stabil (39.000 + 3 angka)', ag)
-        cek(ag['adaGambarQris'] and ag['adaSebutanQris'] and ag['nominalTampil'] and ag['rujukanTampil'] and ag['dijelaskanCaranya'],
-            'panel QRIS tampil: gambar, nominal, kode rujukan, dan cara bayar', ag)
+        cek(ag['buktiKeWhatsapp'] and ag['buktiMemuatRujukan'],
+            'jalur kirim bukti (nominal unik + kode rujukan) tetap bekerja', ag)
         cek(ag['buktiKeWhatsapp'] and ag['buktiMemuatRujukan'] and ag['buktiMemuatNominal'],
             'kirim bukti otomatis mengisi kode rujukan & nominal ke WhatsApp pemilik', ag)
 
@@ -1054,6 +1057,73 @@ def main():
         cek(aj['pemilikGoogleDikenali'], 'akun Google pemilik dikenali otomatis', aj)
         cek(aj['kodePengembangMembuka'] and aj['kodePalsuDitolak'],
             'kode pengembang membuka; kode palsu ditolak', aj)
+
+
+        print('== AK. Alur komersial utuh: masuk -> bayar -> buka -> kuitansi ==')
+        ak = page.evaluate("""() => {
+            const out = {};
+            try {
+                localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
+                localStorage.removeItem('tni_kode_akses'); localStorage.removeItem('tni_pembelian');
+                localStorage.removeItem('tni_google_akun'); localStorage.removeItem('tni_kode_bayar');
+            } catch (e) {}
+            BAYAR.aktif = true; BAYAR.whatsapp = '628123456789'; BAYAR.gambarQris = 'static/icons/icon-192.png';
+            render();
+            const t = document.body.textContent;
+
+            // 1) satu layar memuat tiga langkah berurut
+            out.adaTigaLangkah = document.querySelectorAll('.komer-bagian').length === 3;
+            out.adaMasuk = t.indexOf('Masuk (opsional)') >= 0;
+            out.adaBayar = t.indexOf('sekali bayar') >= 0;
+            out.adaBuka = t.indexOf('Buka dengan kode akses') >= 0;
+            out.adaTigaNomor = [].slice.call(document.querySelectorAll('.komer-nomor')).map(e => e.textContent).join('') === '123';
+
+            // 2) bagian bayar memuat QRIS + nominal unik + kode rujukan + tombol bukti
+            const kb = kodeBayar();
+            out.adaQris = !!document.querySelector('.qris-bingkai img');
+            out.nominalUnik = t.indexOf(String(kb.nominal).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) >= 0;
+            out.rujukanTampil = t.indexOf(kb.rujukan) >= 0;
+            out.adaTombolBukti = !!document.querySelector('[onclick*="kirimBuktiBayar"]');
+
+            // 3) kode sah membuka + tercatat sebagai pembelian
+            const el = document.getElementById('kodeAksesGerbang');
+            const kodeUji = buatKodeUji();
+            el.value = kodeUji;
+            terapkanKodeAkses();
+            const b = JSON.parse(localStorage.getItem('tni_pembelian') || 'null');
+            out.kodeSahMembuka = localStorage.getItem('tni_akses') === 'TERBUKA' && punyaAkses();
+            out.pembelianTercatat = !!(b && b.kode === kodeUji && b.nominal > 0 && b.tanggal && b.produk);
+            out.laporanIkutTerbuka = !!JSON.parse(localStorage.getItem('tni_laporan_bayar') || 'null');
+
+            // 4) kartu Pembelian saya + kuitansi
+            navTo('akun');
+            out.adaKartuPembelian = document.body.textContent.indexOf('Pembelian saya') >= 0;
+            out.kartuMemuatKode = document.body.textContent.indexOf(kodeUji) >= 0;
+            out.adaTombolKuitansi = !!document.querySelector('[onclick*="unduhKuitansi"]');
+            let jendela = null;
+            window.open = () => ({ document: { write: (h) => { jendela = h; }, close: () => {} }, print: () => {} });
+            unduhKuitansi();
+            out.kuitansiBerisi = !!jendela && jendela.indexOf(kodeUji) >= 0
+                && jendela.indexOf('Kuitansi pembelian') >= 0 && jendela.indexOf('Lunas') >= 0;
+
+            // 5) terkunci kembali -> gerbang muncul lagi
+            localStorage.removeItem('tni_akses'); localStorage.removeItem('tni_kode_akses');
+            localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_google_akun');
+            out.terkunciLagi = punyaAkses() === false && peranAkses() === 'terkunci';
+
+            BAYAR.aktif = false;
+            localStorage.setItem('tni_akses_pemilik', '1');
+            return out;
+        }""")
+        cek(ak['adaTigaLangkah'] and ak['adaMasuk'] and ak['adaBayar'] and ak['adaBuka'] and ak['adaTigaNomor'],
+            'uji alur komersial: satu layar tiga langkah berurut (masuk, bayar, buka)', ak)
+        cek(ak['adaQris'] and ak['nominalUnik'] and ak['rujukanTampil'] and ak['adaTombolBukti'],
+            'langkah bayar: QRIS, nominal unik, kode rujukan, tombol kirim bukti', ak)
+        cek(ak['kodeSahMembuka'] and ak['pembelianTercatat'] and ak['laporanIkutTerbuka'],
+            'kode sah membuka seluruh aplikasi + pembelian tercatat', ak)
+        cek(ak['adaKartuPembelian'] and ak['kartuMemuatKode'] and ak['adaTombolKuitansi'] and ak['kuitansiBerisi'],
+            'kartu Pembelian saya + kuitansi bisa diunduh dan berisi data benar', ak)
+        cek(ak['terkunciLagi'], 'setelah kunci ulang, gerbang kembali menutup', ak)
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {

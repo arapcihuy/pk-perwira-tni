@@ -244,75 +244,24 @@ st.textContent = [
 document.head.appendChild(st);
 })();
 window.panelCaraBeli = function () {
-var harga = BAYAR.harga;
-var isi = '<div class="hari-head">' + ic('file', 16) + ' <strong>Laporan Lengkap — ' + harga +
-' sekali bayar</strong><span class="hari-tgl">bukan langganan</span></div>' +
-'<div class="hari-sub">Isinya: kesiapan ujianmu, kepribadian Big Five dalam bahasa sehari-hari, ' +
-'pekerjaan yang cocok, bagian yang perlu dikejar, rencana latihan 14 hari, dan cara menjawab di wawancara. ' +
-'Bisa dicetak atau disimpan sebagai PDF.</div>' +
-'<div class="bayar-daftar">' +
-'<div>' + ic('check', 13) + ' <strong>Satu pembayaran membuka semuanya</strong> — seluruh soal, pembahasan, dan laporan ini</div>' +
-'<div>' + ic('check', 13) + ' Sekali bayar, tanpa langganan, tanpa akun</div>' +
-'<div>' + ic('check', 13) + ' Dibuka dengan kode akses, bisa dipakai di perangkat lain</div>' +
-'</div>';
-if (BAYAR.aktif) {
-var langkah = BAYAR.instruksi && BAYAR.instruksi.length ? BAYAR.instruksi : [
-'Bayar ' + harga + (BAYAR.metode ? ' lewat ' + BAYAR.metode : ''),
-'Kirim bukti pembayaran' + (BAYAR.kontak ? ' ke ' + BAYAR.kontak : ''),
-'Kamu menerima kode akses',
-'Tempel kode itu di bawah untuk membuka laporan'
-];
-isi += '<div class="hari-sub" style="margin-top:14px"><strong>Cara membeli:</strong></div>' +
-langkah.map(function (t, i) {
-return '<div class="fokus-item"><span class="fokus-num">' + (i + 1) + '</span>' + escapeHtml(t) + '</div>';
-}).join('');
-var kb = kodeBayar();
-isi += '<div class="qris-blok">' +
-'<div class="hari-sub" style="margin-top:16px"><strong>Bayar lewat QRIS</strong> — scan dengan aplikasi ' +
-'bank atau e-wallet apa pun (GoPay, OVO, DANA, ShopeePay, mobile banking).</div>' +
-'<div class="qris-bingkai">' +
-'<img src="' + BAYAR.gambarQris + '?v=' + (window.VERSI_ASET || '') + '" alt="Kode QRIS pembayaran SiapPsikotes" ' +
-'width="240" height="240" loading="lazy" decoding="async" ' +
-'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Kode QRIS belum diisi pemilik.<br>' +
-'<span class=&quot;hari-sub&quot;>Lihat panduan: tools/buat-qris.sh</span></div>\'">' +
-'</div>' +
-'<div class="qris-nominal"><span>Bayar tepat sejumlah</span><strong>' + rupiah(kb.nominal) + '</strong>' +
-'<span class="hari-sub">3 angka terakhir (' + kb.rujukan + ') adalah kode rujukanmu. ' +
-'Tulis kode ini saat mengirim bukti supaya laporanmu cepat dicocokkan.</span></div>' +
-(BAYAR.whatsapp || BAYAR.surel
-? '<button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="kirimBuktiBayar()">' +
-ic('send', 14) + ' Kirim bukti pembayaran</button>'
-: '<div class="hari-sub" style="margin-top:10px">Kontak pengiriman bukti belum diisi pemilik.</div>') +
-'</div>';
-if (BAYAR.tautan) {
-isi += '<a class="btn btn-secondary btn-sm" style="margin-top:12px" href="' + BAYAR.tautan +
-'" target="_blank" rel="noopener">' + ic('arrow-right', 14) + ' Beli lewat tautan lain</a>';
-}
-if (BAYAR.kontak) {
-isi += '<div class="hari-sub" style="margin-top:8px">Pertanyaan atau kirim bukti: <strong>' +
-escapeHtml(BAYAR.kontak) + '</strong></div>';
-}
-} else {
-var minat = false;
-try { minat = !!JSON.parse(localStorage.getItem('tni_minat_laporan') || 'null'); } catch (e) {}
-isi += '<div class="hari-sub" style="margin-top:14px"><strong>Status: kanal pembayaran sedang disiapkan.</strong> ' +
-'Harganya sudah kami cantumkan di atas supaya tidak ada kejutan. Kalau kamu sudah punya kode akses ' +
-'(dari pembelian sebelumnya), langsung tempel di bawah.</div>' +
-(minat
-? '<div class="hari-sub" style="margin-top:10px"><strong>Sudah tercatat.</strong> Minatmu tersimpan di perangkat ini; ' +
-'begitu pembayaran dibuka, halaman ini akan menampilkan caranya.</div>'
-: '<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="catatMinatLaporan()">' +
-ic('check', 14) + ' Saya tertarik, beri tahu saat dibuka</button>');
-}
-isi += '<div class="hari-sub" style="margin-top:16px"><strong>Sudah punya kode akses?</strong> ' +
-'Tempel di sini untuk membuka laporanmu.</div>' +
-'<input class="profil-input" id="kodeAkses" placeholder="Contoh: SPXXXXXXXXXXXX" style="margin-top:6px" ' +
-'autocomplete="off" spellcheck="false">' +
-'<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="bukaLaporanDenganKode()">' +
-ic('hash', 14) + ' Buka laporan</button>' +
-'</div>';
-return '<div class="card bayar">' + isi + '</div>';
+// Alur pembelian tunggal ada di gerbang akses (static/js/akses.js). Halaman ini hanya
+// muncul dalam keadaan luar biasa (laporan terkunci padahal aplikasi terbuka), jadi cukup
+// memberi jalan keluar yang jelas - tanpa mengulang alur QRIS di dua tempat.
+return '<div class="card bayar">' +
+  '<div class="hari-head">' + ic('shield', 16) + ' <strong>Laporan belum terbuka di perangkat ini</strong></div>' +
+  '<div class="hari-sub">Akses penuh dibuka lewat kode akses dari pembelian. Buka halaman utama untuk ' +
+  'melanjutkan pembelian atau memasukkan kodemu.</div>' +
+  '<div class="aksi-bar" style="margin-top:10px">' +
+    '<button class="btn btn-primary btn-sm" onclick="navTo(\'home\'); render();">' +
+      ic('arrow-right', 14) + ' Buka halaman utama</button>' +
+  '</div>' +
+  '<div class="hari-sub" style="margin-top:12px">Sudah punya kode? Tempel di bawah.</div>' +
+  '<input class="profil-input" id="kodeAkses" placeholder="Contoh: SPXXXXXXXXXXXX" autocomplete="off" spellcheck="false" style="margin-top:6px">' +
+  '<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="bukaLaporanDenganKode()">' +
+    ic('hash', 14) + ' Buka laporan</button>' +
+  '</div>';
 };
+
 window.catatMinatLaporan = function () {
 try {
 localStorage.setItem('tni_minat_laporan', JSON.stringify({ tanggal: new Date().toISOString().slice(0, 10) }));
