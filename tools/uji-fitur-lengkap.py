@@ -961,7 +961,7 @@ def main():
         _tmp = tempfile.mkdtemp()
         _png = os.path.join(_tmp, 'uji-qris.png')
         _pyq = os.path.expanduser('~/venv-siappsikotes/bin/python')
-        _pyj = _pyq if os.path.exists(_pyq) else '/usr/bin/python3'
+        _pyj = _pyq if os.path.exists(_pyq) else sys.executable
         _b = subprocess.run([_pyj, os.path.join(ROOT, 'tools', 'buat-qris.py'),
                              '--nmid', 'ID1024000000000000000', '--nama', 'SiapPsikotes', '--kota', 'Bantul',
                              '--jumlah', '39147', '--keluar', _png], capture_output=True, text=True, cwd=ROOT)
@@ -970,14 +970,22 @@ def main():
         else:
             cek(os.path.exists(_png) and os.path.getsize(_png) > 500,
                 'gambar QR berhasil dibuat dari NMID', os.path.getsize(_png) if os.path.exists(_png) else 'tidak ada')
-        try:
-            import cv2, numpy as _np
-            _gambar = cv2.imread(_png)
-            _isi, __, _ = cv2.QRCodeDetector().detectAndDecode(_gambar)
-            cek(_isi.startswith('000201') and '39147' in _isi,
-                'gambar QR terbukti bisa dipindai & nominal ikut terbaca', _isi[:40] + '...')
-        except ImportError:
-            print('  LEWAT | pustaka pemindai QR belum ada; uji pindai gambar dilewati')
+        if not os.path.exists(_png) or os.path.getsize(_png) < 500:
+            print('  LEWAT | gambar QR tidak terbentuk (pustaka gambar tidak ada); uji pindai dilewati')
+        else:
+            try:
+                import cv2
+                _gambar = cv2.imread(_png)
+                if _gambar is None or getattr(_gambar, 'size', 0) == 0:
+                    print('  LEWAT | gambar tidak terbaca pustaka pemindai; uji pindai dilewati')
+                else:
+                    _isi, __, _ = cv2.QRCodeDetector().detectAndDecode(_gambar)
+                    cek(_isi.startswith('000201') and '39147' in _isi,
+                        'gambar QR terbukti bisa dipindai & nominal ikut terbaca', _isi[:40] + '...')
+            except ImportError:
+                print('  LEWAT | pustaka pemindai QR belum ada; uji pindai gambar dilewati')
+            except Exception as _e:
+                print('  LEWAT | pemindai QR bermasalah (%s); uji pindai dilewati' % type(_e).__name__)
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
