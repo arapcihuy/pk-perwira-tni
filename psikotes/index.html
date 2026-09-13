@@ -55,7 +55,8 @@
 
   /* ---------- kepala ---------- */
   header { border-bottom: 1px solid var(--line); background: rgba(10,15,24,.85); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); }
-  .kepala { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; }
+  .kepala { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px 0; position: relative; z-index: 6; background: var(--bg); }
   .merek { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.2px; }
   .merek img { width: 30px; height: 30px; border-radius: 8px; }
   .kepala nav { display: flex; align-items: center; gap: 18px; font-size: 14.5px; }
@@ -65,7 +66,8 @@
     .kepala nav a:not(.tombol) { display: none; }
     .merek span { font-size: 15px; }
     .kepala { padding: 12px 0; }
-    .hero { padding: 36px 0 34px; }
+    .hero { padding: 26px 0 34px; }
+    .ponsel { max-width: 100%; }
     .angka-grid { grid-template-columns: repeat(2, 1fr); }
   }
   .kepala nav a { color: var(--muted); text-decoration: none; }
@@ -156,7 +158,9 @@
 
 
   /* Contoh tes yang bisa diketik-ketuk di layar iPhone */
-  .demo { display: flex; flex-direction: column; height: 100%; background: var(--bg); }
+  .demo { display: flex; flex-direction: column; height: 100%; background: var(--bg);
+    padding-top: 44px; /* safe area: ruang untuk bilah status + Dynamic Island */
+    box-sizing: border-box; }
   .demo-kepala { display: flex; justify-content: space-between; align-items: center;
     padding: 8px 14px 6px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--line); }
   .demo-jalur { font-size: 10.5px; letter-spacing: .6px; text-transform: uppercase; color: var(--gold); font-weight: 700; }
