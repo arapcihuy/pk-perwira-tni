@@ -1236,6 +1236,13 @@ def main():
             'layar masuk menjelaskan manfaatnya, mengarahkan ke harga, & menyediakan kolom kode', an)
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
+        # Mandiri: jangan bergantung pada uji sebelumnya. Bila belum ada soal termuat, muat satu kategori
+        # dulu supaya pengujian penjepitan indeks tidak menghasilkan kegagalan palsu.
+        page.evaluate("""() => {
+            try { localStorage.setItem('tni_akses_pemilik', '1'); } catch (e) {}
+            render();
+            if (!(S.questions || []).length) { startCat('tkw', 'learn'); S.idx = 0; S.tSoalIdx = -1; render(); }
+        }""")
         q2 = page.evaluate("""() => {
             const out = {};
             const coba = (label, fn) => { try { fn(); out[label] = 'OK'; } catch (e) { out[label] = 'JATUH: ' + e.message; } };
