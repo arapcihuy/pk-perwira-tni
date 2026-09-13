@@ -145,8 +145,8 @@ def simpan_gambar(payload, keluar):
         import segno
     except ImportError:
         print('\nCATATAN: pustaka gambar QR belum ada di Python ini.')
-        print('Jalankan lewat: tools/buat-qris.sh ...  (memakai .tools-venv)')
-        print('Atau pasang sekali: /usr/bin/python3 -m venv .tools-venv && ./.tools-venv/bin/pip install segno')
+        print('Jalankan lewat: tools/buat-qris.sh ...  (memakai venv perkakas)')
+        print('Atau pasang sekali: /usr/bin/python3 -m venv ~/venv-siappsikotes lalu ~/venv-siappsikotes/bin/pip install segno')
         return False
     q = segno.make(payload, error='m')
     os.makedirs(os.path.dirname(os.path.abspath(keluar)), exist_ok=True)

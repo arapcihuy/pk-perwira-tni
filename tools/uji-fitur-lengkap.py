@@ -960,7 +960,9 @@ def main():
             'pemeriksaan diri QRIS lulus (checksum standar + bolak-balik)', _uji.stdout.strip().splitlines()[:2])
         _tmp = tempfile.mkdtemp()
         _png = os.path.join(_tmp, 'uji-qris.png')
-        _b = subprocess.run(['./.tools-venv/bin/python', os.path.join(ROOT, 'tools', 'buat-qris.py'),
+        _pyq = os.path.expanduser('~/venv-siappsikotes/bin/python')
+        _b = subprocess.run([_pyq if os.path.exists(_pyq) else '/usr/bin/python3',
+                             os.path.join(ROOT, 'tools', 'buat-qris.py'),
                              '--nmid', 'ID1024000000000000000', '--nama', 'SiapPsikotes', '--kota', 'Bantul',
                              '--jumlah', '39147', '--keluar', _png], capture_output=True, text=True, cwd=ROOT)
         cek(os.path.exists(_png) and os.path.getsize(_png) > 500,

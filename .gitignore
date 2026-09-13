@@ -7,3 +7,6 @@ retry-pages-deploy.sh
 .audit/*.bak
 __pycache__/
 *.pyc
+.tools-venv/
+venv-*/
+node_modules/
