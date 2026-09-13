@@ -71,8 +71,8 @@
   /* ---------- hero ---------- */
   .hero { display: grid; gap: 40px; align-items: center; padding: 44px 0 38px; }
   @media (min-width: 900px) { .hero { grid-template-columns: 1.1fr .9fr; padding: 52px 0 46px; } }
-  h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; letter-spacing: -1px; margin: 0 0 18px; }
-  .hero p.lead { font-size: clamp(16.5px, 2vw, 19px); color: var(--muted); margin: 0 0 26px; max-width: 34em; }
+  h1 { font-size: clamp(31px, 5vw, 48px); line-height: 1.1; letter-spacing: -1.2px; font-weight: 800; margin: 0 0 18px; }
+  .hero p.lead { font-size: clamp(16.5px, 2vw, 19.5px); color: #b9c6d6; margin: 0 0 26px; max-width: 34em; }
   .pil { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
   .pil span {
     font-size: 13.5px; color: var(--muted); border: 1px solid var(--line2);
@@ -92,10 +92,12 @@
   /* kerangka ponsel untuk tangkapan layar */
   .ponsel { justify-self: center; align-self: center; width: 100%; max-width: 340px; }
   .ponsel .bingkai {
-    background: var(--bg2); border: 1px solid var(--line2); border-radius: 34px;
-    padding: 12px; box-shadow: 0 30px 70px rgba(0,0,0,.55), 0 0 0 6px rgba(255,255,255,.02);
+    background: linear-gradient(180deg, #131c2b, #0b1220);
+    border: 1px solid rgba(255,255,255,.13); border-radius: 32px;
+    padding: 9px; box-shadow: 0 26px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(230,197,82,.10),
+                0 0 60px -18px rgba(230,197,82,.35);
   }
-  .ponsel img { width: 100%; display: block; border-radius: 24px; }
+  .ponsel img { width: 100%; height: auto; display: block; border-radius: 24px; }
 
   /* ---------- angka ---------- */
   .angka { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg2); }
@@ -124,7 +126,7 @@
     .dua-kolom { grid-template-columns: 1fr 1fr; gap: 56px; }
     .dua-kolom.pantul > .teks { order: 2; }
   }
-  .dua-kolom img { width: 100%; max-width: 380px; display: block; border-radius: 22px;
+  .dua-kolom img { width: 100%; height: auto; max-width: 380px; display: block; border-radius: 22px;
     border: 1px solid var(--line2); box-shadow: 0 20px 50px rgba(0,0,0,.45); justify-self: center; }
   ul.tanda { list-style: none; padding: 0; margin: 0; }
   ul.tanda li { position: relative; padding-left: 28px; margin: 10px 0; color: var(--muted); }
@@ -165,8 +167,11 @@
   }
   .ponsel { position: relative; }
   .lencana {
-    position: absolute; background: var(--surface); border: 1px solid var(--line2);
-    border-radius: 14px; padding: 10px 14px; box-shadow: 0 14px 34px rgba(0,0,0,.5); backdrop-filter: blur(8px);
+    position: absolute; border-radius: 16px; padding: 11px 15px;
+    background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.045));
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 22px 52px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.09);
+    backdrop-filter: blur(14px) saturate(140%);
   }
   .lencana b { display: block; font-size: 19px; color: var(--gold); letter-spacing: -.3px; }
   .lencana span { font-size: 12px; color: var(--muted); }
