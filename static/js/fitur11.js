@@ -262,7 +262,7 @@ window.panelCaraBeli = function () {
     '<input class="profil-input" id="kodeAkses" placeholder="Contoh: SPXXXXXXXXXXXX" style="margin-top:6px" ' +
       'autocomplete="off" spellcheck="false">' +
     '<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="bukaLaporanDenganKode()">' +
-      ic('key', 14) + ' Buka laporan</button>' +
+      ic('hash', 14) + ' Buka laporan</button>' +
     '</div>';
 
   return '<div class="card bayar">' + isi + '</div>';

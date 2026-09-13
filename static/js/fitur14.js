@@ -95,7 +95,7 @@ window.renderAkun = function () {
     '</div>' +
 
     '<div class="card">' +
-      '<div class="hari-head">' + ic('key', 16) + ' <strong>Kode ruang belajar</strong>' +
+      '<div class="hari-head">' + ic('hash', 16) + ' <strong>Kode ruang belajar</strong>' +
         '<span class="hari-tgl">untuk pindah perangkat</span></div>' +
       '<div class="hari-sub">Ini "akunmu" tanpa kata sandi. Simpan kodenya (mis. di catatan pribadi). ' +
       'Tempel kode ini di perangkat lain, dan seluruh bahan belajarmu ikut pindah. ' +

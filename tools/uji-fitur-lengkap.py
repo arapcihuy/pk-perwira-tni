@@ -825,6 +825,90 @@ def main():
         cek('Latihan — gratis selamanya' in _landing or 'gratis selamanya' in _landing,
             'bagian gratis dinyatakan tegas di halaman arahan', 'ada')
 
+        print('== AD. Masuk dengan Google (opsional, belum aktif) ==')
+        ad = page.evaluate("""() => {
+            const out = {};
+            out.bawaanMati = AKUN_GOOGLE.aktif === false;
+            out.tanpaClientId = AKUN_GOOGLE.clientId === '';
+            // uji pembaca token dengan token buatan
+            const b64 = (o) => btoa(JSON.stringify(o)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+            const jwt = 'kepala.' + b64({email:'uji@contoh.id', name:'Uji Google', picture:'https://x/y.png', sub:'12345'}) + '.ekor';
+            const u = uraiTokenGoogle(jwt);
+            out.uraiToken = !!(u && u.email === 'uji@contoh.id' && u.nama === 'Uji Google' && u.sub === '12345');
+            out.tokenRusakDitangani = uraiTokenGoogle('bukan.token') === null || typeof uraiTokenGoogle('x') === 'object';
+            // halaman ruang belajar memuat kartu Google (dalam keadaan belum aktif)
+            navTo('akun');
+            out.adaKartuGoogle = document.body.textContent.indexOf('Masuk dengan Google') >= 0;
+            out.dinyatakanOpsional = document.body.textContent.indexOf('Latihan tetap bisa dipakai tanpa masuk') >= 0
+                || document.body.textContent.indexOf('Belum diaktifkan') >= 0;
+            return out;
+        }""")
+        cek(ad['bawaanMati'] and ad['tanpaClientId'],
+            'Google nonaktif secara bawaan & tanpa client id', ad)
+        cek(ad['uraiToken'] and ad['tokenRusakDitangani'],
+            'pembaca token Google bekerja & tahan token rusak', ad)
+        cek(ad['adaKartuGoogle'] and ad['dinyatakanOpsional'],
+            'kartu Google tampil di ruang belajar & dinyatakan opsional', ad)
+
+        print('== AE. Aktif: alur Drive dengan Google tiruan ==')
+        ae = page.evaluate("""() => {
+            const hasil = { panggilan: [], dipanggilMasuk: false };
+            AKUN_GOOGLE.aktif = true;
+            AKUN_GOOGLE.clientId = 'uji.apps.googleusercontent.com';
+            const b64 = (o) => btoa(JSON.stringify(o)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+            window.google = { accounts: { oauth2: {
+                initTokenClient: (cfg) => { hasil.panggilan.push(cfg.scope);
+                    return { requestAccessToken: () => { hasil.dipanggilMasuk = true;
+                        cfg.callback({ access_token: 'token-uji',
+                            id_token: 'k.' + b64({email:'pemakai@contoh.id', name:'Pemakai Uji', sub:'999'}) + '.e' }); } };
+                },
+                revoke: (t, cb) => cb && cb()
+            } } };
+            // tahan jaringan: catat alamat, jangan benar-benar menghubungi Google
+            const alamat = [];
+            window.fetch = (u, o) => { alamat.push(String(u) + '|' + ((o && o.method) || 'GET'));
+                if (String(u).indexOf('drive/v3/files?spaces=appDataFolder') >= 0) return Promise.resolve({ ok:true, json:()=>Promise.resolve({files:[]}) });
+                return Promise.resolve({ ok:true, text:()=>Promise.resolve(''), json:()=>Promise.resolve({id:'berkas-1'}) }); };
+
+            masukkanGoogle();
+            // tunggu balasan Google tiruan benar-benar diproses, baru periksa tampilan
+            return new Promise((selesai) => setTimeout(() => {
+                const akun = JSON.parse(localStorage.getItem('tni_google_akun') || 'null');
+                navTo('akun');
+                const teks = document.body.textContent;
+                selesai({
+                    masukDipanggil: hasil.dipanggilMasuk,
+                    lingkupBenar: hasil.panggilan.length && hasil.panggilan[0].indexOf('auth/drive.appdata') >= 0,
+                    akunTersimpan: !!(akun && akun.email === 'pemakai@contoh.id'),
+                    namaTampil: teks.indexOf('Pemakai Uji') >= 0,
+                    adaTombolSalin: teks.indexOf('Salin ke Drive') >= 0,
+                    adaTombolPulihkan: teks.indexOf('Pulihkan dari Drive') >= 0,
+                    alamat: alamat
+                });
+            }, 900));
+        }""")
+        cek(ae['masukDipanggil'] and ae['lingkupBenar'],
+            'masuk Google meminta lingkup drive.appdata saja (bukan seluruh Drive)', ae['alamat'])
+        cek(ae['akunTersimpan'] and ae['namaTampil'] and ae['adaTombolSalin'] and ae['adaTombolPulihkan'],
+            'setelah masuk: nama tampil & tombol salin/pulihkan Drive tersedia', ae['alamat'])
+        cek(any('upload/drive/v3/files' in a or 'drive/v3/files' in a for a in ae['alamat']),
+            'salinan benar-benar dikirim ke Drive pengguna (endpoint benar)', ae['alamat'])
+
+        print('== AF. Nonaktif kembali: tidak ada panggilan ke Google ==')
+        af = page.evaluate("""() => {
+            const alamat = [];
+            window.fetch = (u) => { alamat.push(String(u)); return Promise.resolve({ ok:true, text:()=>Promise.resolve(''), json:()=>Promise.resolve({}) }); };
+            AKUN_GOOGLE.aktif = false; AKUN_GOOGLE.clientId = '';
+            __gToken = null; __gAkun = null;
+            try { localStorage.removeItem('tni_google_akun'); } catch (e) {}
+            const sebelum = alamat.length;
+            navTo('akun');
+            return { panggilanTambahan: alamat.length - sebelum,
+                     tidakAdaSkripGoogle: !document.querySelector('script[src*="accounts.google.com"]') };
+        }""")
+        cek(af['panggilanTambahan'] == 0 and af['tidakAdaSkripGoogle'],
+            'saat nonaktif: nol permintaan jaringan & skrip Google tidak dimuat', af)
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};

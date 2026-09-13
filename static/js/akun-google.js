@@ -1,0 +1,237 @@
+// ============================================================
+// FITUR 15 — v51: MASUK DENGAN GOOGLE + CADANGAN DI DRIVE PENGGUNA
+//
+// Kenapa begini: login Google memberi tahu KAMI siapa penggunanya, tetapi TIDAK
+// menyimpan apa pun. Supaya bahan belajar ikut pindah perangkat tanpa kami menyewa
+// server, salinannya disimpan di folder tersembunyi aplikasi di Google Drive
+// MILIK PENGGUNA SENDIRI (scope drive.appdata). Jadi: Rp 0 biaya server, dan
+// data belajar tetap di akun pengguna, bukan di server kami.
+//
+// Status: BELUM AKTIF. Seluruh modul ini hanya berjalan bila pemilik mengisi
+// window.AKUN_GOOGLE di bawah (lihat ~/pk-bisnis/PANDUAN-AKTIFKAN-GOOGLE.md).
+// Selama aktif masih false: tidak ada skrip Google yang dimuat, tidak ada satu pun
+// permintaan jaringan, dan aplikasi berjalan persis seperti sebelumnya.
+// ============================================================
+
+window.AKUN_GOOGLE = window.AKUN_GOOGLE || {
+  aktif: false,
+  clientId: '',
+  driveSync: true,
+  namaBerkas: 'siappsikotes-cadangan.json',
+  lingkup: 'openid email profile https://www.googleapis.com/auth/drive.appdata'
+};
+
+window.__gToken = null;
+window.__gAkun = null;
+window.__gSkrip = false;
+
+window.googleSiap = function () {
+  return !!(AKUN_GOOGLE && AKUN_GOOGLE.aktif && AKUN_GOOGLE.clientId);
+};
+
+window.googleMasuk = function () {
+  return !!__gToken;
+};
+
+function bacaAkunTersimpan() {
+  try {
+    var a = JSON.parse(localStorage.getItem('tni_google_akun') || 'null');
+    return a && a.email ? a : null;
+  } catch (e) { return null; }
+}
+
+function simpanAkun(a) {
+  try {
+    if (a) localStorage.setItem('tni_google_akun', JSON.stringify(a));
+    else localStorage.removeItem('tni_google_akun');
+  } catch (e) {}
+}
+
+// Membaca isi token Google untuk menampilkan nama/surel.
+// Catatan jujur: ini hanya untuk tampilan dan penamaan berkas cadangan;
+// data belajar tetap di perangkat/Drive pengguna, jadi tidak ada keputusan
+// keamanan yang bergantung pada pembacaan ini.
+window.uraiTokenGoogle = function (jwt) {
+  try {
+    var bagian = String(jwt).split('.');
+    if (bagian.length < 2) return null;
+    var s = bagian[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    var isi = JSON.parse(decodeURIComponent(escape(atob(s))));
+    return { email: isi.email || '', nama: isi.name || '', foto: isi.picture || '', sub: isi.sub || '' };
+  } catch (e) { return null; }
+};
+
+function muatSkripGoogle() {
+  if (__gSkrip || (window.google && google.accounts)) return Promise.resolve();
+  return new Promise(function (selesai, gagal) {
+    var s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.async = true; s.defer = true;
+    s.onload = function () { __gSkrip = true; selesai(); };
+    s.onerror = function () { gagal(new Error('skrip Google gagal dimuat')); };
+    document.head.appendChild(s);
+  });
+}
+
+window.masukkanGoogle = function () {
+  if (!googleSiap()) { alert('Fitur Masuk dengan Google belum diaktifkan pemilik.'); return; }
+  muatSkripGoogle().then(function () {
+    var klien = google.accounts.oauth2.initTokenClient({
+      client_id: AKUN_GOOGLE.clientId,
+      scope: AKUN_GOOGLE.lingkup,
+      prompt: 'consent',
+      callback: function (jawab) {
+        if (jawab && jawab.access_token) {
+          __gToken = jawab.access_token;
+          var a = uraiTokenGoogle(jawab.id_token || '');
+          __gAkun = a || { email: '(tanpa surel)', nama: '', foto: '', sub: '' };
+          simpanAkun(__gAkun);
+          render();
+          if (AKUN_GOOGLE.driveSync) googleKirimKeDrive(true);
+        } else {
+          alert('Masuk dibatalkan atau gagal. Bahan belajarmu tetap aman di perangkat ini.');
+        }
+      }
+    });
+    klien.requestAccessToken();
+  }).catch(function (e) {
+    alert('Tidak bisa memuat layanan Google sekarang. Aplikasi tetap jalan seperti biasa.');
+  });
+};
+
+window.keluarGoogle = function () {
+  if (!confirm('Keluar dari Google? Bahan belajar di perangkat ini tetap ada.')) return;
+  try {
+    if (__gToken && window.google && google.accounts && google.accounts.oauth2) {
+      google.accounts.oauth2.revoke(__gToken, function () {});
+    }
+  } catch (e) {}
+  __gToken = null; __gAkun = null; simpanAkun(null);
+  render();
+};
+
+// ---------- Cadangan ke Google Drive pengguna (appDataFolder) ----------
+function cariBerkasCadangan() {
+  var q = encodeURIComponent("name='" + AKUN_GOOGLE.namaBerkas + "'");
+  return fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&pageSize=1&fields=files(id,name)&q=' + q, {
+    headers: { Authorization: 'Bearer ' + __gToken }
+  }).then(function (r) { return r.ok ? r.json() : { files: [] }; })
+    .then(function (j) { return (j.files && j.files[0]) || null; });
+}
+
+window.googleKirimKeDrive = function (manual) {
+  if (!googleMasuk()) return Promise.resolve(false);
+  var data = '';
+  try {
+    data = (typeof kodeSinkron === 'function') ? kodeSinkron() : '';
+  } catch (e) { data = ''; }
+  if (!data) return Promise.resolve(false);
+
+  var isi = JSON.stringify({ aplikasi: 'SiapPsikotes', versi: 1, waktu: new Date().toISOString(), data: data });
+
+  return cariBerkasCadangan().then(function (ada) {
+    if (ada) {
+      return fetch('https://www.googleapis.com/upload/drive/v3/files/' + ada.id + '?uploadType=media', {
+        method: 'PATCH',
+        headers: { Authorization: 'Bearer ' + __gToken, 'Content-Type': 'application/json' },
+        body: isi
+      });
+    }
+    var batas = 'siappsikotes' + Date.now();
+    var badan = '--' + batas + '\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n' +
+      JSON.stringify({ name: AKUN_GOOGLE.namaBerkas, parents: ['appDataFolder'] }) + '\r\n--' + batas +
+      '\r\nContent-Type: application/json\r\n\r\n' + isi + '\r\n--' + batas + '--';
+    return fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + __gToken, 'Content-Type': 'multipart/related; boundary=' + batas },
+      body: badan
+    });
+  }).then(function (r) {
+    if (r && r.ok) {
+      try { localStorage.setItem('tni_drive_sinkron', new Date().toISOString()); } catch (e) {}
+      if (manual) alert('Bahan belajarmu sudah tersalin ke Google Drive milikmu.');
+      return true;
+    }
+    if (manual) alert('Gagal menyalin ke Drive. Coba lagi, atau tetap pakai kode ruang belajar.');
+    return false;
+  }).catch(function () {
+    if (manual) alert('Tidak bisa menghubungi Google. Aplikasi tetap jalan seperti biasa.');
+    return false;
+  });
+};
+
+window.googleAmbilDariDrive = function () {
+  if (!googleMasuk()) { alert('Masuk dengan Google dulu.'); return; }
+  cariBerkasCadangan().then(function (ada) {
+    if (!ada) { alert('Belum ada cadangan di Drive untuk akun ini.'); return; }
+    return fetch('https://www.googleapis.com/drive/v3/files/' + ada.id + '?alt=media', {
+      headers: { Authorization: 'Bearer ' + __gToken }
+    }).then(function (r) { return r.text(); }).then(function (teks) {
+      var bundel = null;
+      try { bundel = JSON.parse(teks).data; } catch (e) { bundel = teks; }
+      if (!bundel) { alert('Cadangan tidak terbaca.'); return; }
+      if (!confirm('Pulihkan bahan belajar dari Drive? Data di perangkat ini akan diganti.')) return;
+      try {
+        if (typeof pakaiKodeSinkron === 'function') {
+          var kotak = document.getElementById('kodeSinkron');
+          if (kotak) kotak.value = bundel;
+          pakaiKodeSinkron();
+        }
+      } catch (e) { alert('Gagal memulihkan: ' + e.message); }
+      render();
+    });
+  });
+};
+
+// ---------- Tampilan ----------
+window.kartuGoogle = function () {
+  if (!googleSiap()) {
+    return '<div class="card">' +
+      '<div class="hari-head">' + ic('user', 16) + ' <strong>Masuk dengan Google</strong><span class="hari-tgl">opsional</span></div>' +
+      '<div class="hari-sub">Belum diaktifkan. Bila nanti diaktifkan, kamu bisa masuk sekali klik supaya salinan ' +
+      'bahan belajarmu tersimpan di Google Drive milikmu sendiri — jadi bisa dibuka dari HP lain. ' +
+      'Kami tidak menyimpan datamu di server kami.</div>' +
+      '</div>';
+  }
+  var a = __gAkun || bacaAkunTersimpan();
+  if (!a) {
+    return '<div class="card">' +
+      '<div class="hari-head">' + ic('user', 16) + ' <strong>Masuk dengan Google</strong><span class="hari-tgl">opsional</span></div>' +
+      '<div class="hari-sub">Masuk sekali klik agar salinan bahan belajarmu tersimpan di Google Drive milikmu sendiri ' +
+      '(bisa dibuka dari perangkat lain). Latihan tetap bisa dipakai tanpa masuk.</div>' +
+      '<button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="masukkanGoogle()">' +
+        ic('user', 14) + ' Masuk dengan Google</button>' +
+      '</div>';
+  }
+  var sinkron = '';
+  try { sinkron = localStorage.getItem('tni_drive_sinkron') || ''; } catch (e) {}
+  return '<div class="card">' +
+    '<div class="hari-head">' + ic('user', 16) + ' <strong>' + escapeHtml(a.nama || a.email) + '</strong>' +
+      '<span class="hari-tgl">tersambung</span></div>' +
+    '<div class="hari-sub">Salinan bahan belajarmu disimpan di folder aplikasi pada Google Drive milikmu' +
+      (sinkron ? ' (terakhir: ' + escapeHtml(sinkron.slice(0, 10)) + ')' : '') + '.</div>' +
+    '<div class="aksi-bar" style="margin-top:10px">' +
+      '<button class="btn btn-secondary btn-sm" onclick="googleKirimKeDrive(true)">' + ic('upload', 14) + ' Salin ke Drive</button>' +
+      '<button class="btn btn-secondary btn-sm" onclick="googleAmbilDariDrive()">' + ic('download', 14) + ' Pulihkan dari Drive</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="keluarGoogle()">' + ic('x-circle', 14) + ' Keluar</button>' +
+    '</div>' +
+    '<div class="hari-sub" style="margin-top:10px">Data belajar tetap ada di perangkat ini walau kamu keluar. ' +
+    'Mencabut izin Google bisa dilakukan kapan saja di myaccount.google.com/permissions.</div>' +
+    '</div>';
+};
+
+// Sisipkan kartu Google ke halaman "Ruang belajar saya" tanpa mengubah fitur14.
+(function () {
+  var lama = window.renderAkun;
+  if (typeof lama !== 'function') return;
+  window.renderAkun = function () {
+    var html = lama.apply(this, arguments);
+    try {
+      var kartu = kartuGoogle();
+      var i = html.lastIndexOf('</div>');
+      if (i >= 0) html = html.slice(0, i) + kartu + html.slice(i);
+    } catch (e) {}
+    return html;
+  };
+})();
