@@ -910,13 +910,18 @@ def main():
         af = page.evaluate("""() => {
             const alamat = [];
             window.fetch = (u) => { alamat.push(String(u)); return Promise.resolve({ ok:true, text:()=>Promise.resolve(''), json:()=>Promise.resolve({}) }); };
+            // simpan keadaan asli lalu kembalikan SESUDAH uji, supaya uji berikutnya tidak
+            // berjalan seolah Google dimatikan (kesalahan yang pernah menyesatkan uji AN/AK)
+            const asli = { aktif: AKUN_GOOGLE.aktif, cid: AKUN_GOOGLE.clientId };
             AKUN_GOOGLE.aktif = false; AKUN_GOOGLE.clientId = '';
             __gToken = null; __gAkun = null;
             try { localStorage.removeItem('tni_google_akun'); } catch (e) {}
             const sebelum = alamat.length;
             navTo('akun');
-            return { panggilanTambahan: alamat.length - sebelum,
-                     tidakAdaSkripGoogle: !document.querySelector('script[src*="accounts.google.com"]') };
+            const hasil = { panggilanTambahan: alamat.length - sebelum,
+                            tidakAdaSkripGoogle: !document.querySelector('script[src*="accounts.google.com"]') };
+            AKUN_GOOGLE.aktif = asli.aktif; AKUN_GOOGLE.clientId = asli.cid;   // kembalikan
+            return hasil;
         }""")
         cek(af['panggilanTambahan'] == 0 and af['tidakAdaSkripGoogle'],
             'saat nonaktif: nol permintaan jaringan & skrip Google tidak dimuat', af)
@@ -1080,7 +1085,7 @@ def main():
 
             // 1) satu layar memuat tiga langkah berurut
             out.adaTigaLangkah = document.querySelectorAll('.komer-bagian').length === 3;
-            out.adaMasuk = t.indexOf('Masuk (opsional)') >= 0;
+            out.adaMasuk = t.indexOf('Masuk dengan Google') >= 0;
             out.adaBayar = t.indexOf('sekali bayar') >= 0;
             out.adaBuka = t.indexOf('Buka dengan kode akses') >= 0;
             out.adaTigaNomor = [].slice.call(document.querySelectorAll('.komer-nomor')).map(e => e.textContent).join('') === '123';
@@ -1216,6 +1221,63 @@ def main():
         cek(am['rekeningDisembunyikan'] and am['nominalTampil'],
             'mode QR tautan menyembunyikan nomor rekening & tetap menampilkan nominal', am)
         cek(am['pulihKeRekening'], 'kembali ke cara sebelumnya tetap berfungsi (nomor rekening tampil lagi)', am)
+
+        print('== AN. Hak akses ikut akun: pemulihan untuk pengguna lain + pengerasan ==')
+        an = page.evaluate("""() => {
+            const out = {};
+            try { localStorage.clear(); } catch (e) {}
+
+            // 1) pengerasan: penanda 'TERBUKA' saja TIDAK boleh membuka (harus kode yang sah)
+            localStorage.setItem('tni_akses', 'TERBUKA');
+            out.penandaPalsuDitolak = punyaAkses() === false;
+            localStorage.removeItem('tni_akses');
+
+            // 2) pemulihan cadangan seperti milik pembeli yang pindah perangkat
+            const KUNCI = 'siap|psikotes|2026|kode';
+            function sidik(isi) { let h = 2166136261; const s = isi + '#' + KUNCI;
+                for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+                let pos = h % 1679616, ab = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', o = '';
+                while (pos > 0) { o = ab[pos % 36] + o; pos = Math.floor(pos / 36); } return o.padStart(4, '0'); }
+            const isi = 'AKUN' + String(Date.now()).slice(-5);
+            const kode = 'SP' + isi + sidik(isi);
+            const paket = { v: 1, dibuat: new Date().toISOString(), data: {
+                tni_kode_akses: kode,
+                tni_pembelian: JSON.stringify({ kode: kode, rujukan: 'SP-777', nominal: 39777, dasar: 39000,
+                                                tanggal: new Date().toISOString(), produk: 'Akses penuh' }),
+                tni_prog: JSON.stringify({ tkw: { benar: 4, salah: 1 } }),
+                tni_jahil: 'tidak boleh ikut' } };
+            const bundel = btoa(unescape(encodeURIComponent(JSON.stringify(paket))));
+            const hasil = window.terapkanBundel(bundel, true);
+            out.terapkan = hasil;
+            out.aksesTerbuka = punyaAkses();
+            out.peran = peranAkses();
+            out.kodeCocok = localStorage.getItem('tni_kode_akses') === kode;
+            out.pembelianIkut = !!localStorage.getItem('tni_pembelian');
+            out.progresIkut = localStorage.getItem('tni_prog');
+            out.kunciAsingDitolak = localStorage.getItem('tni_jahil') === null;
+
+            // 3) cadangan rusak / terlalu besar harus ditolak dengan aman
+            out.rusakDitolak = window.terapkanBundel('bukan-bundel', true).ok === false;
+
+            // 4) layar gerbang menyatakan manfaat masuk & menyediakan pemulihan
+            try { localStorage.clear(); } catch (e) {}
+            // Uji isi layar gerbang secara langsung (tidak bergantung halaman mana yang sedang tampil)
+            const html = (typeof renderGerbang === 'function') ? renderGerbang() : '';
+            out.manfaatDijelaskan = html.toLowerCase().indexOf('kode akses yang kamu beli tidak hilang') >= 0;
+            out.bisaDilewati = html.toLowerCase().indexOf('boleh dilewati') >= 0;
+            out.adaTombolPulihkan = html.indexOf('pulihkanAksesDariAkun') >= 0;
+
+            localStorage.setItem('tni_akses_pemilik', '1');
+            return out;
+        }""")
+        cek(an['penandaPalsuDitolak'], "penanda 'TERBUKA' saja tidak membuka (harus kode sah)", an)
+        cek(an['terapkan']['ok'] and an['aksesTerbuka'] and an['peran'] == 'pembeli' and an['kodeCocok'],
+            'cadangan dari akun memulihkan akses & kode pembeli (pindah perangkat)', an)
+        cek(an['pembelianIkut'] and an['progresIkut'] and an['kunciAsingDitolak'],
+            'pembelian & progres ikut dipulihkan; kunci asing ditolak', an)
+        cek(an['rusakDitolak'], 'cadangan rusak ditolak dengan aman', an)
+        cek(an['manfaatDijelaskan'] and an['bisaDilewati'] and an['adaTombolPulihkan'],
+            'gerbang menjelaskan manfaat masuk, bisa dilewati, & ada tombol pulihkan', an)
 
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {

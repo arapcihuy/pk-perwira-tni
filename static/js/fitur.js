@@ -356,7 +356,8 @@ return '<div class="card jalur-card">' +
 '</div>';
 };
 var KUNCI_SINKRON = ['tni_prog', 'tni_wrong', 'tni_scores', 'tni_to_total', 'tni_harian',
-'tni_iq_log', 'tni_iq_meta', 'tni_iq_nb', 'tni_iq_sesi', 'tni_jalur_mulai', 'tni_psi_progress'];
+'tni_iq_log', 'tni_iq_meta', 'tni_iq_nb', 'tni_iq_sesi', 'tni_jalur_mulai', 'tni_psi_progress',
+'tni_kode_akses', 'tni_pembelian', 'tni_laporan_bayar'];
 window.kodeSinkron = function() {
 var paket = { v: 1, dibuat: new Date().toISOString(), data: {} };
 KUNCI_SINKRON.forEach(function(k) {

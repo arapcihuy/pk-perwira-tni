@@ -20,12 +20,14 @@ if (!AKSES.aktifGerbang) return true;
 if (adalahPemilik()) return true;
 try {
 if (localStorage.getItem('tni_akses_pemilik') === '1') return true;
-if (localStorage.getItem('tni_akses') === 'TERBUKA') return true;
 } catch (e) {}
+// Hak akses ditentukan oleh KODE YANG SAH, bukan oleh penanda apa pun di penyimpanan.
+// Dengan begitu tidak ada jalan pintas "setel satu nilai lalu terbuka", dan kode yang
+// dipulihkan dari akun Google ikut diverifikasi ulang di sini.
 var kode = '';
 try { kode = localStorage.getItem('tni_kode_akses') || ''; } catch (e) {}
 if (kode && typeof periksaKode === 'function') {
-try { return !!periksaKode(kode).sah; } catch (e) {}
+try { if (periksaKode(kode).sah) return true; } catch (e) {}
 }
 return false;
 };
@@ -67,6 +69,8 @@ tanggal: new Date().toISOString(), produk: 'Akses penuh SiapPsikotes + Laporan L
 }));
 } catch (e) {}
 if (st) st.textContent = 'Kode sah. Membuka seluruh aplikasi...';
+// simpan ke akun Google (bila sudah masuk) supaya saat pindah HP akses ini ikut terbawa
+try { if (typeof googleMasuk === 'function' && googleMasuk() && typeof googleKirimKeDrive === 'function') googleKirimKeDrive(false); } catch (e) {}
 setTimeout(function () { location.reload(); }, 700);
 } else if (st) {
 st.textContent = 'Kode tidak dikenali. Periksa penulisannya, atau kirim bukti pembayaran ke pemilik.';
@@ -87,6 +91,17 @@ try {
 if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(teks).then(beres, beres); return; }
 } catch (e) {}
 beres();
+};
+
+window.pulihkanAksesDariAkun = function () {
+if (typeof googleMasuk !== 'function' || !googleMasuk()) {
+alert('Masuk dengan Google dulu, lalu tekan lagi untuk memulihkan.');
+return;
+}
+var st = document.getElementById('statusGerbang');
+if (st) st.textContent = 'Memeriksa cadangan di Google Drive-mu...';
+if (typeof googleAmbilDariDrive !== 'function') return;
+try { googleAmbilDariDrive(); } catch (e) {}
 };
 
 window.tutupGerbangUlang = function () {
@@ -150,16 +165,19 @@ var googleSiap = (typeof window.googleSiap === 'function') && window.googleSiap(
 var masuk = '<div class="komer-bagian">' +
 '<div class="komer-nomor">1</div>' +
 '<div class="komer-isi">' +
-'<h3>Masuk (opsional)</h3>' +
+'<h3>1. Masuk dengan Google <span style="font-weight:400;color:var(--muted)">(disarankan, bisa dilewati)</span></h3>' +
 (googleSiap
 ? (akun
 ? '<p class="komer-sub">Tersambung sebagai <strong>' + escapeHtml(akun.nama || akun.email) + '</strong>. ' +
 'Bahan belajarmu bisa disalin ke Google Drive milikmu.</p>' +
 '<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="keluarGoogle()">Keluar dari Google</button></div>'
-: '<p class="komer-sub">Masuk dengan Google supaya bahan belajarmu bisa dibuka dari perangkat lain ' +
-'(salinan disimpan di Google Drive milikmu sendiri, bukan di server kami).</p>' +
+: '<p class="komer-sub">Masuk sekali klik supaya <strong>latihanmu tersimpan ke akunmu</strong>: bisa dilanjutkan ' +
+'dari HP lain, dan <strong>kode akses yang kamu beli tidak hilang</strong> walau ganti perangkat. ' +
+'Salinannya disimpan di Google Drive milikmu sendiri, bukan di server kami. Tidak mau masuk? Boleh dilewati - ' +
+'latihan tetap bisa dipakai di perangkat ini.</p>' +
 '<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="masukkanGoogle()">' +
-ic('user', 14) + ' Masuk dengan Google</button></div>')
+ic('user', 14) + ' Masuk dengan Google</button>' +
+'<button class="btn btn-ghost btn-sm" onclick="pulihkanAksesDariAkun()">Pulihkan aksesku</button></div>')
 : '<p class="komer-sub">Belum diaktifkan pemilik. Tanpa masuk pun kamu tetap bisa membeli dan memakai ' +
 'aplikasi ini di perangkat ini.</p>') +
 '</div></div>';

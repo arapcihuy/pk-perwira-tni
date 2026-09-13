@@ -42,4 +42,16 @@ jobs:
           fi
           git add index.html sw.js
           git commit -m "chore: cap versi aset ${GITHUB_SHA::7} [skip-versi]"
-          git push
+          # Tahan perlombaan dengan commit lain (mis. push dari komputer pengembang):
+          # selaraskan dulu, lalu coba beberapa kali sebelum menyerah.
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin master || true
+            if git push; then
+              echo "cap versi terkirim (percobaan ke-$i)"
+              exit 0
+            fi
+            echo "push ditolak, menyelaraskan dan mencoba lagi (percobaan ke-$i)..."
+            sleep 4
+          done
+          echo "cap versi gagal terkirim setelah 5 percobaan (bukan kegagalan produk)"
+          exit 1

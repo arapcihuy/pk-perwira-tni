@@ -62,7 +62,17 @@ var a = uraiTokenGoogle(jawab.id_token || '');
 __gAkun = a || { email: '(tanpa surel)', nama: '', foto: '', sub: '' };
 simpanAkun(__gAkun);
 render();
-if (AKUN_GOOGLE.driveSync) googleKirimKeDrive(true);
+if (AKUN_GOOGLE.driveSync) {
+// Pengguna lain yang masuk di perangkat baru: bila ada cadangan berisi kode akses sah,
+// pulihkan akses & progresnya OTOMATIS (tidak perlu minta kode lagi). Bila cadangan kosong,
+// keadaan perangkat ini yang diunggah.
+var sudahPunya = (typeof punyaAkses === 'function') && punyaAkses();
+if (!sudahPunya && typeof googleAmbilDariDrive === 'function') {
+  googleAmbilDariDrive(true);
+} else {
+  googleKirimKeDrive(true);
+}
+}
 } else {
 alert('Masuk dibatalkan atau gagal. Bahan belajarmu tetap aman di perangkat ini.');
 }
@@ -128,6 +138,31 @@ if (manual) alert('Tidak bisa menghubungi Google. Aplikasi tetap jalan seperti b
 return false;
 });
 };
+window.terapkanBundel = function (bundel, senyap) {
+// Menerapkan cadangan langsung ke penyimpanan, tanpa bergantung pada tampilan.
+// Pemeriksaannya sama seperti pakaiKodeSinkron: hanya kunci yang dikenal, hanya nilai teks, ada batas ukuran.
+var paket = null;
+try { paket = JSON.parse(decodeURIComponent(escape(atob(String(bundel).trim())))); } catch (e) { paket = null; }
+if (!paket || paket.v !== 1 || typeof paket.data !== 'object' || paket.data === null) {
+if (!senyap) alert('Cadangan tidak terbaca.');
+return { ok: false, alasan: 'format' };
+}
+if (JSON.stringify(paket.data).length > 3000000) {
+if (!senyap) alert('Cadangan terlalu besar; dibatalkan demi keamanan.');
+return { ok: false, alasan: 'terlalu besar' };
+}
+var daftar = (typeof KUNCI_SINKRON !== 'undefined' && KUNCI_SINKRON) ? KUNCI_SINKRON : null;
+if (!daftar) return { ok: false, alasan: 'daftar kunci tidak tersedia' };
+var n = 0;
+Object.keys(paket.data).forEach(function (k) {
+if (daftar.indexOf(k) === -1) return;
+var v = paket.data[k];
+if (typeof v !== 'string' || v.length > 500000) return;
+try { localStorage.setItem(k, v); n++; } catch (e) {}
+});
+return { ok: n > 0, jumlah: n };
+};
+
 window.googleAmbilDariDrive = function () {
 if (!googleMasuk()) { alert('Masuk dengan Google dulu.'); return; }
 cariBerkasCadangan().then(function (ada) {
@@ -138,15 +173,17 @@ headers: { Authorization: 'Bearer ' + __gToken }
 var bundel = null;
 try { bundel = JSON.parse(teks).data; } catch (e) { bundel = teks; }
 if (!bundel) { alert('Cadangan tidak terbaca.'); return; }
-if (!confirm('Pulihkan bahan belajar dari Drive? Data di perangkat ini akan diganti.')) return;
-try {
-if (typeof pakaiKodeSinkron === 'function') {
-var kotak = document.getElementById('kodeSinkron');
-if (kotak) kotak.value = bundel;
-pakaiKodeSinkron();
+var senyap = (typeof arguments[0] === 'boolean') && arguments[0];
+if (!senyap && !confirm('Pulihkan bahan belajar dari Drive? Data di perangkat ini akan diganti.')) return;
+var hasil = window.terapkanBundel(bundel, senyap);
+if (hasil && hasil.ok) {
+try { localStorage.setItem('tni_pulih_dari_drive', new Date().toISOString()); } catch (e) {}
+if (senyap) { location.reload(); return; }
+alert('Bahan belajarmu dipulihkan (' + hasil.jumlah + ' bagian). Halaman akan dimuat ulang.');
+location.reload();
+} else if (!senyap) {
+alert('Cadangan tidak bisa diterapkan.');
 }
-} catch (e) { alert('Gagal memulihkan: ' + e.message); }
-render();
 });
 });
 };
