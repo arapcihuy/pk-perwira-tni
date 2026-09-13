@@ -1125,6 +1125,50 @@ def main():
             'kartu Pembelian saya + kuitansi bisa diunduh dan berisi data benar', ak)
         cek(ak['terkunciLagi'], 'setelah kunci ulang, gerbang kembali menutup', ak)
 
+        print('== AL. Jalur bayar transfer/e-wallet (selain QRIS) ==')
+        al = page.evaluate("""() => {
+            const out = {};
+            try {
+                localStorage.removeItem('tni_akses_pemilik'); localStorage.removeItem('tni_akses');
+                localStorage.removeItem('tni_kode_akses'); localStorage.removeItem('tni_kode_bayar');
+            } catch (e) {}
+            const asli = { aktif: BAYAR.aktif, rekening: BAYAR.rekening, qris: BAYAR.gambarQris,
+                           wa: BAYAR.whatsapp };
+            BAYAR.aktif = true; BAYAR.whatsapp = '628123456789';
+            BAYAR.rekening = 'DANA 081234567890 a/n Rasyid';
+            BAYAR.gambarQris = '';
+            render();
+            let t = document.body.innerText;
+            const kb = kodeBayar();
+            out.tanpaQris = !document.querySelector('.qris-bingkai');
+            out.tujuanTampil = t.indexOf('DANA 081234567890 a/n Rasyid') >= 0;
+            out.adaTombolSalin = !!document.querySelector('[onclick*="salinRekening"]');
+            out.nominalUnik = t.indexOf(String(kb.nominal).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) >= 0;
+            out.rujukanTampil = t.indexOf(kb.rujukan) >= 0;
+            out.tombolBukti = !!document.querySelector('[onclick*="kirimBuktiBayar"]');
+
+            // QRIS + transfer bisa tampil bersama
+            BAYAR.gambarQris = 'static/icons/icon-192.png';
+            render();
+            t = document.body.innerText;
+            out.duaCara = !!document.querySelector('.qris-bingkai img') && t.indexOf('DANA 081234567890') >= 0;
+
+            // tanpa tujuan uang: dinyatakan jujur, bukan layar kosong
+            BAYAR.gambarQris = ''; BAYAR.rekening = ''; BAYAR.whatsapp = '';
+            render();
+            out.jujurSaatKosong = document.body.textContent.indexOf('Tujuan pembayaran belum diisi pemilik') >= 0;
+
+            BAYAR.aktif = asli.aktif; BAYAR.rekening = asli.rekening; BAYAR.gambarQris = asli.qris;
+            BAYAR.whatsapp = asli.wa;
+            localStorage.setItem('tni_akses_pemilik', '1');
+            return out;
+        }""")
+        cek(al['tanpaQris'] and al['tujuanTampil'] and al['adaTombolSalin'] and al['nominalUnik']
+            and al['rujukanTampil'] and al['tombolBukti'],
+            'pembayaran bisa lewat transfer/e-wallet: tujuan, salin, nominal unik, rujukan, kirim bukti', al)
+        cek(al['duaCara'], 'QRIS dan transfer bisa tampil bersamaan', al)
+        cek(al['jujurSaatKosong'], 'bila tujuan uang belum diisi: dinyatakan jujur, bukan layar kosong', al)
+
         print('== Q. Pengaman indeks soal & tampilan saat data belum ada ==')
         q2 = page.evaluate("""() => {
             const out = {};

@@ -72,6 +72,17 @@ setTimeout(function () { location.reload(); }, 700);
 st.textContent = 'Kode tidak dikenali. Periksa penulisannya, atau kirim bukti pembayaran ke pemilik.';
 }
 };
+window.salinRekening = function () {
+var teks = (typeof BAYAR !== 'undefined' && BAYAR.rekening) ? BAYAR.rekening : '';
+if (!teks) return;
+var st = document.getElementById('statusGerbang');
+var beres = function () { if (st) st.textContent = 'Tujuan pembayaran disalin: ' + teks; };
+try {
+if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(teks).then(beres, beres); return; }
+} catch (e) {}
+beres();
+};
+
 window.tutupGerbangUlang = function () {
 if (!confirm('Kunci kembali aplikasinya di perangkat ini? Kamu perlu kode akses lagi untuk masuk.')) return;
 try {
@@ -158,12 +169,24 @@ return '<p class="komer-sub"><strong>Kanal pembayaran sedang disiapkan.</strong>
 ic('check', 14) + ' Beri tahu saya saat pembayaran dibuka</button></div>';
 }
 var kb = kodeBayar();
-return '<div class="qris-bingkai"><img src="' + BAYAR.gambarQris + '?v=' + (window.VERSI_ASET || '') + '" ' +
+var cara = '';
+if (BAYAR.gambarQris) {
+cara += '<div class="qris-bingkai"><img src="' + BAYAR.gambarQris + '?v=' + (window.VERSI_ASET || '') + '" ' +
 'alt="Kode QRIS pembayaran SiapPsikotes" width="220" height="220" loading="lazy" decoding="async" ' +
-'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Kode QRIS belum diisi pemilik.</div>\'"></div>' +
-'<div class="qris-nominal"><span>Bayar tepat sejumlah</span><strong>' + rupiahKomersial(kb.nominal) + '</strong>' +
+'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Gambar QRIS belum terpasang.</div>\'"></div>';
+}
+if (BAYAR.rekening) {
+cara += '<div class="komer-sub" style="margin-top:10px">Atau transfer / e-wallet ke:</div>' +
+'<div class="qris-nominal"><strong style="font-size:19px">' + escapeHtml(BAYAR.rekening) + '</strong></div>' +
+'<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="salinRekening()">' +
+ic('copy', 14) + ' Salin tujuan pembayaran</button></div>';
+}
+if (!cara) cara = '<p class="komer-sub">Tujuan pembayaran belum diisi pemilik.</p>';
+return cara +
+'<div class="qris-nominal" style="margin-top:12px"><span>Bayar tepat sejumlah</span>' +
+'<strong>' + rupiahKomersial(kb.nominal) + '</strong>' +
 '<span class="komer-sub">Kode rujukanmu: <strong>' + kb.rujukan + '</strong>. Tulis kode ini saat mengirim bukti ' +
-'supaya laporanmu cepat dicocokkan.</span></div>' +
+'supaya laporanmu cepat dicocokkan.' + (BAYAR.rekening ? ' Nominal unik ini yang memudahkan pemilik mencocokkan pembayaranmu.' : '') + '</span></div>' +
 (BAYAR.whatsapp || BAYAR.surel
 ? '<div class="komer-aksi"><button class="btn btn-primary btn-sm" onclick="kirimBuktiBayar()">' +
 ic('send', 14) + ' Kirim bukti pembayaran</button></div>'
