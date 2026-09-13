@@ -302,7 +302,7 @@
       <a href="#fitur">Fitur</a>
       <a href="#kepribadian">Kepribadian</a>
       <a href="#harga">Harga</a>
-      <a href="#beli">Beli</a>
+      <a href="../beli/">Beli</a>
       <a href="../mutu/">Mutu</a>
       <a class="tombol sekunder" style="padding:8px 14px;font-size:14px" href="../">Buka aplikasi</a>
     </nav>
@@ -607,39 +607,7 @@
 </section>
 
 
-<section id="beli" style="background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
-  <div class="wrap">
-    <p class="eyebrow">Beli akses</p>
-    <h2>Bayar, kirim bukti, terima kode</h2>
-    <p class="sub">Semua pembelian dilakukan di halaman ini. Aplikasi hanya untuk masuk dan belajar.</p>
-    <div class="dua-kolom">
-      <div>
-        <div style="background:#fff;border-radius:18px;padding:16px;max-width:300px">
-          <img src="../static/img/qris-bayar.png?v=1" alt="Kode QRIS pembayaran akses SiapPsikotes"
-               width="268" height="268" loading="lazy" decoding="async" style="width:100%;height:auto;display:block">
-        </div>
-        <p style="color:var(--muted);font-size:14px;margin:14px 0 0">Pindai dengan aplikasi bank atau e-wallet
-          apa pun: GoPay, OVO, DANA, ShopeePay, atau m-banking.</p>
-      </div>
-      <div>
-        <p style="margin:0 0 6px"><strong>Bayar tepat sejumlah</strong></p>
-        <p id="beliNominal" style="font-size:30px;font-weight:800;color:var(--gold);margin:0 0 6px">Rp 39.000</p>
-        <p style="color:var(--muted);font-size:14px;margin:0 0 16px">Kode rujukanmu: <strong id="beliRujukan">SP-000</strong>.
-          Tulis kode ini saat mengirim bukti supaya pembayaranmu cepat dicocokkan.</p>
-        <ol style="color:var(--muted);margin:0 0 16px;padding-left:22px;font-size:15px;line-height:1.7">
-          <li>Pindai QR di samping, bayar <strong id="beliNominal2">Rp 39.000</strong>.</li>
-          <li>Kirim bukti pembayaran beserta kode rujukanmu.</li>
-          <li>Kamu menerima <strong>kode akses</strong>.</li>
-          <li>Buka aplikasi, masuk, lalu tempel kode itu.</li>
-        </ol>
-        <a class="tombol" id="beliBukti" href="mailto:rasyidahmad180@gmail.com?subject=Bukti%20pembayaran%20SiapPsikotes">Kirim bukti pembayaran</a>
-        <a class="tombol sekunder" style="margin-top:10px" href="../">Buka aplikasi &amp; masukkan kode</a>
-        <p class="catatan-kecil" style="margin-top:12px">Sekali bayar, bukan langganan. Pembayaran dicocokkan manual
-          oleh pengelola; kode akses biasanya dikirim pada hari yang sama.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <div class="wrap penutup">
   <h2>Mulai dari satu sesi, lima menit saja</h2>
@@ -774,33 +742,5 @@
 })();
 </script>
 
-<script>
-(function () {
-  var elN = document.getElementById('beliNominal');
-  var elN2 = document.getElementById('beliNominal2');
-  var elR = document.getElementById('beliRujukan');
-  var elB = document.getElementById('beliBukti');
-  if (!elN) return;
-  var kode;
-  try { kode = JSON.parse(localStorage.getItem('tni_kode_bayar') || 'null'); } catch (e) { kode = null; }
-  if (!kode || !kode.angka) {
-    kode = { angka: String(Math.floor(Math.random() * 900) + 100), waktu: new Date().toISOString() };
-    try { localStorage.setItem('tni_kode_bayar', JSON.stringify(kode)); } catch (e) {}
-  }
-  var angka = parseInt(kode.angka, 10);
-  var nominal = 39000 + angka;
-  var teks = 'Rp ' + String(nominal).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  var rujukan = 'SP-' + kode.angka;
-  elN.textContent = teks;
-  if (elN2) elN2.textContent = teks;
-  if (elR) elR.textContent = rujukan;
-  if (elB) {
-    elB.setAttribute('href', 'mailto:rasyidahmad180@gmail.com?subject=' +
-      encodeURIComponent('Bukti pembayaran ' + rujukan) + '&body=' +
-      encodeURIComponent('Halo, saya sudah membayar akses SiapPsikotes.\n\nKode rujukan: ' + rujukan +
-        '\nNominal dibayar: ' + teks + '\n\nBukti pembayaran saya lampirkan. Mohon kirim kode aksesnya. Terima kasih.'));
-  }
-})();
-</script>
 </body>
 </html>

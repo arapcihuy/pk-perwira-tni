@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.googleusercontent.com https://www.gstatic.com; connect-src 'self' https://accounts.google.com https://www.googleapis.com https://siappsikotes-api.rasyidahmad180.workers.dev; frame-src https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beli Akses Penuh — SiapPsikotes</title>
+<meta name="description" content="Harga dan cara membeli akses penuh SiapPsikotes: Rp 39.000 sekali bayar lewat QRIS, dicocokkan dengan kode rujukan.">
+<link rel="canonical" href="https://arapcihuy.github.io/pk-perwira-tni/mutu/">
+<style>
+  :root { --ink:#12181f; --muted:#5a6b7b; --line:#e3e8ee; --soft:#f6f8fa; --acc:#0b6bcb; --ok:#0f7b3f; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#fff; color:var(--ink);
+         font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  .page { max-width:840px; margin:0 auto; padding:48px 24px 72px; }
+  .nav { font-size:14px; margin-bottom:28px; }
+  .nav a { color:var(--acc); text-decoration:none; }
+  h1 { font-size:31px; line-height:1.2; letter-spacing:-.4px; margin:0 0 10px; }
+  h2 { font-size:19px; margin:34px 0 10px; }
+  .lead { font-size:17.5px; color:#2b3743; }
+  .muted { color:var(--muted); }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:15px; }
+  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .kotak { background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:16px 0; }
+  .kotak.ok { background:#f2fbf6; border-color:#cdeadb; }
+  ol, ul { padding-left:22px; }
+  li { margin:6px 0; }
+  code { background:var(--soft); padding:2px 6px; border-radius:5px; font-size:13.5px; }
+  footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); font-size:14px; color:var(--muted); }
+</style>
+<style>
+  .beli-dua { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .qris-kotak { background: #fff; border-radius: 16px; padding: 14px; max-width: 300px; }
+  .qris-kotak img { width: 100%; height: auto; display: block; }
+  .nominal { font-size: 30px; font-weight: 800; margin: 0 0 8px; color: #ca8a04; }
+  .label { margin: 0; font-weight: 700; }
+  .langkah { padding-left: 20px; line-height: 1.8; }
+  .langkah li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="nav"><a href="../beli/">Beli</a> &nbsp;·&nbsp; <a href="../mutu/">Mutu</a> &nbsp;·&nbsp; <a href="../">&larr; Kembali ke aplikasi</a></div>
+
+  <h1>Beli akses penuh</h1>
+  <p class="catatan">Satu pembayaran <strong>Rp 39.000</strong> membuka semuanya: 1.225 soal, seluruh modul tes,
+    pembahasan langkah demi langkah, dan Laporan Lengkap. Bukan langganan, tanpa perpanjangan otomatis.</p>
+
+  <div class="beli-dua">
+    <div>
+      <div class="qris-kotak">
+        <img src="../static/img/qris-bayar.png?v=1" alt="Kode QRIS pembayaran akses SiapPsikotes"
+             width="268" height="268" loading="lazy" decoding="async">
+      </div>
+      <p class="catatan">Pindai dengan aplikasi bank atau e-wallet apa pun: GoPay, OVO, DANA, ShopeePay,
+        atau mobile banking.</p>
+    </div>
+    <div>
+      <p class="label">Bayar tepat sejumlah</p>
+      <p class="nominal" id="beliNominal">Rp 39.000</p>
+      <p class="catatan">Kode rujukanmu: <strong id="beliRujukan">SP-000</strong>. Tulis kode ini saat mengirim
+        bukti supaya pembayaranmu cepat dicocokkan.</p>
+      <ol class="langkah">
+        <li>Pindai QR di samping, lalu bayar <strong id="beliNominal2">Rp 39.000</strong>.</li>
+        <li>Kirim bukti pembayaran beserta kode rujukanmu.</li>
+        <li>Kamu menerima <strong>kode akses</strong>.</li>
+        <li>Buka aplikasi, masuk dengan Google, lalu tempel kode itu.</li>
+      </ol>
+      <p><a class="tombol" id="beliBukti"
+            href="mailto:rasyidahmad180@gmail.com?subject=Bukti%20pembayaran%20SiapPsikotes">Kirim bukti pembayaran</a></p>
+      <p><a class="tombol sekunder" href="../">Buka aplikasi &amp; masukkan kode</a></p>
+      <p class="catatan">Pembayaran dicocokkan oleh pengelola; kode akses biasanya dikirim pada hari yang sama.
+        Bila di aplikasi pembayaranmu muncul nama merchant pemilik kode QRIS, pembayaran tetap sah dan tetap
+        masuk ke pengelola.</p>
+    </div>
+  </div>
+
+  <h2>Pertanyaan yang sering ditanya</h2>
+  <details open>
+    <summary>Apakah ini langganan?</summary>
+    <p>Tidak. Sekali bayar Rp 39.000, tanpa perpanjangan otomatis.</p>
+  </details>
+  <details>
+    <summary>Bagaimana kode akses dikirim?</summary>
+    <p>Setelah bukti pembayaran dikirim beserta kode rujukan, pengelola mencocokkan nominal unik pembayaranmu
+      lalu mengirim kode akses. Kode itu juga tersimpan di akun Google-mu sehingga tidak hilang saat ganti
+      perangkat.</p>
+  </details>
+  <details>
+    <summary>Dipakai untuk apa saja akses ini?</summary>
+    <p>Latihan psikotes kerja &amp; kedinasan, tes IQ, kecepatan kerja, kepribadian Big Five, tes gambar,
+      dan latihan wawancara - semuanya dengan pembahasan. Bisa dipakai tanpa internet setelah halaman
+      tersimpan.</p>
+  </details>
+
+<script>
+(function () {
+  var elN = document.getElementById('beliNominal');
+  var elN2 = document.getElementById('beliNominal2');
+  var elR = document.getElementById('beliRujukan');
+  var elB = document.getElementById('beliBukti');
+  if (!elN) return;
+  var kode;
+  try { kode = JSON.parse(localStorage.getItem('tni_kode_bayar') || 'null'); } catch (e) { kode = null; }
+  if (!kode || !kode.angka) {
+    kode = { angka: String(Math.floor(Math.random() * 900) + 100), waktu: new Date().toISOString() };
+    try { localStorage.setItem('tni_kode_bayar', JSON.stringify(kode)); } catch (e) {}
+  }
+  var angka = parseInt(kode.angka, 10);
+  var nominal = 39000 + angka;
+  var teks = 'Rp ' + String(nominal).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  var rujukan = 'SP-' + kode.angka;
+  elN.textContent = teks;
+  if (elN2) elN2.textContent = teks;
+  if (elR) elR.textContent = rujukan;
+  if (elB) {
+    elB.setAttribute('href', 'mailto:rasyidahmad180@gmail.com?subject=' +
+      encodeURIComponent('Bukti pembayaran ' + rujukan) + '&body=' +
+      encodeURIComponent('Halo, saya sudah membayar akses SiapPsikotes.\n\nKode rujukan: ' + rujukan +
+        '\nNominal dibayar: ' + teks + '\n\nBukti pembayaran saya lampirkan. Mohon kirim kode aksesnya. Terima kasih.'));
+  }
+})();
+</script>
+  <footer>
+    <a href="../">Kembali ke aplikasi</a> · <a href="../syarat/">Syarat &amp; ketentuan</a> ·
+    <a href="../privasi/">Kebijakan privasi</a><br>
+    SiapPsikotes bukan produk resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah.
+    Halaman ini diperbarui 13 September 2026.
+  </footer>
+</div>
+</body>
+</html>

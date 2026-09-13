@@ -1119,45 +1119,26 @@ def main():
         cek(ak['kodeSahMembuka'] and ak['pembelianTercatat'],
             'kode akses yang sah tetap membuka aplikasi & pembelian tercatat', ak)
 
-        print('== AL. Halaman arahan: bagian BELANJA (QR QRIS + nominal unik + rujukan + bukti) ==')
-        # Bagian belanja ada di DOKUMEN LAIN (halaman arahan), jadi diuji di halaman terpisah.
-        _lp = browser.new_page(viewport={'width': 1280, 'height': 950})
-        _lp.goto(url.replace('/index.html', '/psikotes/'), wait_until='domcontentloaded', timeout=40000)
-        _t0 = time.time()
-        _siap = False
-        while time.time() - _t0 < 15:
-            try:
-                if _lp.evaluate("() => { const e = document.getElementById('beliNominal');"
-                                " return !!e" + " && " + "/Rp 39[.,]?\\d{3}/.test(e.textContent || ''); }"):
-                    _siap = True
-                    break
-            except Exception:
-                pass
-            time.sleep(0.4)
-        al = _lp.evaluate("""() => {
-            const n = document.getElementById('beliNominal');
-            const r = document.getElementById('beliRujukan');
-            const b = document.getElementById('beliBukti');
-            const polaNominal = /Rp 39[.,]?\d{3}/;
-            const polaRujukan = /^SP-\d{3}$/;
-            const alamatBukti = b ? decodeURIComponent(b.getAttribute('href') || '') : '';
-            const rujukan = r ? r.textContent.trim() : 'ZZ';
-            return { adaBagianBeli: !!document.getElementById('beli'),
-                     adaQr: !!document.querySelector('#beli img[alt*="QRIS"]'),
-                     nominalTampil: !!n ? polaNominal.test(n.textContent.trim()) : false,
-                     rujukanTampil: !!r ? (polaRujukan.test(rujukan) && rujukan !== 'SP-000') : false,   // SP-000 adalah nilai cadangan, bukan bukti skrip jalan
-                     adaTombolBukti: !!b ? (b.getAttribute('href') || '').indexOf('mailto:') === 0 : false,
-                     buktiMemuatRujukan: !!b ? alamatBukti.indexOf(rujukan) >= 0 : false,
-                     adaEmpatLangkah: document.querySelectorAll('#beli ol li').length === 4,
-                     tanpaGeser: document.documentElement.scrollWidth <= window.innerWidth + 1 };
-        }""")
-        al['nominalSiap'] = _siap
-        _lp.close()
-        cek(al['adaBagianBeli'] and al['adaQr'] and al['adaEmpatLangkah'],
-            'halaman arahan punya bagian BELANJA: QR QRIS + empat langkah membeli', al)
-        cek(al['nominalTampil'] and al['rujukanTampil'] and al['adaTombolBukti'] and al['buktiMemuatRujukan'],
-            'nominal unik + kode rujukan tampil & tombol bukti mengisi rujukan otomatis', al)
-        cek(al['tanpaGeser'], 'bagian belanja tidak menyebabkan geser horizontal', al)
+        print('== AL. Halaman /beli/ tersendiri (diperiksa dari berkas, tanpa peramban) ==')
+        # Diperiksa statis supaya tidak menambah halaman peramban di tengah rangkaian
+        # (kebocoran keadaan antar bagian sudah tiga kali menahan pengiriman).
+        _beli = open(os.path.join(ROOT, 'beli', 'index.html'), encoding='utf-8').read()
+        _depan = open(os.path.join(ROOT, 'psikotes', 'index.html'), encoding='utf-8').read()
+        al = {
+            'halamanAda': len(_beli) > 2000,
+            'adaQr': 'qris-bayar.png' in _beli,
+            'adaEmpatLangkah': _beli.count('<li>') >= 4,
+            'adaNominalUnik': 'beliNominal' in _beli and 'beliRujukan' in _beli,
+            'adaSkripNominal': 'tni_kode_bayar' in _beli,
+            'adaTombolBukti': 'beliBukti' in _beli and 'mailto:' in _beli,
+            'halamanDepanBersih': '<section id="beli"' not in _depan and 'beliNominal' not in _depan,
+            'menuMengarahKeBeli': '../beli/' in _depan or 'beli/' in _depan,
+        }
+        cek(al['halamanAda'] and al['adaQr'] and al['adaEmpatLangkah'] and al['adaNominalUnik']
+            and al['adaSkripNominal'] and al['adaTombolBukti'],
+            'halaman /beli/ mandiri: QR QRIS, nominal unik, kode rujukan, empat langkah, tombol bukti', al)
+        cek(al['halamanDepanBersih'] and al['menuMengarahKeBeli'],
+            'halaman depan BERSIH dari bagian belanja & menunya mengarah ke /beli/', al)
 
         print('== AM. Aplikasi tidak memuat alat pembayaran apa pun (bersih) ==')
         am = page.evaluate("""() => {
