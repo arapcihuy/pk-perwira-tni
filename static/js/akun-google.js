@@ -1,7 +1,7 @@
 
 window.AKUN_GOOGLE = window.AKUN_GOOGLE || {
-aktif: false,
-clientId: '',
+aktif: true,
+clientId: '1093622424912-nmkq3j5boa6tgf834qp6903i8vnet14a.apps.googleusercontent.com',
 driveSync: true,
 namaBerkas: 'siappsikotes-cadangan.json',
 lingkup: 'openid email profile https://www.googleapis.com/auth/drive.appdata'
