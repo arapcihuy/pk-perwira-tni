@@ -32,7 +32,7 @@ jobs:
           python-version: '3.12'
       - name: Pasang Playwright + Chromium
         run: |
-          pip install playwright
+          pip install playwright segno opencv-python-headless
           playwright install --with-deps chromium
       - name: Uji runtime aplikasi
         run: python3 tools/uji-runtime.py
@@ -46,7 +46,7 @@ jobs:
           python-version: '3.12'
       - name: Pasang Playwright + Chromium
         run: |
-          pip install playwright
+          pip install playwright segno opencv-python-headless
           playwright install --with-deps chromium
       - name: Smoke test situs live
         run: python3 tools/uji-situs-live.py

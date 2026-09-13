@@ -961,12 +961,15 @@ def main():
         _tmp = tempfile.mkdtemp()
         _png = os.path.join(_tmp, 'uji-qris.png')
         _pyq = os.path.expanduser('~/venv-siappsikotes/bin/python')
-        _b = subprocess.run([_pyq if os.path.exists(_pyq) else '/usr/bin/python3',
-                             os.path.join(ROOT, 'tools', 'buat-qris.py'),
+        _pyj = _pyq if os.path.exists(_pyq) else '/usr/bin/python3'
+        _b = subprocess.run([_pyj, os.path.join(ROOT, 'tools', 'buat-qris.py'),
                              '--nmid', 'ID1024000000000000000', '--nama', 'SiapPsikotes', '--kota', 'Bantul',
                              '--jumlah', '39147', '--keluar', _png], capture_output=True, text=True, cwd=ROOT)
-        cek(os.path.exists(_png) and os.path.getsize(_png) > 500,
-            'gambar QR berhasil dibuat dari NMID', os.path.getsize(_png) if os.path.exists(_png) else 'tidak ada')
+        if 'pustaka gambar QR belum ada' in _b.stdout:
+            print('  LEWAT | pustaka gambar QR (segno) tidak ada di Python ini; uji gambar dilewati')
+        else:
+            cek(os.path.exists(_png) and os.path.getsize(_png) > 500,
+                'gambar QR berhasil dibuat dari NMID', os.path.getsize(_png) if os.path.exists(_png) else 'tidak ada')
         try:
             import cv2, numpy as _np
             _gambar = cv2.imread(_png)

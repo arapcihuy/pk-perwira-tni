@@ -21,7 +21,7 @@ jobs:
 
       - name: Pasang Playwright + Chromium
         run: |
-          pip install playwright
+          pip install playwright segno opencv-python-headless
           playwright install --with-deps chromium
 
       - name: Uji runtime (9 kategori, gambar, tryout, simulasi, hafalan)
