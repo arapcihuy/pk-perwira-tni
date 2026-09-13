@@ -5,6 +5,10 @@
 #   1. PERATURAN MUTU SOAL (11 butir)
 #   2. Verifikasi bank soal (akurasi, konsistensi versi aset, gambar)
 #   3. Pemeriksaan sintaks seluruh JavaScript
+#   4. Merek & identitas (tanpa merek lama)
+#   5. Penyangkalan afiliasi di semua halaman publik
+#   6. Uji peramban seluruh fitur aplikasi
+#   7. Uji tampilan halaman pendukung (/mutu/, /beli/, /syarat/, /privasi/)
 #
 # Kalau ada satu saja gagal, pengiriman DIBATALKAN. Ini mencegah kejadian
 # berulang: CI merah karena pemeriksaan yang sebenarnya bisa dijalankan lokal.
@@ -82,12 +86,23 @@ else
 fi
 
 echo
-echo "=== 6/6 UJI PERAMBAN (sama dengan CI: 25 bagian, 110 pemeriksaan) ==="
+echo "=== 6/7 UJI PERAMBAN (sama dengan CI) ==="
 if [ "${1:-}" = "--cepat" ]; then
   echo "  (dilewati karena --cepat - JANGAN kirim bila menambah atau mengubah fitur)"
 else
   if ! /usr/bin/python3 tools/uji-fitur-lengkap.py; then
     echo ">>> GAGAL: uji peramban tidak lulus"
+    GAGAL=1
+  fi
+fi
+
+echo
+echo "=== 7/7 UJI TAMPILAN HALAMAN PENDUKUNG (/mutu/, /beli/, /syarat/, /privasi/) ==="
+if [ "${1:-}" = "--cepat" ]; then
+  echo "  (dilewati karena --cepat - jalankan bila menyentuh halaman pendukung)"
+else
+  if ! $PY tools/uji-tampilan-pendukung.py; then
+    echo ">>> GAGAL: tampilan halaman pendukung tidak lulus"
     GAGAL=1
   fi
 fi
