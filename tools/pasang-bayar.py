@@ -73,6 +73,14 @@ def main():
         shutil.copy(a.qris, GAMBAR_TUJUAN)
         print('gambar QRIS dipasang: static/img/qris-bayar.png (%.1f KB)' % (os.path.getsize(GAMBAR_TUJUAN) / 1024))
 
+    if a.qris:
+        # pemilik memilih QRIS saja: sembunyikan nomor rekening supaya layar bersih
+        if 'tampilkanRekening' in t:
+            t = re.sub(r"tampilkanRekening:\s*(true|false)", "tampilkanRekening: false", t, count=1)
+        else:
+            t = t.replace("aktivitas-default-tidak-ada", "aktivitas-default-tidak-ada")
+        print('nomor rekening disembunyikan di layar bayar (mode QRIS saja)')
+
     if a.rekening:
         if 'rekening:' not in t:
             t = t.replace("  whatsapp: '',", "  rekening: '',              // tujuan uang bila memakai transfer/e-wallet\n  whatsapp: '',", 1)

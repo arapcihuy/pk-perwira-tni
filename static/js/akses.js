@@ -175,18 +175,18 @@ cara += '<div class="qris-bingkai"><img src="' + BAYAR.gambarQris + '?v=' + (win
 'alt="Kode QRIS pembayaran SiapPsikotes" width="220" height="220" loading="lazy" decoding="async" ' +
 'onerror="this.parentNode.innerHTML=\'<div class=&quot;qris-kosong&quot;>Gambar QRIS belum terpasang.</div>\'"></div>';
 }
-if (BAYAR.rekening) {
+if (BAYAR.rekening && BAYAR.tampilkanRekening !== false) {
 cara += '<div class="komer-sub" style="margin-top:10px">Atau transfer / e-wallet ke:</div>' +
 '<div class="qris-nominal"><strong style="font-size:19px">' + escapeHtml(BAYAR.rekening) + '</strong></div>' +
 '<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="salinRekening()">' +
 ic('copy', 14) + ' Salin tujuan pembayaran</button></div>';
 }
-if (!cara) cara = '<p class="komer-sub">Tujuan pembayaran belum diisi pemilik.</p>';
+if (!cara) cara = '<p class="komer-sub">Kode QRIS sedang disiapkan pemilik. Coba beberapa saat lagi, atau hubungi pemilik bila kamu sudah membayar.</p>';
 return cara +
 '<div class="qris-nominal" style="margin-top:12px"><span>Bayar tepat sejumlah</span>' +
 '<strong>' + rupiahKomersial(kb.nominal) + '</strong>' +
 '<span class="komer-sub">Kode rujukanmu: <strong>' + kb.rujukan + '</strong>. Tulis kode ini saat mengirim bukti ' +
-'supaya laporanmu cepat dicocokkan.' + (BAYAR.rekening ? ' Nominal unik ini yang memudahkan pemilik mencocokkan pembayaranmu.' : '') + '</span></div>' +
+'supaya laporanmu cepat dicocokkan.' + ((BAYAR.rekening && BAYAR.tampilkanRekening !== false) ? ' Nominal unik ini yang memudahkan pemilik mencocokkan pembayaranmu.' : '') + '</span></div>' +
 (BAYAR.whatsapp || BAYAR.surel
 ? '<div class="komer-aksi"><button class="btn btn-primary btn-sm" onclick="kirimBuktiBayar()">' +
 ic('send', 14) + ' Kirim bukti pembayaran</button></div>'
