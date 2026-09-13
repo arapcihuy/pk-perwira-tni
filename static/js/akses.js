@@ -181,7 +181,7 @@ cara += '<div class="komer-sub" style="margin-top:10px">Atau transfer / e-wallet
 '<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="salinRekening()">' +
 ic('copy', 14) + ' Salin tujuan pembayaran</button></div>';
 }
-if (!cara) cara = '<p class="komer-sub">Kode QRIS sedang disiapkan pemilik. Coba beberapa saat lagi, atau hubungi pemilik bila kamu sudah membayar.</p>';
+if (!cara) cara = '<p class="komer-sub">Tujuan pembayaran belum diisi pemilik. Bila kode QRIS sedang disiapkan, coba beberapa saat lagi atau hubungi pemilik bila kamu sudah membayar.</p>';
 return cara +
 '<div class="qris-nominal" style="margin-top:12px"><span>Bayar tepat sejumlah</span>' +
 '<strong>' + rupiahKomersial(kb.nominal) + '</strong>' +
