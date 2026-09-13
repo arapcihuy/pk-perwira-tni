@@ -833,8 +833,15 @@ def main():
         print('== AD. Masuk dengan Google (opsional, belum aktif) ==')
         ad = page.evaluate("""() => {
             const out = {};
-            out.bawaanMati = AKUN_GOOGLE.aktif === false;
-            out.tanpaClientId = AKUN_GOOGLE.clientId === '';
+            // Setelah pemilik menyalakan Google, yang WAJIB dijamin adalah: konfigurasi sah,
+            // dan skrip pihak ketiga tidak dimuat sebelum pengguna menekan tombolnya.
+            var cid = String(AKUN_GOOGLE.clientId || '');
+            out.konfigurasiSah = AKUN_GOOGLE.aktif
+                ? /^[0-9]{6,}-[a-z0-9]+\.apps\.googleusercontent\.com$/.test(cid)
+                : cid === '';
+            out.skripBelumDimuat = !document.querySelector('script[src*="accounts.google.com"]');
+            out.lingkupBenar = String(AKUN_GOOGLE.lingkup || '').indexOf('auth/drive.appdata') >= 0
+                && String(AKUN_GOOGLE.lingkup || '').indexOf('auth/drive ') < 0;
             // uji pembaca token dengan token buatan
             const b64 = (o) => btoa(JSON.stringify(o)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
             const jwt = 'kepala.' + b64({email:'uji@contoh.id', name:'Uji Google', picture:'https://x/y.png', sub:'12345'}) + '.ekor';
@@ -848,8 +855,8 @@ def main():
                 || document.body.textContent.indexOf('Belum diaktifkan') >= 0;
             return out;
         }""")
-        cek(ad['bawaanMati'] and ad['tanpaClientId'],
-            'Google nonaktif secara bawaan & tanpa client id', ad)
+        cek(ad['konfigurasiSah'] and ad['skripBelumDimuat'] and ad['lingkupBenar'],
+            'konfigurasi Google sah, lingkup hanya drive.appdata, & skrip Google tidak dimuat sebelum ditekan', ad)
         cek(ad['uraiToken'] and ad['tokenRusakDitangani'],
             'pembaca token Google bekerja & tahan token rusak', ad)
         cek(ad['adaKartuGoogle'] and ad['dinyatakanOpsional'],
