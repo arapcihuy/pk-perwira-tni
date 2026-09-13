@@ -1,0 +1,16 @@
+# Konfigurasi Cloudflare Worker untuk API SiapPsikotes
+name = "siappsikotes-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+# Database D1 (SQLite di edge). Dibuat di akun pemilik, region APAC.
+[[d1_databases]]
+binding = "DB"
+database_name = "siappsikotes-db"
+database_id = "ba629587-6277-4261-aa3e-aab44fd2e17c"
+
+# Catatan keamanan:
+# - Tidak ada variabel rahasia yang perlu disimpan di sini: identitas pengguna datang dari
+#   token Google yang diperiksa tanda tangannya di dalam Worker.
+# - JANGAN menaruh kunci rahasia apa pun di berkas ini (berkas ini ikut masuk repositori publik).
