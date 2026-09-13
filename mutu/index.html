@@ -6,129 +6,275 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0f18">
 <title>Mutu &amp; Bukti Pemeriksaan Soal — SiapPsikotes</title>
 <meta name="description" content="Cara kami memeriksa soal: 11 peraturan yang dijalankan mesin, hasil pemeriksaan terbuka, dan laporan temuan nyata. Bukti, bukan klaim.">
 <link rel="canonical" href="https://arapcihuy.github.io/pk-perwira-tni/mutu/">
+<meta property="og:title" content="Mutu &amp; Bukti Pemeriksaan Soal — SiapPsikotes">
+<meta property="og:description" content="11 peraturan mutu soal dijalankan mesin pada 1.225 soal. Hasilnya terbuka, termasuk temuan yang pernah salah.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://arapcihuy.github.io/pk-perwira-tni/mutu/">
+<meta property="og:image" content="https://arapcihuy.github.io/pk-perwira-tni/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="../static/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../static/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../static/icons/apple-touch-icon-180.png">
 <style>
-  :root { --ink:#12181f; --muted:#5a6b7b; --line:#e3e8ee; --soft:#f6f8fa; --acc:#0b6bcb; --ok:#0f7b3f; }
+  /* ============ desain halaman pendukung — satu keluarga dengan beranda (navy + emas) ============ */
+  :root {
+    --bg:#0a0f18; --surface:#121a28; --surface2:#172133;
+    --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+    --text:#eaf1f8; --muted:#b3c0d1; --isi:#c9d5e3;
+    --gold:#e6c552; --gold-dark:#c9a227; --blue:#6db3ff; --ok:#4ade80;
+  }
   * { box-sizing:border-box; }
-  body { margin:0; background:#fff; color:var(--ink);
-         font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
-  .page { max-width:840px; margin:0 auto; padding:48px 24px 72px; }
-  .nav { font-size:14px; margin-bottom:28px; }
-  .nav a { color:var(--acc); text-decoration:none; }
-  h1 { font-size:31px; line-height:1.2; letter-spacing:-.4px; margin:0 0 10px; }
-  h2 { font-size:19px; margin:34px 0 10px; }
-  .lead { font-size:17.5px; color:#2b3743; }
-  .muted { color:var(--muted); }
-  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:15px; }
-  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
-  th { font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
-  .kotak { background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:16px 0; }
-  .kotak.ok { background:#f2fbf6; border-color:#cdeadb; }
-  ol, ul { padding-left:22px; }
-  li { margin:6px 0; }
-  code { background:var(--soft); padding:2px 6px; border-radius:5px; font-size:13.5px; }
-  footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); font-size:14px; color:var(--muted); }
-</style>
-<style>
-  /* --- percikan tampilan (satu keluarga dengan beranda) --- */
-  body { background:
-      radial-gradient(900px 420px at 12% -8%, rgba(234,179,8,.10), transparent 60%),
-      radial-gradient(700px 380px at 92% 4%, rgba(59,130,246,.07), transparent 60%),
-      #0b0f17; }
-  .page { position: relative; z-index: 1; }
+  html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  body {
+    margin:0; color:var(--text);
+    background:
+      radial-gradient(900px 420px at 12% -8%, rgba(230,197,82,.11), transparent 62%),
+      radial-gradient(760px 400px at 94% 1%, rgba(109,179,255,.08), transparent 62%),
+      var(--bg);
+    background-repeat:no-repeat;
+    font:16.5px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:1000px; margin:0 auto; padding:0 22px; }
+  .wrap.sempit { max-width:780px; }
+  h1 { font-size:clamp(28px,4.4vw,38px); line-height:1.15; letter-spacing:-1px; font-weight:800; margin:0 0 6px; }
+  .berlaku { color:var(--muted); font-size:14.5px; margin:10px 0 22px; }
+  hr { border:0; border-top:1px solid var(--line); margin:30px 0; }
+  a { color:var(--blue); }
+  main a { text-decoration:underline; text-underline-offset:2px; text-decoration-color:rgba(109,179,255,.45); }
+  main a:hover { text-decoration-color:var(--gold); color:var(--gold); }
+  :focus-visible { outline:2px solid var(--gold); outline-offset:3px; border-radius:6px; }
+  .lewati { position:absolute; left:-9999px; background:var(--gold); color:#1a1405; font-weight:700;
+    padding:10px 16px; border-radius:0 0 10px 0; z-index:30; }
+  .lewati:focus { left:0; top:0; }
+
+  /* ---------- kepala ---------- */
+  header { border-bottom:1px solid var(--line); background:rgba(10,15,24,.86);
+    position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+  .kepala { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:13px 22px; }
+  .merek { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-.2px;
+    color:var(--text); text-decoration:none; }
+  .merek img { width:30px; height:30px; border-radius:8px; display:block; }
+  .kepala nav { display:flex; align-items:center; gap:18px; font-size:14.5px; }
+  .kepala nav a { text-decoration:none; }
+  .kepala nav a:not(.tombol) { color:var(--muted); }
+  .kepala nav a:not(.tombol):hover { color:var(--text); }
+  .kepala nav a[aria-current="page"] { color:var(--gold); font-weight:700; }
+
+  /* ---------- pita kepala ---------- */
+  main { padding-bottom:8px; }
   .pita {
-    border: 1px solid rgba(234,179,8,.22);
-    background: linear-gradient(140deg, rgba(234,179,8,.14), rgba(234,179,8,.03) 55%, transparent);
-    border-radius: 20px; padding: 26px 24px 24px; margin: 18px 0 26px;
-    box-shadow: 0 18px 40px rgba(0,0,0,.30);
+    margin:26px 0 22px; padding:30px 28px 28px; border-radius:20px;
+    border:1px solid rgba(230,197,82,.28);
+    background:linear-gradient(150deg, rgba(230,197,82,.16), rgba(230,197,82,.04) 46%, rgba(23,33,51,.55));
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
   }
-  .lencana {
-    display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .1em;
-    text-transform: uppercase; color: #0b0f17; background: linear-gradient(180deg,#f5c542,#e0a80f);
-    padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+  .lencana { display:inline-block; font-size:11.5px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; color:#1a1405; background:linear-gradient(180deg,#f5c542,var(--gold-dark));
+    padding:6px 12px; border-radius:999px; margin-bottom:14px; }
+  .pita h1 { margin:0 0 12px; font-size:clamp(28px,4.6vw,40px); line-height:1.14;
+    letter-spacing:-1.1px; font-weight:800; }
+  .pita .dek { margin:0; color:#c3cfdd; font-size:clamp(16px,1.9vw,18px); max-width:44em; }
+  .aksi { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+
+  /* ---------- tombol ---------- */
+  .tombol { display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    min-height:48px; padding:13px 22px; border-radius:12px; text-decoration:none;
+    font-weight:700; font-size:16px; border:1px solid rgba(0,0,0,.14);
+    background:linear-gradient(180deg,var(--gold),var(--gold-dark)); color:#1a1405;
+    box-shadow:0 10px 24px rgba(201,162,39,.22); transition:filter .18s ease, transform .18s ease; }
+  .tombol:hover { filter:brightness(1.06); transform:translateY(-1px); color:#1a1405; }
+  .tombol.sekunder { background:var(--surface2); color:var(--text); border-color:var(--line2);
+    box-shadow:none; font-weight:600; }
+  .tombol.sekunder:hover { border-color:var(--gold); color:var(--gold); }
+  .tombol.kecil { min-height:38px; padding:8px 14px; font-size:14px; border-radius:10px; }
+
+  /* ---------- strip angka ---------- */
+  .angka-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin:0 0 24px; }
+  .angka-strip div { border:1px solid var(--line); border-radius:14px; padding:14px 16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.008)); }
+  .angka-strip b { display:block; font-size:26px; line-height:1.2; color:var(--gold); letter-spacing:-.6px; }
+  .angka-strip span { font-size:12.5px; color:var(--muted); }
+
+  /* ---------- isi ---------- */
+  .lead { font-size:17.5px; color:var(--isi); margin:0 0 6px; }
+  .muted { color:var(--muted); font-size:14.5px; }
+  p { margin:12px 0; }
+  h2 { display:flex; gap:13px; align-items:baseline; font-size:clamp(20px,2.6vw,24px); line-height:1.3;
+    margin:44px 0 12px; padding-top:30px; border-top:1px solid var(--line);
+    letter-spacing:-.4px; font-weight:800; }
+  h2::before { content:""; flex:0 0 auto; width:4px; align-self:stretch; min-height:24px; border-radius:4px;
+    background:linear-gradient(180deg,var(--gold),var(--gold-dark)); }
+  h2:first-of-type { border-top:0; padding-top:0; }
+  h3 { font-size:17px; margin:24px 0 8px; letter-spacing:-.2px; }
+  ul, ol { padding-left:24px; margin:12px 0; }
+  li { margin:9px 0; }
+  li::marker { color:var(--gold); }
+  strong { color:var(--text); }
+  code { background:rgba(255,255,255,.06); border:1px solid var(--line); padding:2px 6px;
+    border-radius:6px; font-size:13.5px; }
+
+  /* ---------- tabel ---------- */
+  .tabel-bingkai { margin:16px 0; border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    background:var(--surface); }
+  table { width:100%; border-collapse:separate; border-spacing:0; font-size:15.5px; }
+  caption { text-align:left; padding:13px 15px 0; color:var(--muted); font-size:12.5px;
+    text-transform:uppercase; letter-spacing:.08em; font-weight:700; }
+  thead th { background:rgba(255,255,255,.035); text-align:left; font-size:12px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.08em; color:var(--muted); padding:11px 15px;
+    border-bottom:1px solid var(--line2); }
+  tbody td { padding:12px 15px; border-bottom:1px solid var(--line); vertical-align:top;
+    overflow-wrap:anywhere; }
+  tbody tr:last-child td { border-bottom:0; }
+  tbody tr:hover td { background:rgba(255,255,255,.025); }
+  td.nomor { width:56px; }
+  td.nomor span { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;
+    border-radius:9px; background:rgba(230,197,82,.13); border:1px solid rgba(230,197,82,.3);
+    color:var(--gold); font-weight:800; font-size:13.5px; }
+  .nilai { font-weight:700; color:var(--gold); }
+
+  /* ---------- kotak ---------- */
+  .kotak { margin:18px 0; padding:18px 20px; border-radius:14px; color:var(--isi);
+    border:1px solid var(--line); border-left:3px solid var(--gold);
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.008)), var(--surface); }
+  .kotak.ok { border-left-color:var(--ok);
+    background:linear-gradient(180deg, rgba(74,222,128,.07), rgba(255,255,255,.008)), var(--surface); }
+
+  /* ---------- tanya-jawab ---------- */
+  details { border:1px solid var(--line); border-radius:14px; background:var(--surface);
+    margin:10px 0; overflow:hidden; }
+  details summary { display:flex; align-items:center; justify-content:space-between; gap:14px;
+    min-height:50px; padding:15px 18px; cursor:pointer; font-weight:700; list-style:none; }
+  details summary::-webkit-details-marker { display:none; }
+  details summary::after { content:""; flex:0 0 auto; width:9px; height:9px; margin-right:3px;
+    border-right:2px solid var(--gold); border-bottom:2px solid var(--gold);
+    transform:rotate(45deg); transition:transform .2s ease; }
+  details[open] { border-color:rgba(230,197,82,.32); }
+  details[open] summary::after { transform:rotate(225deg); }
+  details > p, details > ul, details > ol { margin:0; padding:0 18px 16px; color:var(--isi); }
+
+  /* ---------- kaki ---------- */
+  footer { margin-top:56px; border-top:1px solid var(--line); padding:26px 0 48px;
+    color:var(--muted); font-size:14.5px; }
+  .tautan-kaki { display:flex; flex-wrap:wrap; gap:8px 20px; margin:0 0 16px; }
+  .tautan-kaki a { color:var(--blue); text-decoration:none; }
+  .tautan-kaki a:hover { color:var(--gold); }
+  footer p { margin:8px 0; }
+
+  @media (max-width:700px) {
+    .kepala { padding:12px 18px; gap:10px; }
+    .kepala nav a:not(.tombol) { display:none; }
+    .merek span { font-size:15.5px; }
+    .pita { padding:24px 20px 22px; border-radius:16px; margin:18px 0 18px; }
+    .angka-strip { grid-template-columns:repeat(2,1fr); }
+    h2 { margin-top:36px; padding-top:24px; }
+    tbody td, thead th { padding:11px 12px; }
   }
-  .pita h1 { margin: 0 0 10px; font-size: clamp(26px, 4.4vw, 34px); line-height: 1.18; }
-  .pita p { margin: 0; color: #94a3b8; }
-  .angka-strip {
-    display: flex; gap: 12px; flex-wrap: wrap; margin: 0 0 26px;
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    * { transition:none !important; }
   }
-  .angka-strip div {
-    flex: 1 1 150px; border: 1px solid rgba(148,163,184,.18); border-radius: 14px;
-    background: rgba(22,27,38,.72); padding: 14px 16px;
+  @media print {
+    body { background:#fff; color:#000; }
+    header, .lewati, .pita .aksi { display:none; }
+    .pita, .kotak, .angka-strip div, .tabel-bingkai { border-color:#bbb; background:#fff; box-shadow:none; }
+    .pita .dek, .muted, .kotak, .lead { color:#222; }
+    h2::before { background:#999; }
+    a { color:#000; }
   }
-  .angka-strip b { display: block; font-size: 24px; color: #eab308; letter-spacing: -.5px; }
-  .angka-strip span { font-size: 12.5px; color: #94a3b8; }
-  h1, h2 { letter-spacing: -.4px; }
-  h2 { margin-top: 34px; padding-top: 22px; border-top: 1px solid rgba(148,163,184,.14); }
-  h2:first-of-type { border-top: 0; padding-top: 0; }
-  details { border: 1px solid rgba(148,163,184,.16); border-radius: 12px; padding: 12px 15px;
-    margin: 10px 0; background: rgba(22,27,38,.5); }
-  details summary { cursor: pointer; font-weight: 700; }
-  details[open] { border-color: rgba(234,179,8,.28); }
-  .qris-kotak { box-shadow: 0 14px 34px rgba(0,0,0,.34); border: 1px solid rgba(234,179,8,.22); }
-  .langkah li::marker { color: #eab308; font-weight: 800; }
-  .tombol { box-shadow: 0 10px 24px rgba(234,179,8,.20); }
-  a { transition: opacity .18s ease; }
-  a:hover { opacity: .86; }
 </style>
 </head>
 <body>
-<div class="page">
+<a class="lewati" href="#isi">Langsung ke isi</a>
 
-  <div class="nav"><a href="../">&larr; Kembali ke aplikasi</a></div>
+<header>
+  <div class="wrap kepala">
+    <a class="merek" href="../"><img src="../static/icons/icon-192.png" alt="" width="30" height="30"><span>SiapPsikotes</span></a>
+    <nav aria-label="Halaman">
+      <a href="../beli/">Beli</a>
+      <a href="../mutu/" aria-current="page">Mutu</a>
+      <a href="../syarat/">Syarat</a>
+      <a href="../privasi/">Privasi</a>
+      <a class="tombol sekunder kecil" href="../">Buka aplikasi</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="pita">
+<main id="isi" class="wrap">
+
+  <section class="pita">
     <span class="lencana">Mutu &amp; Bukti</span>
     <h1>Bagaimana kami memastikan soalnya benar</h1>
-    <p>Setiap soal diperiksa mesin dan manusia. Halaman ini menunjukkan apa yang diperiksa dan apa hasilnya -
-      supaya kamu bisa menilai sendiri, bukan sekadar percaya.</p>
-  </div>
+    <p class="dek">Setiap soal diperiksa mesin, bukan dibaca sekilas. Halaman ini menunjukkan apa yang diperiksa,
+      apa hasilnya, dan di mana batasnya &mdash; supaya kamu bisa menilai sendiri, bukan sekadar percaya.</p>
+    <div class="aksi">
+      <a class="tombol" href="#hasil">Lihat hasil pemeriksaan</a>
+      <a class="tombol sekunder" href="../beli/">Harga &amp; cara membeli</a>
+    </div>
+  </section>
+
   <div class="angka-strip">
     <div><b>11</b><span>peraturan mutu soal</span></div>
     <div><b>1.225</b><span>soal lolos peraturan</span></div>
     <div><b>0</b><span>pelanggaran tersisa</span></div>
     <div><b>2</b><span>gelombang pemeriksaan</span></div>
-  </div><p class="lead">Setiap soal di SiapPsikotes diperiksa <strong>mesin</strong>, bukan hanya dibaca sekilas.
-  Halaman ini menjelaskan apa yang diperiksa, apa hasilnya, dan di mana batasnya. Semuanya bisa Anda periksa
-  sendiri — kami tidak meminta Anda percaya begitu saja.</p>
+  </div>
 
-  <h2>Yang diperiksa (11 peraturan, dijalankan otomatis)</h2>
-  <table>
-    <tr><th>#</th><th>Peraturan</th></tr>
-    <tr><td>1</td><td>Setiap soal punya label topik</td></tr>
-    <tr><td>2</td><td>Tidak ada dua opsi berteks sama</td></tr>
-    <tr><td>3</td><td>Tidak ada opsi "semua benar" atau "semua salah"</td></tr>
-    <tr><td>4</td><td>Kunci jawaban tidak tertulis di pertanyaannya sendiri</td></tr>
-    <tr><td>5</td><td>Kunci tidak selalu menjadi opsi terpanjang</td></tr>
-    <tr><td>6</td><td>Pembahasan wajib 3 baris: jawaban, cara mengerjakan, kiat ingat</td></tr>
-    <tr><td>7</td><td>Soal hitung wajib memuat langkah perhitungan, bukan hanya hasil</td></tr>
-    <tr><td>8</td><td>Posisi kunci merata di pilihan A/B/C/D (20-30% masing-masing)</td></tr>
-    <tr><td>9</td><td>Soal bergambar yang jawabannya bisa dihitung diperiksa ulang dari gambarnya</td></tr>
-    <tr><td>10</td><td>Semua soal kategori bergambar wajib memiliki gambar</td></tr>
-    <tr><td>11</td><td>Tidak ada AI online atau API berbayar di dalam aplikasi</td></tr>
-  </table>
-  <p class="muted">Pemeriksaan ini berjalan di setiap perubahan dan menolak rilis bila ada satu pelanggaran.</p>
+  <p class="lead">Setiap soal di SiapPsikotes diperiksa <strong>mesin</strong>, bukan hanya dibaca sekilas.
+    Halaman ini menjelaskan apa yang diperiksa, apa hasilnya, dan di mana batasnya. Semuanya bisa Anda periksa
+    sendiri &mdash; kami tidak meminta Anda percaya begitu saja.</p>
 
-  <h2>Hasil pemeriksaan terakhir</h2>
-  <table>
-    <tr><th>Ukuran</th><th>Hasil</th></tr>
-    <tr><td>Jumlah soal</td><td>1.225 soal, 9 kategori</td></tr>
-    <tr><td>Pelanggaran 11 peraturan</td><td><strong>0</strong></td></tr>
-    <tr><td>Sebaran posisi kunci</td><td>A 309 · B 308 · C 302 · D 306 (masing-masing sekitar 25%)</td></tr>
-    <tr><td>Soal hitung diperiksa ulang mesin</td><td>137 soal</td></tr>
-    <tr><td>Soal bergambar yang jawabannya dihitung ulang dari gambarnya</td><td>34 soal</td></tr>
-    <tr><td>Pemeriksaan aplikasi otomatis (fungsi &amp; halaman)</td><td>94 pemeriksaan, semuanya lulus</td></tr>
-  </table>
+  <h2>Yang diperiksa: 11 peraturan, dijalankan otomatis</h2>
+  <div class="tabel-bingkai">
+    <table>
+      <caption>Sebelas peraturan mutu soal yang diperiksa mesin di setiap perubahan</caption>
+      <thead><tr><th scope="col">#</th><th scope="col">Peraturan</th></tr></thead>
+      <tbody>
+        <tr><td class="nomor"><span>1</span></td><td>Setiap soal punya label topik</td></tr>
+        <tr><td class="nomor"><span>2</span></td><td>Tidak ada dua opsi berteks sama</td></tr>
+        <tr><td class="nomor"><span>3</span></td><td>Tidak ada opsi &ldquo;semua benar&rdquo; atau &ldquo;semua salah&rdquo;</td></tr>
+        <tr><td class="nomor"><span>4</span></td><td>Kunci jawaban tidak tertulis di pertanyaannya sendiri</td></tr>
+        <tr><td class="nomor"><span>5</span></td><td>Kunci tidak selalu menjadi opsi terpanjang</td></tr>
+        <tr><td class="nomor"><span>6</span></td><td>Pembahasan wajib 3 baris: jawaban, cara mengerjakan, kiat ingat</td></tr>
+        <tr><td class="nomor"><span>7</span></td><td>Soal hitung wajib memuat langkah perhitungan, bukan hanya hasil</td></tr>
+        <tr><td class="nomor"><span>8</span></td><td>Posisi kunci merata di pilihan A/B/C/D (20&ndash;30% masing-masing)</td></tr>
+        <tr><td class="nomor"><span>9</span></td><td>Soal bergambar yang jawabannya bisa dihitung diperiksa ulang dari gambarnya</td></tr>
+        <tr><td class="nomor"><span>10</span></td><td>Semua soal kategori bergambar wajib memiliki gambar</td></tr>
+        <tr><td class="nomor"><span>11</span></td><td>Tidak ada AI online atau API berbayar di dalam aplikasi</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">Pemeriksaan ini berjalan di setiap perubahan dan <strong>menolak rilis</strong> bila ada satu saja pelanggaran.</p>
+
+  <h2 id="hasil">Hasil pemeriksaan terakhir</h2>
+  <div class="tabel-bingkai">
+    <table class="hasil">
+      <caption>Angka di bawah ini keluaran pemeriksa, bukan klaim pemasaran</caption>
+      <thead><tr><th scope="col">Ukuran</th><th scope="col">Hasil</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Ukuran">Jumlah soal</td><td data-label="Hasil">1.225 soal, 9 kategori</td></tr>
+        <tr><td data-label="Ukuran">Pelanggaran 11 peraturan</td><td data-label="Hasil"><span class="nilai">0</span></td></tr>
+        <tr><td data-label="Ukuran">Sebaran posisi kunci</td><td data-label="Hasil">A 309 &middot; B 308 &middot; C 302 &middot; D 306 (masing-masing sekitar 25%)</td></tr>
+        <tr><td data-label="Ukuran">Soal hitung diperiksa ulang mesin</td><td data-label="Hasil">137 soal</td></tr>
+        <tr><td data-label="Ukuran">Kunci soal bergambar dihitung ulang dari gambarnya</td><td data-label="Hasil">34 soal: 19 Tes Gambar + 15 kolom Kraepelin</td></tr>
+        <tr><td data-label="Ukuran">Pemeriksaan aplikasi otomatis (fungsi &amp; halaman)</td><td data-label="Hasil">149 pemeriksaan, semuanya lulus</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="kotak">
-    <strong>Bukti bahwa pemeriksaan ini bekerja — bukan hiasan.</strong>
-    Setelah 1.225 soal dinyatakan "sudah beres", pemeriksaan mesin justru menemukan
-    <strong>135 pelanggaran nyata</strong>: 112 soal belum berlabel topik, dan
+    <strong>Bukti bahwa pemeriksaan ini bekerja &mdash; bukan hiasan.</strong>
+    Setelah 1.225 soal dinyatakan &ldquo;sudah beres&rdquo;, pemeriksaan mesin justru menemukan
+    <strong>135 temuan</strong>. Yang paling berat: 112 soal belum berlabel topik, dan
     <strong>2 soal yang kunci jawabannya tertulis di pertanyaannya sendiri</strong> sehingga bisa ditebak
-    tanpa menguasai materi. Keduanya sudah diperbaiki, dan sejak itu pemeriksaan berjalan otomatis.
-    Kami menuliskan temuan ini apa adanya karena inilah gunanya pemeriksaan.
+    tanpa menguasai materi. Sebagian temuan lain ternyata pengecualian yang sah (soal bacaan, soal bergambar,
+    soal kalender), dan aturannya kami haluskan supaya tidak menuduh yang benar. Semuanya sudah diperbaiki,
+    dan sejak itu pemeriksaan berjalan otomatis. Kami menuliskan temuan ini apa adanya karena inilah gunanya
+    pemeriksaan.
   </div>
 
   <h2>Cara kami menjaga kunci jawaban</h2>
@@ -141,23 +287,35 @@
 
   <h2>Batas yang kami akui terbuka</h2>
   <ul>
-    <li>Mesin memeriksa <strong>bentuk</strong> dan <strong>perhitungan</strong>. Kebenaran fakta tetap bergantung pada pemeriksaan dua gelombang dan sumber — karena itu soal yang kamu laporkan selalu kami dahulukan.</li>
+    <li>Mesin memeriksa <strong>bentuk</strong> dan <strong>perhitungan</strong>. Kebenaran fakta tetap bergantung pada pemeriksaan dua gelombang dan sumber &mdash; karena itu soal yang kamu laporkan selalu kami dahulukan.</li>
     <li>Terjemahan tes kepribadian belum diuji ulang pada orang Indonesia, jadi <strong>bukan diagnosis</strong> dan tidak memakai norma lokal.</li>
-    <li>Kami tidak memakai tes berlisensi (Raven, WAIS, CFIT, IST, PAPI Kostick, MMPI, Wartegg). Bila Anda mencari hasil tes bersertifikat, kami bukan tempatnya — dan kami tidak berpura-pura menjadi tempatnya.</li>
+    <li>Kami tidak memakai tes berlisensi (Raven, WAIS, CFIT, IST, PAPI Kostick, MMPI, Wartegg). Bila Anda mencari hasil tes bersertifikat, kami bukan tempatnya &mdash; dan kami tidak berpura-pura menjadi tempatnya.</li>
     <li>Ujian dan seleksi punya aturan resmi masing-masing. Aplikasi ini alat latihan, bukan penyelenggara ujian.</li>
   </ul>
 
   <h2>Kalau Anda menemukan soal yang keliru</h2>
   <p>Tekan tombol <strong>Laporkan soal</strong> di dalam aplikasi. Laporan masuk daftar prioritas pemeriksaan.
-  Bila terbukti salah, kuncinya diperbaiki dan catatannya masuk laporan audit. Inilah cara satu orang bisa ikut
-  menjaga mutu 1.225 soal.</p>
+    Bila terbukti salah, kuncinya diperbaiki dan catatannya masuk laporan audit. Inilah cara satu orang bisa ikut
+    menjaga mutu 1.225 soal.</p>
+  <div class="aksi">
+    <a class="tombol" href="../">Buka aplikasi &amp; laporkan soal</a>
+    <a class="tombol sekunder" href="../beli/">Lihat harga</a>
+  </div>
 
-  <footer>
-    <a href="../">Kembali ke aplikasi</a> · <a href="../syarat/">Syarat &amp; ketentuan</a> ·
-    <a href="../privasi/">Kebijakan privasi</a><br>
-    SiapPsikotes bukan produk resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah.
-    Halaman ini diperbarui 13 September 2026.
-  </footer>
-</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong style="color:#eaf1f8">SiapPsikotes</strong> &mdash; latihan psikotes kerja, tes IQ, dan tes kepribadian.</p>
+    <div class="tautan-kaki">
+      <a href="../">Buka aplikasi</a>
+      <a href="../beli/">Harga &amp; cara membeli</a>
+      <a href="../syarat/">Syarat &amp; ketentuan</a>
+      <a href="../privasi/">Kebijakan privasi</a>
+    </div>
+    <p>SiapPsikotes bukan produk resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah.</p>
+    <p>Halaman ini diperbarui 13 September 2026.</p>
+  </div>
+</footer>
 </body>
 </html>
