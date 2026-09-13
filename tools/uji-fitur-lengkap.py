@@ -1202,7 +1202,8 @@ def main():
             const t = document.body.innerText;
             out.adaQr = !!document.querySelector('.qris-bingkai img');
             out.adaTombolBuka = !!document.querySelector('[onclick*="bukaHalamanBayar"]');
-            out.dijelaskanCaraBayar = t.indexOf('virtual account') >= 0 && t.indexOf('e-wallet') >= 0;
+            // keterangan cara bayar bisa berbeda per metode (mis. khusus DANA), jadi jangan dipatok pada merek:
+            out.dijelaskanCaraBayar = t.indexOf('Pindai') >= 0 && t.toLowerCase().indexOf('pembayaran') >= 0;
             out.rekeningDisembunyikan = t.indexOf('1370022256982') < 0;
             out.nominalTampil = t.indexOf('Bayar tepat sejumlah') >= 0;
             let dibuka = null;
