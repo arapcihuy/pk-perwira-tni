@@ -26,6 +26,7 @@ LAMA_TANPA_SKEMA = 'arapcihuy.github.io/pk-perwira-tni'
 BERKAS = [
     'index.html', '404.html', 'sw.js',
     'psikotes/index.html', 'privasi/index.html', 'syarat/index.html', 'mutu/index.html',
+    'beli/index.html', 'contoh/index.html',
     'sitemap.xml', 'robots.txt', 'PEDOMAN-MUTU-SOAL.md',
 ]
 
