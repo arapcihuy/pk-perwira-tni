@@ -3,7 +3,7 @@ window.AKSES = window.AKSES || {
 aktifGerbang: true,
 harga: 'Rp 39.000',
 pemilik: ['rasyidahmad180@gmail.com'],
-kodePengembang: 'SPDEVPEMILIK018Y4X',
+kodePengembang: 'SPDEVPEMILIKB01J4S1',
 pesanGratis: false
 };
 window.bacaAkunGoogle = function () {
