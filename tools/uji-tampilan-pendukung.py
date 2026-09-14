@@ -29,7 +29,7 @@ import threading
 AKAR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXE = os.path.join(AKAR, 'tools', 'axe.min.js')
 PORT = 8791
-HAL = ['mutu/', 'beli/', 'syarat/', 'privasi/']
+HAL = ['mutu/', 'beli/', 'syarat/', 'privasi/', 'contoh/']
 RUSAK = '--rusak' in sys.argv   # mode pembuktian: uji HARUS menangkap kerusakan yang disuntikkan
 hasil = []
 
@@ -142,6 +142,59 @@ def main():
             cek(b['qr']['termuat'] and abs(b['qr']['w'] - b['qr']['h']) <= 2,
                 '/beli/: gambar QR termuat & tidak gepeng', b['qr'])
             cek(b['qr']['latar'] == 'rgb(255, 255, 255)', '/beli/: latar QR putih (bisa dipindai)', b['qr']['latar'])
+            print('== /contoh/: soal gratis berpembahasan ==')
+            page.goto('http://127.0.0.1:%d/contoh/' % PORT, wait_until='load', timeout=45000)
+            page.wait_for_timeout(500)
+            c = page.evaluate("""() => {
+                const kartu = document.querySelectorAll('.kartu-soal');
+                const k0 = kartu[0];
+                const tombol = k0.querySelectorAll('.pilih');
+                const bahasSebelum = k0.querySelector('.kartu-bahas').hidden;
+                tombol[0].click();
+                const hasil = {
+                    jumlah: kartu.length,
+                    pilihanPerKartu: tombol.length,
+                    bahasSebelum: bahasSebelum,
+                    bahasSesudah: k0.querySelector('.kartu-bahas').hidden,
+                    adaYangBenar: !!k0.querySelector('.pilih.benar'),
+                    terkunci: Array.from(tombol).every((b) => b.disabled),
+                    hitung: document.getElementById('contoh-hitung').textContent,
+                    teksBahas: (k0.querySelector('.bahas-isi') || {}).textContent || ''
+                };
+                hasil.klikKeduaTidakMenambah = false;
+                tombol[0].click();
+                hasil.klikKeduaTidakMenambah = document.getElementById('contoh-hitung').textContent === hasil.hitung;
+                return hasil;
+            }""")
+            cek(c['jumlah'] >= 40, '/contoh/: 40 soal gratis termuat', c['jumlah'])
+            cek(c['pilihanPerKartu'] >= 4, '/contoh/: tiap soal punya 4 pilihan', c['pilihanPerKartu'])
+            cek(c['bahasSebelum'] and not c['bahasSesudah'] and len(c['teksBahas']) > 40,
+                '/contoh/: pembahasan terbuka setelah menjawab', c['teksBahas'][:60])
+            cek(c['adaYangBenar'] and c['terkunci'], '/contoh/: jawaban benar ditandai dan pilihan terkunci', c)
+            cek('1 dari' in c['hitung'] and c['klikKeduaTidakMenambah'],
+                '/contoh/: penghitung jawaban jalan dan tidak menghitung dua kali', c['hitung'])
+            saring = page.evaluate("""() => {
+                const s = document.getElementById('contoh-jenis');
+                s.value = 'verbal';
+                s.dispatchEvent(new Event('change'));
+                const n = document.querySelectorAll('.kartu-soal').length;
+                const semua = document.querySelectorAll('.kartu-soal[data-kunci="verbal"]').length;
+                s.value = '';
+                s.dispatchEvent(new Event('change'));
+                return { n: n, semua: semua, lagi: document.querySelectorAll('.kartu-soal').length };
+            }""")
+            cek(saring['n'] == saring['semua'] == 5 and saring['lagi'] >= 40,
+                '/contoh/: penapis jenis tes menyaring 5 soal dan bisa dikembalikan', saring)
+            taut = page.evaluate("""() => {
+                const a = Array.from(document.querySelectorAll('a'));
+                return {
+                    keBeli: a.some((x) => (x.getAttribute('href') || '').indexOf('../beli/') >= 0),
+                    keAplikasi: a.some((x) => (x.getAttribute('href') || '') === '../'),
+                    keMutu: a.some((x) => (x.getAttribute('href') || '').indexOf('../mutu/') >= 0)
+                };
+            }""")
+            cek(taut['keBeli'] and taut['keAplikasi'] and taut['keMutu'],
+                '/contoh/: ada jalan ke halaman beli, aplikasi, dan bukti mutu', taut)
             cek(not galat, 'tanpa galat JavaScript di halaman pendukung', galat[:3])
             browser.close()
     finally:

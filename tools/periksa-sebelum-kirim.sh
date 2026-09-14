@@ -72,7 +72,7 @@ fi
 echo
 echo "=== 5/7 PENYANGKALAN AFILIASI ==="
 SANGKAL_GAGAL=0
-for f in index.html psikotes/index.html mutu/index.html syarat/index.html privasi/index.html; do
+for f in index.html psikotes/index.html mutu/index.html syarat/index.html privasi/index.html contoh/index.html; do
   [ -f "$f" ] || continue
   if ! grep -qi "bukan produk resmi instansi\|tidak berafiliasi dengan" "$f" 2>/dev/null; then
     echo "  GAGAL | $f belum memuat penyangkalan afiliasi"

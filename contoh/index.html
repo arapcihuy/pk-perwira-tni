@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.googleusercontent.com https://www.gstatic.com; connect-src 'self' https://accounts.google.com https://www.googleapis.com https://siappsikotes-api.rasyidahmad180.workers.dev; frame-src https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0f18">
+<title>Contoh Soal Psikotes Gratis + Pembahasan — SiapPsikotes</title>
+<meta name="description" content="40 contoh soal psikotes dari 8 jenis tes, lengkap dengan pembahasan. Kerjakan langsung di halaman ini, tanpa akun dan tanpa bayar.">
+<link rel="canonical" href="https://arapcihuy.github.io/pk-perwira-tni/contoh/">
+<meta property="og:title" content="Contoh Soal Psikotes Gratis + Pembahasan">
+<meta property="og:description" content="40 soal dari 8 jenis tes: verbal, penalaran, numerik, matematika, bahasa Inggris, wawasan kebangsaan, kraepelin, dan kepribadian. Jawab langsung, pembahasan terbuka.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://arapcihuy.github.io/pk-perwira-tni/contoh/">
+<meta property="og:image" content="https://arapcihuy.github.io/pk-perwira-tni/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="../static/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../static/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../static/icons/apple-touch-icon-180.png">
+<style>
+  /* ============ desain halaman pendukung — satu keluarga dengan beranda (navy + emas) ============ */
+  :root {
+    --bg:#0a0f18; --surface:#121a28; --surface2:#172133;
+    --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+    --text:#eaf1f8; --muted:#b3c0d1; --isi:#c9d5e3;
+    --gold:#e6c552; --gold-dark:#c9a227; --blue:#6db3ff; --ok:#4ade80;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  body {
+    margin:0; color:var(--text);
+    background:
+      radial-gradient(900px 420px at 12% -8%, rgba(230,197,82,.11), transparent 62%),
+      radial-gradient(760px 400px at 94% 1%, rgba(109,179,255,.08), transparent 62%),
+      var(--bg);
+    background-repeat:no-repeat;
+    font:16.5px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:1000px; margin:0 auto; padding:0 22px; }
+  .wrap.sempit { max-width:780px; }
+  h1 { font-size:clamp(28px,4.4vw,38px); line-height:1.15; letter-spacing:-1px; font-weight:800; margin:0 0 6px; }
+  .berlaku { color:var(--muted); font-size:14.5px; margin:10px 0 22px; }
+  hr { border:0; border-top:1px solid var(--line); margin:30px 0; }
+  a { color:var(--blue); }
+  main a { text-decoration:underline; text-underline-offset:2px; text-decoration-color:rgba(109,179,255,.45); }
+  main a:hover { text-decoration-color:var(--gold); color:var(--gold); }
+  :focus-visible { outline:2px solid var(--gold); outline-offset:3px; border-radius:6px; }
+  .lewati { position:absolute; left:-9999px; background:var(--gold); color:#1a1405; font-weight:700;
+    padding:10px 16px; border-radius:0 0 10px 0; z-index:30; }
+  .lewati:focus { left:0; top:0; }
+
+  /* ---------- kepala ---------- */
+  header { border-bottom:1px solid var(--line); background:rgba(10,15,24,.86);
+    position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+  .kepala { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:13px 22px; }
+  .merek { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-.2px;
+    color:var(--text); text-decoration:none; }
+  .merek img { width:30px; height:30px; border-radius:8px; display:block; }
+  .kepala nav { display:flex; align-items:center; gap:22px; font-size:14.5px; }
+  .kepala nav a { text-decoration:none; }
+  .kepala nav a:not(.tombol) { color:var(--muted); }
+  .kepala nav a:not(.tombol):hover { color:var(--text); }
+  .kepala nav a[aria-current="page"] { color:var(--gold); font-weight:700; }
+
+  /* ---------- pita kepala ---------- */
+  main { padding-bottom:8px; }
+  .pita {
+    margin:26px 0 22px; padding:30px 28px 28px; border-radius:20px;
+    border:1px solid rgba(230,197,82,.28);
+    background:linear-gradient(150deg, rgba(230,197,82,.16), rgba(230,197,82,.04) 46%, rgba(23,33,51,.55));
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
+  }
+  .lencana { display:inline-block; font-size:11.5px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; color:#1a1405; background:linear-gradient(180deg,#f5c542,var(--gold-dark));
+    padding:6px 12px; border-radius:999px; margin-bottom:14px; }
+  .pita h1 { margin:0 0 12px; font-size:clamp(28px,4.6vw,40px); line-height:1.14;
+    letter-spacing:-1.1px; font-weight:800; }
+  .pita .dek { margin:0; color:#c3cfdd; font-size:clamp(16px,1.9vw,18px); max-width:44em; }
+  .aksi { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+
+  /* ---------- tombol ---------- */
+  .tombol { display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    min-height:48px; padding:13px 22px; border-radius:12px; text-decoration:none;
+    font-weight:700; font-size:16px; border:1px solid rgba(0,0,0,.14);
+    background:linear-gradient(180deg,var(--gold),var(--gold-dark)); color:#1a1405;
+    box-shadow:0 10px 24px rgba(201,162,39,.22); transition:filter .18s ease, transform .18s ease; }
+  .tombol:hover { filter:brightness(1.06); transform:translateY(-1px); color:#1a1405; }
+  .tombol.sekunder { background:#1e2a3d; color:var(--text); border-color:rgba(255,255,255,.28);
+    box-shadow:0 6px 16px rgba(0,0,0,.22); font-weight:600; }
+  .tombol.sekunder:hover { border-color:var(--gold); color:var(--gold); }
+  .tombol.kecil { min-height:38px; padding:8px 14px; font-size:14px; border-radius:10px; }
+  button.tombol { font-family:inherit; cursor:pointer; }
+
+  /* ---------- strip angka ---------- */
+  .angka-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin:0 0 24px; }
+  .angka-strip div { border:1px solid var(--line); border-radius:14px; padding:14px 16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.008)); }
+  .angka-strip b { display:block; font-size:26px; line-height:1.2; color:var(--gold); letter-spacing:-.6px; }
+  .angka-strip span { font-size:12.5px; color:var(--muted); }
+
+  /* ---------- isi ---------- */
+  .lead { font-size:17.5px; color:var(--isi); margin:0 0 6px; }
+  .muted { color:var(--muted); font-size:14.5px; }
+  .catatan { color:var(--muted); font-size:14.5px; margin:10px 0 0; line-height:1.65; }
+  p { margin:12px 0; }
+  h2 { display:flex; gap:13px; align-items:baseline; font-size:clamp(20px,2.6vw,24px); line-height:1.3;
+    margin:44px 0 12px; padding-top:30px; border-top:1px solid var(--line);
+    letter-spacing:-.4px; font-weight:800; }
+  h2::before { content:""; flex:0 0 auto; width:4px; align-self:stretch; min-height:24px; border-radius:4px;
+    background:linear-gradient(180deg,var(--gold),var(--gold-dark)); }
+  h2:first-of-type { border-top:0; padding-top:0; }
+  h3 { font-size:17px; margin:24px 0 8px; letter-spacing:-.2px; }
+  ul, ol { padding-left:24px; margin:12px 0; }
+  li { margin:9px 0; }
+  li::marker { color:var(--gold); }
+  strong { color:var(--text); }
+
+  /* ---------- tanya-jawab ---------- */
+  details { border:1px solid var(--line); border-radius:14px; background:var(--surface);
+    margin:10px 0; overflow:hidden; }
+  details summary { display:flex; align-items:center; justify-content:space-between; gap:14px;
+    min-height:50px; padding:15px 18px; cursor:pointer; font-weight:700; list-style:none; }
+  details summary::-webkit-details-marker { display:none; }
+  details summary::after { content:""; flex:0 0 auto; width:9px; height:9px; margin-right:3px;
+    border-right:2px solid var(--gold); border-bottom:2px solid var(--gold);
+    transform:rotate(45deg); transition:transform .2s ease; }
+  details[open] { border-color:rgba(230,197,82,.32); }
+  details[open] summary::after { transform:rotate(225deg); }
+  details > p, details > ul, details > ol { margin:0; padding:0 18px 16px; color:var(--isi); }
+
+  /* ---------- kaki ---------- */
+  footer { margin-top:56px; border-top:1px solid var(--line); padding:26px 0 48px;
+    color:var(--muted); font-size:14.5px; }
+  .tautan-kaki { display:flex; flex-wrap:wrap; gap:8px 20px; margin:0 0 16px; }
+  .tautan-kaki a { color:var(--blue); text-decoration:none; }
+  .tautan-kaki a:hover { color:var(--gold); }
+  footer p { margin:8px 0; }
+
+  /* ---------- khusus halaman beli ---------- */
+  .beli-dua { display:grid; gap:26px; grid-template-columns:300px 1fr; align-items:start; margin:8px 0 4px; }
+  @media (max-width:820px) { .beli-dua { grid-template-columns:1fr; } }
+  .qris-kotak { background:#fff; border-radius:16px; padding:14px;
+    border:1px solid rgba(230,197,82,.32); box-shadow:0 18px 38px rgba(0,0,0,.42); }
+  .qris-kotak img { width:100%; height:auto; display:block; border-radius:8px; }
+  .kartu-bayar { border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.008)), var(--surface);
+    padding:18px 20px; margin:0 0 16px; }
+  .label { margin:0; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--muted); font-weight:700; }
+  .nominal { font-size:clamp(30px,5vw,38px); font-weight:800; color:var(--gold);
+    letter-spacing:-1px; line-height:1.15; margin:6px 0 4px; user-select:all; -webkit-user-select:all; }
+  .rujukan { font-size:20px; font-weight:800; color:var(--text); letter-spacing:.5px; margin:2px 0 0;
+    user-select:all; -webkit-user-select:all; }
+  .kode-baris { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:6px; }
+  .langkah { padding-left:22px; line-height:1.75; }
+  .langkah li { margin-bottom:8px; }
+  .langkah li::marker { color:var(--gold); font-weight:800; }
+  .percikan { display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 0; }
+  .percikan span { font-size:13.5px; color:var(--muted); border:1px solid var(--line2);
+    background:var(--surface); border-radius:999px; padding:6px 13px; }
+
+  @media (max-width:700px) {
+    .kepala { padding:12px 18px; gap:10px; }
+    .kepala nav a:not(.tombol) { display:none; }
+    .merek span { font-size:15.5px; }
+    .pita { padding:24px 20px 22px; border-radius:16px; margin:18px 0 18px; }
+    .angka-strip { grid-template-columns:repeat(2,1fr); }
+    h2 { margin-top:36px; padding-top:24px; }
+    .qris-kotak { padding:12px; }
+  }
+  @media (max-width:560px) {
+    /* tabel 2 kolom di layar sempit: tiap baris jadi kartu supaya kata tidak terpotong */
+    table.hasil thead { display:none; }
+    table.hasil tbody tr { display:block; padding:12px 14px 14px; border-bottom:1px solid var(--line); }
+    table.hasil tbody tr:last-child { border-bottom:0; }
+    table.hasil tbody td { display:block; width:auto; border:0; padding:2px 0; overflow-wrap:break-word; }
+    table.hasil tbody td:first-child { font-weight:700; color:var(--text); }
+    table.hasil tbody td:first-child::before { display:none; }
+    table.hasil tbody td::before { content:attr(data-label); display:block; margin:6px 0 1px;
+      font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+    table.hasil tbody tr:hover td { background:transparent; }
+    caption { padding-bottom:2px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    * { transition:none !important; }
+  }
+  @media print {
+    body { background:#fff; color:#000; }
+    header, .lewati { display:none; }
+    .pita, .kartu-bayar, .angka-strip div, details { border-color:#bbb; background:#fff; box-shadow:none; }
+    .pita .dek, .muted, .catatan, .lead { color:#222; }
+    h2::before { background:#999; }
+    a { color:#000; }
+  }
+</style>
+<style>
+  /* ---------- khusus halaman contoh soal ---------- */
+  .alat-contoh { position:sticky; top:64px; z-index:9; display:flex; flex-wrap:wrap; align-items:center;
+    gap:10px; margin:0 0 20px; padding:12px 14px; border:1px solid var(--line2); border-radius:14px;
+    background:rgba(18,26,40,.94); backdrop-filter:blur(8px); }
+  .alat-contoh .hitung { font-weight:700; font-size:14.5px; margin-right:auto; }
+  .alat-contoh label { font-size:14px; color:var(--muted); }
+  .alat-contoh select { min-height:38px; padding:8px 10px; border-radius:10px; font:inherit; font-size:14px;
+    background:#1e2a3d; color:var(--text); border:1px solid rgba(255,255,255,.28); }
+  .kartu-soal { border:1px solid var(--line); border-radius:16px; padding:18px 18px 6px; margin:0 0 16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.008)); }
+  .kartu-soal[hidden] { display:none; }
+  .kartu-kepala { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+  .kartu-jenis { font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); }
+  .kartu-nomor { font-size:13px; color:var(--muted); }
+  .kartu-tanya { font-size:17px; font-weight:600; margin:0 0 14px; white-space:pre-wrap; }
+  .kartu-pilih { display:grid; gap:9px; margin-bottom:14px; }
+  .pilih { display:flex; align-items:flex-start; gap:11px; width:100%; text-align:left; cursor:pointer;
+    min-height:44px; padding:11px 14px; border-radius:12px; font:inherit; font-size:16px;
+    background:#1e2a3d; color:var(--text); border:1px solid rgba(255,255,255,.22); transition:border-color .15s ease; }
+  .pilih:hover { border-color:var(--gold); }
+  .pilih .abjad { display:inline-flex; align-items:center; justify-content:center; flex:0 0 24px;
+    height:24px; border-radius:7px; background:rgba(255,255,255,.12); font-size:13px; font-weight:700; }
+  .pilih.benar { border-color:var(--ok); background:rgba(74,222,128,.14); }
+  .pilih.benar .abjad { background:var(--ok); color:#07240f; }
+  .pilih.salah { border-color:#f87171; background:rgba(248,113,113,.14); }
+  .pilih.salah .abjad { background:#f87171; color:#2a0b0b; }
+  .pilih[disabled] { cursor:default; }
+  .kartu-bahas { border-top:1px solid var(--line); margin:0 0 14px; padding-top:12px; }
+  .bahas-judul { margin:0 0 6px; font-size:12.5px; font-weight:800; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--blue); }
+  .bahas-isi { margin:0; color:var(--isi); font-size:15.5px; white-space:pre-wrap; }
+  .kartu-soal.dijawab { border-color:var(--line2); }
+  @media (max-width:700px) { .alat-contoh { top:56px; } }
+</style>
+</head>
+<body>
+<a class="lewati" href="#isi">Langsung ke isi</a>
+
+<header>
+  <div class="wrap kepala">
+    <a class="merek" href="../"><img src="../static/icons/icon-192.png" alt="" width="30" height="30"><span>SiapPsikotes</span></a>
+    <nav aria-label="Halaman">
+      <a href="../contoh/" aria-current="page">Contoh gratis</a>
+      <a href="../beli/">Beli</a>
+      <a href="../mutu/">Mutu</a>
+      <a href="../privasi/">Privasi</a>
+      <a class="tombol sekunder kecil" href="../beli/">Harga &amp; cara beli</a>
+    </nav>
+  </div>
+</header>
+
+<main id="isi" class="wrap">
+  <section class="pita">
+    <span class="lencana">Gratis &middot; tanpa akun &middot; tanpa bayar</span>
+    <h1>40 contoh soal psikotes, lengkap dengan pembahasan</h1>
+    <p class="dek">Ini soal asli dari bank soal SiapPsikotes — bukan contoh karangan. Pilih jawabanmu,
+      lalu pembahasan langkah demi langkah terbuka. Kalau cara ini cocok untukmu, di aplikasi tersedia
+      <strong>1.225 soal</strong> dari 9 jenis tes dengan sekali bayar Rp 39.000.</p>
+    <div class="aksi">
+      <a class="tombol" href="../beli/">Buka semua 1.225 soal &mdash; Rp 39.000</a>
+      <a class="tombol sekunder" href="../">Buka aplikasi</a>
+    </div>
+  </section>
+
+  <div class="alat-contoh">
+    <span class="hitung" id="contoh-hitung" aria-live="polite">0 dari 40 soal dijawab</span>
+    <label for="contoh-jenis">Jenis tes</label>
+    <select id="contoh-jenis">
+      <option value="">Semua jenis</option>
+      <option value="verbal">Kemampuan Verbal</option>
+      <option value="penalaran_logika">Penalaran &amp; Logika</option>
+      <option value="numerik">Kemampuan Numerik</option>
+      <option value="matematika">Matematika</option>
+      <option value="bahasa_inggris">Bahasa Inggris</option>
+      <option value="tkw">Wawasan Kebangsaan</option>
+      <option value="kraepelin">Tes Kraepelin (hitung cepat)</option>
+      <option value="kepribadian">Tes Kepribadian Situasional</option>
+    </select>
+    <button type="button" class="tombol sekunder kecil" id="contoh-acak">Acak urutan</button>
+    <button type="button" class="tombol sekunder kecil" id="contoh-ulang">Mulai ulang</button>
+  </div>
+
+  <div id="contoh-daftar"></div>
+
+  <section class="pita" style="margin-top:30px">
+    <h2 style="margin:0 0 10px;font-size:clamp(22px,3.2vw,28px)">Sudah terlihat polanya?</h2>
+    <p class="dek">Yang barusan kamu kerjakan itu 3% dari bank soal. Di aplikasi, sisa
+      <strong>1.185 soal</strong> menunggu bersama 9 modul tes, pembahasan tiap soal, riwayat latihan,
+      dan Laporan Lengkap kesiapan seleksimu. Sekali bayar Rp 39.000, tanpa langganan.</p>
+    <p class="dek" style="margin-top:10px">Soal bergambar (Tes Gambar dan kolom hitung Kraepelin)
+      tidak bisa dimuat di halaman ringan ini — semuanya ada di dalam aplikasi.</p>
+    <div class="aksi">
+      <a class="tombol" href="../beli/">Beli akses penuh Rp 39.000</a>
+      <a class="tombol sekunder" href="../psikotes/">Baca dulu isi paketnya</a>
+    </div>
+  </section>
+
+  <hr>
+  <h2 style="font-size:22px">Cara memakai halaman ini</h2>
+  <ol class="langkah">
+    <li>Kerjakan tanpa melihat pembahasan lebih dulu — itu cara tercepat tahu kesiapanmu.</li>
+    <li>Salah itu wajar; yang penting baca pembahasannya sampai paham polanya.</li>
+    <li>Hitung berapa yang benar. Kalau di bawah 70%, berarti masih perlu latihan teratur.</li>
+    <li>Butuh soal lebih banyak? Semua ada di aplikasi, tersimpan di perangkatmu, bisa dipakai offline.</li>
+  </ol>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong style="color:#eaf1f8">SiapPsikotes</strong> &mdash; latihan psikotes kerja, tes IQ, dan tes kepribadian.</p>
+    <div class="tautan-kaki">
+      <a href="../">Buka aplikasi</a>
+      <a href="../beli/">Harga &amp; cara beli</a>
+      <a href="../mutu/">Mutu &amp; bukti pemeriksaan</a>
+      <a href="../privasi/">Kebijakan privasi</a>
+    </div>
+    <p>SiapPsikotes bukan produk resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah.</p>
+    <p>Halaman ini diperbarui 14 September 2026.</p>
+  </div>
+</footer>
+
+<script>
+window.CONTOH_SOAL = [{"t":"PERWIRA : TNI = KOMISIONER : ...","p":["POLRI","BPK","KPK","DPR"],"j":0,"b":"JAWABAN: POLRI\nPerwira = pangkat di TNI. Komisioner = pangkat di Polri.\nINGAT: Analogi: tentukan dulu hubungannya (alat–profesi, bagian–keseluruhan, sinonim, antonim, sebab–akibat).","k":"verbal","n":"verbal","topik":"analogi"},{"t":"Sinonim kata LOYALITAS adalah...","p":["Kesetiaan","Ketidakpedulian","Keegoisan","Pengkhianatan"],"j":0,"b":"JAWABAN: Kesetiaan\nLoyalitas = kesetiaan penuh terhadap tugas, negara, atau organisasi. TRIK: 'loyal' = setia.\nINGAT: Sinonim = persamaan makna. Pilih kata yang paling dekat maknanya, bukan yang hanya searah.","k":"verbal","n":"verbal","topik":"sinonim"},{"t":"MILITER : NEGARA = POLISI : ...","p":["Masyarakat","Kota","Jalan","Hukum"],"j":0,"b":"JAWABAN: Masyarakat\nMiliter melindungi Negara. Polisi melindungi Masyarakat. TRIK: pelindung → yang dilindungi.\nINGAT: Analogi: tentukan dulu hubungannya (alat–profesi, bagian–keseluruhan, sinonim, antonim, sebab–akibat).","k":"verbal","n":"verbal","topik":"analogi"},{"t":"STETOSKOP : DOKTER = KAPUR : ...","p":["Guru","Koki","Polisi","Masinis"],"j":0,"b":"JAWABAN: Guru\nStetoskop adalah alat yang digunakan dokter, sebagaimana kapur adalah alat yang digunakan guru. Hubungan pasangan kata bersifat alat dan profesi penggunanya.\nINGAT: Analogi: tentukan dulu hubungannya (alat–profesi, bagian–keseluruhan, sinonim, antonim, sebab–akibat).","k":"verbal","n":"verbal","topik":"analogi"},{"t":"Lawan kata (antonim) dari HOMOGEN adalah ...","p":["Heterogen","Sejenis","Sama","Seragam"],"j":0,"b":"JAWABAN: Heterogen\nHomogen berarti sejenis atau seragam, sehingga antonimnya adalah heterogen yang berarti beraneka ragam.\nINGAT: Antonim = lawan makna, pilih yang benar-benar berlawanan.","k":"verbal","n":"verbal","topik":"antonim"},{"t":"Semua prajurit TNI disiplin. Budi prajurit TNI. Kesimpulan:","p":["Budi pasti disiplin","Tidak bisa disimpulkan","Budi mungkin disiplin","Budi tidak disiplin"],"j":0,"b":"JAWABAN: Budi pasti disiplin\nSilogisme valid: premis mayor + minor valid → Budi pasti disiplin.\nINGAT: Silogisme: 'semua A adalah B' + 'X adalah A' → X pasti B. Kalau hanya tahu X adalah B, X belum tentu A.","k":"penalaran_logika","n":"penalaran logika","topik":"silogisme"},{"t":"Tidak ada siswa yang tidak lulus. Andi adalah siswa. Kesimpulan:","p":["Andi tidak lulus","Andi mungkin lulus","Tidak bisa disimpulkan","Andi lulus"],"j":3,"b":"JAWABAN: Andi lulus\nTidak ada siswa yang tidak lulus = SEMUA siswa lulus. Andi siswa → Andi lulus. TRIK: negasi ganda = positif.\nINGAT: Silogisme: 'semua A adalah B' + 'X adalah A' → X pasti B. Kalau hanya tahu X adalah B, X belum tentu A.","k":"penalaran_logika","n":"penalaran logika","topik":"silogisme"},{"t":"Deret: 1, 8, 27, 64. Suku berikutnya...","p":["125","150","216","100"],"j":0,"b":"JAWABAN: 125\nKubik: 1³,2³,3³,4³,5³=125.\nINGAT: Deret angka: tulis selisih antar suku. Selisih tetap = aritmetika, rasio tetap = geometri, selisih naik = pola bertingkat.","k":"penalaran_logika","n":"penalaran logika","topik":"deret-angka"},{"t":"Kode A=1, B=2, ..., Z=26. Kode untuk 'PERWIRA' adalah...","p":["16-5-18-23-9-18-1","16-5-18-22-9-18-1","16-5-18-23-8-18-1","16-5-17-23-9-18-1"],"j":0,"b":"JAWABAN: 16-5-18-23-9-18-1\nPERWIRA = P E R W I R A = 16-5-18-23-9-18-1.\nINGAT: Sandi: cek pergeseran (+1, +2) atau ubah huruf ke posisi alfabet (A=1, B=2, ... Z=26).","k":"penalaran_logika","n":"penalaran logika","topik":"sandi"},{"t":"Nilai ujian K lebih tinggi dari L. M lebih rendah dari L. N lebih rendah dari M. Urutan dari yang TERTINGGI adalah...","p":["K > M > L > N","L > K > M > N","N > M > L > K","K > L > M > N"],"j":3,"b":"JAWABAN: K > L > M > N\nRantai perbandingan: K > L, L > M, M > N. Maka K > L > M > N.\nINGAT: Soal urutan: susun rantai perbandingannya dulu, jangan menebak yang tidak disebutkan.","k":"penalaran_logika","n":"penalaran logika","topik":"urutan"},{"t":"1248 + 763 - 459 = ...","p":["1552","1562","1572","1542"],"j":0,"b":"JAWABAN: 1552\nKerjakan berurutan: 1248 + 763 = 2011, lalu 2011 − 459 = 1552.\nINGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.","k":"numerik","n":"numerik","topik":"hitung-cepat"},{"t":"456 - 178 = ...","p":["278","288","298","268"],"j":0,"b":"JAWABAN: 278\nKurangkan langsung: 456 − 178 = 278.\nINGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.","k":"numerik","n":"numerik","topik":"hitung-cepat"},{"t":"143 + 278 + 428 = ...","p":["873","821","834","849"],"j":3,"b":"JAWABAN: 849\nKerjakan berurutan: 143 + 278 = 421, lalu 421 + 428 = 849.\nINGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.","k":"numerik","n":"numerik","topik":"hitung-cepat"},{"t":"7/8 - 1/2 = ...","p":["3/9","4/8","6/6","3/8"],"j":3,"b":"JAWABAN: 3/8\nSamakan penyebut ke 8. 7/8 = 7/8, 1/2 = 4/8. Selisih = 3/8 = 3/8.\nINGAT: Pecahan: samakan penyebut dulu, baru jumlahkan atau kurangkan pembilangnya.","k":"numerik","n":"numerik","topik":"pecahan"},{"t":"√289 = ...","p":["15","18","20","17"],"j":3,"b":"JAWABAN: 17\n√289 = 17, karena 17 × 17 = 289.\nINGAT: Hafal kuadrat 1-25 dan pangkat kecil (2⁵=32, 2⁸=256, 2¹⁰=1024).","k":"numerik","n":"numerik","topik":"akar-pangkat"},{"t":"Pasukan 240 prajurit, 35% dikirim misi. Sisa prajurit...","p":["156","160","176","84"],"j":0,"b":"JAWABAN: 156\nDikirim = 35% × 240 = 84. Sisa = 240-84 = 156.\nINGAT: Persen = per seratus. Contoh: 35% × 240 = 35/100 × 240.","k":"matematika","n":"matematika","topik":"persen-untung"},{"t":"Deret: 2, 6, 12, 20, 30. Suku berikutnya...","p":["42","44","38","40"],"j":0,"b":"JAWABAN: 42\nSelisih: +4,+6,+8,+10,+12. 30+12=42. TRIK: selisih bertambah 2 setiap suku.\nINGAT: Deret: hitung selisih dulu (aritmetika), atau cek rasio (geometri).","k":"matematika","n":"matematika","topik":"deret"},{"t":"Pasukan 160 prajurit, 55% dikirim misi. Sisa prajurit...","p":["61","76","83","72"],"j":3,"b":"JAWABAN: 72\nDikirim = 55% × 160 = 88. Sisa = 160 - 88 = 72.\nINGAT: Persen = per seratus. Contoh: 35% × 240 = 35/100 × 240.","k":"matematika","n":"matematika","topik":"persen-untung"},{"t":"Deret aritmetika: 9, 17, 25, 33. Suku ke-10 adalah...","p":["76","80","82","81"],"j":3,"b":"JAWABAN: 81\na=9, b=8. U10 = 9+9×8 = 81.\nINGAT: Deret: hitung selisih dulu (aritmetika), atau cek rasio (geometri).","k":"matematika","n":"matematika","topik":"deret"},{"t":"Persegi panjang dengan panjang 11 cm dan lebar 6 cm. Luasnya...","p":["59","73","64","66"],"j":3,"b":"JAWABAN: 66\nLuas = 11×6 = 66 cm².\nINGAT: Luas persegi panjang = panjang × lebar; Keliling = 2 × (panjang + lebar).","k":"matematika","n":"matematika","topik":"geometri"},{"t":"The military commander _____ his troops before the mission.","p":["briefed","brief","briefs","was brief"],"j":0,"b":"JAWABAN: briefed\nPast tense digunakan karena 'before the mission' menunjukkan kejadian lampau.\nINGAT: Hafalkan kosakata militer: deploy, convoy, perimeter, reconnaissance, intelligence, morale, logistics.","k":"bahasa_inggris","n":"bahasa inggris","topik":"vocabulary"},{"t":"Which sentence uses 'despite' correctly?","p":["Despite that it rained, they continued","Despite the raining, they continued","Despite of the rain, they continued","Despite the rain, they continued"],"j":3,"b":"JAWABAN: Despite the rain, they continued\nDespite + noun phrase (tanpa 'of'). 'Despite the rain' benar. TRIK: despite/in spite of + noun, although/even though + clause.\nINGAT: Hafalkan kosakata militer: deploy, convoy, perimeter, reconnaissance, intelligence, morale, logistics.","k":"bahasa_inggris","n":"bahasa inggris","topik":"agreement"},{"t":"'The general, along with his staff, _____ arrived.'","p":["has","are","were","have"],"j":0,"b":"JAWABAN: has\n'along with' tidak mengubah subjek. Subjek tetap 'the general' (singular) → 'has'.\nINGAT: Hafalkan kosakata militer: deploy, convoy, perimeter, reconnaissance, intelligence, morale, logistics.","k":"bahasa_inggris","n":"bahasa inggris","topik":"agreement"},{"t":"Sinonim dari kata AIRCRAFT adalah ...","p":["engine","hangar","vehicle","airplane"],"j":3,"b":"JAWABAN: airplane\nAircraft berarti pesawat terbang. Airplane adalah sinonim yang paling tepat; vehicle terlalu umum, engine dan hangar berbeda makna.\nINGAT: Hafalkan kosakata militer: deploy, convoy, perimeter, reconnaissance, intelligence, morale, logistics.","k":"bahasa_inggris","n":"bahasa inggris","topik":"vocabulary"},{"t":"Under no circumstances ______ the base without permission.","p":["may you leave","you leave","leave you","you may leave"],"j":0,"b":"JAWABAN: may you leave\nUnder no circumstances di awal kalimat membutuhkan inversi: modal may + subject you + verb. Jadi may you leave.\nINGAT: Ada kata negatif di awal kalimat (hardly, seldom, rarely, not only) maka harus inversi: auxiliary + subjek + kata kerja.","k":"bahasa_inggris","n":"bahasa inggris","topik":"inversion"},{"t":"Pancasila ditetapkan sebagai dasar negara pada tanggal...","p":["18 Agustus 1945","1 Juni 1945","22 Juni 1945","17 Agustus 1945"],"j":0,"b":"JAWABAN: 18 Agustus 1945\nPPKI mengesahkan Pancasila bersama UUD 1945 pada 18 Agustus 1945. Pidato 1 Juni 1945 adalah hari lahir Pancasila, Piagam Jakarta 22 Juni 1945.\nINGAT: Hafal lambang sila: 1 Bintang, 2 Rantai, 3 Pohon Beringin, 4 Kepala Banteng, 5 Padi dan Kapas.","k":"tkw","n":"tkw","topik":"pancasila"},{"t":"Komandan Jenderal pertama Tentara Keamanan Rakyat (TKR) adalah...","p":["Jenderal Soedirman","Jenderal Nasution","Jenderal Gatot Subroto","Jenderal Ahmad Yani"],"j":0,"b":"JAWABAN: Jenderal Soedirman\nJenderal Soedirman adalah Panglima Besar TKR pertama, diangkat 18 Desember 1945.\nINGAT: Soal TWK sering keluar berulang — baca ulang poin ini sebelum ujian.","k":"tkw","n":"tkw","topik":"tni-umum"},{"t":"Pesawat latih lanjut TNI AU yang juga berfungsi sebagai pesawat tempur ringan buatan Korea Selatan adalah...","p":["T-50 Golden Eagle","Hawk 200","Super Tucano","BAe 146"],"j":0,"b":"JAWABAN: T-50 Golden Eagle\nT-50i Golden Eagle buatan Korea Selatan digunakan sebagai pesawat latih lanjut TNI AU. Pesawat ini juga dapat difungsikan untuk misi tempur ringan.\nINGAT: Ciri khas TNI AU: lahir 9 April 1946, semboyan Swa Bhuwana Paksa, Hari Bakti 29 Juli, Hari TNI 5 Oktober.","k":"tkw","n":"tkw","topik":"tni-au"},{"t":"Lembaga penyelenggara pemilihan umum di Indonesia adalah...","p":["KPU","DKPP","Bawaslu","KPU dan Bawaslu"],"j":0,"b":"JAWABAN: KPU\nKPU adalah penyelenggara pemilu; Bawaslu mengawasi; DKPP menangani etika penyelenggara; jadi penyelenggaranya adalah KPU.\nINGAT: Soal TWK sering keluar berulang — baca ulang poin ini sebelum ujian.","k":"tkw","n":"tkw","topik":"uud"},{"t":"Menurut UUD 1945, pertahanan negara dilaksanakan melalui sistem pertahanan dan keamanan rakyat semesta dengan kekuatan utama adalah...","p":["TNI dan Polri, dengan rakyat sebagai kekuatan pendukung","Rakyat sebagai kekuatan utama","Komponen cadangan sebagai kekuatan utama","Hanya TNI"],"j":0,"b":"JAWABAN: TNI dan Polri, dengan rakyat sebagai kekuatan pendukung\nPasal 30 ayat (2) UUD 1945: usaha pertahanan dan keamanan negara dilaksanakan melalui sishankamrata oleh TNI dan Polri sebagai kekuatan utama, dengan rakyat sebagai kekuatan pendukung.\nINGAT: Hafal pasal kunci UUD 1945: 27 (HAM dan bela negara), 28 (HAM), 29 (agama), 30 (pertahanan), 31 (pendidikan), 33 (ekonomi), 34 (fakir miskin), 36A (lambang negara).","k":"tkw","n":"tkw","topik":"uud"},{"t":"Berapa hasil: 3+9 (tulis satuan jika ≥10)?","p":["3","2","9","12"],"j":1,"b":"JAWABAN: 2\n3 + 9 = 12 → yang ditulis hanya angka satuannya: 2. Ingat: hasil 10 atau lebih selalu ditulis satuannya saja (12 → 2, 15 → 5, 18 → 8).\nINGAT: Kraepelin menilai KONSISTENSI kecepatan, bukan puncak kecepatan. Latih ritme tetap dari kolom pertama sampai terakhir.","k":"kraepelin","n":"kraepelin","topik":"aturan-satuan"},{"t":"Berapa hasil: 8+6 (tulis satuan jika ≥10)?","p":["4","8","6","14"],"j":0,"b":"JAWABAN: 4\n8 + 6 = 14 → yang ditulis hanya angka satuannya: 4. Ingat: hasil 10 atau lebih selalu ditulis satuannya saja (12 → 2, 15 → 5, 18 → 8).\nINGAT: Kraepelin menilai KONSISTENSI kecepatan, bukan puncak kecepatan. Latih ritme tetap dari kolom pertama sampai terakhir.","k":"kraepelin","n":"kraepelin","topik":"aturan-satuan"},{"t":"Berapa hasil 2 + 2? (jika hasil ≥10, tulis satuannya saja)","p":["14","8","4","2"],"j":2,"b":"JAWABAN: 4\n2 + 2 = 4 (kurang dari 10, jadi ditulis apa adanya: 4).\nINGAT: Kraepelin menilai KONSISTENSI kecepatan, bukan puncak kecepatan. Latih ritme tetap dari kolom pertama sampai terakhir.","k":"kraepelin","n":"kraepelin","topik":"aturan-satuan"},{"t":"Berapa hasil 9 + 1? (jika hasil ≥10, tulis satuannya saja)","p":["1","10","9","0"],"j":3,"b":"JAWABAN: 0\n9 + 1 = 10 → yang ditulis hanya angka satuannya: 0. Ingat: hasil 10 atau lebih selalu ditulis satuannya saja (12 → 2, 15 → 5, 18 → 8).\nINGAT: Kraepelin menilai KONSISTENSI kecepatan, bukan puncak kecepatan. Latih ritme tetap dari kolom pertama sampai terakhir.","k":"kraepelin","n":"kraepelin","topik":"aturan-satuan"},{"t":"Berapa hasil 3 + 5? (jika hasil ≥10, tulis satuannya saja)","p":["5","8","18","3"],"j":1,"b":"JAWABAN: 8\n3 + 5 = 8 (kurang dari 10, jadi ditulis apa adanya: 8).\nINGAT: Kraepelin menilai KONSISTENSI kecepatan, bukan puncak kecepatan. Latih ritme tetap dari kolom pertama sampai terakhir.","k":"kraepelin","n":"kraepelin","topik":"aturan-satuan"},{"t":"Kamu baru masuk kesatuan baru. Atasan langsung kamu orangnya sangat kaku dan jarang berkomunikasi. Apa yang kamu lakukan?","p":["Berusaha mengenal atasan lebih baik dengan cara sopan dan profesional","Mengeluh ke rekan sesama bawahan","Langsung meminta pindah kesatuan","Diam saja dan ikuti perintah tanpa pertanyaan"],"j":0,"b":"JAWABAN: Berusaha mengenal atasan lebih baik dengan cara sopan dan profesional\nPROFIL IDEAL PERWIRA: proaktif tapi sopan. TRIK: soal kepribadian TNI = pilih yang PROAKTIF + SOPAN + PROFESIONAL. Hindari: mengeluh (C) atau menghindar (D).\nINGAT: Soal kepribadian TNI: pilih opsi yang PROAKTIF, SOPAN, JUJUR, dan lewat prosedur resmi.","k":"kepribadian","n":"kepribadian","topik":"komunikasi"},{"t":"Kamu ditugaskan untuk pekerjaan yang tidak sesuai keahlianmu. Sikapmu?","p":["Kerjakan asal-asalan","Minta digantikan orang lain","Tolak karena tidak ahli","Kerjakan sambil belajar dari rekan yang lebih ahli"],"j":3,"b":"JAWABAN: Kerjakan sambil belajar dari rekan yang lebih ahli\nMAU BELAJAR adalah kunci berkembang. TRIK: kerjakan + belajar = jawaban yang selalu benar untuk soal tugas baru.\nINGAT: Soal kepribadian TNI: pilih opsi yang PROAKTIF, SOPAN, JUJUR, dan lewat prosedur resmi.","k":"kepribadian","n":"kepribadian","topik":"kerja-sama"},{"t":"Kamu tidak lulus salah satu tes kesehatan sedangkan kamu sudah berlatih keras selama ini. Sikapmu?","p":["Menerima hasilnya, meminta penjelasan medis, lalu memperbaiki kondisi kesehatan dan mencoba lagi","Menyalahkan kondisi dan menyebar kekecewaan","Berhenti mengikuti seleksi tanpa penjelasan","Menuntut panitia mengulang tes"],"j":0,"b":"JAWABAN: Menerima hasilnya, meminta penjelasan medis, lalu memperbaiki kondisi kesehatan dan mencoba lagi\nPerwira dituntut menerima keputusan dengan lapang, mencari tahu penyebab secara resmi, lalu berbenah. Menuntut dan menyalahkan pihak lain tidak menyelesaikan masalah.\nINGAT: Soal kepribadian TNI: pilih opsi yang PROAKTIF, SOPAN, JUJUR, dan lewat prosedur resmi.","k":"kepribadian","n":"kepribadian","topik":"tanggung-jawab"},{"t":"Kamu menemukan kesalahan serius pada laporan yang dibuat atasanmu. Tindakanmu?","p":["Menyebarkan temuan ke rekan lain","Melaporkan langsung ke pihak luar satuan","Membiarkan karena bukan tanggung jawabmu","Menyampaikan temuan secara pribadi kepada atasan dengan data pendukung dan usulan perbaikan"],"j":3,"b":"JAWABAN: Menyampaikan temuan secara pribadi kepada atasan dengan data pendukung dan usulan perbaikan\nSampaikan temuan kepada atasan secara pribadi dengan data dan solusi. Ini melindungi organisasi sekaligus menjaga hierarki dan wibawa atasan.\nINGAT: Soal kepribadian TNI: pilih opsi yang PROAKTIF, SOPAN, JUJUR, dan lewat prosedur resmi.","k":"kepribadian","n":"kepribadian","topik":"integritas"},{"t":"Kamu diminta menggantikan rekan yang tiba-tiba sakit pada tugas yang belum kamu kuasai. Sikapmu?","p":["Bersedia, pelajari bagian intinya lebih dulu, dan minta pendampingan bila perlu","Menjalankan tanpa persiapan meski berisiko","Menyuruh anggota baru mengambil alih","Menolak karena bukan bidangmu"],"j":0,"b":"JAWABAN: Bersedia, pelajari bagian intinya lebih dulu, dan minta pendampingan bila perlu\nBersedia menggantikan dengan persiapan dan pendampingan adalah bentuk kesiapan satuan; menolak dan menjalankan tanpa persiapan sama-sama berisiko.\nINGAT: Soal kepribadian TNI: pilih opsi yang PROAKTIF, SOPAN, JUJUR, dan lewat prosedur resmi.","k":"kepribadian","n":"kepribadian","topik":"kerja-sama"}];
+(function () {
+  var data = window.CONTOH_SOAL || [];
+  var daftar = document.getElementById('contoh-daftar');
+  var hitung = document.getElementById('contoh-hitung');
+  var saring = document.getElementById('contoh-jenis');
+  var terjawab = 0;
+  var benar = 0;
+
+  function perbaruiHitung() {
+    hitung.textContent = terjawab + ' dari ' + data.length + ' soal dijawab' +
+      (terjawab ? ' · benar ' + benar : '');
+  }
+
+  function buatDaftar() {
+    daftar.innerHTML = '';
+    data.forEach(function (s, i) {
+      if (saring && saring.value && s.k !== saring.value) return;
+      var a = document.createElement('article');
+      a.className = 'kartu-soal';
+      a.setAttribute('data-kunci', s['k']);
+      var pilih = document.createElement('div');
+      pilih.className = 'kartu-pilih';
+      pilih.setAttribute('role', 'group');
+      pilih.setAttribute('aria-label', 'Pilihan jawaban');
+      s.p.forEach(function (teks, j) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pilih';
+        b.setAttribute('data-i', String(j));
+        var ab = document.createElement('span');
+        ab.className = 'abjad';
+        ab.textContent = 'ABCD'.charAt(j) || String(j + 1);
+        var tx = document.createElement('span');
+        tx.className = 'teks';
+        tx.textContent = teks;
+        b.appendChild(ab);
+        b.appendChild(tx);
+        b.addEventListener('click', function () { jawab(a, pilih, s, j); });
+        pilih.appendChild(b);
+      });
+      var kepala = document.createElement('div');
+      kepala.className = 'kartu-kepala';
+      var jen = document.createElement('span');
+      jen.className = 'kartu-jenis';
+      jen.textContent = s.n;
+      var nom = document.createElement('span');
+      nom.className = 'kartu-nomor';
+      nom.textContent = (i + 1) + '/' + data.length;
+      kepala.appendChild(jen);
+      kepala.appendChild(nom);
+      var tanya = document.createElement('p');
+      tanya.className = 'kartu-tanya';
+      tanya.textContent = s.t;
+      var bahas = document.createElement('div');
+      bahas.className = 'kartu-bahas';
+      bahas.hidden = true;
+      var bj = document.createElement('p');
+      bj.className = 'bahas-judul';
+      bj.textContent = 'Pembahasan';
+      var bi = document.createElement('p');
+      bi.className = 'bahas-isi';
+      bi.textContent = s.b;
+      bahas.appendChild(bj);
+      bahas.appendChild(bi);
+      a.appendChild(kepala);
+      a.appendChild(tanya);
+      a.appendChild(pilih);
+      a.appendChild(bahas);
+      daftar.appendChild(a);
+    });
+  }
+
+  function jawab(kartu, kotak, s, j) {
+    if (kartu.classList.contains('dijawab')) return;
+    kartu.classList.add('dijawab');
+    var tombol = kotak.querySelectorAll('.pilih');
+    for (var i = 0; i < tombol.length; i++) {
+      tombol[i].disabled = true;
+      if (i === s.j) tombol[i].classList.add('benar');
+      if (i === j && i !== s.j) tombol[i].classList.add('salah');
+    }
+    var bahas = kartu.querySelector('.kartu-bahas');
+    if (bahas) bahas.hidden = false;
+    terjawab += 1;
+    if (j === s.j) benar += 1;
+    perbaruiHitung();
+  }
+
+  if (saring) {
+    saring.addEventListener('change', function () {
+      terjawab = 0; benar = 0;
+      buatDaftar();
+      perbaruiHitung();
+    });
+  }
+  var acak = document.getElementById('contoh-acak');
+  if (acak) {
+    acak.addEventListener('click', function () {
+      for (var i = data.length - 1; i > 0; i--) {
+        var k = Math.floor(Math.random() * (i + 1));
+        var t = data[i]; data[i] = data[k]; data[k] = t;
+      }
+      terjawab = 0; benar = 0;
+      buatDaftar();
+      perbaruiHitung();
+    });
+  }
+  var ulang = document.getElementById('contoh-ulang');
+  if (ulang) {
+    ulang.addEventListener('click', function () {
+      terjawab = 0; benar = 0;
+      buatDaftar();
+      perbaruiHitung();
+    });
+  }
+
+  buatDaftar();
+  perbaruiHitung();
+})();
+</script>
+</body>
+</html>
