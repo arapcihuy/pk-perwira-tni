@@ -69,7 +69,10 @@ if (st) st.textContent = 'Kode sah. Membuka seluruh aplikasi...';
 try { if (typeof googleMasuk === 'function' && googleMasuk() && typeof googleKirimKeDrive === 'function') googleKirimKeDrive(false); } catch (e) {}
 setTimeout(function () { location.reload(); }, 700);
 } else if (st) {
-st.textContent = 'Kode tidak dikenali. Periksa penulisannya, atau kirim bukti pembayaran ke pemilik.';
+var wa = (typeof BAYAR !== 'undefined' && BAYAR.whatsapp) ? String(BAYAR.whatsapp).replace(/[^0-9]/g, '') : '';
+st.innerHTML = 'Kode tidak dikenali. Periksa penulisannya' + (wa
+? ', atau <a href="https://wa.me/' + wa + '?text=' + encodeURIComponent('Halo, kode akses saya tidak diterima. Mohon dibantu.') + '" target="_blank" rel="noopener">kirim bukti pembayaran lewat WhatsApp</a>'
+: ', atau kirim bukti pembayaran ke pemilik') + '. Kode yang sah selalu diawali SP.';
 }
 };
 window.bukaHalamanBayar = function () {
@@ -170,9 +173,11 @@ window.renderGerbang = function () {
   var belum = '<div class="komer-bagian" style="border-top:1px solid var(--line)">' +
     '<div class="komer-nomor">?</div>' +
     '<div class="komer-isi"><h3>Belum punya akses?</h3>' +
-    '<p class="komer-sub">Harga, isi paket, QRIS, dan cara membelinya ada di halaman penjelasan.</p>' +
+    '<p class="komer-sub">Harga, isi paket, QRIS, dan cara membelinya ada di halaman penjelasan. Mau menilai mutu soalnya dulu? Ada 40 soal berpembahasan yang bisa dikerjakan gratis, tanpa akun.</p>' +
     '<div class="komer-aksi"><button class="btn btn-secondary btn-sm" onclick="window.open(\'psikotes/#harga\',\'_blank\')">' +
-    ic('arrow-right', 14) + ' Lihat harga & cara beli</button></div></div></div>';
+    ic('arrow-right', 14) + ' Lihat harga & cara beli</button>' +
+    '<button class="btn btn-secondary btn-sm" onclick="window.open(\'contoh/\',\'_blank\')">' +
+    ic('book', 14) + ' Coba 40 soal gratis</button></div></div></div>';
 
   var kode = '<div class="komer-bagian" style="border-top:1px solid var(--line)">' +
     '<div class="komer-nomor">K</div>' +

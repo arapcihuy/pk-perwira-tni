@@ -29,7 +29,7 @@ import threading
 AKAR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXE = os.path.join(AKAR, 'tools', 'axe.min.js')
 PORT = 8791
-HAL = ['mutu/', 'beli/', 'syarat/', 'privasi/', 'contoh/']
+HAL = ['mutu/', 'beli/', 'syarat/', 'privasi/', 'contoh/', '404.html']
 RUSAK = '--rusak' in sys.argv   # mode pembuktian: uji HARUS menangkap kerusakan yang disuntikkan
 hasil = []
 
