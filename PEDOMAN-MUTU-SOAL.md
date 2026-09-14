@@ -1,7 +1,7 @@
 # PERATURAN MUTU SOAL — Platform Belajar PK Perwira TNI
 
 Berlaku sejak: 12 September 2026 · Versi dokumen: 1.0
-Situs: https://arapcihuy.github.io/pk-perwira-tni/
+Situs: https://siappsikotes.my.id/
 
 > **Prinsip dasar.** Ini **platform belajar**, bukan kumpulan soal biasa. Satu kunci yang salah,
 > satu soal yang ambigu, atau satu pembahasan yang tidak bisa diikuti cara mengerjakannya bisa

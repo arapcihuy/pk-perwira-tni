@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arapcihuy.github.io/pk-perwira-tni/sitemap.xml
+Sitemap: https://siappsikotes.my.id/sitemap.xml
