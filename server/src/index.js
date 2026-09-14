@@ -14,7 +14,8 @@
 //   6. Pemilik (rasyidahmad180@gmail.com) boleh membaca ringkasan semua pengguna; pengguna
 //      biasa hanya bisa membaca datanya sendiri - dan itu ditegakkan di setiap kueri.
 
-const SITUS = ['https://arapcihuy.github.io', 'http://localhost:8000', 'http://127.0.0.1:8000'];
+const SITUS = ['https://siappsikotes.my.id', 'https://www.siappsikotes.my.id',
+  'https://arapcihuy.github.io', 'http://localhost:8000', 'http://127.0.0.1:8000'];
 const CLIENT_ID = '1093622424912-nmkq3j5boa6tgf834qp6903i8vnet14a.apps.googleusercontent.com';
 const PEMILIK = ['rasyidahmad180@gmail.com'];
 const KUNCI_GOOGLE_URL = 'https://www.googleapis.com/oauth2/v3/certs';
