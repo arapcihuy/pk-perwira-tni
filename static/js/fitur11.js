@@ -12,7 +12,7 @@ tautanBayar: '',           // halaman checkout platform (QR ditampilkan dari tau
 gambarQris: 'static/img/qris-bayar.png',           // diisi bila pemilik mengirim gambar QRIS (tools/pasang-bayar.py --qris)
 rekening: 'Bank Mandiri 1370022256982 a/n RASYID ACHMAD FAUZI',
 tampilkanRekening: false,
-whatsapp: '',              // nomor WhatsApp pemilik, format 62812xxxxxxx
+whatsapp: '6281387906930', // nomor WhatsApp pemilik, format 62812xxxxxxx
 surel: 'rasyidahmad180@gmail.com',   // surel penerima bukti
 instruksi: []              // langkah bayar; bila kosong dipakai langkah baku di bawah
 };

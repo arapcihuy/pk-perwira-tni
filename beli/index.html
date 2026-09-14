@@ -261,19 +261,22 @@
 
       <ol class="langkah">
         <li>Pindai QR di atas, lalu bayar <strong id="beliNominal2">Rp 39.000</strong> tepat sejumlah itu.</li>
-        <li>Kirim bukti pembayaran beserta kode rujukanmu.</li>
+        <li>Kirim bukti pembayaran beserta kode rujukanmu — lewat WhatsApp, atau email ke
+          <a href="mailto:rasyidahmad180@gmail.com">rasyidahmad180@gmail.com</a> bila lebih suka.</li>
         <li>Kamu menerima <strong>kode akses</strong>.</li>
         <li>Buka aplikasi, masuk dengan Google, lalu tempel kode itu.</li>
       </ol>
 
       <div class="aksi">
-        <a class="tombol" id="beliBukti"
-           href="mailto:rasyidahmad180@gmail.com?subject=Bukti%20pembayaran%20SiapPsikotes">Kirim bukti pembayaran</a>
+        <a class="tombol" id="beliBukti" target="_blank" rel="noopener"
+           href="mailto:rasyidahmad180@gmail.com?subject=Bukti%20pembayaran%20SiapPsikotes">Kirim bukti lewat WhatsApp</a>
+        <a class="tombol sekunder" id="beliBuktiSurel"
+           href="mailto:rasyidahmad180@gmail.com?subject=Bukti%20pembayaran%20SiapPsikotes">Kirim lewat email</a>
         <a class="tombol sekunder" href="../">Buka aplikasi &amp; masukkan kode</a>
       </div>
       <p class="catatan">Pembayaran dicocokkan oleh pengelola; kode akses biasanya dikirim pada hari yang sama.
-        Bila di aplikasi pembayaranmu muncul nama merchant pemilik kode QRIS, pembayaran tetap sah dan tetap
-        masuk ke pengelola.</p>
+        Bila di aplikasi pembayaranmu muncul nama merchant pemilik kode QRIS — bukan tulisan "SiapPsikotes" —
+        pembayaran tetap sah dan tetap masuk ke pengelola yang sama.</p>
     </div>
   </div>
 
@@ -314,6 +317,7 @@
     var elN2 = document.getElementById('beliNominal2');
     var elR = document.getElementById('beliRujukan');
     var elB = document.getElementById('beliBukti');
+    var elBS = document.getElementById('beliBuktiSurel');
     var elS = document.getElementById('beliSalin');
     if (!elN) return;
     var kode;
@@ -346,11 +350,14 @@
         } catch (e) { selesai('Tekan lama angkanya'); }
       });
     }
+    var pesanBukti = 'Halo, saya sudah membayar akses SiapPsikotes.\n\nKode rujukan: ' + rujukan +
+      '\nNominal dibayar: ' + teks + '\n\nBukti pembayaran saya lampirkan di chat ini. Mohon kirim kode aksesnya. Terima kasih.';
     if (elB) {
-      elB.setAttribute('href', 'mailto:rasyidahmad180@gmail.com?subject=' +
-        encodeURIComponent('Bukti pembayaran ' + rujukan) + '&body=' +
-        encodeURIComponent('Halo, saya sudah membayar akses SiapPsikotes.\n\nKode rujukan: ' + rujukan +
-          '\nNominal dibayar: ' + teks + '\n\nBukti pembayaran saya lampirkan. Mohon kirim kode aksesnya. Terima kasih.'));
+      elB.setAttribute('href', 'https://wa.me/6281387906930?text=' + encodeURIComponent(pesanBukti));
+    }
+    if (elBS) {
+      elBS.setAttribute('href', 'mailto:rasyidahmad180@gmail.com?subject=' +
+        encodeURIComponent('Bukti pembayaran ' + rujukan) + '&body=' + encodeURIComponent(pesanBukti));
     }
   })();
   </script>
