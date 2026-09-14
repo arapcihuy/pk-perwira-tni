@@ -14,7 +14,7 @@ import re
 import sys
 import urllib.request
 
-BASE = os.environ.get('SITUS', 'https://arapcihuy.github.io/pk-perwira-tni')
+BASE = os.environ.get('SITUS', 'https://siappsikotes.my.id')
 gagal = []
 
 

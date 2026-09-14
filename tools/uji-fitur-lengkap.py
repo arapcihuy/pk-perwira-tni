@@ -748,7 +748,7 @@ def main():
             out.tombol = Array.from(document.querySelectorAll('.aksi-bar button')).map(x => x.innerText.trim());
             const teks = ringkasanHasil();
             out.ringkasanBaris = teks.split(String.fromCharCode(10)).length;
-            out.adaTautan = teks.indexOf('pk-perwira-tni') >= 0;
+            out.adaTautan = teks.indexOf('siappsikotes.my.id') >= 0;
             out.adaBatasJujur = teks.indexOf('bukan tes resmi') >= 0;
             // aksi lanjutan benar-benar memulai sesi
             latihTerlemah();

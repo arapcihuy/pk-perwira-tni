@@ -52,7 +52,7 @@ def main():
         'Terima kasih, pembayaranmu sudah kami terima.\n\n'
         'Kode aksesmu: %s\n\n'
         'Cara pakai (1 menit):\n'
-        '1. Buka https://arapcihuy.github.io/pk-perwira-tni/\n'
+        '1. Buka https://siappsikotes.my.id/\n'
         '2. Pada layar "Buka dengan kode akses", tempel kode di atas.\n'
         '3. Seluruh materi terbuka: 1.225 soal, semua modul, pembahasan, dan Laporan Lengkap.\n\n'
         'Simpan kode ini. Kode yang sama juga membuka aplikasi di perangkat lain, dan bisa dipakai '

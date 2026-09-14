@@ -4,7 +4,7 @@ import sys
 
 from playwright.sync_api import sync_playwright
 
-URL = 'https://arapcihuy.github.io/pk-perwira-tni/'
+URL = 'https://siappsikotes.my.id/'
 hasil = []
 
 

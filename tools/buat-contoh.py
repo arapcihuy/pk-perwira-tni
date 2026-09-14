@@ -16,7 +16,7 @@ AKAR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(AKAR, 'data')
 BELI = os.path.join(AKAR, 'beli', 'index.html')
 KELUAR = os.path.join(AKAR, 'contoh', 'index.html')
-SITUS = 'https://arapcihuy.github.io/pk-perwira-tni'
+SITUS = 'https://siappsikotes.my.id'
 PER_KATEGORI = 5
 
 # Urutan tampil + nama panjang tiap jenis tes (samakan dengan DATA_SOAL_INDEX).

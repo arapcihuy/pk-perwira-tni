@@ -3,7 +3,8 @@
 
 Yang dikerjakan:
   1. Menulis berkas CNAME di akar repositori (syarat GitHub Pages untuk domain sendiri).
-  2. Mengganti alamat lama (arapcihuy.github.io/pk-perwira-tni) dengan domain baru pada:
+  2. Mengganti alamat lama (https://siappsikotes.my.id atau arapcihuy.github.io/siappsikotes)
+     dengan domain baru pada:
      halaman arahan, halaman privasi/syarat/mutu, sitemap.xml, robots.txt, index.html (kanonik & og).
   3. Menyalakan custom domain di GitHub Pages + HTTPS paksa (lewat gh api).
   4. Memeriksa DNS sudah mengarah ke GitHub Pages sebelum dianggap berhasil.
@@ -20,8 +21,8 @@ import subprocess
 import sys
 
 APP = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LAMA = 'https://arapcihuy.github.io/pk-perwira-tni'
-LAMA_TANPA_SKEMA = 'arapcihuy.github.io/pk-perwira-tni'
+LAMA = 'https://siappsikotes.my.id'
+LAMA_TANPA_SKEMA = 'siappsikotes.my.id'
 
 BERKAS = [
     'index.html', '404.html', 'sw.js',
@@ -87,12 +88,12 @@ def main():
             print('  -', x)
 
     # GitHub Pages: pasang domain + HTTPS paksa
-    kode, keluar = jalankan('gh api -X PUT repos/arapcihuy/pk-perwira-tni/pages -f cname=%s' % domain)
+    kode, keluar = jalankan('gh api -X PUT repos/arapcihuy/siappsikotes/pages -f cname=%s' % domain)
     print('\npasang custom domain di GitHub Pages:', 'BERHASIL' if kode == 0 else 'GAGAL')
     if kode != 0:
         print(keluar.strip()[:400])
     else:
-        kode2, keluar2 = jalankan('gh api -X PUT repos/arapcihuy/pk-perwira-tni/pages -F https_enforced=true')
+        kode2, keluar2 = jalankan('gh api -X PUT repos/arapcihuy/siappsikotes/pages -F https_enforced=true')
         print('HTTPS paksa:', 'BERHASIL' if kode2 == 0 else 'GAGAL (coba lagi setelah sertifikat terbit)')
 
     print('\nLangkah berikutnya (saya jalankan, atau kamu minta saya):')
