@@ -1,5 +1,10 @@
 # Panduan Memasang Domain Sendiri — SiapPsikotes
 
+> **SUDAH DIJALANKAN 14 September 2026.** Domain `siappsikotes.my.id` sudah dibeli
+> (DomaiNesia), DNS sudah diarahkan ke GitHub Pages, dan situs sudah pindah.
+> Panduan di bawah disimpan sebagai catatan cara melakukannya, bukan tugas yang
+> masih menunggu. Keadaan terkini: `CATATAN-KERJA.md` dan `~/pk-bisnis/MULAI-DARI-SINI.md`.
+
 Panduan ini menjelaskan cara memindahkan aplikasi **SiapPsikotes** dari alamat
 GitHub Pages (`https://arapcihuy.github.io/pk-perwira-tni/`) ke domain sendiri
 yang akan Anda beli. Bahasa sengaja dibuat sederhana, urut, dan bisa dikerjakan

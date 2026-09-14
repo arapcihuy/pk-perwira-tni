@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*-
 """pasang-domain.py — memasang domain sendiri untuk aplikasi SiapPsikotes.
 
+JANGAN DIPAKAI LAGI. Ini versi lama (hanya index.html, psikotes/, manifest.json).
+Versi yang dipakai dan dipelihara sekarang: tools/pasang-domain.py — ia juga
+menangani halaman /beli/, /contoh/, /mutu/, /syarat/, /privasi/, sitemap.xml, dan
+robots.txt. Situs sudah pindah ke https://siappsikotes.my.id pada 14 Sep 2026.
+
 Pemakaian:
     python3 domain/pasang-domain.py --uji
     python3 domain/pasang-domain.py siap-psikotes.id

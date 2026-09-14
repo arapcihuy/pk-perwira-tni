@@ -1,8 +1,8 @@
 Contact: mailto:rasyidahmad180@gmail.com
 Preferred-Languages: id, en
-Canonical: https://arapcihuy.github.io/pk-perwira-tni/.well-known/security.txt
+Canonical: https://siappsikotes.my.id/.well-known/security.txt
 Expires: 2027-09-13T00:00:00Z
-Policy: https://arapcihuy.github.io/pk-perwira-tni/syarat/
+Policy: https://siappsikotes.my.id/syarat/
 
 # Bila kamu menemukan celah keamanan pada SiapPsikotes, kirim rinciannya ke surel di atas.
 # Kami akan memeriksa dan memperbaiki. Mohon jangan mengakses data pengguna lain,
