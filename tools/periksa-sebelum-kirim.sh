@@ -22,6 +22,19 @@ AKAR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$AKAR" || exit 1
 
 PY=/usr/bin/python3
+# Python sistem bisa mati (mis. macOS: lisensi Xcode belum disetujui -> rc=69).
+# Pakai penerjemah pertama yang benar-benar bisa dijalankan supaya gerbang tidak
+# melaporkan kegagalan produk hanya karena lingkungan.
+if ! "$PY" -c "pass" >/dev/null 2>&1; then
+  for KANDIDAT in /opt/homebrew/bin/python3 "$(command -v python3 2>/dev/null || true)"; do
+    [ -n "$KANDIDAT" ] || continue
+    if [ -x "$KANDIDAT" ] && "$KANDIDAT" -c "pass" >/dev/null 2>&1; then
+      PY="$KANDIDAT"
+      break
+    fi
+  done
+  echo "  catatan | penerjemah Python: $PY"
+fi
 GAGAL=0
 
 echo "=== 1/7 PERATURAN MUTU SOAL (11 butir) ==="
@@ -90,7 +103,7 @@ echo "=== 6/7 UJI PERAMBAN (sama dengan CI) ==="
 if [ "${1:-}" = "--cepat" ]; then
   echo "  (dilewati karena --cepat - JANGAN kirim bila menambah atau mengubah fitur)"
 else
-  if ! /usr/bin/python3 tools/uji-fitur-lengkap.py; then
+  if ! $PY tools/uji-fitur-lengkap.py; then
     echo ">>> GAGAL: uji peramban tidak lulus"
     GAGAL=1
   fi

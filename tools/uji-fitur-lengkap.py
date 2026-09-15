@@ -639,7 +639,7 @@ def main():
         page.evaluate("() => { try { localStorage.removeItem('tni_laporan_bayar'); } catch (e) {} }")
         # kode dibuat oleh alat Python, dipakai untuk menguji pemeriksa di JavaScript
         import subprocess as _sub
-        _sub.run(['/usr/bin/python3', os.path.join(ROOT, 'tools', 'buat-kode.py'),
+        _sub.run([sys.executable, os.path.join(ROOT, 'tools', 'buat-kode.py'),
                   '--jumlah', '3', '--isi', 'UJI', '--keluaran', '/tmp/kode-uji-otomatis.txt'],
                  check=False, capture_output=True)
         _kode = [l.strip() for l in open('/tmp/kode-uji-otomatis.txt', encoding='utf-8') if l.startswith('SP')]
@@ -978,7 +978,7 @@ def main():
 
         print('== AH. Berkas QRIS: dibangkitkan dari NMID & dipindai ulang ==')
         import subprocess, tempfile, json as _json
-        _uji = subprocess.run(['/usr/bin/python3', os.path.join(ROOT, 'tools', 'buat-qris.py'), '--uji'],
+        _uji = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'buat-qris.py'), '--uji'],
                               capture_output=True, text=True)
         cek('LULUS' in _uji.stdout and _uji.stdout.count('GAGAL') == 0,
             'pemeriksaan diri QRIS lulus (checksum standar + bolak-balik)', _uji.stdout.strip().splitlines()[:2])

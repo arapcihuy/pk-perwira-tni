@@ -41,7 +41,18 @@ fi
 echo "=== 3. samakan versi aset dengan versi terbaru di server ==="
 STAMP=$(git log --oneline origin/master -1 | cut -d' ' -f1 | head -c7)
 echo "stamp server: $STAMP"
-/usr/bin/python3 tools/stamp-versi.py "$STAMP" | tail -1
+# Python sistem bisa mati (macOS: lisensi Xcode belum disetujui) -> pakai yang bisa jalan.
+PY=/usr/bin/python3
+if ! "$PY" -c "pass" >/dev/null 2>&1; then
+  for KANDIDAT in /opt/homebrew/bin/python3 "$(command -v python3 2>/dev/null || true)"; do
+    [ -n "$KANDIDAT" ] || continue
+    if [ -x "$KANDIDAT" ] && "$KANDIDAT" -c "pass" >/dev/null 2>&1; then
+      PY="$KANDIDAT"
+      break
+    fi
+  done
+fi
+$PY tools/stamp-versi.py "$STAMP" | tail -1
 grep -o "?v=[A-Za-z0-9]*" index.html | sort -u | tr '\n' ' '; echo
 grep -o "CACHE = '[^']*'" sw.js
 
