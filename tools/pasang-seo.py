@@ -33,6 +33,8 @@ HALAMAN = [
     ('index.html', '/', '1.0', 'weekly'),
     ('psikotes/index.html', '/psikotes/', '1.0', 'weekly'),
     ('contoh/index.html', '/contoh/', '0.9', 'weekly'),
+    ('contoh-soal-psikotes-kerja/index.html', '/contoh-soal-psikotes-kerja/', '0.8', 'monthly'),
+    ('contoh-soal-psikotes-matematika/index.html', '/contoh-soal-psikotes-matematika/', '0.8', 'monthly'),
     ('beli/index.html', '/beli/', '0.7', 'monthly'),
     ('mutu/index.html', '/mutu/', '0.6', 'monthly'),
     ('syarat/index.html', '/syarat/', '0.3', 'yearly'),

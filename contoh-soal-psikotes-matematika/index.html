@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0f18">
+<title>Contoh Soal Psikotes Matematika dan Jawabannya | SiapPsikotes</title>
+<meta name="description" content="Contoh soal psikotes matematika dan jawabannya beserta cara menghitung: pola deret angka, persen, untung, kecepatan, plus latihan berpembahasan.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://siappsikotes.my.id/contoh-soal-psikotes-matematika/">
+<meta property="og:title" content="Contoh Soal Psikotes Matematika dan Jawabannya | SiapPsikotes">
+<meta property="og:description" content="Contoh soal psikotes matematika dan jawabannya beserta cara menghitung: pola deret angka, persen, untung, kecepatan, plus latihan berpembahasan.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://siappsikotes.my.id/contoh-soal-psikotes-matematika/">
+<meta property="og:image" content="https://siappsikotes.my.id/og-image.png">
+<meta property="og:locale" content="id_ID">
+<meta property="og:site_name" content="SiapPsikotes">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="../static/icons/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../static/icons/apple-touch-icon-180.png">
+<link rel="manifest" href="../manifest.json">
+<style>
+  /* ============ desain halaman pendukung — satu keluarga dengan beranda (navy + emas) ============ */
+  :root {
+    --bg:#0a0f18; --surface:#121a28; --surface2:#172133;
+    --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+    --text:#eaf1f8; --muted:#b3c0d1; --isi:#c9d5e3;
+    --gold:#e6c552; --gold-dark:#c9a227; --blue:#6db3ff; --ok:#4ade80;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  body {
+    margin:0; color:var(--text);
+    background:
+      radial-gradient(900px 420px at 12% -8%, rgba(230,197,82,.11), transparent 62%),
+      radial-gradient(760px 400px at 94% 1%, rgba(109,179,255,.08), transparent 62%),
+      var(--bg);
+    background-repeat:no-repeat;
+    font:16.5px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:1000px; margin:0 auto; padding:0 22px; }
+  .wrap.sempit { max-width:780px; }
+  h1 { font-size:clamp(28px,4.4vw,38px); line-height:1.15; letter-spacing:-1px; font-weight:800; margin:0 0 6px; }
+  .berlaku { color:var(--muted); font-size:14.5px; margin:10px 0 22px; }
+  hr { border:0; border-top:1px solid var(--line); margin:30px 0; }
+  a { color:var(--blue); }
+  main a { text-decoration:underline; text-underline-offset:2px; text-decoration-color:rgba(109,179,255,.45); }
+  main a:hover { text-decoration-color:var(--gold); color:var(--gold); }
+  :focus-visible { outline:2px solid var(--gold); outline-offset:3px; border-radius:6px; }
+  .lewati { position:absolute; left:-9999px; background:var(--gold); color:#1a1405; font-weight:700;
+    padding:10px 16px; border-radius:0 0 10px 0; z-index:30; }
+  .lewati:focus { left:0; top:0; }
+
+  /* ---------- kepala ---------- */
+  header { border-bottom:1px solid var(--line); background:rgba(10,15,24,.86);
+    position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+  .kepala { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:13px 22px; }
+  .merek { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-.2px;
+    color:var(--text); text-decoration:none; }
+  .merek img { width:30px; height:30px; border-radius:8px; display:block; }
+  .kepala nav { display:flex; align-items:center; gap:22px; font-size:14.5px; }
+  .kepala nav a { text-decoration:none; }
+  .kepala nav a:not(.tombol) { color:var(--muted); }
+  .kepala nav a:not(.tombol):hover { color:var(--text); }
+  .kepala nav a[aria-current="page"] { color:var(--gold); font-weight:700; }
+
+  /* ---------- pita kepala ---------- */
+  main { padding-bottom:8px; }
+  .pita {
+    margin:26px 0 22px; padding:30px 28px 28px; border-radius:20px;
+    border:1px solid rgba(230,197,82,.28);
+    background:linear-gradient(150deg, rgba(230,197,82,.16), rgba(230,197,82,.04) 46%, rgba(23,33,51,.55));
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
+  }
+  .lencana { display:inline-block; font-size:11.5px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; color:#1a1405; background:linear-gradient(180deg,#f5c542,var(--gold-dark));
+    padding:6px 12px; border-radius:999px; margin-bottom:14px; }
+  .pita h1 { margin:0 0 12px; font-size:clamp(28px,4.6vw,40px); line-height:1.14;
+    letter-spacing:-1.1px; font-weight:800; }
+  .pita .dek { margin:0; color:#c3cfdd; font-size:clamp(16px,1.9vw,18px); max-width:44em; }
+  .aksi { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+
+  /* ---------- tombol ---------- */
+  .tombol { display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    min-height:48px; padding:13px 22px; border-radius:12px; text-decoration:none;
+    font-weight:700; font-size:16px; border:1px solid rgba(0,0,0,.14);
+    background:linear-gradient(180deg,var(--gold),var(--gold-dark)); color:#1a1405;
+    box-shadow:0 10px 24px rgba(201,162,39,.22); transition:filter .18s ease, transform .18s ease; }
+  .tombol:hover { filter:brightness(1.06); transform:translateY(-1px); color:#1a1405; }
+  .tombol.sekunder { background:#1e2a3d; color:var(--text); border-color:rgba(255,255,255,.28);
+    box-shadow:0 6px 16px rgba(0,0,0,.22); font-weight:600; }
+  .tombol.sekunder:hover { border-color:var(--gold); color:var(--gold); }
+  .tombol.kecil { min-height:38px; padding:8px 14px; font-size:14px; border-radius:10px; }
+  button.tombol { font-family:inherit; cursor:pointer; }
+
+  /* ---------- strip angka ---------- */
+  .angka-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin:0 0 24px; }
+  .angka-strip div { border:1px solid var(--line); border-radius:14px; padding:14px 16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.008)); }
+  .angka-strip b { display:block; font-size:26px; line-height:1.2; color:var(--gold); letter-spacing:-.6px; }
+  .angka-strip span { font-size:12.5px; color:var(--muted); }
+
+  /* ---------- isi ---------- */
+  .lead { font-size:17.5px; color:var(--isi); margin:0 0 6px; }
+  .muted { color:var(--muted); font-size:14.5px; }
+  .catatan { color:var(--muted); font-size:14.5px; margin:10px 0 0; line-height:1.65; }
+  p { margin:12px 0; }
+  h2 { display:flex; gap:13px; align-items:baseline; font-size:clamp(20px,2.6vw,24px); line-height:1.3;
+    margin:44px 0 12px; padding-top:30px; border-top:1px solid var(--line);
+    letter-spacing:-.4px; font-weight:800; }
+  h2::before { content:""; flex:0 0 auto; width:4px; align-self:stretch; min-height:24px; border-radius:4px;
+    background:linear-gradient(180deg,var(--gold),var(--gold-dark)); }
+  h2:first-of-type { border-top:0; padding-top:0; }
+  h3 { font-size:17px; margin:24px 0 8px; letter-spacing:-.2px; }
+  ul, ol { padding-left:24px; margin:12px 0; }
+  li { margin:9px 0; }
+  li::marker { color:var(--gold); }
+  strong { color:var(--text); }
+
+  /* ---------- tanya-jawab ---------- */
+  details { border:1px solid var(--line); border-radius:14px; background:var(--surface);
+    margin:10px 0; overflow:hidden; }
+  details summary { display:flex; align-items:center; justify-content:space-between; gap:14px;
+    min-height:50px; padding:15px 18px; cursor:pointer; font-weight:700; list-style:none; }
+  details summary::-webkit-details-marker { display:none; }
+  details summary::after { content:""; flex:0 0 auto; width:9px; height:9px; margin-right:3px;
+    border-right:2px solid var(--gold); border-bottom:2px solid var(--gold);
+    transform:rotate(45deg); transition:transform .2s ease; }
+  details[open] { border-color:rgba(230,197,82,.32); }
+  details[open] summary::after { transform:rotate(225deg); }
+  details > p, details > ul, details > ol { margin:0; padding:0 18px 16px; color:var(--isi); }
+
+  /* ---------- kaki ---------- */
+  footer { margin-top:56px; border-top:1px solid var(--line); padding:26px 0 48px;
+    color:var(--muted); font-size:14.5px; }
+  .tautan-kaki { display:flex; flex-wrap:wrap; gap:8px 20px; margin:0 0 16px; }
+  .tautan-kaki a { color:var(--blue); text-decoration:none; }
+  .tautan-kaki a:hover { color:var(--gold); }
+  footer p { margin:8px 0; }
+
+  /* ---------- khusus halaman beli ---------- */
+  .beli-dua { display:grid; gap:26px; grid-template-columns:300px 1fr; align-items:start; margin:8px 0 4px; }
+  @media (max-width:820px) { .beli-dua { grid-template-columns:1fr; } }
+  .qris-kotak { background:#fff; border-radius:16px; padding:14px;
+    border:1px solid rgba(230,197,82,.32); box-shadow:0 18px 38px rgba(0,0,0,.42); }
+  .qris-kotak img { width:100%; height:auto; display:block; border-radius:8px; }
+  .kartu-bayar { border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.008)), var(--surface);
+    padding:18px 20px; margin:0 0 16px; }
+  .label { margin:0; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--muted); font-weight:700; }
+  .nominal { font-size:clamp(30px,5vw,38px); font-weight:800; color:var(--gold);
+    letter-spacing:-1px; line-height:1.15; margin:6px 0 4px; user-select:all; -webkit-user-select:all; }
+  .rujukan { font-size:20px; font-weight:800; color:var(--text); letter-spacing:.5px; margin:2px 0 0;
+    user-select:all; -webkit-user-select:all; }
+  .kode-baris { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:6px; }
+  .langkah { padding-left:22px; line-height:1.75; }
+  .langkah li { margin-bottom:8px; }
+  .langkah li::marker { color:var(--gold); font-weight:800; }
+  .percikan { display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 0; }
+  .percikan span { font-size:13.5px; color:var(--muted); border:1px solid var(--line2);
+    background:var(--surface); border-radius:999px; padding:6px 13px; }
+
+  @media (max-width:700px) {
+    .kepala { padding:12px 18px; gap:10px; }
+    .kepala nav a:not(.tombol) { display:none; }
+    .merek span { font-size:15.5px; }
+    .pita { padding:24px 20px 22px; border-radius:16px; margin:18px 0 18px; }
+    .angka-strip { grid-template-columns:repeat(2,1fr); }
+    h2 { margin-top:36px; padding-top:24px; }
+    .qris-kotak { padding:12px; }
+  }
+  @media (max-width:560px) {
+    /* tabel 2 kolom di layar sempit: tiap baris jadi kartu supaya kata tidak terpotong */
+    table.hasil thead { display:none; }
+    table.hasil tbody tr { display:block; padding:12px 14px 14px; border-bottom:1px solid var(--line); }
+    table.hasil tbody tr:last-child { border-bottom:0; }
+    table.hasil tbody td { display:block; width:auto; border:0; padding:2px 0; overflow-wrap:break-word; }
+    table.hasil tbody td:first-child { font-weight:700; color:var(--text); }
+    table.hasil tbody td:first-child::before { display:none; }
+    table.hasil tbody td::before { content:attr(data-label); display:block; margin:6px 0 1px;
+      font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+    table.hasil tbody tr:hover td { background:transparent; }
+    caption { padding-bottom:2px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    * { transition:none !important; }
+  }
+  @media print {
+    body { background:#fff; color:#000; }
+    header, .lewati { display:none; }
+    .pita, .kartu-bayar, .angka-strip div, details { border-color:#bbb; background:#fff; box-shadow:none; }
+    .pita .dek, .muted, .catatan, .lead { color:#222; }
+    h2::before { background:#999; }
+    a { color:#000; }
+  }
+</style>
+<style>
+.artikel-kepala{max-width:760px}
+.artikel p{line-height:1.75}
+.daftar-isi{background:var(--surface2);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 20px;margin:24px 0}
+.daftar-isi p{margin:0 0 8px;color:var(--muted);font-size:.9rem;letter-spacing:.04em;text-transform:uppercase}
+.daftar-isi ol{margin:0;padding-left:22px}
+.daftar-isi a{color:#e6c552;text-decoration:none}
+.daftar-isi a:hover{text-decoration:underline}
+.tanya{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px 18px;margin:16px 0;background:var(--surface2)}
+.tanya-nomor{color:#e6c552;font-weight:700;margin-right:6px}
+.tanya-teks{margin:0 0 10px;font-weight:600;color:var(--text)}
+.tanya .pilih{list-style:upper-alpha;margin:0 0 10px;padding-left:24px;color:var(--isi)}
+.tanya .pilih li{margin:2px 0}
+.bahas{border-top:1px dashed rgba(255,255,255,.18);padding-top:10px}
+.bahas summary{cursor:pointer;color:#e6c552;font-weight:600}
+.bahas-isi{white-space:pre-line;margin:10px 0 0;color:var(--isi)}
+.artikel table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.95rem}
+.artikel th,.artikel td{border:1px solid rgba(255,255,255,.16);padding:9px 11px;text-align:left;color:var(--isi)}
+.artikel th{background:var(--surface2);color:var(--text)}
+.artikel .catatan{background:var(--surface2);border-left:3px solid #e6c552;padding:12px 16px;border-radius:0 10px 10px 0;margin:18px 0}
+.artikel .tautan-artikel{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+@media (max-width:560px){
+  .artikel table,.artikel thead,.artikel tbody,.artikel th,.artikel td,.artikel tr{display:block}
+  .artikel thead{display:none}
+  .artikel td{border:none;border-bottom:1px solid rgba(255,255,255,.12);padding:8px 0}
+  .artikel td::before{content:attr(data-label);display:block;color:var(--muted);font-size:.82rem;margin-bottom:2px}
+}
+</style>
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Beranda",
+     "item": "https://siappsikotes.my.id/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Contoh Soal Psikotes Matematika dan Jawabannya (Beserta Cara Hitungnya)",
+     "item": "https://siappsikotes.my.id/contoh-soal-psikotes-matematika/"
+    }
+   ]
+  },
+  {
+   "@type": "Article",
+   "headline": "Contoh Soal Psikotes Matematika dan Jawabannya (Beserta Cara Hitungnya)",
+   "description": "Contoh soal psikotes matematika dan jawabannya beserta cara menghitung: pola deret angka, persen, untung, kecepatan, plus latihan berpembahasan.",
+   "inLanguage": "id",
+   "mainEntityOfPage": "https://siappsikotes.my.id/contoh-soal-psikotes-matematika/",
+   "datePublished": "2026-09-15",
+   "dateModified": "2026-09-15",
+   "author": {
+    "@type": "Organization",
+    "name": "SiapPsikotes",
+    "url": "https://siappsikotes.my.id/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "SiapPsikotes",
+    "url": "https://siappsikotes.my.id/"
+   },
+   "isPartOf": {
+    "@type": "WebSite",
+    "name": "SiapPsikotes",
+    "url": "https://siappsikotes.my.id/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Apakah soal psikotes matematika boleh dikerjakan dengan kalkulator?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Umumnya tidak. Karena itu latih berhitung di kepala: kuasai perkalian 1 sampai 20, hafalkan padanan persen yang sederhana (25% sama dengan seperempat, 10% sama dengan 0,1), dan biasakan memecah angka - untuk 15% dari 240.000, hitung 24.000 lalu tambahkan 12.000."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Berapa jumlah soal matematika yang biasanya muncul?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Jumlahnya berbeda-beda antar seleksi dan tidak ada susunan yang berlaku untuk semua penyelenggara. Yang bisa kamu siapkan adalah kecepatannya: targetkan satu butir selesai di bawah 45 detik supaya sisa waktu bisa dipakai untuk soal yang berat atau untuk memeriksa ulang butir yang meragukan."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Apakah soal di halaman ini sama dengan soal seleksi yang akan saya hadapi?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Tidak. Seluruh soal di SiapPsikotes adalah karya penyusun sendiri untuk keperluan latihan, bukan kumpulan soal dari seleksi tertentu. Yang kamu latih di sini adalah kecepatan mengenali pola dan ketelitian berhitung, bukan hafalan kunci jawaban."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Apa bedanya 40 soal di halaman contoh dan materi di dalam aplikasi?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Di halaman contoh tersedia 40 soal berpembahasan yang bisa dicoba gratis tanpa akun. Materi di dalam aplikasi berbayar: akses penuh berisi 1.225 soal untuk 9 jenis tes, lengkap dengan pembahasan dan Laporan Lengkap, seharga Rp 39.000 sekali bayar - bukan langganan, jadi tidak ada tagihan berulang."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Kalau saya menemukan soal atau pembahasan yang keliru, bagaimana?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Laporkan kepada kami. Setiap soal diperiksa dengan pedoman mutu yang dapat diperiksa ulang, tetapi kami tidak mengklaim bahwa semuanya bebas dari kekeliruan. Bukti pemeriksaan bisa kamu lihat di halaman mutu, dan laporanmu membantu perbaikan soal berikutnya."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Kalau hasil latihan saya belum naik, apa yang salah?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Biasanya bukan soal bakat, melainkan cara latihannya. Tiga penyebab yang paling sering: hanya membaca pembahasan tanpa mencoba mengerjakan, menambah soal baru tanpa mengulang soal yang salah, dan berlatih dalam sesi panjang yang jarang. Perbaiki dulu ketiga hal itu sebelum menyimpulkan apa pun."
+     }
+    }
+   ]
+  }
+ ]
+}</script>
+</head>
+<body>
+<a class="lewati" href="#isi">Langsung ke isi</a>
+
+<header>
+  <div class="wrap kepala">
+    <a class="merek" href="../"><img src="../static/icons/icon-192.png" alt="" width="30" height="30"><span>SiapPsikotes</span></a>
+    <nav aria-label="Halaman">
+      <a href="../psikotes/">Aplikasi latihan</a>
+      <a href="../contoh/">Contoh gratis</a>
+      <a href="../beli/">Harga</a>
+      <a href="../mutu/">Mutu</a>
+      <a class="tombol sekunder kecil" href="../beli/">Beli akses</a>
+    </nav>
+  </div>
+</header>
+
+<main id="isi" class="wrap artikel">
+
+  <section class="pita artikel-kepala">
+    <span class="lencana">Panduan</span>
+    <h1>Contoh Soal Psikotes Matematika dan Jawabannya (Beserta Cara Hitungnya)</h1>
+    <p class="dek">Soal matematika psikotes jarang menuntut rumus yang rumit. Yang membuatnya berat adalah waktu: hitungannya sederhana, tetapi jumlahnya banyak dan batas waktunya sempit. Di halaman ini ada 33 soal latihan berpembahasan.</p>
+  </section>
+  <div class="daftar-isi">
+    <p>Isi halaman</p>
+    <ol>
+      <li><a href="#apa-saja-yang-diuji-di-psikotes-matematika">Apa saja yang diuji di psikotes matematika</a></li>
+      <li><a href="#jenis-pola-deret-angka-yang-paling-sering-keluar">Jenis pola deret angka yang paling sering keluar</a></li>
+      <li><a href="#contoh-soal-matematika-dan-pembahasan">Contoh soal matematika dan pembahasan</a></li>
+      <li><a href="#aritmetika-dasar-yang-sering-dipakai-persen-keun">Aritmetika dasar yang sering dipakai: persen, keuntungan, kecepatan</a></li>
+      <li><a href="#latihan-lanjutan-10-soal-kemampuan-numerik">Latihan lanjutan: 10 soal kemampuan numerik</a></li>
+      <li><a href="#latihan-logika-8-soal-penalaran">Latihan logika: 8 soal penalaran</a></li>
+      <li><a href="#kesalahan-umum-dan-cara-menghindarinya">Kesalahan umum dan cara menghindarinya</a></li>
+      <li><a href="#cara-latihan-10-menit-tiap-hari">Cara latihan 10 menit tiap hari</a></li>
+    </ol>
+  </div>
+
+  <p>Contoh soal psikotes matematika dan jawabannya sering dicari menjelang seleksi kerja. Wajar, karena bagian ini tidak menguji matematika tingkat lanjut, melainkan kecepatan mengenali pola dan ketelitian berhitung. Dua hal itu bisa dilatih, dan latihan yang tepat jauh lebih berguna daripada menghafal kunci jawaban.</p>
+  <p>Di halaman ini kamu bisa langsung mengerjakan 33 soal: 15 soal matematika, 10 soal kemampuan numerik, dan 8 soal penalaran. Semuanya diambil utuh dari bank soal SiapPsikotes yang diperiksa dengan pedoman mutu yang dapat diperiksa ulang, dan setiap soal punya pembahasan yang bisa dibuka setelah kamu menjawab.</p>
+  <p>Urutannya begini: bentuk soal dan mata uji yang berulang, jenis pola deret angka beserta tabel polanya, blok soal matematika, aritmetika dasar dengan contoh hitungan, dua blok latihan tambahan, kesalahan umum, lalu rencana latihan sepuluh menit tiap hari. Kalau kamu datang hanya untuk mengerjakan soal, lompat saja langsung ke blok soal pertama.</p>
+
+  <h2 id="apa-saja-yang-diuji-di-psikotes-matematika">Apa saja yang diuji di psikotes matematika</h2>
+  <p>Dalam latihan, soal matematika psikotes hampir selalu berbentuk pilihan ganda dengan empat opsi dan batas waktu per butir yang ketat. Kalkulator umumnya tidak diperbolehkan, sehingga kertas coret-coretan menjadi alat bantu utama. Nilai tambah terbesar bukan menghafal rumus, melainkan kebiasaan menghitung dengan rapi dan tahu kapan sebuah soal sebaiknya dilewati dulu.</p>
+  <p>Yang membuat bagian ini terasa berat bukan tingkat kesulitannya, melainkan jumlah butir yang harus diselesaikan dalam waktu terbatas. Karena itu, biasakan bekerja dengan batas waktu per butir sejak dari latihan: tentukan target, misalnya 45 detik per soal, tandai butir yang melewati batas itu, lalu lanjut ke soal berikutnya. Soal yang ditandai bisa kamu kembalikan di akhir, sementara soal mudah yang terlewat tidak akan kembali sendiri. Aturan penilaian dan pengurangan nilai berbeda antar seleksi, jadi bacalah instruksi di hari pelaksanaan sebelum memutuskan untuk menebak.</p>
+  <p>Secara garis besar, materi yang berulang di banyak latihan bisa dikelompokkan menjadi lima:</p>
+  <ul>
+    <li>Deret angka - melanjutkan barisan bilangan dari pola yang belum tentu kelihatan pada pandangan pertama.</li>
+    <li>Aritmetika dasar - persen, diskon, pecahan, perbandingan, dan rata-rata.</li>
+    <li>Soal cerita - untung dan rugi, kecepatan jarak waktu, serta pekerjaan yang diselesaikan bersama-sama.</li>
+    <li>Data sederhana - membaca angka dari tabel atau grafik lalu menjawab pertanyaan singkat tentangnya.</li>
+    <li>Logika bilangan - mencari nilai yang hilang atau menilai pernyataan mana yang benar.</li>
+  </ul>
+  <div class="catatan"><p>Komposisi soal berbeda-beda antara satu seleksi dan seleksi lain, dan tidak ada satu susunan yang berlaku untuk semua penyelenggara. Karena itu cara paling aman adalah melatih variasi soal, bukan menebak susunan satu penyelenggara tertentu. Aturan penilaian pun berbeda antar seleksi, jadi baca instruksi sebelum memutuskan menebak jawaban yang tidak kamu ketahui.</p></div>
+
+  <h2 id="jenis-pola-deret-angka-yang-paling-sering-keluar">Jenis pola deret angka yang paling sering keluar</h2>
+  <p>Deret angka adalah bagian yang paling cepat dikerjakan kalau polanya terbaca, dan paling menyita waktu kalau kamu menebak-nebak. Kebiasaan yang membantu: tuliskan selisih antar suku di atas angkanya. Banyak pola langsung terlihat pada langkah itu, tanpa perlu menghitung sampai jawaban akhir.</p>
+  <p>Ada urutan pemeriksaan yang bisa dikerjakan cepat, kira-kira tiga langkah. Pertama, hitung selisih antar suku; kalau selisihnya tetap, polanya sudah ketemu. Kedua, kalau selisihnya tidak tetap, periksa apakah selisih itu sendiri naik secara teratur, dan perhatikan juga apakah angkanya berada di sekitar bilangan kuadrat seperti 64 dan 81, yaitu delapan kuadrat dan sembilan kuadrat. Ketiga, kalau dua cara itu gagal, pisahkan suku ganjil dan suku genap, lalu periksa apakah masing-masing punya aturan sendiri.</p>
+  <p>Yang juga penting adalah menetapkan batas kesabaran. Kalau setelah sekitar 40 detik pola belum terbaca, tandai soal itu dan pindah. Deret angka bisa memakan waktu tanpa batas, sedangkan modal utamamu di tes ini adalah waktu untuk soal lain. Pola yang belum terlihat hari ini biasanya terbaca lebih cepat setelah kamu berlatih beberapa deret setiap hari.</p>
+  <p>Tujuh pola berikut mencakup sebagian besar deret yang muncul dalam latihan:</p>
+  <table>
+    <thead><tr><th>Pola</th><th>Ciri mudah dikenali</th><th>Contoh singkat</th></tr></thead>
+    <tbody>
+    <tr><td data-label="Pola">Beda tetap</td><td data-label="Ciri mudah dikenali">Selisih antar suku selalu sama</td><td data-label="Contoh singkat">4, 9, 14, 19, 24 (selisih +5)</td></tr>
+    <tr><td data-label="Pola">Beda bertingkat</td><td data-label="Ciri mudah dikenali">Selisihnya sendiri membentuk pola teratur</td><td data-label="Contoh singkat">2, 5, 10, 17, 26 (selisih +3, +5, +7, +9)</td></tr>
+    <tr><td data-label="Pola">Perkalian tetap</td><td data-label="Ciri mudah dikenali">Setiap suku dikalikan atau dibagi angka yang sama</td><td data-label="Contoh singkat">3, 6, 12, 24, 48 (dikali 2)</td></tr>
+    <tr><td data-label="Pola">Dua deret bergantian</td><td data-label="Ciri mudah dikenali">Suku ganjil dan suku genap punya aturan sendiri</td><td data-label="Contoh singkat">7, 20, 10, 40, 13, 80 (ganjil +3, genap dikali 2)</td></tr>
+    <tr><td data-label="Pola">Bilangan kuadrat</td><td data-label="Ciri mudah dikenali">Suku mengikuti 1, 4, 9, 16, dan seterusnya</td><td data-label="Contoh singkat">1, 4, 9, 16, 25 (1x1, 2x2, 3x3, 4x4, 5x5)</td></tr>
+    <tr><td data-label="Pola">Dua operasi bergantian</td><td data-label="Ciri mudah dikenali">Dikali lalu dikurangi, berulang</td><td data-label="Contoh singkat">5, 10, 8, 16, 14 (dikali 2, dikurangi 2)</td></tr>
+    <tr><td data-label="Pola">Jumlah dua suku sebelumnya</td><td data-label="Ciri mudah dikenali">Tiap suku adalah jumlah dua suku di depannya</td><td data-label="Contoh singkat">2, 3, 5, 8, 13, 21</td></tr>
+    </tbody>
+  </table>
+  <div class="catatan"><p>Contoh pada tabel adalah ilustrasi pola supaya mudah diingat, bukan soal yang harus dijawab. Pola yang sama kamu pakai saat mengerjakan blok soal di bawah. Satu catatan tambahan: tidak semua deret memakai aturan yang sama dari awal sampai akhir, jadi periksa selalu dua atau tiga suku terakhir sebelum memastikan pilihanmu.</p></div>
+
+  <h2 id="contoh-soal-matematika-dan-pembahasan">Contoh soal matematika dan pembahasan</h2>
+  <p>Berikut 15 soal matematika pilihan ganda. Kerjakan dulu tanpa membuka jawaban, lalu periksa dengan mengikuti langkah pada pembahasan. Kalau ada butir yang salah, tulis alasan kesalahannya - membaca penyebabnya satu kali lebih berguna daripada mengerjakan dua puluh soal baru tanpa koreksi. Catat juga waktu yang kamu pakai untuk melihat apakah kecepatanmu sudah sesuai target.</p>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">1.</span>Pasukan 240 prajurit, 35% dikirim misi. Sisa prajurit...</p>
+    <ol class="pilih">
+      <li>156</li>
+      <li>160</li>
+      <li>176</li>
+      <li>84</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 156
+Dikirim = 35% × 240 = 84. Sisa = 240-84 = 156.
+INGAT: Persen = per seratus. Contoh: 35% × 240 = 35/100 × 240.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">2.</span>Jika sin30°=0.5, nilai 4sin30° + 2cos60° adalah...</p>
+    <ol class="pilih">
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>3</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 3
+cos60°=0.5. Maka 4(0.5)+2(0.5)=2+1=3.
+INGAT: Soal hitungan: tulis langkahnya, jangan mengandalkan perkiraan.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">3.</span>Sebuah kolam renang diisi 2 pipa. Pipa A mengisi penuh dalam 6 jam, Pipa B dalam 3 jam. Bersama-sama dalam berapa jam?</p>
+    <ol class="pilih">
+      <li>2 jam</li>
+      <li>2,5 jam</li>
+      <li>1 jam</li>
+      <li>1,5 jam</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 2 jam
+TRIK CEPAT: Kapasitas per jam = 1/6 + 1/3 = 1/6 + 2/6 = 3/6 = 1/2. Waktu = 2 jam. RUMUS: 1/A + 1/B = 1/C.
+INGAT: Soal hitungan: tulis langkahnya, jangan mengandalkan perkiraan.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">4.</span>Jika 5x + 3 = 23, nilai x adalah...</p>
+    <ol class="pilih">
+      <li>5</li>
+      <li>6</li>
+      <li>3</li>
+      <li>4</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 4
+5x = 23-3 = 20. x = 4. TRIK: pindahkan konstanta dulu, baru bagi.
+INGAT: Persamaan: kumpulkan variabel di satu ruas dan angka di ruas lainnya.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">5.</span>Kecepatan = 72 km/jam. Dalam 2,5 jam menempuh...</p>
+    <ol class="pilih">
+      <li>180 km</li>
+      <li>190 km</li>
+      <li>160 km</li>
+      <li>170 km</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 180 km
+Jarak = v x t = 72 × 2,5 = 180 km.
+INGAT: Rumus: Jarak = Kecepatan × Waktu; Waktu = Jarak ÷ Kecepatan.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">6.</span>5% dari 1000 + 10% dari 500 = ...</p>
+    <ol class="pilih">
+      <li>150</li>
+      <li>200</li>
+      <li>250</li>
+      <li>100</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 100
+5% × 1000 = 50. 10% × 500 = 50. Total = 100.
+INGAT: Persen = per seratus. Contoh: 35% × 240 = 35/100 × 240.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">7.</span>Pasukan 240 prajurit, 43% dikirim misi. Sisa prajurit...</p>
+    <ol class="pilih">
+      <li>145</li>
+      <li>129</li>
+      <li>131</li>
+      <li>137</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 137
+Dikirim = 43% × 240 = 103. Sisa = 240 - 103 = 137.
+INGAT: Persen = per seratus. Contoh: 35% × 240 = 35/100 × 240.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">8.</span>Jika 2x + 20 = 40, nilai x adalah...</p>
+    <ol class="pilih">
+      <li>10</li>
+      <li>12</li>
+      <li>8</li>
+      <li>13</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 10
+2x = 40-20 = 20. x = 20÷2 = 10.
+INGAT: Persamaan: kumpulkan variabel di satu ruas dan angka di ruas lainnya.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">9.</span>Jika 7x - 10 = 95, nilai x adalah...</p>
+    <ol class="pilih">
+      <li>18</li>
+      <li>16</li>
+      <li>12</li>
+      <li>15</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 15
+7x = 95+10 = 105. x = 105÷7 = 15.
+INGAT: Persamaan: kumpulkan variabel di satu ruas dan angka di ruas lainnya.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">10.</span>Jika x + y = 18 dan x - y = 2, nilai x × y adalah...</p>
+    <ol class="pilih">
+      <li>80</li>
+      <li>74</li>
+      <li>72</li>
+      <li>88</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 80
+2x = 20 → x = 10; 2y = 16 → y = 8. x×y = 80.
+INGAT: Soal hitungan: tulis langkahnya, jangan mengandalkan perkiraan.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">11.</span>Deret aritmetika: 7, 9, 11, 13. Suku ke-11 adalah...</p>
+    <ol class="pilih">
+      <li>32</li>
+      <li>21</li>
+      <li>33</li>
+      <li>27</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 27
+a=7, b=2. U11 = 7+10×2 = 27.
+INGAT: Deret: hitung selisih dulu (aritmetika), atau cek rasio (geometri).</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">12.</span>Deret geometri: 4, 8, 16, 32. Suku ke-6 adalah...</p>
+    <ol class="pilih">
+      <li>128</li>
+      <li>88</li>
+      <li>168</li>
+      <li>97</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 128
+Rasio = 2. U6 = 4×2⁵ = 128.
+INGAT: Deret: hitung selisih dulu (aritmetika), atau cek rasio (geometri).</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">13.</span>Jarak 275 km ditempuh dengan kecepatan 55 km/jam. Waktu tempuh...</p>
+    <ol class="pilih">
+      <li>3</li>
+      <li>6</li>
+      <li>4</li>
+      <li>5</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 5
+Waktu = 275÷55 = 5 jam.
+INGAT: Rumus: Jarak = Kecepatan × Waktu; Waktu = Jarak ÷ Kecepatan.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">14.</span>Persegi panjang dengan panjang 11 cm dan lebar 9 cm. Luasnya...</p>
+    <ol class="pilih">
+      <li>99</li>
+      <li>92</li>
+      <li>87</li>
+      <li>106</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 99
+Luas = 11×9 = 99 cm².
+INGAT: Luas persegi panjang = panjang × lebar; Keliling = 2 × (panjang + lebar).</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">15.</span>Rata-rata dari 90, 59, 45, 81, 80, 77 adalah...</p>
+    <ol class="pilih">
+      <li>74</li>
+      <li>70</li>
+      <li>71</li>
+      <li>72</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 72
+Jumlah data = 90 + 59 + 45 + 81 + 80 + 77 = 432. Rata-rata = 432 ÷ 6 = 72.
+INGAT: Rata-rata = jumlah data ÷ banyak data. Median = nilai tengah setelah data diurutkan.</p>
+    </details>
+  </article>
+
+  <h2 id="aritmetika-dasar-yang-sering-dipakai-persen-keun">Aritmetika dasar yang sering dipakai: persen, keuntungan, kecepatan</h2>
+  <p>Persen, untung dan rugi, serta kecepatan jarak waktu adalah tiga topik yang paling sering muncul dalam bentuk soal cerita. Semuanya bertumpu pada perkalian dan pembagian sederhana. Kuncinya satu: tuliskan apa yang diketahui dan apa yang dicari sebelum memilih jawaban, supaya kamu tidak menghitung hal yang tidak ditanyakan.</p>
+  <p>Pola berpikirnya selalu sama dan cukup tiga langkah: samakan dulu semua satuan, tuliskan hubungan antarangka yang kamu pakai, lalu hitung dan periksa apakah hasilnya masuk akal. Contoh pemeriksaan akal sehat: kalau modal 80.000 dijual 100.000, keuntungan seperempat atau 25% masuk akal; kalau hasil hitunganmu keluar 125%, berarti ada yang salah tempat.</p>
+  <p>Contoh singkat berikut memperlihatkan cara berhitungnya, lengkap dengan angkanya:</p>
+  <ul>
+    <li>Persen dari jumlah: 15% dari 240.000 dihitung 0,15 x 240.000 = 36.000. Sisa setelah dipotong 15% adalah 240.000 - 36.000 = 204.000.</li>
+    <li>Diskon bertingkat: harga 250.000 dipotong 20% menjadi 200.000, lalu dipotong lagi 10% menjadi 180.000. Total potongannya 70.000, yaitu 28% dari harga awal.</li>
+    <li>Kenaikan lalu penurunan: harga 400.000 naik 25% menjadi 500.000, lalu turun 20% dari 500.000 sehingga kembali menjadi 400.000. Persentase naik dan turun yang tidak sama besar tidak saling membatalkan, jadi selalu hitung dari angka terbaru.</li>
+    <li>Untung dan persentasenya terhadap modal: modal 80.000, dijual 100.000. Untungnya 20.000, dan 20.000 dibagi 80.000 sama dengan 0,25 atau 25%.</li>
+    <li>Kecepatan: 180 km dalam 2,5 jam berarti 180 dibagi 2,5 sama dengan 72 km per jam. Dengan kecepatan itu, menempuh 252 km memerlukan 252 dibagi 72 sama dengan 3,5 jam.</li>
+    <li>Kecepatan rata-rata campuran: 2 jam pertama pada 60 km per jam menempuh 120 km, 1 jam berikutnya pada 90 km per jam menempuh 90 km. Totalnya 210 km dalam 3 jam, sehingga rata-ratanya 70 km per jam.</li>
+    <li>Rata-rata: empat nilai 72, 84, 90, dan 66 berjumlah 312, sehingga rata-ratanya 312 dibagi 4 sama dengan 78.</li>
+    <li>Pecahan ke persen: 3/8 sama dengan 0,375 atau 37,5%. Menghafal beberapa padanan seperti ini mempercepat pekerjaan di soal perbandingan.</li>
+    <li>Perbandingan dua bagian: dua bagian berbanding 3 : 5 dengan jumlah 64. Karena 3 + 5 = 8, satu bagian bernilai 64 dibagi 8 sama dengan 8, sehingga nilai keduanya 24 dan 40.</li>
+    <li>Perbandingan tiga bagian: uang 600.000 dibagi dengan perbandingan 2 : 3 : 5. Karena 2 + 3 + 5 = 10, satu bagian bernilai 60.000, sehingga pembagiannya 120.000, 180.000, dan 300.000.</li>
+    <li>Pekerjaan bersama: 4 pekerja menyelesaikan pekerjaan dalam 12 hari, berarti total 48 hari-orang. Dengan 6 pekerja, waktunya 48 dibagi 6 sama dengan 8 hari.</li>
+    <li>Skala peta: peta berskala 1 : 250.000 dengan jarak 4 cm berarti 4 x 250.000 = 1.000.000 cm, yaitu 10 km di lapangan.</li>
+    <li>Selisih waktu kerja: pukul 08.00 sampai 16.30 adalah 8,5 jam atau 510 menit. Dikurangi istirahat 45 menit, waktu kerjanya 465 menit atau 7,75 jam.</li>
+  </ul>
+  <div class="catatan"><p>Dua kebiasaan cepat yang hemat waktu: ubah diskon menjadi pengali (potongan 25% berarti dikali 0,75), dan samakan satuan sebelum membagi - 45 menit harus ditulis 0,75 jam, bukan 45. Untuk soal cerita yang terasa panjang, selesaikan dulu yang angkanya paling sederhana; setiap butir bernilai sama, jadi tidak ada gunanya bertarung lebih lama di satu butir yang sulit.</p></div>
+
+  <h2 id="latihan-lanjutan-10-soal-kemampuan-numerik">Latihan lanjutan: 10 soal kemampuan numerik</h2>
+  <p>Soal numerik menuntut hal yang mirip dengan soal matematika, hanya saja porsi hitungan cepatnya lebih besar dan angkanya kadang disajikan dalam tabel. Setelah 15 soal tadi, lanjutkan dengan 10 soal berikut untuk menguji ketahanan konsentrasimu. Kalau di blok sebelumnya kamu berhenti beberapa kali, perhatikan di soal nomor berapa konsentrasimu mulai turun - itu informasi yang berguna untuk mengatur tempo di hari tes.</p>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">1.</span>1248 + 763 - 459 = ...</p>
+    <ol class="pilih">
+      <li>1552</li>
+      <li>1562</li>
+      <li>1572</li>
+      <li>1542</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 1552
+Kerjakan berurutan: 1248 + 763 = 2011, lalu 2011 − 459 = 1552.
+INGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">2.</span>Berapa persen 75 dari 300?</p>
+    <ol class="pilih">
+      <li>30%</li>
+      <li>35%</li>
+      <li>20%</li>
+      <li>25%</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 25%
+75/300 × 100% = 25%.
+INGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">3.</span>456 - 178 = ...</p>
+    <ol class="pilih">
+      <li>278</li>
+      <li>288</li>
+      <li>298</li>
+      <li>268</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 278
+Kurangkan langsung: 456 − 178 = 278.
+INGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">4.</span>2⁷ = ...</p>
+    <ol class="pilih">
+      <li>256</li>
+      <li>512</li>
+      <li>64</li>
+      <li>128</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 128
+2⁷ = 2 × 2 × 2 × 2 × 2 × 2 × 2 = 128.
+INGAT: Hafal kuadrat 1-25 dan pangkat kecil (2⁵=32, 2⁸=256, 2¹⁰=1024).</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">5.</span>143 + 278 + 428 = ...</p>
+    <ol class="pilih">
+      <li>873</li>
+      <li>821</li>
+      <li>834</li>
+      <li>849</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 849
+Kerjakan berurutan: 143 + 278 = 421, lalu 421 + 428 = 849.
+INGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">6.</span>198 ÷ 9 = ...</p>
+    <ol class="pilih">
+      <li>22</li>
+      <li>18</li>
+      <li>17</li>
+      <li>25</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 22
+198 ÷ 9 = 22 (cek: 9 × 22 = 198).
+INGAT: Numerik: kerjakan dari kiri ke kanan dan tulis hasil antara supaya tidak keliru.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">7.</span>7/8 - 1/2 = ...</p>
+    <ol class="pilih">
+      <li>3/9</li>
+      <li>4/8</li>
+      <li>6/6</li>
+      <li>3/8</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 3/8
+Samakan penyebut ke 8. 7/8 = 7/8, 1/2 = 4/8. Selisih = 3/8 = 3/8.
+INGAT: Pecahan: samakan penyebut dulu, baru jumlahkan atau kurangkan pembilangnya.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">8.</span>3⁵ = ...</p>
+    <ol class="pilih">
+      <li>243</li>
+      <li>81</li>
+      <li>15</li>
+      <li>729</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 243
+3⁵ = 3 × 3 × 3 × 3 × 3 = 243.
+INGAT: Hafal kuadrat 1-25 dan pangkat kecil (2⁵=32, 2⁸=256, 2¹⁰=1024).</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">9.</span>√289 = ...</p>
+    <ol class="pilih">
+      <li>15</li>
+      <li>18</li>
+      <li>20</li>
+      <li>17</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 17
+√289 = 17, karena 17 × 17 = 289.
+INGAT: Hafal kuadrat 1-25 dan pangkat kecil (2⁵=32, 2⁸=256, 2¹⁰=1024).</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">10.</span>KPK dari 14 dan 21 adalah...</p>
+    <ol class="pilih">
+      <li>42</li>
+      <li>35</li>
+      <li>294</li>
+      <li>7</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 42
+Faktorisasi prima: 14 = 2 × 7 dan 21 = 3 × 7. KPK diambil dari SEMUA faktor dengan pangkat terbesar → KPK = 42. Cara cepat: (a × b) ÷ FPB = (14 × 21) ÷ 7 = 42.
+INGAT: FPB pakai faktor SAMA dengan pangkat terkecil; KPK pakai SEMUA faktor dengan pangkat terbesar.</p>
+    </details>
+  </article>
+
+  <h2 id="latihan-logika-8-soal-penalaran">Latihan logika: 8 soal penalaran</h2>
+  <p>Penalaran dan logika lebih menguji cara berpikir daripada kecepatan menghitung: menyimpulkan, meneruskan pola, dan memeriksa pernyataan yang tampak benar tetapi belum tentu. Delapan soal berikut melengkapinya. Di bagian ini kamu akan lebih sering memakai logika bahasa daripada angka, jadi bacalah setiap opsi sampai habis sebelum memilih.</p>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">1.</span>Semua prajurit TNI disiplin. Budi prajurit TNI. Kesimpulan:</p>
+    <ol class="pilih">
+      <li>Budi pasti disiplin</li>
+      <li>Tidak bisa disimpulkan</li>
+      <li>Budi mungkin disiplin</li>
+      <li>Budi tidak disiplin</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: Budi pasti disiplin
+Silogisme valid: premis mayor + minor valid → Budi pasti disiplin.
+INGAT: Silogisme: &#x27;semua A adalah B&#x27; + &#x27;X adalah A&#x27; → X pasti B. Kalau hanya tahu X adalah B, X belum tentu A.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">2.</span>Tidak ada prajurit yang penakut. Andi penakut. Maka:</p>
+    <ol class="pilih">
+      <li>Andi bukan prajurit</li>
+      <li>Andi prajurit terlatih</li>
+      <li>Tidak bisa disimpulkan</li>
+      <li>Andi mungkin prajurit</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: Andi bukan prajurit
+Tidak ada prajurit yang penakut → semua penakut bukan prajurit. Andi penakut → Andi bukan prajurit.
+INGAT: Silogisme: &#x27;semua A adalah B&#x27; + &#x27;X adalah A&#x27; → X pasti B. Kalau hanya tahu X adalah B, X belum tentu A.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">3.</span>Deret huruf: A, C, F, J, O. Huruf berikutnya...</p>
+    <ol class="pilih">
+      <li>U</li>
+      <li>V</li>
+      <li>S</li>
+      <li>T</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: U
+Ubah ke posisi alfabet: A(1), C(3), F(6), J(10), O(15). Selisihnya +2, +3, +4, +5, maka berikutnya +6. O(15) + 6 = 21 = huruf U.
+INGAT: Deret huruf: ubah huruf menjadi nomor (A=1 sampai Z=26), lalu cari selisihnya.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">4.</span>Deret huruf: B, E, H, K, N. Huruf berikutnya...</p>
+    <ol class="pilih">
+      <li>Q</li>
+      <li>R</li>
+      <li>S</li>
+      <li>P</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: Q
+Selisih: +3. B(2)+3=E(5), E+3=H(8), H+3=K(11), K+3=N(14), N+3=Q(17). Jawaban: Q.
+INGAT: Deret huruf: ubah huruf menjadi nomor (A=1 sampai Z=26), lalu cari selisihnya.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">5.</span>Deret: 3, 6, 12, 24, 48, 96. Angka berikutnya...</p>
+    <ol class="pilih">
+      <li>197</li>
+      <li>187</li>
+      <li>195</li>
+      <li>192</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 192
+Pola: 3×2ⁿ⁻¹. Setelah 96 adalah 192.
+INGAT: Deret angka: tulis selisih antar suku. Selisih tetap = aritmetika, rasio tetap = geometri, selisih naik = pola bertingkat.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">6.</span>Kode A=1, B=2, ..., Z=26. Kode untuk &#x27;GARUDA&#x27; adalah...</p>
+    <ol class="pilih">
+      <li>7-1-17-21-4-1</li>
+      <li>7-2-18-21-4-1</li>
+      <li>7-1-18-22-4-1</li>
+      <li>7-1-18-21-4-1</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 7-1-18-21-4-1
+GARUDA = G A R U D A = 7-1-18-21-4-1.
+INGAT: Sandi: cek pergeseran (+1, +2) atau ubah huruf ke posisi alfabet (A=1, B=2, ... Z=26).</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">7.</span>Semua prajurit disiplin. Andi prajurit. Kesimpulan yang benar...</p>
+    <ol class="pilih">
+      <li>Informasi tidak cukup</li>
+      <li>Tidak bisa disimpulkan</li>
+      <li>Mungkin benar tapi tidak pasti</li>
+      <li>Andi disiplin</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: Andi disiplin
+Silogisme: semua A=B, X=A → X=B.
+INGAT: Silogisme: &#x27;semua A adalah B&#x27; + &#x27;X adalah A&#x27; → X pasti B. Kalau hanya tahu X adalah B, X belum tentu A.</p>
+    </details>
+  </article>
+  <article class="tanya">
+    <p class="tanya-teks"><span class="tanya-nomor">8.</span>Dalam kotak ada 2 bola merah dan 10 bola biru. Peluang terambil bola merah...</p>
+    <ol class="pilih">
+      <li>1/5</li>
+      <li>5/6</li>
+      <li>6/5</li>
+      <li>1/6</li>
+    </ol>
+    <details class="bahas">
+      <summary>Lihat jawaban &amp; pembahasan</summary>
+      <p class="bahas-isi">JAWABAN: 1/6
+Total bola = 2 + 10 = 12. Peluang merah = 2/12 = 1/6 (dibagi 2).
+INGAT: Peluang = jumlah yang diharapkan ÷ seluruh kemungkinan. Sederhanakan pecahannya.</p>
+    </details>
+  </article>
+
+  <h2 id="kesalahan-umum-dan-cara-menghindarinya">Kesalahan umum dan cara menghindarinya</h2>
+  <p>Sebagian besar kesalahan pada tes berhitung bukan karena tidak bisa, melainkan karena tergesa-gesa. Tujuh kebiasaan berikut adalah yang paling sering muncul sekaligus yang paling mudah diperbaiki.</p>
+  <ul>
+    <li>Menebak pola tanpa memeriksa selisih. Tuliskan selisih antar suku lebih dulu; pola beda tetap dan beda bertingkat langsung terlihat dari langkah ini.</li>
+    <li>Berhenti terlalu lama di satu soal. Tandai soal yang berat, lanjut ke soal berikutnya, dan kembali setelah butir-butir yang mudah selesai.</li>
+    <li>Satuan yang tidak seragam. Menit, jam, dan persen adalah sumber kekeliruan yang paling umum. Samakan satuannya dulu, baru hitung.</li>
+    <li>Menghitung dari nol padahal bisa memakai angka bulat. Untuk 15% dari 240.000, hitung 10% (24.000) lalu tambahkan 5% (12.000) - lebih cepat daripada mengalikan langsung.</li>
+    <li>Terlalu cepat percaya pada pilihan yang angkanya mirip. Sebelum memilih, pastikan jawabanmu memang menjawab pertanyaan, bukan angka lain yang muncul di soal.</li>
+    <li>Membaca pembahasan sebelum mencoba. Kalau pembahasan dibaca lebih dulu, yang terlatih adalah ingatan, bukan kemampuan menghitung.</li>
+    <li>Tidak menyimpan catatan kesalahan. Daftar soal yang salah beserta penyebabnya adalah bahan latihan yang paling berharga; mengulanginya lebih berguna daripada menambah soal baru.</li>
+  </ul>
+  <div class="catatan"><p>Kesalahan yang paling mahal bukan salah hitung, melainkan salah membaca pertanyaan. Biasakan menandai kata kunci seperti selisih, total, atau rata-rata sebelum mulai menghitung. Menandai kata kunci juga membuat kamu lebih cepat sadar ketika soal meminta hal yang berbeda dari dugaan pertama.</p></div>
+
+  <h2 id="cara-latihan-10-menit-tiap-hari">Cara latihan 10 menit tiap hari</h2>
+  <p>Sepuluh menit setiap hari memberi hasil yang lebih baik daripada tiga jam sekali seminggu. Kecepatan berhitung bekerja seperti kebiasaan: ia terbentuk dari pengulangan pendek yang sering, bukan dari satu sesi panjang yang melelahkan.</p>
+  <p>Agar latihanmu terukur, catat dua hal setiap sesi: jumlah jawaban benar dan waktu yang dipakai. Kenaikan kecepatan biasanya terasa lebih dulu daripada kenaikan jumlah benar, dan itu tanda yang bagus. Bandingkan catatanmu setiap akhir pekan, bukan setiap hari, karena selisih sehari ke sehari tidak berarti apa-apa.</p>
+  <p>Rangkaian sepuluh menit berikut bisa langsung kamu pakai, tanpa perlu memasang apa pun:</p>
+  <ul>
+    <li>Menit 1-2: kerjakan sepuluh deret angka, cukup sampai polanya ketemu, tidak perlu sampai jawaban akhir.</li>
+    <li>Menit 3-6: satu blok berisi 5-8 soal dengan batas waktu per butir, misalnya 45 detik.</li>
+    <li>Menit 7-8: periksa pembahasan lalu catat soal yang salah beserta penyebabnya.</li>
+    <li>Menit 9-10: ulangi dua soal yang salah dari ingatan, tanpa melihat pembahasan.</li>
+  </ul>
+  <div class="catatan"><p>Sisihkan satu hari dalam seminggu untuk mengulang seluruh catatan kesalahan, bukan mengerjakan soal baru. Pilih jam saat kamu masih segar; latihan berhitung setelah lelah hasilnya jauh lebih kecil. Kalau satu hari terlewat, lanjutkan saja pada hari berikutnya - yang merusak kebiasaan bukan hari yang bolong, melainkan dua minggu tanpa latihan.</p></div>
+
+  <h2 id="tanya-jawab">Pertanyaan yang sering muncul</h2>
+  <div class="tanya"><p class="tanya-teks">Apakah soal psikotes matematika boleh dikerjakan dengan kalkulator?</p><p class="bahas-isi">Umumnya tidak. Karena itu latih berhitung di kepala: kuasai perkalian 1 sampai 20, hafalkan padanan persen yang sederhana (25% sama dengan seperempat, 10% sama dengan 0,1), dan biasakan memecah angka - untuk 15% dari 240.000, hitung 24.000 lalu tambahkan 12.000.</p></div>
+  <div class="tanya"><p class="tanya-teks">Berapa jumlah soal matematika yang biasanya muncul?</p><p class="bahas-isi">Jumlahnya berbeda-beda antar seleksi dan tidak ada susunan yang berlaku untuk semua penyelenggara. Yang bisa kamu siapkan adalah kecepatannya: targetkan satu butir selesai di bawah 45 detik supaya sisa waktu bisa dipakai untuk soal yang berat atau untuk memeriksa ulang butir yang meragukan.</p></div>
+  <div class="tanya"><p class="tanya-teks">Apakah soal di halaman ini sama dengan soal seleksi yang akan saya hadapi?</p><p class="bahas-isi">Tidak. Seluruh soal di SiapPsikotes adalah karya penyusun sendiri untuk keperluan latihan, bukan kumpulan soal dari seleksi tertentu. Yang kamu latih di sini adalah kecepatan mengenali pola dan ketelitian berhitung, bukan hafalan kunci jawaban.</p></div>
+  <div class="tanya"><p class="tanya-teks">Apa bedanya 40 soal di halaman contoh dan materi di dalam aplikasi?</p><p class="bahas-isi">Di halaman contoh tersedia 40 soal berpembahasan yang bisa dicoba gratis tanpa akun. Materi di dalam aplikasi berbayar: akses penuh berisi 1.225 soal untuk 9 jenis tes, lengkap dengan pembahasan dan Laporan Lengkap, seharga Rp 39.000 sekali bayar - bukan langganan, jadi tidak ada tagihan berulang.</p></div>
+  <div class="tanya"><p class="tanya-teks">Kalau saya menemukan soal atau pembahasan yang keliru, bagaimana?</p><p class="bahas-isi">Laporkan kepada kami. Setiap soal diperiksa dengan pedoman mutu yang dapat diperiksa ulang, tetapi kami tidak mengklaim bahwa semuanya bebas dari kekeliruan. Bukti pemeriksaan bisa kamu lihat di halaman mutu, dan laporanmu membantu perbaikan soal berikutnya.</p></div>
+  <div class="tanya"><p class="tanya-teks">Kalau hasil latihan saya belum naik, apa yang salah?</p><p class="bahas-isi">Biasanya bukan soal bakat, melainkan cara latihannya. Tiga penyebab yang paling sering: hanya membaca pembahasan tanpa mencoba mengerjakan, menambah soal baru tanpa mengulang soal yang salah, dan berlatih dalam sesi panjang yang jarang. Perbaiki dulu ketiga hal itu sebelum menyimpulkan apa pun.</p></div>
+  <p>Kunci soal matematika psikotes bukan pada rumus yang panjang, melainkan pada kebiasaan kecil: menuliskan yang diketahui, menandai yang ditanya, dan berhenti sejenak sebelum memilih jawaban. Soal di halaman ini bisa kamu kerjakan berulang kali sampai langkahnya terasa biasa; mengulang satu blok sampai lancar lebih berguna daripada melahap banyak soal sekali lewat.</p>
+  <p>Kalau ingin mencoba lebih dulu, 40 soal berpembahasan tersedia gratis tanpa akun di halaman contoh. Untuk latihan penuh, akses ke dalam aplikasi berisi 1.225 soal untuk 9 jenis tes dengan pembahasan dan Laporan Lengkap, seharga Rp 39.000 sekali bayar. SiapPsikotes bukan situs resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah; seluruh soal adalah karya penyusun sendiri untuk latihan, dan pembelian tidak menjamin kelulusan seleksi apa pun.</p>
+
+  <div class="tautan-artikel">
+    <a class="tombol sekunder" href="/psikotes/">Latihan soal psikotes di aplikasi</a>
+    <a class="tombol sekunder" href="/contoh/">40 soal contoh gratis (tanpa akun)</a>
+    <a class="tombol sekunder" href="/beli/">Harga dan cara beli</a>
+    <a class="tombol sekunder" href="/mutu/">Mutu dan bukti pemeriksaan soal</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong style="color:#eaf1f8">SiapPsikotes</strong> &mdash; latihan psikotes kerja, tes IQ, dan tes kepribadian.</p>
+    <div class="tautan-kaki">
+      <a href="../psikotes/">Buka aplikasi latihan</a>
+      <a href="../contoh/">40 soal contoh gratis</a>
+      <a href="../beli/">Harga &amp; cara beli</a>
+      <a href="../mutu/">Mutu &amp; bukti pemeriksaan</a>
+      <a href="../syarat/">Syarat &amp; ketentuan</a>
+      <a href="../privasi/">Kebijakan privasi</a>
+    </div>
+    <p>SiapPsikotes bukan produk resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah.</p>
+    <p>Seluruh soal di halaman ini diambil dari bank soal SiapPsikotes yang diperiksa dengan pedoman mutu yang dapat diperiksa ulang. Halaman ini bersifat latihan; hasil seleksi bergantung pada usaha pembaca.</p>
+    <p>Halaman ini diperbarui 15 September 2026.</p>
+  </div>
+</footer>
+</body>
+</html>

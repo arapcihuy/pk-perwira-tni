@@ -1,0 +1,166 @@
+{
+ "slug": "contoh-soal-psikotes-matematika",
+ "judul_tab": "Contoh Soal Psikotes Matematika dan Jawabannya | SiapPsikotes",
+ "deskripsi": "Contoh soal psikotes matematika dan jawabannya beserta cara menghitung: pola deret angka, persen, untung, kecepatan, plus latihan berpembahasan.",
+ "h1": "Contoh Soal Psikotes Matematika dan Jawabannya (Beserta Cara Hitungnya)",
+ "dek": "Soal matematika psikotes jarang menuntut rumus yang rumit. Yang membuatnya berat adalah waktu: hitungannya sederhana, tetapi jumlahnya banyak dan batas waktunya sempit. Di halaman ini ada 33 soal latihan berpembahasan.",
+ "kata_kunci": "contoh soal psikotes matematika dan jawabannya",
+ "pembuka": [
+  "Contoh soal psikotes matematika dan jawabannya sering dicari menjelang seleksi kerja. Wajar, karena bagian ini tidak menguji matematika tingkat lanjut, melainkan kecepatan mengenali pola dan ketelitian berhitung. Dua hal itu bisa dilatih, dan latihan yang tepat jauh lebih berguna daripada menghafal kunci jawaban.",
+  "Di halaman ini kamu bisa langsung mengerjakan 33 soal: 15 soal matematika, 10 soal kemampuan numerik, dan 8 soal penalaran. Semuanya diambil utuh dari bank soal SiapPsikotes yang diperiksa dengan pedoman mutu yang dapat diperiksa ulang, dan setiap soal punya pembahasan yang bisa dibuka setelah kamu menjawab.",
+  "Urutannya begini: bentuk soal dan mata uji yang berulang, jenis pola deret angka beserta tabel polanya, blok soal matematika, aritmetika dasar dengan contoh hitungan, dua blok latihan tambahan, kesalahan umum, lalu rencana latihan sepuluh menit tiap hari. Kalau kamu datang hanya untuk mengerjakan soal, lompat saja langsung ke blok soal pertama."
+ ],
+ "bagian": [
+  {
+   "h2": "Apa saja yang diuji di psikotes matematika",
+   "isi": [
+    "Dalam latihan, soal matematika psikotes hampir selalu berbentuk pilihan ganda dengan empat opsi dan batas waktu per butir yang ketat. Kalkulator umumnya tidak diperbolehkan, sehingga kertas coret-coretan menjadi alat bantu utama. Nilai tambah terbesar bukan menghafal rumus, melainkan kebiasaan menghitung dengan rapi dan tahu kapan sebuah soal sebaiknya dilewati dulu.",
+    "Yang membuat bagian ini terasa berat bukan tingkat kesulitannya, melainkan jumlah butir yang harus diselesaikan dalam waktu terbatas. Karena itu, biasakan bekerja dengan batas waktu per butir sejak dari latihan: tentukan target, misalnya 45 detik per soal, tandai butir yang melewati batas itu, lalu lanjut ke soal berikutnya. Soal yang ditandai bisa kamu kembalikan di akhir, sementara soal mudah yang terlewat tidak akan kembali sendiri. Aturan penilaian dan pengurangan nilai berbeda antar seleksi, jadi bacalah instruksi di hari pelaksanaan sebelum memutuskan untuk menebak.",
+    "Secara garis besar, materi yang berulang di banyak latihan bisa dikelompokkan menjadi lima:"
+   ],
+   "poin": [
+    "Deret angka - melanjutkan barisan bilangan dari pola yang belum tentu kelihatan pada pandangan pertama.",
+    "Aritmetika dasar - persen, diskon, pecahan, perbandingan, dan rata-rata.",
+    "Soal cerita - untung dan rugi, kecepatan jarak waktu, serta pekerjaan yang diselesaikan bersama-sama.",
+    "Data sederhana - membaca angka dari tabel atau grafik lalu menjawab pertanyaan singkat tentangnya.",
+    "Logika bilangan - mencari nilai yang hilang atau menilai pernyataan mana yang benar."
+   ],
+   "catatan": "Komposisi soal berbeda-beda antara satu seleksi dan seleksi lain, dan tidak ada satu susunan yang berlaku untuk semua penyelenggara. Karena itu cara paling aman adalah melatih variasi soal, bukan menebak susunan satu penyelenggara tertentu. Aturan penilaian pun berbeda antar seleksi, jadi baca instruksi sebelum memutuskan menebak jawaban yang tidak kamu ketahui."
+  },
+  {
+   "h2": "Jenis pola deret angka yang paling sering keluar",
+   "isi": [
+    "Deret angka adalah bagian yang paling cepat dikerjakan kalau polanya terbaca, dan paling menyita waktu kalau kamu menebak-nebak. Kebiasaan yang membantu: tuliskan selisih antar suku di atas angkanya. Banyak pola langsung terlihat pada langkah itu, tanpa perlu menghitung sampai jawaban akhir.",
+    "Ada urutan pemeriksaan yang bisa dikerjakan cepat, kira-kira tiga langkah. Pertama, hitung selisih antar suku; kalau selisihnya tetap, polanya sudah ketemu. Kedua, kalau selisihnya tidak tetap, periksa apakah selisih itu sendiri naik secara teratur, dan perhatikan juga apakah angkanya berada di sekitar bilangan kuadrat seperti 64 dan 81, yaitu delapan kuadrat dan sembilan kuadrat. Ketiga, kalau dua cara itu gagal, pisahkan suku ganjil dan suku genap, lalu periksa apakah masing-masing punya aturan sendiri.",
+    "Yang juga penting adalah menetapkan batas kesabaran. Kalau setelah sekitar 40 detik pola belum terbaca, tandai soal itu dan pindah. Deret angka bisa memakan waktu tanpa batas, sedangkan modal utamamu di tes ini adalah waktu untuk soal lain. Pola yang belum terlihat hari ini biasanya terbaca lebih cepat setelah kamu berlatih beberapa deret setiap hari.",
+    "Tujuh pola berikut mencakup sebagian besar deret yang muncul dalam latihan:"
+   ],
+   "tabel": {
+    "kepala": ["Pola", "Ciri mudah dikenali", "Contoh singkat"],
+    "baris": [
+     ["Beda tetap", "Selisih antar suku selalu sama", "4, 9, 14, 19, 24 (selisih +5)"],
+     ["Beda bertingkat", "Selisihnya sendiri membentuk pola teratur", "2, 5, 10, 17, 26 (selisih +3, +5, +7, +9)"],
+     ["Perkalian tetap", "Setiap suku dikalikan atau dibagi angka yang sama", "3, 6, 12, 24, 48 (dikali 2)"],
+     ["Dua deret bergantian", "Suku ganjil dan suku genap punya aturan sendiri", "7, 20, 10, 40, 13, 80 (ganjil +3, genap dikali 2)"],
+     ["Bilangan kuadrat", "Suku mengikuti 1, 4, 9, 16, dan seterusnya", "1, 4, 9, 16, 25 (1x1, 2x2, 3x3, 4x4, 5x5)"],
+     ["Dua operasi bergantian", "Dikali lalu dikurangi, berulang", "5, 10, 8, 16, 14 (dikali 2, dikurangi 2)"],
+     ["Jumlah dua suku sebelumnya", "Tiap suku adalah jumlah dua suku di depannya", "2, 3, 5, 8, 13, 21"]
+    ]
+   },
+   "catatan": "Contoh pada tabel adalah ilustrasi pola supaya mudah diingat, bukan soal yang harus dijawab. Pola yang sama kamu pakai saat mengerjakan blok soal di bawah. Satu catatan tambahan: tidak semua deret memakai aturan yang sama dari awal sampai akhir, jadi periksa selalu dua atau tiga suku terakhir sebelum memastikan pilihanmu."
+  },
+  {
+   "h2": "Contoh soal matematika dan pembahasan",
+   "isi": [
+    "Berikut 15 soal matematika pilihan ganda. Kerjakan dulu tanpa membuka jawaban, lalu periksa dengan mengikuti langkah pada pembahasan. Kalau ada butir yang salah, tulis alasan kesalahannya - membaca penyebabnya satu kali lebih berguna daripada mengerjakan dua puluh soal baru tanpa koreksi. Catat juga waktu yang kamu pakai untuk melihat apakah kecepatanmu sudah sesuai target."
+   ],
+   "soal": {"kategori": "matematika", "jumlah": 15}
+  },
+  {
+   "h2": "Aritmetika dasar yang sering dipakai: persen, keuntungan, kecepatan",
+   "isi": [
+    "Persen, untung dan rugi, serta kecepatan jarak waktu adalah tiga topik yang paling sering muncul dalam bentuk soal cerita. Semuanya bertumpu pada perkalian dan pembagian sederhana. Kuncinya satu: tuliskan apa yang diketahui dan apa yang dicari sebelum memilih jawaban, supaya kamu tidak menghitung hal yang tidak ditanyakan.",
+    "Pola berpikirnya selalu sama dan cukup tiga langkah: samakan dulu semua satuan, tuliskan hubungan antarangka yang kamu pakai, lalu hitung dan periksa apakah hasilnya masuk akal. Contoh pemeriksaan akal sehat: kalau modal 80.000 dijual 100.000, keuntungan seperempat atau 25% masuk akal; kalau hasil hitunganmu keluar 125%, berarti ada yang salah tempat.",
+    "Contoh singkat berikut memperlihatkan cara berhitungnya, lengkap dengan angkanya:"
+   ],
+   "poin": [
+    "Persen dari jumlah: 15% dari 240.000 dihitung 0,15 x 240.000 = 36.000. Sisa setelah dipotong 15% adalah 240.000 - 36.000 = 204.000.",
+    "Diskon bertingkat: harga 250.000 dipotong 20% menjadi 200.000, lalu dipotong lagi 10% menjadi 180.000. Total potongannya 70.000, yaitu 28% dari harga awal.",
+    "Kenaikan lalu penurunan: harga 400.000 naik 25% menjadi 500.000, lalu turun 20% dari 500.000 sehingga kembali menjadi 400.000. Persentase naik dan turun yang tidak sama besar tidak saling membatalkan, jadi selalu hitung dari angka terbaru.",
+    "Untung dan persentasenya terhadap modal: modal 80.000, dijual 100.000. Untungnya 20.000, dan 20.000 dibagi 80.000 sama dengan 0,25 atau 25%.",
+    "Kecepatan: 180 km dalam 2,5 jam berarti 180 dibagi 2,5 sama dengan 72 km per jam. Dengan kecepatan itu, menempuh 252 km memerlukan 252 dibagi 72 sama dengan 3,5 jam.",
+    "Kecepatan rata-rata campuran: 2 jam pertama pada 60 km per jam menempuh 120 km, 1 jam berikutnya pada 90 km per jam menempuh 90 km. Totalnya 210 km dalam 3 jam, sehingga rata-ratanya 70 km per jam.",
+    "Rata-rata: empat nilai 72, 84, 90, dan 66 berjumlah 312, sehingga rata-ratanya 312 dibagi 4 sama dengan 78.",
+    "Pecahan ke persen: 3/8 sama dengan 0,375 atau 37,5%. Menghafal beberapa padanan seperti ini mempercepat pekerjaan di soal perbandingan.",
+    "Perbandingan dua bagian: dua bagian berbanding 3 : 5 dengan jumlah 64. Karena 3 + 5 = 8, satu bagian bernilai 64 dibagi 8 sama dengan 8, sehingga nilai keduanya 24 dan 40.",
+    "Perbandingan tiga bagian: uang 600.000 dibagi dengan perbandingan 2 : 3 : 5. Karena 2 + 3 + 5 = 10, satu bagian bernilai 60.000, sehingga pembagiannya 120.000, 180.000, dan 300.000.",
+    "Pekerjaan bersama: 4 pekerja menyelesaikan pekerjaan dalam 12 hari, berarti total 48 hari-orang. Dengan 6 pekerja, waktunya 48 dibagi 6 sama dengan 8 hari.",
+    "Skala peta: peta berskala 1 : 250.000 dengan jarak 4 cm berarti 4 x 250.000 = 1.000.000 cm, yaitu 10 km di lapangan.",
+    "Selisih waktu kerja: pukul 08.00 sampai 16.30 adalah 8,5 jam atau 510 menit. Dikurangi istirahat 45 menit, waktu kerjanya 465 menit atau 7,75 jam."
+   ],
+   "catatan": "Dua kebiasaan cepat yang hemat waktu: ubah diskon menjadi pengali (potongan 25% berarti dikali 0,75), dan samakan satuan sebelum membagi - 45 menit harus ditulis 0,75 jam, bukan 45. Untuk soal cerita yang terasa panjang, selesaikan dulu yang angkanya paling sederhana; setiap butir bernilai sama, jadi tidak ada gunanya bertarung lebih lama di satu butir yang sulit."
+  },
+  {
+   "h2": "Latihan lanjutan: 10 soal kemampuan numerik",
+   "isi": [
+    "Soal numerik menuntut hal yang mirip dengan soal matematika, hanya saja porsi hitungan cepatnya lebih besar dan angkanya kadang disajikan dalam tabel. Setelah 15 soal tadi, lanjutkan dengan 10 soal berikut untuk menguji ketahanan konsentrasimu. Kalau di blok sebelumnya kamu berhenti beberapa kali, perhatikan di soal nomor berapa konsentrasimu mulai turun - itu informasi yang berguna untuk mengatur tempo di hari tes."
+   ],
+   "soal": {"kategori": "numerik", "jumlah": 10}
+  },
+  {
+   "h2": "Latihan logika: 8 soal penalaran",
+   "isi": [
+    "Penalaran dan logika lebih menguji cara berpikir daripada kecepatan menghitung: menyimpulkan, meneruskan pola, dan memeriksa pernyataan yang tampak benar tetapi belum tentu. Delapan soal berikut melengkapinya. Di bagian ini kamu akan lebih sering memakai logika bahasa daripada angka, jadi bacalah setiap opsi sampai habis sebelum memilih."
+   ],
+   "soal": {"kategori": "penalaran_logika", "jumlah": 8}
+  },
+  {
+   "h2": "Kesalahan umum dan cara menghindarinya",
+   "isi": [
+    "Sebagian besar kesalahan pada tes berhitung bukan karena tidak bisa, melainkan karena tergesa-gesa. Tujuh kebiasaan berikut adalah yang paling sering muncul sekaligus yang paling mudah diperbaiki."
+   ],
+   "poin": [
+    "Menebak pola tanpa memeriksa selisih. Tuliskan selisih antar suku lebih dulu; pola beda tetap dan beda bertingkat langsung terlihat dari langkah ini.",
+    "Berhenti terlalu lama di satu soal. Tandai soal yang berat, lanjut ke soal berikutnya, dan kembali setelah butir-butir yang mudah selesai.",
+    "Satuan yang tidak seragam. Menit, jam, dan persen adalah sumber kekeliruan yang paling umum. Samakan satuannya dulu, baru hitung.",
+    "Menghitung dari nol padahal bisa memakai angka bulat. Untuk 15% dari 240.000, hitung 10% (24.000) lalu tambahkan 5% (12.000) - lebih cepat daripada mengalikan langsung.",
+    "Terlalu cepat percaya pada pilihan yang angkanya mirip. Sebelum memilih, pastikan jawabanmu memang menjawab pertanyaan, bukan angka lain yang muncul di soal.",
+    "Membaca pembahasan sebelum mencoba. Kalau pembahasan dibaca lebih dulu, yang terlatih adalah ingatan, bukan kemampuan menghitung.",
+    "Tidak menyimpan catatan kesalahan. Daftar soal yang salah beserta penyebabnya adalah bahan latihan yang paling berharga; mengulanginya lebih berguna daripada menambah soal baru."
+   ],
+   "catatan": "Kesalahan yang paling mahal bukan salah hitung, melainkan salah membaca pertanyaan. Biasakan menandai kata kunci seperti selisih, total, atau rata-rata sebelum mulai menghitung. Menandai kata kunci juga membuat kamu lebih cepat sadar ketika soal meminta hal yang berbeda dari dugaan pertama."
+  },
+  {
+   "h2": "Cara latihan 10 menit tiap hari",
+   "isi": [
+    "Sepuluh menit setiap hari memberi hasil yang lebih baik daripada tiga jam sekali seminggu. Kecepatan berhitung bekerja seperti kebiasaan: ia terbentuk dari pengulangan pendek yang sering, bukan dari satu sesi panjang yang melelahkan.",
+    "Agar latihanmu terukur, catat dua hal setiap sesi: jumlah jawaban benar dan waktu yang dipakai. Kenaikan kecepatan biasanya terasa lebih dulu daripada kenaikan jumlah benar, dan itu tanda yang bagus. Bandingkan catatanmu setiap akhir pekan, bukan setiap hari, karena selisih sehari ke sehari tidak berarti apa-apa.",
+    "Rangkaian sepuluh menit berikut bisa langsung kamu pakai, tanpa perlu memasang apa pun:"
+   ],
+   "poin": [
+    "Menit 1-2: kerjakan sepuluh deret angka, cukup sampai polanya ketemu, tidak perlu sampai jawaban akhir.",
+    "Menit 3-6: satu blok berisi 5-8 soal dengan batas waktu per butir, misalnya 45 detik.",
+    "Menit 7-8: periksa pembahasan lalu catat soal yang salah beserta penyebabnya.",
+    "Menit 9-10: ulangi dua soal yang salah dari ingatan, tanpa melihat pembahasan."
+   ],
+   "catatan": "Sisihkan satu hari dalam seminggu untuk mengulang seluruh catatan kesalahan, bukan mengerjakan soal baru. Pilih jam saat kamu masih segar; latihan berhitung setelah lelah hasilnya jauh lebih kecil. Kalau satu hari terlewat, lanjutkan saja pada hari berikutnya - yang merusak kebiasaan bukan hari yang bolong, melainkan dua minggu tanpa latihan."
+  }
+ ],
+ "faq": [
+  {
+   "t": "Apakah soal psikotes matematika boleh dikerjakan dengan kalkulator?",
+   "j": "Umumnya tidak. Karena itu latih berhitung di kepala: kuasai perkalian 1 sampai 20, hafalkan padanan persen yang sederhana (25% sama dengan seperempat, 10% sama dengan 0,1), dan biasakan memecah angka - untuk 15% dari 240.000, hitung 24.000 lalu tambahkan 12.000."
+  },
+  {
+   "t": "Berapa jumlah soal matematika yang biasanya muncul?",
+   "j": "Jumlahnya berbeda-beda antar seleksi dan tidak ada susunan yang berlaku untuk semua penyelenggara. Yang bisa kamu siapkan adalah kecepatannya: targetkan satu butir selesai di bawah 45 detik supaya sisa waktu bisa dipakai untuk soal yang berat atau untuk memeriksa ulang butir yang meragukan."
+  },
+  {
+   "t": "Apakah soal di halaman ini sama dengan soal seleksi yang akan saya hadapi?",
+   "j": "Tidak. Seluruh soal di SiapPsikotes adalah karya penyusun sendiri untuk keperluan latihan, bukan kumpulan soal dari seleksi tertentu. Yang kamu latih di sini adalah kecepatan mengenali pola dan ketelitian berhitung, bukan hafalan kunci jawaban."
+  },
+  {
+   "t": "Apa bedanya 40 soal di halaman contoh dan materi di dalam aplikasi?",
+   "j": "Di halaman contoh tersedia 40 soal berpembahasan yang bisa dicoba gratis tanpa akun. Materi di dalam aplikasi berbayar: akses penuh berisi 1.225 soal untuk 9 jenis tes, lengkap dengan pembahasan dan Laporan Lengkap, seharga Rp 39.000 sekali bayar - bukan langganan, jadi tidak ada tagihan berulang."
+  },
+  {
+   "t": "Kalau saya menemukan soal atau pembahasan yang keliru, bagaimana?",
+   "j": "Laporkan kepada kami. Setiap soal diperiksa dengan pedoman mutu yang dapat diperiksa ulang, tetapi kami tidak mengklaim bahwa semuanya bebas dari kekeliruan. Bukti pemeriksaan bisa kamu lihat di halaman mutu, dan laporanmu membantu perbaikan soal berikutnya."
+  },
+  {
+   "t": "Kalau hasil latihan saya belum naik, apa yang salah?",
+   "j": "Biasanya bukan soal bakat, melainkan cara latihannya. Tiga penyebab yang paling sering: hanya membaca pembahasan tanpa mencoba mengerjakan, menambah soal baru tanpa mengulang soal yang salah, dan berlatih dalam sesi panjang yang jarang. Perbaiki dulu ketiga hal itu sebelum menyimpulkan apa pun."
+  }
+ ],
+ "penutup": [
+  "Kunci soal matematika psikotes bukan pada rumus yang panjang, melainkan pada kebiasaan kecil: menuliskan yang diketahui, menandai yang ditanya, dan berhenti sejenak sebelum memilih jawaban. Soal di halaman ini bisa kamu kerjakan berulang kali sampai langkahnya terasa biasa; mengulang satu blok sampai lancar lebih berguna daripada melahap banyak soal sekali lewat.",
+  "Kalau ingin mencoba lebih dulu, 40 soal berpembahasan tersedia gratis tanpa akun di halaman contoh. Untuk latihan penuh, akses ke dalam aplikasi berisi 1.225 soal untuk 9 jenis tes dengan pembahasan dan Laporan Lengkap, seharga Rp 39.000 sekali bayar. SiapPsikotes bukan situs resmi instansi mana pun dan tidak berafiliasi dengan lembaga pemerintah; seluruh soal adalah karya penyusun sendiri untuk latihan, dan pembelian tidak menjamin kelulusan seleksi apa pun."
+ ],
+ "tautan": [
+  {"teks": "Latihan soal psikotes di aplikasi", "url": "/psikotes/"},
+  {"teks": "40 soal contoh gratis (tanpa akun)", "url": "/contoh/"},
+  {"teks": "Harga dan cara beli", "url": "/beli/"},
+  {"teks": "Mutu dan bukti pemeriksaan soal", "url": "/mutu/"}
+ ],
+ "diperbarui": "15 September 2026"
+}
